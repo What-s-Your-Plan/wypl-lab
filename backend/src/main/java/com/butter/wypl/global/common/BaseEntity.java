@@ -1,0 +1,52 @@
+package com.butter.wypl.global.common;
+
+import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import com.butter.wypl.global.exception.CustomException;
+import com.butter.wypl.global.exception.GlobalErrorCode;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@MappedSuperclass
+@NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
+public abstract class BaseEntity {
+
+	@CreatedBy
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private LocalDateTime createdAt;
+
+	@LastModifiedBy
+	@Column(name = "modified_at", nullable = false)
+	private LocalDateTime modifiedAt;
+
+	@Column(name = "deleted_at")
+	private LocalDateTime deletedAt;
+
+	public void delete() {
+		if (this.deletedAt != null) {
+			throw new CustomException(GlobalErrorCode.ALREADY_DELETED_ENTITY);
+		}
+		this.deletedAt = LocalDateTime.now();
+	}
+
+	public void restore() {
+		if (this.deletedAt == null) {
+			throw new CustomException(GlobalErrorCode.NO_DELETED_ENTITY);
+		}
+		this.deletedAt = null;
+	}
+
+	public boolean isDeleted() {
+		return deletedAt == null;
+	}
+}
