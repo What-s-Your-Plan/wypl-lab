@@ -1,15 +1,13 @@
 package com.butter.wypl.global.exception;
 
-import com.butter.wypl.global.common.StatusCode;
+import org.springframework.http.HttpStatusCode;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+public interface ErrorCode {
+	HttpStatusCode getHttpStatus();
 
-@AllArgsConstructor
-@Getter
-public enum ErrorCode {
-	USER_NOT_FOUND(StatusCode.BAD_REQUEST.getCode(), "사용자를 찾을 수 없습니다.");
+	String getErrorCode();
 
-	private final int status;
-	private final String message;
+	String getMessage();
+
+	int getStatusCode();
 }
