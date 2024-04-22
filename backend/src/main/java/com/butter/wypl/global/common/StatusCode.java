@@ -1,12 +1,16 @@
 package com.butter.wypl.global.common;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-@Data
-public class StatusCode {
-    public static int OK = 200;
-    public static int CREATED = 201;
-    public static int BAD_REQUEST = 400;
-    public static int UNAUTHORIZED = 401;
-    public static int INTERNAL_SERVER_ERROR = 500;
+@AllArgsConstructor
+@Getter
+public enum StatusCode {
+	OK(200),
+	CREATED(201),
+	BAD_REQUEST(400),
+	UNAUTHORIZED(401),
+	INTERNAL_SERVER_ERROR(500);
+ 
+	private final int code;
 }
