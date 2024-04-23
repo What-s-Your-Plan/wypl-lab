@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.butter.wypl.global.common.Message;
 import com.butter.wypl.global.exception.CustomException;
-import com.butter.wypl.global.exception.ErrorCode;
 import com.butter.wypl.global.exception.GlobalErrorCode;
 
 @RestControllerAdvice
@@ -16,13 +15,12 @@ public class CustomExceptionHandler {
 	protected ResponseEntity<Message<String>> internalErrorHandler(RuntimeException e) {
 		GlobalErrorCode errorCode = GlobalErrorCode.INTERNAL_SERVER_ERROR;
 		return ResponseEntity.status(errorCode.getStatusCode())
-			.body(new Message<>(errorCode.getMessage()));
+				.body(new Message<>(errorCode.getMessage()));
 	}
 
 	@ExceptionHandler({CustomException.class})
 	protected ResponseEntity<Message<String>> customExceptionHandler(CustomException e) {
-		ErrorCode errorCode = e.getErrorCode();
-		return ResponseEntity.status(errorCode.getStatusCode())
-			.body(new Message<>(errorCode.getMessage()));
+		return ResponseEntity.status(e.getHttpStatus())
+				.body(new Message<>(e.getMessage()));
 	}
 }
