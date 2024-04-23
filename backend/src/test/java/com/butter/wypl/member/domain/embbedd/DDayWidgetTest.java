@@ -20,7 +20,7 @@ class DDayWidgetTest {
 	@DisplayName("D-Day 위젯 생성에 성공한다.")
 	@ParameterizedTest
 	@EnumSource(value = SideTabFixture.class)
-	void generateGoal(SideTabFixture sideTabFixture) {
+	void generateDDay(SideTabFixture sideTabFixture) {
 		/* Given */
 		String title = sideTabFixture.getTitle();
 		LocalDate dDay = sideTabFixture.getDDay();
