@@ -2,10 +2,12 @@ package com.butter.wypl.member.domain;
 
 import java.time.LocalDate;
 
-import com.butter.wypl.member.exception.MemberErrorCode;
-import com.butter.wypl.member.exception.MemberException;
+import com.butter.wypl.member.domain.embbedd.DDayWidget;
+import com.butter.wypl.member.domain.embbedd.GoalWidget;
+import com.butter.wypl.member.domain.embbedd.MemoWidget;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -33,21 +35,51 @@ public class SideTab {
 	@JoinColumn(name = "member_id")
 	private Member member;
 
-	@Column(name = "memo", length = 1_000)
-	private String memo;
+	@Embedded
+	private MemoWidget memo;
 
-	@Column(name = "d_day")
-	private LocalDate dDay;
+	@Embedded
+	private DDayWidget dDay;
 
-	@Column(name = "goal", length = 60)
-	private String goal;
+	@Embedded
+	private GoalWidget goal;
 
-	public void updateMemo(
-			final String newMemo
-	) {
-		if (newMemo.length() > 1_000) {
-			throw new MemberException(MemberErrorCode.TOO_LONG_CONTENT);
-		}
-		memo = newMemo;
+	private SideTab(Member member) {
+		this.member = member;
+		memo = MemoWidget.from(null);
+		dDay = DDayWidget.of(null, null);
+		goal = GoalWidget.from(null);
+	}
+
+	public static SideTab from(Member member) {
+		return new SideTab(member);
+	}
+
+	public String getMemo() {
+		return memo.getValue();
+	}
+
+	public void updateMemo(final MemoWidget memo) {
+		this.memo = memo;
+	}
+
+	public String getGoal() {
+		return goal.getValue();
+	}
+
+	public void updateGoal(final GoalWidget newGoal) {
+		goal = newGoal;
+	}
+
+	public void updateDDay(final DDayWidget newDDay) {
+		this.dDay = newDDay;
+	}
+
+	public String getDDayTitle() {
+		return dDay.getTitle();
+	}
+
+	public LocalDate getDDayDate() {
+		return dDay.getValue();
 	}
 }
