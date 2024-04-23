@@ -1,9 +1,9 @@
 package com.butter.wypl.global.exception;
 
-import org.springframework.http.HttpStatusCode;
+import org.springframework.http.HttpStatus;
 
 public interface ErrorCode {
-	HttpStatusCode getHttpStatus();
+	HttpStatus getHttpStatus();
 
 	String getErrorCode();
 

@@ -2,8 +2,8 @@ package com.butter.wypl.global.common;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.butter.wypl.global.exception.CustomException;
@@ -21,11 +21,11 @@ import lombok.NoArgsConstructor;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 
-	@CreatedBy
+	@CreatedDate
 	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 
-	@LastModifiedBy
+	@LastModifiedDate
 	@Column(name = "modified_at", nullable = false)
 	private LocalDateTime modifiedAt;
 
@@ -33,20 +33,24 @@ public abstract class BaseEntity {
 	private LocalDateTime deletedAt;
 
 	public void delete() {
-		if (this.deletedAt != null) {
+		if (isDeleted()) {
 			throw new CustomException(GlobalErrorCode.ALREADY_DELETED_ENTITY);
 		}
 		this.deletedAt = LocalDateTime.now();
 	}
 
 	public void restore() {
-		if (this.deletedAt == null) {
+		if (isNotDeleted()) {
 			throw new CustomException(GlobalErrorCode.NO_DELETED_ENTITY);
 		}
 		this.deletedAt = null;
 	}
 
-	public boolean isDeleted() {
+	public boolean isNotDeleted() {
 		return deletedAt == null;
+	}
+
+	public boolean isDeleted() {
+		return !isNotDeleted();
 	}
 }
