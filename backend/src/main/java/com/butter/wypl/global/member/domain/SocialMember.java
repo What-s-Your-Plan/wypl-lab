@@ -1,4 +1,4 @@
-package com.butter.wypl.global.member;
+package com.butter.wypl.global.member.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
