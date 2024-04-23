@@ -2,6 +2,7 @@ package com.butter.wypl.member.fixture;
 
 import java.time.LocalDate;
 
+import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.domain.Member;
 
 public enum MemberFixture {
@@ -33,6 +34,7 @@ public enum MemberFixture {
 				.nickname(nickname)
 				.profileImage(image)
 				.color(color)
+				.timeZone(CalendarTimeZone.KOREA)
 				.build();
 	}
 }
