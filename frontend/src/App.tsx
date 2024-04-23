@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import LandingPage from '@/pages/Landing/LandingPage';
+import LoginPage from '@/pages/Login/LoginPage';
+import SingupPage from '@/pages/Singup/SingupPage';
+import CalendarPage from '@/pages/Main/Calendar/CalendarPage';
+import GroupPage from '@/pages/Main/Group/GroupPage';
+import ReviewIndexPage from '@/pages/Main/Review/ReviewIndexPage';
+import ReviewWritePage from '@/pages/Main/Review/ReviewWritePage';
+import ReviewDetailPage from '@/pages/Main/Review/ReviewDetailPage';
+import NotFoundPage from '@/pages/NotFoundPage';
+import MainLayout from './pages/Main/MainLayout';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SingupPage />} />
+        <Route path="/" element={<MainLayout />}>
+          <Route path="calendar" element={<CalendarPage />} />
+          <Route path="group/:groupId?" element={<GroupPage />} />
+          <Route path="review" element={<ReviewIndexPage />} />
+          <Route path="review/write" element={<ReviewWritePage />} />
+          <Route path="review/:reviewId" element={<ReviewDetailPage />} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
