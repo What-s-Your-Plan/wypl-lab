@@ -26,6 +26,9 @@ public class Member extends BaseEntity {
 	@Column(name = "member_id")
 	private int id;
 
+	@Column(name = "email", length = 50, nullable = false)
+	private String email;
+
 	@Column(name = "birthday")
 	private LocalDate birthday;
 
