@@ -2,6 +2,9 @@ package com.butter.wypl.member.domain;
 
 import java.time.LocalDate;
 
+import com.butter.wypl.member.exception.MemberErrorCode;
+import com.butter.wypl.member.exception.MemberException;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,4 +41,13 @@ public class SideTab {
 
 	@Column(name = "goal", length = 60)
 	private String goal;
+
+	public void updateMemo(
+			final String newMemo
+	) {
+		if (newMemo.length() > 1_000) {
+			throw new MemberException(MemberErrorCode.TOO_LONG_CONTENT);
+		}
+		memo = newMemo;
+	}
 }
