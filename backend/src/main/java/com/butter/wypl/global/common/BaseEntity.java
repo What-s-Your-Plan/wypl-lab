@@ -47,10 +47,10 @@ public abstract class BaseEntity {
 	}
 
 	public boolean isNotDeleted() {
-		return !isDeleted();
+		return deletedAt == null;
 	}
 
 	public boolean isDeleted() {
-		return deletedAt != null;
+		return !isNotDeleted();
 	}
 }
