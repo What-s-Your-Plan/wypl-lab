@@ -1,4 +1,4 @@
-package com.butter.wypl.global.member.domain;
+package com.butter.wypl.member.domain;
 
 import lombok.Getter;
 
