@@ -2,9 +2,9 @@ package com.butter.wypl.member.domain;
 
 import java.time.LocalDate;
 
-import com.butter.wypl.member.domain.embbedd.DDayWidget;
-import com.butter.wypl.member.domain.embbedd.GoalWidget;
-import com.butter.wypl.member.domain.embbedd.MemoWidget;
+import com.butter.wypl.member.domain.embedded.DDayWidget;
+import com.butter.wypl.member.domain.embedded.GoalWidget;
+import com.butter.wypl.member.domain.embedded.MemoWidget;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;

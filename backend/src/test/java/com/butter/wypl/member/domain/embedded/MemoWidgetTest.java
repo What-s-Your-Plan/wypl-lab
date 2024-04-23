@@ -1,8 +1,6 @@
-package com.butter.wypl.member.domain.embbedd;
+package com.butter.wypl.member.domain.embedded;
 
 import static org.assertj.core.api.Assertions.*;
-
-import java.time.LocalDate;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,52 +13,50 @@ import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.fixture.SideTabFixture;
 
-class DDayWidgetTest {
+class MemoWidgetTest {
 
-	@DisplayName("D-Day 위젯 생성에 성공한다.")
+	@DisplayName("메모 위젯 생성에 성공한다.")
 	@ParameterizedTest
 	@EnumSource(value = SideTabFixture.class)
-	void generateDDay(SideTabFixture sideTabFixture) {
+	void generateMemo(SideTabFixture sideTabFixture) {
 		/* Given */
-		String title = sideTabFixture.getTitle();
-		LocalDate dDay = sideTabFixture.getDDay();
+		String memoAsString = sideTabFixture.getMemo();
 
 		/* When */
 		/* Then */
 		assertThatCode(() -> {
-			DDayWidget dDayWidget = DDayWidget.of(title, dDay);
-			assertThat(dDayWidget.getTitle()).isEqualTo(title);
-			assertThat(dDayWidget.getValue()).isEqualTo(dDay);
+			MemoWidget memo = MemoWidget.from(memoAsString);
+			assertThat(memo.getValue()).isEqualTo(memoAsString);
 		}).doesNotThrowAnyException();
 	}
 
-	@DisplayName("목표 Length Test")
+	@DisplayName("메모 Length Test")
 	@Nested
 	class MemoLengthTest {
-		@DisplayName("D-Day 제목의 길이가 20이하이면 예외를 던지지 않는다.")
+		@DisplayName("메모의 길이가 1_000미만이면 예외를 던지지 않는다.")
 		@ParameterizedTest
-		@ValueSource(ints = {0, 20})
+		@ValueSource(ints = {0, 1_000})
 		void generateMemoLength(int length) {
 			/* Given */
-			String dDayTitleAsString = "a".repeat(length);
+			String memoAsString = "a".repeat(length);
 
 			/* When */
 			/* Then */
 			assertThatCode(() -> {
-				DDayWidget dDayWidget = DDayWidget.of(dDayTitleAsString, null);
-				assertThat(dDayWidget.getTitle()).isEqualTo(dDayTitleAsString);
+				MemoWidget memo = MemoWidget.from(memoAsString);
+				assertThat(memo.getValue()).isEqualTo(memoAsString);
 			}).doesNotThrowAnyException();
 		}
 
-		@DisplayName("D-Day 제목의 길이가 20초과이면 예외를 던진다.")
+		@DisplayName("메모의 길이가 1_000초과이면 예외를 던진다.")
 		@Test
 		void validateTooLongContent() {
 			/* Given */
-			String dDayTitleAsString = "a".repeat(21);
+			String memoAsString = "a".repeat(1_001);
 
 			/* When */
 			/* Then */
-			assertThatThrownBy(() -> DDayWidget.of(dDayTitleAsString, null))
+			assertThatThrownBy(() -> MemoWidget.from(memoAsString))
 					.isInstanceOf(MemberException.class)
 					.hasMessageContaining(MemberErrorCode.TOO_LONG_CONTENT.getMessage());
 		}

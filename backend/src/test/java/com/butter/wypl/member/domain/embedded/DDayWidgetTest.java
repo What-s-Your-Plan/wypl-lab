@@ -1,6 +1,8 @@
-package com.butter.wypl.member.domain.embbedd;
+package com.butter.wypl.member.domain.embedded;
 
 import static org.assertj.core.api.Assertions.*;
+
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -13,50 +15,52 @@ import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.fixture.SideTabFixture;
 
-class GoalWidgetTest {
+class DDayWidgetTest {
 
-	@DisplayName("목표 위젯 생성에 성공한다.")
+	@DisplayName("D-Day 위젯 생성에 성공한다.")
 	@ParameterizedTest
 	@EnumSource(value = SideTabFixture.class)
-	void generateGoal(SideTabFixture sideTabFixture) {
+	void generateDDay(SideTabFixture sideTabFixture) {
 		/* Given */
-		String goalAsString = sideTabFixture.getGoal();
+		String title = sideTabFixture.getTitle();
+		LocalDate dDay = sideTabFixture.getDDay();
 
 		/* When */
 		/* Then */
 		assertThatCode(() -> {
-			GoalWidget goal = GoalWidget.from(goalAsString);
-			assertThat(goal.getValue()).isEqualTo(goalAsString);
+			DDayWidget dDayWidget = DDayWidget.of(title, dDay);
+			assertThat(dDayWidget.getTitle()).isEqualTo(title);
+			assertThat(dDayWidget.getValue()).isEqualTo(dDay);
 		}).doesNotThrowAnyException();
 	}
 
 	@DisplayName("목표 Length Test")
 	@Nested
 	class MemoLengthTest {
-		@DisplayName("목표의 길이가 60이하이면 예외를 던지지 않는다.")
+		@DisplayName("D-Day 제목의 길이가 20이하이면 예외를 던지지 않는다.")
 		@ParameterizedTest
-		@ValueSource(ints = {0, 60})
+		@ValueSource(ints = {0, 20})
 		void generateMemoLength(int length) {
 			/* Given */
-			String goalAsString = "a".repeat(length);
+			String dDayTitleAsString = "a".repeat(length);
 
 			/* When */
 			/* Then */
 			assertThatCode(() -> {
-				GoalWidget goal = GoalWidget.from(goalAsString);
-				assertThat(goal.getValue()).isEqualTo(goalAsString);
+				DDayWidget dDayWidget = DDayWidget.of(dDayTitleAsString, null);
+				assertThat(dDayWidget.getTitle()).isEqualTo(dDayTitleAsString);
 			}).doesNotThrowAnyException();
 		}
 
-		@DisplayName("목표의 길이가 60초과이면 예외를 던진다.")
+		@DisplayName("D-Day 제목의 길이가 20초과이면 예외를 던진다.")
 		@Test
 		void validateTooLongContent() {
 			/* Given */
-			String goalAsString = "a".repeat(61);
+			String dDayTitleAsString = "a".repeat(21);
 
 			/* When */
 			/* Then */
-			assertThatThrownBy(() -> GoalWidget.from(goalAsString))
+			assertThatThrownBy(() -> DDayWidget.of(dDayTitleAsString, null))
 					.isInstanceOf(MemberException.class)
 					.hasMessageContaining(MemberErrorCode.TOO_LONG_CONTENT.getMessage());
 		}
