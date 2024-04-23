@@ -1,3 +1,6 @@
 spring:
   application:
     name: wypl
+  config:
+    import:
+      - security/application-jwt.yml

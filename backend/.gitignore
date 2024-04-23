@@ -1,3 +1,4 @@
+### Spring Boot ###
 HELP.md
 .gradle
 build/
@@ -35,3 +36,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### macOS ###
+.DS_Store
+
+### Properties ###
+**/resourecs/security/*.yml
