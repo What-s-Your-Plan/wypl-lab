@@ -33,17 +33,21 @@ public abstract class BaseEntity {
 	private LocalDateTime deletedAt;
 
 	public void delete() {
-		if (this.deletedAt != null) {
+		if (isDeleted()) {
 			throw new CustomException(GlobalErrorCode.ALREADY_DELETED_ENTITY);
 		}
 		this.deletedAt = LocalDateTime.now();
 	}
 
 	public void restore() {
-		if (this.deletedAt == null) {
+		if (isNotDeleted()) {
 			throw new CustomException(GlobalErrorCode.NO_DELETED_ENTITY);
 		}
 		this.deletedAt = null;
+	}
+
+	public boolean isNotDeleted() {
+		return !isDeleted();
 	}
 
 	public boolean isDeleted() {
