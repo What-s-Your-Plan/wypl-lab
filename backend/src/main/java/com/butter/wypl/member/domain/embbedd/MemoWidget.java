@@ -26,7 +26,7 @@ public class MemoWidget {
 		return new MemoWidget(value);
 	}
 
-	public static void validate(final String memo) {
+	private static void validate(final String memo) {
 		if (memo == null) {
 			return;
 		}
