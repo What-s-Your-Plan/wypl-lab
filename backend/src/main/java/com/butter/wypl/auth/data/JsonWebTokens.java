@@ -1,4 +1,4 @@
-package com.butter.wypl.auth.domain;
+package com.butter.wypl.auth.data;
 
 import lombok.Builder;
 
@@ -7,5 +7,4 @@ public record JsonWebTokens(
 		String accessToken,
 		String refreshToken
 ) {
-
 }

@@ -6,7 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.butter.wypl.auth.domain.JsonWebTokens;
+import com.butter.wypl.auth.data.JsonWebTokens;
 import com.butter.wypl.auth.perproties.JwtProperties;
 
 import io.jsonwebtoken.Jwts;
