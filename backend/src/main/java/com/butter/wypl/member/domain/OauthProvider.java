@@ -1,8 +1,12 @@
 package com.butter.wypl.member.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 @Getter
 public enum OauthProvider {
-	GOOGLE
+	GOOGLE("gmail.com");
+
+	private final String domain;
 }
