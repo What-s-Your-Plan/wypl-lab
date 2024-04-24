@@ -53,10 +53,38 @@ public class EmbeddedRedisConfig {
 		throw new IllegalArgumentException("Not Found Available port: 10000 ~ 65535");
 	}
 
-	private Process executeGrepProcessCommand(int port) throws IOException {
-		String command = String.format("netstat -nat | grep LISTEN|grep %d", port);
-		String[] shell = {"/bin/sh", "-c", command};
+	private Process executeGrepProcessCommand(
+			final int port
+	) throws IOException {
+		String command = getCommandByOS(port);
+		String[] shell = getShell(command);
 		return Runtime.getRuntime().exec(shell);
+	}
+
+	private String getCommandByOS(
+			final int port
+	) {
+		String osName = System.getProperty("os.name");
+		if (osName.contains(OS.MAC.getValue()) || osName.contains(OS.LINUX.getValue())) {
+			return String.format("netstat -nat | grep LISTEN | grep %d", port);
+		}
+		if (osName.contains(OS.WINDOWS.getValue())) {
+			return String.format("netstat -nat | findstr \"LISTEN\" | findstr \"%d\"", port);
+		}
+		throw new IllegalArgumentException("Unsupported OS: " + osName);
+	}
+
+	private String[] getShell(
+			final String command
+	) {
+		String osName = System.getProperty("os.name");
+		if (osName.contains(OS.MAC.getValue()) || osName.contains(OS.LINUX.getValue())) {
+			return new String[] {"/bin/sh", "-c", command};
+		}
+		if (osName.contains(OS.WINDOWS.getValue())) {
+			return new String[] {command};
+		}
+		throw new IllegalArgumentException("Unsupported OS: " + osName);
 	}
 
 	private boolean isRunning(Process process) {
