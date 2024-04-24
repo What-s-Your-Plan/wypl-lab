@@ -1,22 +1,22 @@
 import styled from 'styled-components';
 import tw from 'twin.macro';
 
-type Size = keyof typeof containerTheme.size;
+type Width = keyof typeof containerTheme.width;
 
 interface ContainerProps {
-  $size: Size;
+  $width: Width;
 }
 
 const Container = styled.div<ContainerProps>`
-  ${tw`container mx-auto p-8`}
-  ${(props) => props.$size && containerTheme.size[props.$size]}
+  ${tw`container p-4 mx-7 shadow-md bg-white/40 rounded-2xl`}
+  ${(props) => props.$width && containerTheme.width[props.$width]}
 `;
 
 const containerTheme = {
-  size: {
-    sm: 'w-1/5',
-    md: 'w-3/5',
-    full: 'w-full',
+  width: {
+    s: tw`w-300 ss:max-sm:w-full h-[90vh]`,
+    m: tw`w-800 ml-0 ss:max-sm:w-full ss:max-sm:ml-7 h-[90vh]`,
+    f: tw`w-1100 ss:max-sm:w-full h-[90vh]`,
   },
 };
 
