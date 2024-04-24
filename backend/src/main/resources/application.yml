@@ -4,5 +4,6 @@ spring:
   config:
     import:
       - security/application-jwt.yml
+      - security/application-oauth.yml
       - security/application-redis.yml
       - security/application-s3.yml
