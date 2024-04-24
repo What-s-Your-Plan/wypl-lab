@@ -7,11 +7,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.butter.wypl.auth.data.JsonWebTokens;
+import com.butter.wypl.global.annotation.ServiceTest;
 
-@SpringBootTest
+@ServiceTest
 class JwtProviderTest {
 
 	@Autowired
