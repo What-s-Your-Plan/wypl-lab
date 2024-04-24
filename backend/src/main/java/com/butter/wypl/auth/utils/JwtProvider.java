@@ -4,10 +4,10 @@ import java.security.Key;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.butter.wypl.auth.data.JsonWebTokens;
-import com.butter.wypl.auth.perproties.JwtProperties;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -23,9 +23,12 @@ public class JwtProvider {
 	private final Key refreshKey;
 
 	@Autowired
-	public JwtProvider(JwtProperties jwtProperties) {
-		accessKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getAccessKey()));
-		refreshKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getAccessKey()));
+	public JwtProvider(
+			@Value("${jwt.access-key}") String accessKey,
+			@Value("${jwt.refresh-key}") String refreshKey
+	) {
+		this.accessKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(accessKey));
+		this.refreshKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(refreshKey));
 	}
 
 	public JsonWebTokens generateJsonWebTokens(

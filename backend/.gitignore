@@ -41,4 +41,4 @@ out/
 .DS_Store
 
 ### Properties ###
-**/resourecs/security/*.yml
+**/resourecs/*.yml
