@@ -9,6 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -22,6 +23,7 @@ import com.butter.wypl.global.exception.GlobalErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
+@Profile({"default", "local", "dev", "deploy"})
 @RequiredArgsConstructor
 @Component
 public class S3ImageService {
@@ -38,11 +40,11 @@ public class S3ImageService {
 	}
 
 	private String uploadFileToS3(
-		final File uploadFile,
-		final String fileName
+			final File uploadFile,
+			final String fileName
 	) {
 		PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileName, uploadFile)
-			.withCannedAcl(CannedAccessControlList.PublicRead);
+				.withCannedAcl(CannedAccessControlList.PublicRead);
 
 		amazonS3Client.putObject(putObjectRequest);
 		uploadFile.delete();
@@ -72,7 +74,7 @@ public class S3ImageService {
 	private String getOriginalFilename(MultipartFile multipartFile) {
 		Optional<String> optional = Optional.ofNullable(multipartFile.getOriginalFilename());
 		return optional.orElseThrow(
-			() -> new FileException(FileErrorCode.HAVE_NOT_FILENAME)
+				() -> new FileException(FileErrorCode.HAVE_NOT_FILENAME)
 		);
 	}
 
