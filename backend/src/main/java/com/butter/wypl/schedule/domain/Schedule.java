@@ -66,7 +66,7 @@ public class Schedule extends BaseEntity {
 	@Column(name = "repeat_schedule_id")
 	private int repeatScheduleId;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "label_id")
 	private Label label;
 
