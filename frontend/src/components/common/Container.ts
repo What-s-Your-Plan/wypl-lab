@@ -8,7 +8,7 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  ${tw`container p-4 mx-7 shadow-md bg-white/40 rounded-2xl`}
+  ${tw`container p-4 mx-7 shadow-md bg-default-white/40 rounded-2xl`}
   ${(props) => props.$width && containerTheme.width[props.$width]}
 `;
 
