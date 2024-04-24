@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.util.StringUtils;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -68,6 +69,6 @@ public class EmbeddedRedisConfig {
 		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
-		return !pidInfo.isEmpty();
+		return StringUtils.hasText(pidInfo.toString());
 	}
 }
