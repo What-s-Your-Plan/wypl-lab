@@ -45,7 +45,7 @@ public class S3ImageService {
 				.withCannedAcl(CannedAccessControlList.PublicRead);
 
 		amazonS3Client.putObject(putObjectRequest);
-		uploadFile.delete()
+		uploadFile.delete();
 
 		return amazonS3Client.getUrl(bucket, fileName).toString();
 	}
