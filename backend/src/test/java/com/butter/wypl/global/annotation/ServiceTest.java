@@ -5,16 +5,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-
-import com.butter.wypl.global.config.JpaAuditingConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import(JpaAuditingConfiguration.class)
-@DataJpaTest
+@SpringBootTest
+@Transactional
 @ActiveProfiles({"test"})
-public @interface JpaRepositoryTest {
+public @interface ServiceTest {
 }
