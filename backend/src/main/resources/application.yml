@@ -5,3 +5,4 @@ spring:
     import:
       - security/application-jwt.yml
       - security/application-redis.yml
+      - security/application-s3.yml
