@@ -1,8 +1,6 @@
 import * as S from '@/components/common/Container';
 
-type Props = {};
-
-function WriteBlockList({}: Props) {
+function WriteBlockList() {
   return (
     <S.Container $width="800" className="scrollBar">
       <div>

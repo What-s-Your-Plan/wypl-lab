@@ -9,9 +9,7 @@ import Image from '@/assets/icons/image.svg';
 import Smiley from '@/assets/icons/smiley.svg';
 import SunDim from '@/assets/icons/sunDim.svg';
 
-type Props = {};
-
-function BlockList({}: Props) {
+function BlockList() {
   const blocks = [
     {
       icon: TextHOne,
