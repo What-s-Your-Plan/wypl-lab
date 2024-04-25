@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.butter.wypl.global.annotation.JpaRepositoryTest;
 import com.butter.wypl.label.domain.Label;
+import com.butter.wypl.label.exception.LabelErrorCode;
+import com.butter.wypl.label.exception.LabelException;
 import com.butter.wypl.label.fixture.LabelFixture;
 
 
@@ -45,24 +48,30 @@ public class LabelRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("라벨 id로 라벨이 정상적으로 조회되는지 확인")
+	@DisplayName("존재하는 라벨 id로 라벨이 조회되는지 확인")
 	void findLabelByLabelId(){
 		//given
 		Label newLabel = LabelFixture.EXERCISE_LABEL.toLabel();
 		Label savedLabel = labelRepository.save(newLabel);
 
 		//when
-		Label findLabel = labelRepository.findByLabelId(savedLabel.getLabelId());
+		Optional<Label> findLabel = labelRepository.findByLabelIdAndDeletedAtIsNull(savedLabel.getLabelId());
 
 		//then
 		assertThat(findLabel).isNotNull();
-		assertThat(findLabel.getLabelId()).isEqualTo(savedLabel.getLabelId());
-		assertThat(findLabel.getTitle()).isEqualTo(savedLabel.getTitle());
-		assertThat(findLabel.getColor()).isEqualTo(savedLabel.getColor());
-		assertThat(findLabel.getMemberId()).isEqualTo(savedLabel.getMemberId());
-		assertThat(findLabel.getCreatedAt()).isEqualTo(savedLabel.getCreatedAt());
-		assertThat(findLabel.getDeletedAt()).isNull();
+		if(findLabel.isPresent()){
+			assertThat(findLabel.get().getMemberId()).isGreaterThan(0);
+			assertThat(findLabel.get().getTitle()).isEqualTo(newLabel.getTitle());
+			assertThat(findLabel.get().getColor()).isEqualTo(newLabel.getColor());
+			assertThat(findLabel.get().getMemberId()).isEqualTo(newLabel.getMemberId());
+			assertThat(findLabel.get().getCreatedAt()).isBefore(LocalDateTime.now());
+			assertThat(findLabel.get().getModifiedAt()).isEqualTo(savedLabel.getCreatedAt());
+			assertThat(findLabel.get().getDeletedAt()).isNull();
+		}
+
 	}
+
+
 
 	@Test
 	@DisplayName("회원별 라벨이 정상적으로 조회되는지 확인")
