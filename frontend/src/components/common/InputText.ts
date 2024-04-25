@@ -8,30 +8,44 @@ type Props = {
 
 const InputDefault = styled.input<Props>`
   ${tw`
+    h-8
+    outline
+    outline-1
     rounded-md
-    h-[32px]
     px-2
     transition
-    focus:outline-main
+
+    placeholder:text-gray-300
+    hover:outline-gray-400
+    focus:outline-none
+    focus:ring
+    focus:ring-main
     `}
-  ${(props) => (props.$isValid === false ? tw`bg-label-pink` : tw`bg-gray-300`)}
+  ${(props) =>
+    props.$isValid === false
+      ? tw`outline-label-red text-label-red`
+      : tw`outline-gray-300`}
   ${(props) => (props.$width ? `width:${props.$width};` : tw`grow`)}
 `;
 
 const InputTitle = styled.input<Props>`
   ${tw`
+      h-8
       border-b-2
-      border-gray-300 // 색상 변경 필요
+      bg-transparent
       font-bold
-      h-[32px]
       px-2
       transition
+
       placeholder:text-gray-300
+      hover:border-gray-400
       focus:outline-none
       focus:border-main
   `}
   ${(props) =>
-    props.$isValid === false ? tw`bg-label-pink` : tw`bg-transparent`}
+    props.$isValid === false
+      ? tw`border-label-red text-label-red`
+      : tw`border-gray-300`}
   ${(props) => (props.$width ? `width:${props.$width};` : tw`grow`)}
 `;
 
