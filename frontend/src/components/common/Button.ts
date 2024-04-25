@@ -1,15 +1,14 @@
 import tw from 'twin.macro';
 import styled from 'styled-components';
+import { ButtonSize, ButtonSizeTheme } from '@/assets/styles/sizeThemes';
 import {
-  ButtonSizeTheme,
-  BgTheme,
-  TextTheme,
-  BorderTheme,
-  ButtonSize,
   BgColors,
   TextColors,
   BorderColors,
-} from '@/assets/styles/themes';
+  BgTheme,
+  TextTheme,
+  BorderTheme,
+} from '@/assets/styles/colorThemes';
 
 type StyleProps = {
   $size: ButtonSize;
@@ -37,6 +36,7 @@ const Button = styled.button<StyleProps>`
   ${(props) => (props.$bgColor ? BgTheme[props.$bgColor] : BgTheme['white'])}
   ${(props) =>
     props.$textColor ? TextTheme[props.$textColor] : TextTheme['black']}
+  ${(props) => (props.$border ? tw`border` : '')}
   ${(props) => (props.$border ? BorderTheme[props.$border] : '')}
 
   ${(props) => (props.$size !== 'none' ? tw`hover:scale-110 ` : null)}
