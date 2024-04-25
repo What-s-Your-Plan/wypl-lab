@@ -2,9 +2,15 @@ import styled from 'styled-components';
 import tw from 'twin.macro';
 
 type Width = keyof typeof containerTheme.width;
+type Height = keyof typeof containerTheme.height;
 
 interface ContainerProps {
   $width: Width;
+}
+
+interface WhiteContainerProps {
+  $width: Width;
+  $height?: Height;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -12,12 +18,28 @@ const Container = styled.div<ContainerProps>`
   ${(props) => props.$width && containerTheme.width[props.$width]}
 `;
 
+const WhiteContainer = styled.div<WhiteContainerProps>`
+  ${tw`container p-3 mb-4 shadow-md rounded-xl bg-default-white`}
+  ${(props) => props.$width && containerTheme.width[props.$width]}
+  ${(props) => (props.$height ? containerTheme.height[props.$height] : '')}
+`;
+
 const containerTheme = {
   width: {
-    s: tw`w-300 ss:max-sm:w-full h-[90vh]`,
-    m: tw`w-800 ml-0 ss:max-sm:w-full ss:max-sm:ml-7 h-[90vh]`,
-    f: tw`w-1100 ss:max-sm:w-full h-[90vh]`,
+    '300': tw`w-300 ss:max-sm:w-full h-[90vh]`,
+    '500': tw`w-500`,
+    '800': tw`w-800 ml-0 ss:max-sm:w-full ss:max-sm:ml-7 h-[90vh]`,
+    '900': tw`w-900`,
+    '1100': tw`w-1100 ss:max-sm:w-full h-[90vh]`,
+    '1200': tw`w-1200`,
+    '1300': tw`w-1300`,
+  },
+  height: {
+    quarter: tw`h-[10vh]`,
+    half: tw`h-[20vh]`,
+    one: tw`h-[40vh]`,
+    max: tw`h-[85vh]`,
   },
 };
 
-export { Container };
+export { Container, WhiteContainer };

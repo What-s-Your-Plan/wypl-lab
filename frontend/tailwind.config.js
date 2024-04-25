@@ -5,25 +5,20 @@ export default {
     extend: {
       width: {
         300: '23%',
+        500: '47%',
         800: '63%',
+        900: '70%',
         1100: '88%',
+        1200: '92%',
+        1300: '100%',
       },
       screens: {
         ss: '300px',
         sm: '640px',
-        // => @media (min-width: 640px) { ... }
-
         md: '768px',
-        // => @media (min-width: 768px) { ... }
-
         lg: '1024px',
-        // => @media (min-width: 1024px) { ... }
-
         xl: '1280px',
-        // => @media (min-width: 1280px) { ... }
-
         '2xl': '1536px',
-        // => @media (min-width: 1536px) { ... }
       },
       colors: {
         label: {
@@ -45,6 +40,7 @@ export default {
         default: {
           white: '#FAFAF9',
           black: '#2A2E34',
+          warmgray: '#F3EEEA',
         },
         main: '#CA965C',
       },
