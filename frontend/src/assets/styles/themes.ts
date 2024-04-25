@@ -2,8 +2,8 @@ import tw from 'twin.macro';
 
 const ButtonSizeTheme = {
   none: tw`bg-transparent border-0`,
-  sm: tw`h-11 shadow-md`,
-  lg: tw`h-14 shadow-md`,
+  sm: tw`h-[30px] shadow-md`,
+  lg: tw`h-[38px] shadow-md`,
 };
 
 const BgTheme = {
@@ -46,8 +46,32 @@ const TextTheme = {
   main: tw`text-main`,
 };
 
+const BorderTheme = {
+  labelRed: tw`border border-label-red`,
+  labelPink: tw`border border-label-pink`,
+  labelOrange: tw`border border-label-orange`,
+  labelYellow: tw`border border-label-yellow`,
+  labelGreen: tw`border border-label-green`,
+  labelLeaf: tw`border border-label-leaf`,
+  labelBlue: tw`border border-label-blue`,
+  labelSky: tw`border border-label-sky`,
+  labelNavy: tw`border border-label-navy`,
+  labelIndigo: tw`border border-label-indigo`,
+  labelPurple: tw`border border-label-purple`,
+  labelLavender: tw`border border-label-lavender`,
+  labelCharcoal: tw`border border-label-charcoal`,
+  labelBrown: tw`border border-label-brown`,
+  white: tw`border border-default-white`,
+  black: tw`border border-default-black`,
+  main: tw`border border-main`,
+};
+
 export type ButtonSize = keyof typeof ButtonSizeTheme;
 
-export type Colors = keyof typeof BgTheme;
+export type BgColors = keyof typeof BgTheme;
 
-export { ButtonSizeTheme, BgTheme, TextTheme };
+export type TextColors = keyof typeof TextTheme;
+
+export type BorderColors = keyof typeof BorderTheme;
+
+export { ButtonSizeTheme, BgTheme, TextTheme, BorderTheme };

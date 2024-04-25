@@ -4,15 +4,19 @@ import {
   ButtonSizeTheme,
   BgTheme,
   TextTheme,
+  BorderTheme,
   ButtonSize,
-  Colors,
+  BgColors,
+  TextColors,
+  BorderColors,
 } from '@/assets/styles/themes';
 
 type StyleProps = {
   $size: ButtonSize;
   $width?: string;
-  $bgColor?: Colors;
-  $textColor?: Colors;
+  $bgColor?: BgColors;
+  $textColor?: TextColors;
+  $border?: BorderColors;
 };
 
 const Button = styled.button<StyleProps>`
@@ -22,13 +26,20 @@ const Button = styled.button<StyleProps>`
       justify-center
       content-center
       items-center
-      rounded-lg
+      font-medium
+      rounded-xl
+      cursor-pointer
+      transition
+      duration-200
     `}
   ${(props) => ButtonSizeTheme[props.$size]}
   ${(props) => props.$width && `width: ${props.$width};`}
   ${(props) => (props.$bgColor ? BgTheme[props.$bgColor] : BgTheme['white'])}
   ${(props) =>
     props.$textColor ? TextTheme[props.$textColor] : TextTheme['black']}
+  ${(props) => (props.$border ? BorderTheme[props.$border] : '')}
+
+  ${(props) => (props.$size !== 'none' ? tw`hover:scale-110 ` : null)}
 `;
 
 export default Button;
