@@ -1,11 +1,16 @@
 import * as S from '@/components/common/Container';
+import RTitle from './RTitle';
+import Divider from '@/components/common/Divider';
+import RSchedule from './RSchedule';
 
 function WriteBlockList() {
   return (
     <S.Container $width="800" className="scrollBar">
       <div>
-        <S.WhiteContainer $width="1300" />
+        <RTitle />
+        <RSchedule />
       </div>
+      <Divider />
     </S.Container>
   );
 }
