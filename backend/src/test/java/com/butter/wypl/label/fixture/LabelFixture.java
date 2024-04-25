@@ -5,7 +5,7 @@ import com.butter.wypl.label.domain.Label;
 
 public enum LabelFixture {
 	EXERCISE_LABEL("운동", "ff7f00", 1),
-	STUDY_LABEL("알고리즘 스터디", null, 2)
+	STUDY_LABEL("알고리즘 스터디", "000080", 2)
 	;
 
 	private final String title;
