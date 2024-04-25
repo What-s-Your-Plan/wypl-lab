@@ -55,7 +55,7 @@ function Modal({
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <Dialog.Title as="div" className="max-h-[10vh]">
+                  <Dialog.Title as="div">
                     {/* 타이틀 */}
                     {title}
                   </Dialog.Title>
