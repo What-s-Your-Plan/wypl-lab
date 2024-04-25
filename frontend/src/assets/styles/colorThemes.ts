@@ -1,11 +1,5 @@
 import tw from 'twin.macro';
 
-const ButtonSizeTheme = {
-  none: tw`bg-transparent border-0`,
-  sm: tw`h-[30px] shadow-md`,
-  lg: tw`h-[38px] shadow-md`,
-};
-
 const BgTheme = {
   labelRed: tw`bg-label-red`,
   labelPink: tw`bg-label-pink`,
@@ -66,12 +60,10 @@ const BorderTheme = {
   main: tw`border border-main`,
 };
 
-export type ButtonSize = keyof typeof ButtonSizeTheme;
-
 export type BgColors = keyof typeof BgTheme;
 
 export type TextColors = keyof typeof TextTheme;
 
 export type BorderColors = keyof typeof BorderTheme;
 
-export { ButtonSizeTheme, BgTheme, TextTheme, BorderTheme };
+export { BgTheme, TextTheme, BorderTheme };
