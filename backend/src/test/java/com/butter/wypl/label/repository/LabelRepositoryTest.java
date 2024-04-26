@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,15 +17,17 @@ import com.butter.wypl.label.exception.LabelErrorCode;
 import com.butter.wypl.label.exception.LabelException;
 import com.butter.wypl.label.fixture.LabelFixture;
 
+import jakarta.persistence.EntityManager;
 
 @JpaRepositoryTest
 public class LabelRepositoryTest {
 
 	private final LabelRepository labelRepository;
-
+	private final EntityManager entityManager;
 	@Autowired
-	public LabelRepositoryTest(LabelRepository labelRepository) {
+	public LabelRepositoryTest(LabelRepository labelRepository, EntityManager entityManager) {
 		this.labelRepository = labelRepository;
+		this.entityManager = entityManager;
 	}
 
 	@Test
@@ -48,8 +51,28 @@ public class LabelRepositoryTest {
 	}
 
 	@Test
+	@DisplayName("수정이 제대로 되는지 확인")
+	void updateLabel(){
+		//given
+		Label label = LabelFixture.EXERCISE_LABEL.toLabel();
+		Label oldLabel = labelRepository.save(label);
+		oldLabel.update("바뀐 제목", "FF0000");
+
+		//when
+		Label newLabel = labelRepository.save(oldLabel);
+		entityManager.flush();
+		entityManager.clear();
+
+		//then
+		assertThat(newLabel).isNotNull();
+		assertThat(newLabel.getModifiedAt()).isAfter(newLabel.getCreatedAt());
+		assertThat(newLabel.getDeletedAt()).isNull();
+	}
+
+
+	@Test
 	@DisplayName("존재하는 라벨 id로 라벨이 조회되는지 확인")
-	void findLabelByLabelId(){
+	void findLabelByLabelId() {
 		//given
 		Label newLabel = LabelFixture.EXERCISE_LABEL.toLabel();
 		Label savedLabel = labelRepository.save(newLabel);
@@ -59,7 +82,7 @@ public class LabelRepositoryTest {
 
 		//then
 		assertThat(findLabel).isNotNull();
-		if(findLabel.isPresent()){
+		if (findLabel.isPresent()) {
 			assertThat(findLabel.get().getMemberId()).isGreaterThan(0);
 			assertThat(findLabel.get().getTitle()).isEqualTo(newLabel.getTitle());
 			assertThat(findLabel.get().getColor()).isEqualTo(newLabel.getColor());
@@ -68,10 +91,7 @@ public class LabelRepositoryTest {
 			assertThat(findLabel.get().getModifiedAt()).isEqualTo(savedLabel.getCreatedAt());
 			assertThat(findLabel.get().getDeletedAt()).isNull();
 		}
-
 	}
-
-
 
 	@Test
 	@DisplayName("회원별 라벨이 정상적으로 조회되는지 확인")
