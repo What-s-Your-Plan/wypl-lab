@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.domain.dto.LabelCreateDto;
 import com.butter.wypl.label.domain.dto.LabelUpdateDto;
@@ -17,20 +18,19 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
-public class LabelServiceImpl implements LabelService{
+@Transactional(readOnly = true)
+public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 
 	private final LabelRepository labelRepository;
 
 	@Transactional
 	@Override
 	public Label createLabel(int memberId, LabelCreateDto labelCreateDto) {
-		Label.colorValidation(labelCreateDto.getColor());
-		Label.titleValidation(labelCreateDto.getTitle());
+		Label.titleValidation(labelCreateDto.title());
 
 		Label label = Label.builder()
-			.title(labelCreateDto.getTitle())
-			.color(labelCreateDto.getColor())
+			.title(labelCreateDto.title())
+			.color(Color.of(labelCreateDto.color()))
 			.memberId(memberId)
 			.schedules(new ArrayList<>())
 			.build();
@@ -44,18 +44,16 @@ public class LabelServiceImpl implements LabelService{
 	@Override
 	public Label updateLabel(int memberId, int labelId, LabelUpdateDto labelUpdateDto) {
 		Label label = checkValidationAndGetLabel(labelId, memberId);
-		Label.colorValidation(labelUpdateDto.getColor());
-		Label.titleValidation(labelUpdateDto.getTitle());
+		Label.titleValidation(labelUpdateDto.title());
 
-		label.update(labelUpdateDto.getTitle(), labelUpdateDto.getColor());
-		labelRepository.save(label);
+		label.update(labelUpdateDto.title(), Color.of(labelUpdateDto.color()));
 
 		return label;
 	}
 
 	@Transactional
 	@Override
-	public int deleteLabel(int labelId, int memberId){
+	public int deleteLabel(int labelId, int memberId) {
 		Label label = checkValidationAndGetLabel(labelId, memberId);
 
 		label.delete();
@@ -63,24 +61,23 @@ public class LabelServiceImpl implements LabelService{
 		return label.getLabelId();
 	}
 
-	@Transactional(readOnly = true)
 	@Override
-	public Label getLabelByLabelId(int labelId){
-		return labelRepository.findByLabelIdAndDeletedAtIsNull(labelId)
-			.orElseThrow(()-> new LabelException(LabelErrorCode.NOT_FOUND));
+	public Label getLabelByLabelId(int labelId) {
+		return labelRepository.findByLabelId(labelId)
+			.orElseThrow(() -> new LabelException(LabelErrorCode.NOT_FOUND));
 	}
 
-	@Transactional(readOnly = true)
 	@Override
-	public List<Label> getLabelsByMemberId(int memberId){
-		return labelRepository.findByMemberIdAndDeletedAtIsNull(memberId);
+	public List<Label> getLabelsByMemberId(int memberId) {
+		return labelRepository.findByMemberId(memberId);
 	}
 
-	private Label checkValidationAndGetLabel(int labelId, int memberId){
+	private Label checkValidationAndGetLabel(int labelId, int memberId) {
 		Label label = getLabelByLabelId(labelId);
 
-		if(label.getMemberId() != memberId)
+		if (label.getMemberId() != memberId) {
 			throw new LabelException(LabelErrorCode.NO_PERMISSION_UPDATE);
+		}
 
 		return label;
 	}
