@@ -21,7 +21,7 @@ public class Color {
 		this.color = color;
 	}
 
-	public static Color of(final String color) {
+	public static Color from(final String color) {
 		validate(color);
 		return new Color(color);
 	}

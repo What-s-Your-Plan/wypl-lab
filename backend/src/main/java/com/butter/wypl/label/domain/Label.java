@@ -36,7 +36,7 @@ public class Label extends BaseEntity {
 	@Column(name = "label_id")
 	private int labelId;
 
-	@Column(nullable = false, length = 10)
+	@Column(nullable = false, length = 15)
 	private String title;
 
 	@Embedded

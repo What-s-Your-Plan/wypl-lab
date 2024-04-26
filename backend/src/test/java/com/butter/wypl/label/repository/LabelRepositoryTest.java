@@ -57,7 +57,7 @@ public class LabelRepositoryTest {
 		Label savedLabel = labelRepository.save(label);
 
 		//when
-		savedLabel.update("바뀐 제목", Color.of("FF0000"));
+		savedLabel.update("바뀐 제목", Color.from("FF0000"));
 		Label updatedLabel = labelRepository.save(savedLabel);
 		entityManager.flush();
 		entityManager.clear();

@@ -17,7 +17,7 @@ public class LabelTest {
 		Label label = LabelFixture.STUDY_LABEL.toLabel();
 
 		//when
-		label.update("제목 바뀜", Color.of("FF0000"));
+		label.update("제목 바뀜", Color.from("FF0000"));
 
 		//then
 		assertThat(label.getMemberId()).isEqualTo(LabelFixture.STUDY_LABEL.toLabel().getMemberId());

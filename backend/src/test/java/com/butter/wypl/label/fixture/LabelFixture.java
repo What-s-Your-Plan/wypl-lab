@@ -23,7 +23,7 @@ public enum LabelFixture {
 	public Label toLabel() {
 		return Label.builder()
 			.title(title)
-			.color(Color.of(color))
+			.color(Color.from(color))
 			.memberId(memberId)
 			.build();
 	}

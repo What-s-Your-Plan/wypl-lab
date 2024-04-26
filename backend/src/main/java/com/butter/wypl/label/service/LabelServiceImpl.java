@@ -30,7 +30,7 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 
 		Label label = Label.builder()
 			.title(labelCreateDto.title())
-			.color(Color.of(labelCreateDto.color()))
+			.color(Color.from(labelCreateDto.color()))
 			.memberId(memberId)
 			.schedules(new ArrayList<>())
 			.build();
@@ -46,7 +46,7 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 		Label label = checkValidationAndGetLabel(labelId, memberId);
 		Label.titleValidation(labelUpdateDto.title());
 
-		label.update(labelUpdateDto.title(), Color.of(labelUpdateDto.color()));
+		label.update(labelUpdateDto.title(), Color.from(labelUpdateDto.color()));
 
 		return label;
 	}
