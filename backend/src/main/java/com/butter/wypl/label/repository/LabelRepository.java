@@ -9,7 +9,7 @@ import com.butter.wypl.label.domain.Label;
 
 public interface LabelRepository extends JpaRepository<Label, Integer> {
 
-	Optional<Label> findByLabelIdAndDeletedAtIsNull(int labelId);
+	Optional<Label> findByLabelId(int labelId);
 
-	List<Label> findByMemberIdAndDeletedAtIsNull(int memberId);
+	List<Label> findByMemberId(int memberId);
 }

@@ -1,6 +1,6 @@
 package com.butter.wypl.label.fixture;
 
-
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.label.domain.Label;
 
 public enum LabelFixture {
@@ -14,17 +14,16 @@ public enum LabelFixture {
 
 	private final int memberId;
 
-
-	LabelFixture(String title, String color, int memberId){
+	LabelFixture(String title, String color, int memberId) {
 		this.title = title;
 		this.color = color;
 		this.memberId = memberId;
 	}
 
-	public Label toLabel(){
+	public Label toLabel() {
 		return Label.builder()
 			.title(title)
-			.color(color)
+			.color(Color.of(color))
 			.memberId(memberId)
 			.build();
 	}
