@@ -20,7 +20,7 @@ const InputDefault = styled.input<Props>`
     focus:ring
     focus:ring-main
     `}
-  ${(props) => props.$void ? '' : tw`outline outline-1`}
+  ${(props) => (props.$void ? '' : tw`outline outline-1`)}
   ${(props) =>
     props.$isValid === false
       ? tw`outline-label-red text-label-red`
@@ -41,7 +41,7 @@ const InputTitle = styled.input<Props>`
       focus:!outline-none
       focus:border-main
   `}
-  ${(props) => props.$void ? '' : tw`border-b-2`}
+  ${(props) => (props.$void ? '' : tw`border-b-2`)}
   ${(props) =>
     props.$isValid === false
       ? tw`border-label-red text-label-red`
@@ -49,4 +49,24 @@ const InputTitle = styled.input<Props>`
   ${(props) => (props.$width ? `width:${props.$width};` : tw`grow`)}
 `;
 
-export { InputDefault, InputTitle };
+const InputTextArea = styled.textarea<Props>`
+  ${tw`
+    rounded-md
+    px-2
+    transition
+
+    placeholder:text-gray-300
+    hover:outline-gray-400
+    focus:!outline-none
+    focus:ring
+    focus:ring-main
+    `}
+  ${(props) => (props.$void ? '' : tw`outline outline-1`)}
+  ${(props) =>
+    props.$isValid === false
+      ? tw`outline-label-red text-label-red`
+      : tw`outline-gray-300`}
+  ${(props) => (props.$width ? `width:${props.$width};` : tw`grow`)}
+`;
+
+export { InputDefault, InputTitle, InputTextArea };
