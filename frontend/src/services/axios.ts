@@ -1,8 +1,9 @@
 import Axios from 'axios';
 
-import { accessTokenProvider } from '@/utils/token';
+import useJsonWebTokensStore from '@/stores/token';
 
 const baseURL = process.env.BASE_URL;
+const { accessToken } = useJsonWebTokensStore();
 
 const axios = Axios.create({
   baseURL,
@@ -26,7 +27,6 @@ const axiosWithMultiPart = Axios.create({
 });
 
 axiosWithAccessToken.interceptors.request.use((config) => {
-  const accessToken = accessTokenProvider.get();
   if (config.headers && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }
@@ -34,7 +34,6 @@ axiosWithAccessToken.interceptors.request.use((config) => {
 });
 
 axiosWithMultiPart.interceptors.request.use((config) => {
-  const accessToken = accessTokenProvider.get();
   if (config.headers && accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
   }

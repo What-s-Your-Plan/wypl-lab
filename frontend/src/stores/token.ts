@@ -1,17 +1,29 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-type JsonWebTokens = {
+interface JsonWebTokens {
   accessToken: string | null;
   refreshToken: string | null;
-};
+  setAccessToken: (newAccessToken: string) => void;
+  setRefreshToken: (newRefreshToken: string) => void;
+}
 
-const useJsonWebTokensStore = create<JsonWebTokens>((set) => ({
-  accessToken: localStorage.getItem('accessToken'),
-  refreshToken: localStorage.getItem('refreshToken'),
-  setAccessToken: (newAccessToken: string) =>
-    set({ accessToken: newAccessToken }),
-  updateAccessToken: (newRefreshToken: string) =>
-    set({ refreshToken: newRefreshToken }),
-}));
+const useJsonWebTokensStore = create<JsonWebTokens>()(
+  persist(
+    (set): JsonWebTokens => ({
+      accessToken: null,
+      refreshToken: null,
+      setAccessToken: (newAccessToken: string) => {
+        set(() => ({ accessToken: newAccessToken }));
+      },
+      setRefreshToken: (newRefreshToken: string) => {
+        set(() => ({ refreshToken: newRefreshToken }));
+      },
+    }),
+    {
+      name: 'tokenStorage',
+    },
+  ),
+);
 
-export { useJsonWebTokensStore };
+export default useJsonWebTokensStore;
