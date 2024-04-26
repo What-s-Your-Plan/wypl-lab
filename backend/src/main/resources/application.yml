@@ -7,3 +7,12 @@ spring:
       - security/application-oauth.yml
       - security/application-redis.yml
       - security/application-s3.yml
+
+logging:
+  config: classpath:log4j2-dev.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
