@@ -1,7 +1,6 @@
 package com.butter.wypl.auth.controller;
 
 import static org.mockito.BDDMockito.*;
-import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -20,9 +19,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.butter.wypl.auth.annotation.AuthenticatedArgumentResolver;
+import com.butter.wypl.auth.utils.AuthenticatedArgumentResolver;
 import com.butter.wypl.auth.data.response.AuthTokensResponse;
-import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.auth.service.AuthService;
 import com.butter.wypl.auth.utils.JwtProvider;
 import com.butter.wypl.global.annotation.MockControllerTest;
@@ -48,10 +46,6 @@ class AuthControllerTest {
 	void signInTest() throws Exception {
 		/* Given */
 		AuthTokensResponse response = new AuthTokensResponse(0, "at", "rt");
-		given(authenticatedArgumentResolver.supportsParameter(any()))
-				.willReturn(true);
-		given(authenticatedArgumentResolver.resolveArgument(any(), any(), any(), any()))
-				.willReturn(AuthMember.from(0));
 		given(authService.generateTokens(any(String.class), any(String.class)))
 				.willReturn(response);
 
@@ -62,7 +56,6 @@ class AuthControllerTest {
 								"google",
 								"dummy_code"
 						)
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 						.contentType(MediaType.APPLICATION_JSON)
 		);
 
@@ -71,9 +64,6 @@ class AuthControllerTest {
 				.andDo(document("auth/sign-in",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
-						requestHeaders(
-								headerWithName(HttpHeaders.AUTHORIZATION).description("JWT Access Token")
-						),
 						pathParameters(
 								parameterWithName("provider").description("소셜 로그인 제공자")
 						),
@@ -92,5 +82,28 @@ class AuthControllerTest {
 						)
 				))
 				.andExpect(status().isCreated());
+	}
+
+	@DisplayName("사용자가 로그아웃한다.")
+	@Test
+	void logoutTest() throws Exception {
+		/* Given */
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.delete("/auth/v1/logout")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("auth/logout",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지")
+						)
+				))
+				.andExpect(status().isOk());
 	}
 }

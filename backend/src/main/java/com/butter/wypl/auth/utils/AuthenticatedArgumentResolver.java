@@ -1,4 +1,4 @@
-package com.butter.wypl.auth.annotation;
+package com.butter.wypl.auth.utils;
 
 import java.util.Objects;
 
@@ -9,10 +9,11 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
+import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.auth.exception.AuthErrorCode;
 import com.butter.wypl.auth.exception.AuthException;
-import com.butter.wypl.auth.utils.JwtProvider;
+import com.butter.wypl.global.annotation.Generated;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class AuthenticatedArgumentResolver implements HandlerMethodArgumentResol
 
 	private final JwtProvider jwtProvider;
 
+	@Generated
 	@Override
 	public boolean supportsParameter(MethodParameter parameter) {
 		boolean hasParameterAnnotation = parameter.hasParameterAnnotation(Authenticated.class);

@@ -1,6 +1,7 @@
 package com.butter.wypl.auth.utils;
 
 import com.butter.wypl.global.annotation.EntityMapper;
+import com.butter.wypl.global.annotation.Generated;
 import com.butter.wypl.global.exception.CallConstructorException;
 import com.butter.wypl.infrastructure.ouath.OAuthMember;
 import com.butter.wypl.member.domain.CalendarTimeZone;
@@ -12,6 +13,7 @@ import com.butter.wypl.member.domain.SocialMember;
 @EntityMapper
 public class SignInMapper {
 
+	@Generated
 	private SignInMapper() {
 		throw new CallConstructorException();
 	}
