@@ -143,14 +143,29 @@ openapi3 {
     title = 'What\'s Your Plan API Docs'
     description = 'What\'s Your Plan API Description'
     version = '1.0.0'
-    format = 'json'
+    format = 'yaml'
 }
 
 tasks.register('copyOasToSwagger', Copy) {
-    delete file("src/main/resources/static/swagger-ui/openapi3.json")
-    from("build/api-spec/openapi3.json")
-    into("src/main/resources/static/swagger-ui/.")
     dependsOn 'openapi3'
+
+    delete file("src/main/resources/static/swagger-ui/openapi3.yaml")
+    from("build/api-spec/openapi3.yaml")
+    into("src/main/resources/static/swagger-ui/.")
+
+
+    doLast {
+        def securitySchemesContent = """
+  securitySchemes:
+    APIKey:
+      type: apiKey
+      name: Authorization
+      in: header
+security:
+  - APIKey: [ ]  # Apply the security scheme here
+"""
+        file("src/main/resources/static/swagger-ui/openapi3.yaml").append(securitySchemesContent)
+    }
 }
 
 build {
