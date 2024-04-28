@@ -3,6 +3,8 @@ package com.butter.wypl.member.domain;
 import java.time.LocalDate;
 
 import com.butter.wypl.global.common.BaseEntity;
+import com.butter.wypl.member.exception.MemberErrorCode;
+import com.butter.wypl.member.exception.MemberException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,6 +50,16 @@ public class Member extends BaseEntity {
 	private CalendarTimeZone timeZone;
 
 	public void changeNickname(final String newNickname) {
+		validateNickname(newNickname);
 		this.nickname = newNickname;
+	}
+
+	private void validateNickname(String newNickname) {
+		if (newNickname == null || newNickname.isBlank()) {
+			throw new MemberException(MemberErrorCode.NICKNAME_IS_NOT_BLANK);
+		}
+		if (newNickname.length() > 20) {
+			throw new MemberException(MemberErrorCode.TOO_LONG_NICKNAME);
+		}
 	}
 }
