@@ -14,6 +14,14 @@ public class MemberServiceUtils {
 		throw new CallConstructorException();
 	}
 
+	public static Member findById(
+			final MemberRepository memberRepository,
+			final int id
+	) {
+		return memberRepository.findById(id)
+				.orElseThrow(() -> new MemberException(MemberErrorCode.NOT_EXIST_MEMBER));
+	}
+
 	public static Member findByEmail(
 			final MemberRepository memberRepository,
 			final String email

@@ -46,4 +46,8 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "timezone", length = 10, nullable = false)
 	private CalendarTimeZone timeZone;
+
+	public void changeNickname(final String newNickname) {
+		this.nickname = newNickname;
+	}
 }
