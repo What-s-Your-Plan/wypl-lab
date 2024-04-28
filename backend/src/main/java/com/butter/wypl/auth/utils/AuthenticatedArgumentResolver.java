@@ -45,6 +45,7 @@ public class AuthenticatedArgumentResolver implements HandlerMethodArgumentResol
 			WebDataBinderFactory binderFactory
 	) {
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
+		validateAuthorization(request);
 		String authorization = Objects.requireNonNull(request).getHeader(HEADER_AUTHORIZATION);
 		if (authorization.startsWith(BEARER_TOKEN)) {
 			String token = authorization.substring(BEARER_TOKEN.length()).trim();
@@ -52,5 +53,11 @@ public class AuthenticatedArgumentResolver implements HandlerMethodArgumentResol
 			return AuthMember.from(memberId);
 		}
 		throw new AuthException(AuthErrorCode.NOT_AUTHORIZATION_MEMBER);
+	}
+
+	private void validateAuthorization(HttpServletRequest request) {
+		if (Objects.requireNonNull(request).getHeader(HEADER_AUTHORIZATION) == null) {
+			throw new AuthException(AuthErrorCode.NOT_AUTHORIZATION_MEMBER);
+		}
 	}
 }

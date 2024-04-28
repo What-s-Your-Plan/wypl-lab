@@ -20,7 +20,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.Getter;
 
 @Component
 public class JwtProvider {
@@ -104,14 +103,14 @@ public class JwtProvider {
 	private String parsePayload(final String token) {
 		try {
 			return token.split("\\.")[1];
-		} catch (ArrayIndexOutOfBoundsException e) {
+		} catch (RuntimeException e) {
 			throw new AuthException(AuthErrorCode.INVALID_JWT);
 		}
 	}
 
 	private String getTokenType(final String payload) {
 		try {
-			return objectMapper.readValue(payload, TokenType.class).getType();
+			return objectMapper.readValue(payload, TokenType.class).type();
 		} catch (JsonProcessingException e) {
 			throw new AuthException(AuthErrorCode.INVALID_JWT);
 		}
@@ -127,8 +126,6 @@ public class JwtProvider {
 				.get("member_id", Integer.class);
 	}
 
-	@Getter
-	private static class TokenType {
-		private String type;
+	private record TokenType(String type) {
 	}
 }
