@@ -1,5 +1,8 @@
 package com.butter.wypl.auth.domain;
 
+import lombok.Getter;
+
+@Getter
 public class AuthMember {
 	private final int id;
 
