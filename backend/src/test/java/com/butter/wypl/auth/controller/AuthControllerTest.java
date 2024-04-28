@@ -1,7 +1,7 @@
 package com.butter.wypl.auth.controller;
 
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
@@ -19,9 +19,9 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.butter.wypl.auth.utils.AuthenticatedArgumentResolver;
 import com.butter.wypl.auth.data.response.AuthTokensResponse;
 import com.butter.wypl.auth.service.AuthService;
+import com.butter.wypl.auth.utils.AuthenticatedArgumentResolver;
 import com.butter.wypl.auth.utils.JwtProvider;
 import com.butter.wypl.global.annotation.MockControllerTest;
 

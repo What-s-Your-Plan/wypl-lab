@@ -3,7 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.2.5'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
-    id 'com.epages.restdocs-api-spec' version '0.17.1'
+    id 'com.epages.restdocs-api-spec' version '0.18.4'
     id 'jacoco'
 }
 
@@ -59,7 +59,7 @@ dependencies {
     implementation 'com.github.codemonstur:embedded-redis:1.4.3'
 
     /* API Docs */
-
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.18.4'
 
     /* JWT */
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
@@ -83,7 +83,6 @@ jacocoTestReport {
         html.required = true
         html.outputLocation = file("reports/jacoco/index.xml")
     }
-
 
     afterEvaluate {
         classDirectories.setFrom(
@@ -135,3 +134,26 @@ jacocoTestCoverageVerification {
     }
 }
 /* Jacoco End */
+
+/* API Docs Start */
+openapi3 {
+    servers = [
+            { url = 'http://127.0.0.1:8080' },
+    ]
+    title = 'What\'s Your Plan API Docs'
+    description = 'What\'s Your Plan API Description'
+    version = '1.0.0'
+    format = 'json'
+}
+
+tasks.register('copyOasToSwagger', Copy) {
+    delete file("src/main/resources/static/swagger-ui/openapi3.json")
+    from("build/api-spec/openapi3.json")
+    into("src/main/resources/static/swagger-ui/.")
+    dependsOn 'openapi3'
+}
+
+build {
+    dependsOn 'copyOasToSwagger'
+}
+/* API Docs End */
