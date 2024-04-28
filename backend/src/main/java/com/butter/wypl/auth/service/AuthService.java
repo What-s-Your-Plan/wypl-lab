@@ -5,8 +5,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.butter.wypl.auth.data.JsonWebTokens;
 import com.butter.wypl.auth.data.response.AuthTokensResponse;
+import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.auth.domain.RefreshToken;
 import com.butter.wypl.auth.domain.RefreshTokenRepository;
+import com.butter.wypl.auth.exception.AuthErrorCode;
+import com.butter.wypl.auth.exception.AuthException;
 import com.butter.wypl.auth.utils.JwtProvider;
 import com.butter.wypl.infrastructure.ouath.OAuthMember;
 import com.butter.wypl.infrastructure.ouath.OAuthMemberProvider;
@@ -48,5 +51,13 @@ public class AuthService {
 		JsonWebTokens tokens = jwtProvider.generateJsonWebTokens(member.getId());
 		refreshTokenRepository.save(RefreshToken.of(member.getId(), tokens.refreshToken()));
 		return tokens;
+	}
+
+	@Transactional
+	public void deleteToken(AuthMember authMember) {
+		RefreshToken refreshToken = refreshTokenRepository.findById(authMember.getId())
+				.orElseThrow(() -> new AuthException(AuthErrorCode.NOT_AUTHORIZATION_MEMBER));
+
+		refreshTokenRepository.delete(refreshToken);
 	}
 }
