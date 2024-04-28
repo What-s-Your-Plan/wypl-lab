@@ -7,15 +7,15 @@ import lombok.Getter;
 
 @Getter
 public enum OAuthMemberFixture {
-	GOOGLE_OAUTH_MEMBER("google_subject", "wypl0428@gmail.com", "https://image.google.com/profile_image.png");
+	GOOGLE_OAUTH_MEMBER("google_subject", "workju1124@gmail.com", "https://image.google.com/profile_image.png");
 
 	private final String subject;
 	private final String email;
 	private final String profileImage;
 
-	OAuthMemberFixture(String email, String subject, String profileImage) {
-		this.email = email;
+	OAuthMemberFixture(String subject, String email, String profileImage) {
 		this.subject = subject;
+		this.email = email;
 		this.profileImage = profileImage;
 	}
 
