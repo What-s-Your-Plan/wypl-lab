@@ -1,11 +1,10 @@
 package com.butter.wypl.label.service;
 
-import java.util.List;
-
-import com.butter.wypl.label.domain.Label;
+import com.butter.wypl.label.controller.response.LabelListResponseDto;
+import com.butter.wypl.label.controller.response.LabelResponseDto;
 
 public interface LabelReadService {
-	Label getLabelByLabelId(int labelId);
+	LabelResponseDto getLabelByLabelId(int labelId);
 
-	List<Label> getLabelsByMemberId(int memberId);
+	LabelListResponseDto getLabelsByMemberId(int memberId);
 }
