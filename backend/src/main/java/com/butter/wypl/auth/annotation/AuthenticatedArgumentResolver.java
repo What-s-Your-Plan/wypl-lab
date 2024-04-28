@@ -46,6 +46,6 @@ public class AuthenticatedArgumentResolver implements HandlerMethodArgumentResol
 			int memberId = jwtProvider.getPayload(token);
 			return AuthMember.from(memberId);
 		}
-		throw new AuthException(AuthErrorCode.AUTHORIZATION_MEMBER);
+		throw new AuthException(AuthErrorCode.NOT_AUTHORIZATION_MEMBER);
 	}
 }
