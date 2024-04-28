@@ -23,6 +23,7 @@ public class AuthenticatedArgumentResolver implements HandlerMethodArgumentResol
 
 	private static final String HEADER_AUTHORIZATION = "Authorization";
 	private static final String BEARER_TOKEN = "Bearer ";
+
 	private final JwtProvider jwtProvider;
 
 	@Override

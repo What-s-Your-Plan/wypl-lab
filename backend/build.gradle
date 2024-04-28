@@ -3,6 +3,7 @@ plugins {
     id 'org.springframework.boot' version '3.2.5'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'com.epages.restdocs-api-spec' version '0.17.1'
 }
 
 group = 'com.butter'
@@ -46,11 +47,18 @@ dependencies {
 
     /* Test */
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.mockito:mockito-core'
     runtimeOnly 'com.h2database:h2'
     implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.12.6'
     implementation 'com.github.codemonstur:embedded-redis:1.4.3'
+
+    /* API Docs */
+    implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+    testImplementation 'com.epages:restdocs-api-spec-mockmvc:0.17.1'
+    testImplementation 'com.epages:restdocs-api-spec-openapi3-generator:0.17.1'
+
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-webtestclient'
 
     /* JWT */
     implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
@@ -63,12 +71,32 @@ dependencies {
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
 }
 
+openapi3 {
+    servers = [
+            { url = 'http://localhost:8080' },
+            { url = 'http://127.0.0.1:8080' },
+    ]
+    title = 'WYPL API'
+    description = 'WYPL API Documentation'
+    version = '1.0.0'
+    format = 'yaml'
+}
+
 tasks.named('test') {
-    outputs.dir snippetsDir
     useJUnitPlatform()
 }
 
-tasks.named('asciidoctor') {
-    inputs.dir snippetsDir
-    dependsOn test
+tasks.register('copyOasToSwagger', Copy) {
+    delete("src/main/resources/static/swagger-ui/openapi3.yaml")
+    delete("build/resources/main/static/swagger-ui/openapi3.yaml")
+    from("build/api-spec/openapi3.yaml")
+    into("src/main/resources/static/swagger-ui/.")
+    into("build/resources/main/static/swagger-ui/.")
+    dependsOn("openapi3")
+    dependsOn("bootJar")
+    dependsOn("jar")
+}
+
+tasks.named('build') {
+    dependsOn("copyOasToSwagger")
 }

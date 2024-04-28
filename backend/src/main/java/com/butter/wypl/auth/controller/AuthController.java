@@ -16,7 +16,9 @@ import com.butter.wypl.auth.service.AuthService;
 import com.butter.wypl.global.common.Message;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 @RestController
