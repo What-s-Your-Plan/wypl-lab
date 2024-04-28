@@ -1,4 +1,4 @@
-package com.butter.wypl.member.exception;
+package com.butter.wypl.auth.exception;
 
 import org.springframework.http.HttpStatus;
 
@@ -9,10 +9,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum MemberErrorCode implements ErrorCode {
-	TOO_LONG_CONTENT(HttpStatus.BAD_REQUEST, "MEMBER_001", "내용이 너무 깁니다."),
-	NOT_EXIST_MEMBER(HttpStatus.BAD_REQUEST, "MEMBER_002", "존재하지 않는 사용자입니다.");
-
+public enum AuthErrorCode implements ErrorCode {
+	NO_SUPPORT_PROVIDER(HttpStatus.BAD_REQUEST, "AUTH_001", "지원하지 않는 소셜로그인 형식입니다.")
+	;
 	private final HttpStatus httpStatus;
 	private final String errorCode;
 	private final String message;

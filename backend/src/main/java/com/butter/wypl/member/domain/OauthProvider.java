@@ -9,4 +9,8 @@ public enum OauthProvider {
 	GOOGLE("gmail.com");
 
 	private final String domain;
+
+	public boolean equalsName(final String otherName) {
+		return name().equalsIgnoreCase(otherName);
+	}
 }

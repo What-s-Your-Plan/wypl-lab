@@ -1,6 +1,6 @@
-package com.butter.wypl.infrastructure.ouath;
+package com.butter.wypl.infrastructure.ouath.google;
 
-import com.butter.wypl.auth.service.OAuthMember;
+import com.butter.wypl.infrastructure.ouath.OAuthMember;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GoogleOAuthMember(
