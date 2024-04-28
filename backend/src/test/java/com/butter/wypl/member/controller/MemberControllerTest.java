@@ -60,6 +60,8 @@ class MemberControllerTest {
 		MemberNicknameUpdateRequest request = new MemberNicknameUpdateRequest(nickname);
 		String json = objectMapper.writeValueAsString(request);
 
+		given(memberModifyService.modifyNickname(any(AuthMember.class), any(MemberNicknameUpdateRequest.class)))
+				.willReturn(new MemberNicknameUpdateResponse(nickname));
 		given(authenticatedArgumentResolver.supportsParameter(any(MethodParameter.class)))
 				.willReturn(true);
 		given(authenticatedArgumentResolver.resolveArgument(
@@ -68,8 +70,6 @@ class MemberControllerTest {
 				any(NativeWebRequest.class),
 				any(WebDataBinderFactory.class))
 		).willReturn(any(AuthMember.class));
-		given(memberModifyService.modifyNickname(any(AuthMember.class), any(MemberNicknameUpdateRequest.class)))
-				.willReturn(new MemberNicknameUpdateResponse(nickname));
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
