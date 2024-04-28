@@ -10,8 +10,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum AuthErrorCode implements ErrorCode {
-	NO_SUPPORT_PROVIDER(HttpStatus.BAD_REQUEST, "AUTH_001", "지원하지 않는 소셜로그인 형식입니다.")
+	NO_SUPPORT_PROVIDER(HttpStatus.BAD_REQUEST, "AUTH_001", "지원하지 않는 소셜로그인 형식입니다."),
+	AUTHORIZATION_MEMBER(HttpStatus.UNAUTHORIZED, "AUTH_002", "로그인이 필요한 기능입니다."),
 	;
+
 	private final HttpStatus httpStatus;
 	private final String errorCode;
 	private final String message;

@@ -56,4 +56,13 @@ public class JwtProvider {
 				.signWith(key, SignatureAlgorithm.HS512)
 				.compact();
 	}
+
+	public int getPayload(String token) {
+		return Jwts.parserBuilder()
+				.setSigningKey(accessKey)
+				.build()
+				.parseClaimsJws(token)
+				.getBody()
+				.get("member_id", Integer.class);
+	}
 }
