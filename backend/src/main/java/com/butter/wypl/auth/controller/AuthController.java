@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.butter.wypl.auth.data.response.AuthTokensResponse;
 import com.butter.wypl.auth.service.AuthService;
+import com.butter.wypl.global.common.Message;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,12 +21,13 @@ public class AuthController {
 
 	private final AuthService authService;
 
-	// TODO: 로그인 및 회원가입 코드 작성
 	@PostMapping("/v1/sign-in/{provider}")
-	public ResponseEntity<Void> signIn(
+	public ResponseEntity<Message<AuthTokensResponse>> signIn(
 			@PathVariable("provider") String provider,
 			@RequestParam("code") String code
 	) {
-		return ResponseEntity.status(HttpStatus.CREATED).build();
+		AuthTokensResponse response = authService.generateTokens(provider, code);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(Message.withBody("로그인에 성공하였습니다.", response));
 	}
 }

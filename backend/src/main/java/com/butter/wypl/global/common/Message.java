@@ -23,4 +23,17 @@ public class Message<T> {
 		this.message = message;
 		this.body = body;
 	}
+
+	public static Message<Void> onlyMessage(
+			final String message
+	) {
+		return new Message<>(message);
+	}
+
+	public static <T> Message<T> withBody(
+			final String message,
+			final T body
+	) {
+		return new Message<>(message, body);
+	}
 }
