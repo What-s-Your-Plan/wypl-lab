@@ -49,6 +49,7 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.mockito:mockito-core'
     runtimeOnly 'com.h2database:h2'
+    implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo:4.12.6'
     implementation 'com.github.codemonstur:embedded-redis:1.4.3'
 
     /* JWT */

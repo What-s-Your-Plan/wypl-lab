@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.butter.wypl.global.annotation.Infrastructure;
+import com.butter.wypl.global.annotation.InfraComponent;
 import com.butter.wypl.infrastructure.exception.InfraErrorCode;
 import com.butter.wypl.infrastructure.exception.InfraException;
 import com.butter.wypl.infrastructure.ouath.OAuthClient;
@@ -16,7 +16,7 @@ import com.butter.wypl.infrastructure.ouath.OAuthResponse;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Infrastructure
+@InfraComponent
 public class GoogleOAuthClient implements OAuthClient {
 
 	private static final String GOOGLE_OAUTH_REQUEST_URL = "https://www.googleapis.com/oauth2/v4/token";

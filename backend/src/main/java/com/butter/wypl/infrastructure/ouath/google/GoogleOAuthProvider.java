@@ -22,6 +22,7 @@ public class GoogleOAuthProvider implements OAuthProvider {
 	private final GoogleOAuthClient googleOAuthClient;
 	private final ObjectMapper objectMapper;
 
+	@Override
 	public OAuthMember getOAuthMember(
 			final String code
 	) {
