@@ -116,7 +116,7 @@ public class JwtProvider {
 		}
 	}
 
-	public int getPayload(String token) {
+	public int getPayload(final String token) {
 		validateToken(token);
 		return Jwts.parserBuilder()
 				.setSigningKey(accessKey)

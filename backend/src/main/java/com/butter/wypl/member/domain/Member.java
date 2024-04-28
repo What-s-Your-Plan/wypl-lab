@@ -54,7 +54,7 @@ public class Member extends BaseEntity {
 		this.nickname = newNickname;
 	}
 
-	private void validateNickname(String newNickname) {
+	private void validateNickname(final String newNickname) {
 		if (newNickname == null || newNickname.isBlank()) {
 			throw new MemberException(MemberErrorCode.NICKNAME_IS_NOT_BLANK);
 		}

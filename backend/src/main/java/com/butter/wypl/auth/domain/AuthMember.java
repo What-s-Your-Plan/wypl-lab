@@ -10,7 +10,7 @@ public class AuthMember {
 		this.id = id;
 	}
 
-	public static AuthMember from(int id) {
+	public static AuthMember from(final int id) {
 		return new AuthMember(id);
 	}
 }

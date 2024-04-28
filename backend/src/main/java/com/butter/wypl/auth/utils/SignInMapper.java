@@ -18,7 +18,9 @@ public class SignInMapper {
 		throw new CallConstructorException();
 	}
 
-	public static Member toMember(OAuthMember oAuthMember) {
+	public static Member toMember(
+			final OAuthMember oAuthMember
+	) {
 		return Member.builder()
 				.email(oAuthMember.email())
 				.nickname(oAuthMember.getEmailPrefix())

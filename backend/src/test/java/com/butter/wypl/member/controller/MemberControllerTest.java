@@ -52,8 +52,7 @@ class MemberControllerTest {
 	@MockBean
 	private JwtProvider jwtProvider;
 
-	@DisplayName("사용자가 닉네임을 수정한다.")
-	@Test
+	@DisplayName("사용자가 닉네임을 수정한다.")	@Test
 	void updateNicknameTest() throws Exception {
 		/* Given */
 		String nickname = "wypl";
