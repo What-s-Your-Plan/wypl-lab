@@ -6,4 +6,8 @@ public interface OAuthMember {
 	String subject();
 
 	String profileImage();
+
+	default String getEmailPrefix() {
+		return email().split("@")[0];
+	}
 }

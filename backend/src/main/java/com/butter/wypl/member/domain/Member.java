@@ -28,13 +28,13 @@ public class Member extends BaseEntity {
 	@Column(name = "member_id")
 	private int id;
 
-	@Column(name = "email", length = 50, nullable = false)
+	@Column(name = "email", length = 50, unique = true, nullable = false)
 	private String email;
 
 	@Column(name = "birthday")
 	private LocalDate birthday;
 
-	@Column(name = "nickname", length = 10, nullable = false)
+	@Column(name = "nickname", length = 20, nullable = false)
 	private String nickname;
 
 	@Column(name = "profile_image", length = 100)
