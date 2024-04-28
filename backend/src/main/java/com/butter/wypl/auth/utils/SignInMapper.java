@@ -22,6 +22,7 @@ public class SignInMapper {
 				.nickname(oAuthMember.getEmailPrefix())
 				.profileImage(oAuthMember.profileImage())
 				.timeZone(CalendarTimeZone.KOREA)
+				.color("CA965C")
 				.build();
 	}
 

@@ -46,7 +46,7 @@ public class AuthService {
 
 	private JsonWebTokens generateJsonWebTokens(Member member) {
 		JsonWebTokens tokens = jwtProvider.generateJsonWebTokens(member.getId());
-		refreshTokenRepository.save(RefreshToken.of(member, tokens));
+		refreshTokenRepository.save(RefreshToken.of(member.getId(), tokens.refreshToken()));
 		return tokens;
 	}
 }

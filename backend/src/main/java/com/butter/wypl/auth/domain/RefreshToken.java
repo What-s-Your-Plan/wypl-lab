@@ -3,9 +3,6 @@ package com.butter.wypl.auth.domain;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.redis.core.RedisHash;
 
-import com.butter.wypl.auth.data.JsonWebTokens;
-import com.butter.wypl.member.domain.Member;
-
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,9 +24,9 @@ public class RefreshToken {
 	}
 
 	public static RefreshToken of(
-			final Member member,
-			final JsonWebTokens jsonWebTokens
+			final int memberId,
+			final String token
 	) {
-		return new RefreshToken(member.getId(), jsonWebTokens.refreshToken());
+		return new RefreshToken(memberId, token);
 	}
 }
