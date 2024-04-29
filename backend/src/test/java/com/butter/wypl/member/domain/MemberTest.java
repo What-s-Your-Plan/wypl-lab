@@ -3,14 +3,18 @@ package com.butter.wypl.member.domain;
 import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
+import com.butter.wypl.member.fixture.MemberFixture;
 
 class MemberTest {
 
@@ -71,6 +75,37 @@ class MemberTest {
 			assertThatThrownBy(() -> member.changeNickname(newNickname))
 					.isInstanceOf(MemberException.class)
 					.hasMessageContaining(MemberErrorCode.NICKNAME_IS_NOT_BLANK.getMessage());
+		}
+	}
+
+	@DisplayName("생일 Test")
+	@Nested
+	class BirthdayTest {
+
+		@DisplayName("생일을 정상적으로 수정한다.")
+		@ParameterizedTest
+		@EnumSource(MemberFixture.class)
+		void updateBirthdaySuccessTest(MemberFixture memberFixture) {
+			/* Given */
+			Member member = memberFixture.toMember();
+			LocalDate birthday = memberFixture.getBirthday();
+
+			/* When & Then */
+			assertThatCode(() -> member.changeBirthday(birthday))
+					.doesNotThrowAnyException();
+		}
+
+		@DisplayName("생일이 현재보다 미래이면 예외를 던진다.")
+		@Test
+		void birthdayCannotBeInTheFuture() {
+			/* Given */
+			Member member = KIM_JEONG_UK.toMember();
+			LocalDate futureBirthday = LocalDate.now().plusDays(1);
+
+			/* When & Then */
+			assertThatThrownBy(() -> member.changeBirthday(futureBirthday))
+					.isInstanceOf(MemberException.class)
+					.hasMessageContaining(MemberErrorCode.BIRTHDAYS_CANNOT_BE_IN_THE_FUTURE.getMessage());
 		}
 	}
 }
