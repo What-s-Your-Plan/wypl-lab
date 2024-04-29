@@ -7,6 +7,12 @@ spring:
       - security/application-oauth.yml
       - security/application-redis.yml
       - security/application-s3.yml
+    activate:
+      on-profile:
+        - default
+        - deploy
+        - dev
+        - local
 
 logging:
   config: classpath:log4j2-dev.xml

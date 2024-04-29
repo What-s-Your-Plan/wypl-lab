@@ -24,8 +24,12 @@ import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
+import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
+import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
+import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
+import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.service.MemberLoadService;
 import com.butter.wypl.member.service.MemberModifyService;
 
@@ -38,6 +42,42 @@ class MemberControllerTest extends ControllerTest {
 	private MemberModifyService memberModifyService;
 	@MockBean
 	private MemberLoadService memberLoadService;
+
+	@DisplayName("사용자가 서버의 타임존을 조회한다.")
+	@Test
+	void findTimezones() throws Exception {
+		/* Given */
+		given(memberLoadService.findAllTimezones(any(AuthMember.class)))
+				.willReturn(FindTimezonesResponse.of(KIM_JEONG_UK.toMember().getTimeZone(),
+						CalendarTimeZone.getTimeZones()));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/member/v1/timezones")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/timezones",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.member_timezone").type(JsonFieldType.STRING)
+										.description("사용자의 타임존"),
+								fieldWithPath("body.timezones[]").type(JsonFieldType.ARRAY)
+										.description("서버의 타임존 목록"),
+								fieldWithPath("body.timezone_count").type(JsonFieldType.NUMBER)
+										.description("서버의 타임존 개수")
+						)
+				))
+				.andExpect(status().isOk());
+	}
 
 	@DisplayName("사용자가 닉네임을 수정한다.")
 	@Test
@@ -114,6 +154,44 @@ class MemberControllerTest extends ControllerTest {
 										.description("변경한 사용자의 생일 형식"),
 								fieldWithPath("body.birthday_as_string").type(JsonFieldType.STRING)
 										.description("변경한 사용자의 생일")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사용자가 타임존을 수정한다.")
+	@Test
+	void updateTimezoneTest() throws Exception {
+		/* Given */
+		String json = convertToJson(new MemberTimezoneUpdateRequest(CalendarTimeZone.ENGLAND));
+
+		given(memberModifyService.updateTimezone(any(AuthMember.class), any(MemberTimezoneUpdateRequest.class)))
+				.willReturn(new MemberTimezoneUpdateResponse(CalendarTimeZone.ENGLAND));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.patch("/member/v1/members/timezones")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(json)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/update-timezone",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestFields(
+								fieldWithPath("timezone").type(JsonFieldType.STRING)
+										.description("변경 요청한 사용자의 타임존")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.timezone").type(JsonFieldType.STRING)
+										.description("변경한 사용자의 타임존")
 						)
 				))
 				.andExpect(status().isOk());

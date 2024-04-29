@@ -17,12 +17,15 @@ import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
+import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
+import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
+import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.repository.MemberRepository;
 
 @MockServiceTest
-class MemberServiceImplTest {
+class MemberModifyServiceTest {
 
 	@InjectMocks
 	private MemberServiceImpl memberService;
@@ -70,6 +73,21 @@ class MemberServiceImplTest {
 
 			/* Then */
 			assertThat(response.birthday()).isEqualTo(request.birthday());
+		}
+
+		@DisplayName("회원의 타임존을 수정한다.")
+		@Test
+		void updateTimezoneTest() {
+			/* Given */
+			MemberTimezoneUpdateRequest request = new MemberTimezoneUpdateRequest(CalendarTimeZone.ENGLAND);
+			given(memberRepository.findById(any(Integer.class)))
+					.willReturn(Optional.of(KIM_JEONG_UK.toMember()));
+
+			/* When */
+			MemberTimezoneUpdateResponse response = memberService.updateTimezone(authMember, request);
+
+			/* Then */
+			assertThat(request.timeZone()).isEqualTo(response.timeZone());
 		}
 	}
 }

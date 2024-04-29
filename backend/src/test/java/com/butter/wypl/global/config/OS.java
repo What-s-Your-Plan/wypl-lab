@@ -8,6 +8,7 @@ public enum OS {
 	WINDOWS("Windows 10"),
 	LINUX("Linux"),
 	UBUNTU("Ubuntu"),
+	DEBIAN("Debian"),
 	;
 
 	private final String value;

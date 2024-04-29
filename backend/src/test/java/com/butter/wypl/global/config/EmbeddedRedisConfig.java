@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.butter.wypl.global.config.redis.RedisAvailablePortFind;
+import com.butter.wypl.global.config.redis.RedisAvailablePortFindForDebian;
 import com.butter.wypl.global.config.redis.RedisAvailablePortFindForLinux;
 import com.butter.wypl.global.config.redis.RedisAvailablePortFindForMac;
 import com.butter.wypl.global.config.redis.RedisAvailablePortFindForUbuntu;
@@ -58,6 +59,8 @@ public class EmbeddedRedisConfig {
 			return new RedisAvailablePortFindForUbuntu();
 		} else if (OS.LINUX.contains(OS_NAME)) {
 			return new RedisAvailablePortFindForLinux();
+		} else if (OS.DEBIAN.contains(OS_NAME)) {
+			return new RedisAvailablePortFindForDebian();
 		}
 		throw new IllegalArgumentException("Unsupported OS : " + OS_NAME);
 	}
