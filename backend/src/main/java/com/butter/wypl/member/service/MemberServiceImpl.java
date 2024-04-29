@@ -26,7 +26,7 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 	private final MemberRepository memberRepository;
 
 	@Override
-	public FindTimezonesResponse findMemberTimezones(final AuthMember authMember) {
+	public FindTimezonesResponse findAllTimezones(final AuthMember authMember) {
 		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
 
 		List<CalendarTimeZone> timeZones = CalendarTimeZone.getTimeZones();

@@ -31,8 +31,8 @@ public class MemberController {
 	public ResponseEntity<Message<FindTimezonesResponse>> findTimezones(
 			@Authenticated AuthMember authMember
 	) {
-		FindTimezonesResponse response = memberLoadService.findMemberTimezones(authMember);
-		return ResponseEntity.ok(Message.withBody("", response));
+		FindTimezonesResponse response = memberLoadService.findAllTimezones(authMember);
+		return ResponseEntity.ok(Message.withBody("타임존을 조회하였습니다.", response));
 	}
 
 	@PatchMapping("/v1/members/nickname")

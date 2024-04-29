@@ -24,8 +24,10 @@ import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
+import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
+import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.service.MemberLoadService;
 import com.butter.wypl.member.service.MemberModifyService;
 
@@ -38,6 +40,42 @@ class MemberControllerTest extends ControllerTest {
 	private MemberModifyService memberModifyService;
 	@MockBean
 	private MemberLoadService memberLoadService;
+
+	@DisplayName("사용자가 서버의 타임존을 조회한다.")
+	@Test
+	void findTimezones() throws Exception {
+		/* Given */
+		given(memberLoadService.findAllTimezones(any(AuthMember.class)))
+				.willReturn(FindTimezonesResponse.of(KIM_JEONG_UK.toMember().getTimeZone(),
+						CalendarTimeZone.getTimeZones()));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/member/v1/timezones")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/timezones",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.member_timezone").type(JsonFieldType.STRING)
+										.description("사용자의 타임존"),
+								fieldWithPath("body.timezones[]").type(JsonFieldType.ARRAY)
+										.description("서버의 타임존 목록"),
+								fieldWithPath("body.timezone_count").type(JsonFieldType.NUMBER)
+										.description("서버의 타임존 개수")
+						)
+				))
+				.andExpect(status().isOk());
+	}
 
 	@DisplayName("사용자가 닉네임을 수정한다.")
 	@Test
