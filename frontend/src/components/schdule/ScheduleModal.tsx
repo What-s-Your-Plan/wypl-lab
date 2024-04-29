@@ -1,5 +1,5 @@
 import Modal from '@/components/common/Modal';
-import useForm, { initialSchedule, Schedule, Repeat } from '@/hooks/useForm';
+import useForm, { initialSchedule } from '@/hooks/useForm';
 
 type Props = {
   isOpen: boolean;
