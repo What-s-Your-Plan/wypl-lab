@@ -8,4 +8,14 @@ function Divider() {
   );
 }
 
-export default Divider;
+function DividerY() {
+  return (
+    <div className="relative">
+      <div className="absolute inset-0 flex items-center" aria-hidden="true">
+        <div className="h-full border-l border-gray-300" />
+      </div>
+    </div>
+  );
+}
+
+export { Divider, DividerY };
