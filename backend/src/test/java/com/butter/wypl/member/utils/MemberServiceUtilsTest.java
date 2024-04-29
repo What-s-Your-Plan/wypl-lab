@@ -29,17 +29,23 @@ class MemberServiceUtilsTest {
 	@Autowired
 	private EntityManager entityManager;
 
+	private Member saveMemberFixture(MemberFixture memberFixture) {
+		Member savedMember = memberRepository.save(memberFixture.toMember());
+		entityManager.flush();
+		entityManager.clear();
+		return savedMember;
+	}
+
 	@DisplayName("사용자 이메일 조회 테스트")
 	@Nested
 	class FindByEmailTest {
+
 		@DisplayName("사용자 이메일로 조회에 성공한다.")
 		@ParameterizedTest
 		@EnumSource(MemberFixture.class)
 		void findByEmailSuccessTest(MemberFixture memberFixture) {
 			/* Given */
-			memberRepository.save(memberFixture.toMember());
-			entityManager.flush();
-			entityManager.clear();
+			saveMemberFixture(memberFixture);
 
 			/* When & Then */
 			assertThatCode(() -> MemberServiceUtils.findByEmail(memberRepository, memberFixture.getEmail()))
@@ -50,9 +56,7 @@ class MemberServiceUtilsTest {
 		@Test
 		void findByEmailFailedTest() {
 			/* Given */
-			memberRepository.save(KIM_JEONG_UK.toMember());
-			entityManager.flush();
-			entityManager.clear();
+			saveMemberFixture(KIM_JEONG_UK);
 
 			/* When & Then */
 			assertThatThrownBy(() -> MemberServiceUtils.findByEmail(memberRepository, HAN_JI_WON.getEmail()))
@@ -69,9 +73,7 @@ class MemberServiceUtilsTest {
 		@EnumSource(MemberFixture.class)
 		void findByIdSuccessTest(MemberFixture memberFixture) {
 			/* Given */
-			Member savedMember = memberRepository.save(memberFixture.toMember());
-			entityManager.flush();
-			entityManager.clear();
+			Member savedMember = saveMemberFixture(memberFixture);
 
 			/* When */
 			Member findMember = MemberServiceUtils.findById(memberRepository, savedMember.getId());

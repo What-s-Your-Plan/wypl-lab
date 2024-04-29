@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.butter.wypl.auth.domain.AuthMember;
+import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
+import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
@@ -21,7 +23,7 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 
 	@Transactional
 	@Override
-	public MemberNicknameUpdateResponse modifyNickname(
+	public MemberNicknameUpdateResponse updateNickname(
 			final AuthMember authMember,
 			final MemberNicknameUpdateRequest request
 	) {
@@ -30,5 +32,18 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 		findMember.changeNickname(request.nickname());
 
 		return new MemberNicknameUpdateResponse(findMember.getNickname());
+	}
+
+	@Transactional
+	@Override
+	public MemberBirthdayUpdateResponse updateBirthday(
+			final AuthMember authMember,
+			final MemberBirthdayUpdateRequest request
+	) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
+
+		findMember.changeBirthday(request.birthday());
+
+		return MemberBirthdayUpdateResponse.from(findMember.getBirthday());
 	}
 }

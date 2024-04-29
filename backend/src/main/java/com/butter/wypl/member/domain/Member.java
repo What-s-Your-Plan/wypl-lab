@@ -49,6 +49,17 @@ public class Member extends BaseEntity {
 	@Column(name = "timezone", length = 10, nullable = false)
 	private CalendarTimeZone timeZone;
 
+	public void changeBirthday(final LocalDate newBirthday) {
+		validateBirthday(newBirthday);
+		this.birthday = newBirthday;
+	}
+
+	private void validateBirthday(final LocalDate birthday) {
+		if (birthday.plusDays(1L).isAfter(LocalDate.now())) {
+			throw new MemberException(MemberErrorCode.BIRTHDAYS_CANNOT_BE_IN_THE_FUTURE);
+		}
+	}
+
 	public void changeNickname(final String newNickname) {
 		validateNickname(newNickname);
 		this.nickname = newNickname;

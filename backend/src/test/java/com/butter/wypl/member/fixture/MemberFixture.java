@@ -32,7 +32,6 @@ public enum MemberFixture {
 
 	public Member toMember() {
 		return Member.builder()
-				.birthday(birthday)
 				.email(email)
 				.nickname(nickname)
 				.profileImage(image)
