@@ -13,7 +13,7 @@ function CreateLabel({ color, setColor }: Props) {
   return (
     <CreateDiv>
       <ColorSelectButton color={color} setColor={setColor} />
-      <InputDefault $void={true} maxLength={15} />
+      <InputDefault $void={true} maxLength={15} placeholder='라벨명을 입력하세요' />
     </CreateDiv>
   );
 }
