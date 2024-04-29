@@ -16,6 +16,7 @@ type StyleProps = {
   $bgColor?: BgColors;
   $textColor?: TextColors;
   $border?: BorderColors;
+  $hover?: boolean;
 };
 
 const Button = styled.button<StyleProps>`
@@ -38,8 +39,7 @@ const Button = styled.button<StyleProps>`
     props.$textColor ? TextTheme[props.$textColor] : TextTheme['black']}
   ${(props) => (props.$border ? tw`border` : '')}
   ${(props) => (props.$border ? BorderTheme[props.$border] : '')}
-
-  ${(props) => (props.$size !== 'none' ? tw`hover:scale-110 ` : null)}
+  ${(props) => (props.$hover ? tw`hover:scale-110 ` : null)}
 `;
 
 export default Button;
