@@ -1,15 +1,15 @@
-package com.butter.wypl.label.controller.response;
+package com.butter.wypl.label.data.response;
 
 import com.butter.wypl.label.domain.Label;
 
-public record LabelResponseDto(
+public record LabelResponse(
 	int labelId,
 	int memberId,
 	String title,
 	String color
 ) {
-	public static LabelResponseDto from(Label label) {
-		return new LabelResponseDto(
+	public static LabelResponse from(Label label) {
+		return new LabelResponse(
 			label.getLabelId(),
 			label.getMemberId(),
 			label.getTitle(),

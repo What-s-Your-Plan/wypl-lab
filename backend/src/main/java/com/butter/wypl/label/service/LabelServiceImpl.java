@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.butter.wypl.global.common.Color;
-import com.butter.wypl.label.controller.request.LabelRequestDto;
-import com.butter.wypl.label.controller.response.LabelIdResponseDto;
-import com.butter.wypl.label.controller.response.LabelListResponseDto;
-import com.butter.wypl.label.controller.response.LabelResponseDto;
+import com.butter.wypl.label.data.request.LabelRequest;
+import com.butter.wypl.label.data.response.LabelIdResponse;
+import com.butter.wypl.label.data.response.LabelListResponse;
+import com.butter.wypl.label.data.response.LabelResponse;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.exception.LabelErrorCode;
 import com.butter.wypl.label.exception.LabelException;
@@ -27,52 +27,52 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 
 	@Transactional
 	@Override
-	public LabelResponseDto createLabel(int memberId, LabelRequestDto labelRequestDto) {
-		Label.titleValidation(labelRequestDto.title());
+	public LabelResponse createLabel(int memberId, LabelRequest labelRequest) {
+		Label.titleValidation(labelRequest.title());
 
 		Label label = Label.builder()
-			.title(labelRequestDto.title())
-			.color(Color.from(labelRequestDto.color()))
+			.title(labelRequest.title())
+			.color(Color.from(labelRequest.color()))
 			.memberId(memberId)
 			.schedules(new ArrayList<>())
 			.build();
 
 		labelRepository.save(label);
 
-		return LabelResponseDto.from(label);
+		return LabelResponse.from(label);
 	}
 
 	@Transactional
 	@Override
-	public LabelResponseDto updateLabel(int memberId, int labelId, LabelRequestDto labelRequestDto) {
+	public LabelResponse updateLabel(int memberId, int labelId, LabelRequest labelRequest) {
 		Label label = checkValidationAndGetLabel(labelId, memberId);
-		Label.titleValidation(labelRequestDto.title());
+		Label.titleValidation(labelRequest.title());
 
-		label.update(labelRequestDto.title(), Color.from(labelRequestDto.color()));
+		label.update(labelRequest.title(), Color.from(labelRequest.color()));
 
-		return LabelResponseDto.from(label);
+		return LabelResponse.from(label);
 	}
 
 	@Transactional
 	@Override
-	public LabelIdResponseDto deleteLabel(int labelId, int memberId) {
+	public LabelIdResponse deleteLabel(int labelId, int memberId) {
 		Label label = checkValidationAndGetLabel(labelId, memberId);
 
 		label.delete();
 
-		return LabelIdResponseDto.from(label.getLabelId());
+		return LabelIdResponse.from(label.getLabelId());
 	}
 
 	@Override
-	public LabelResponseDto getLabelByLabelId(int labelId) {
+	public LabelResponse getLabelByLabelId(int labelId) {
 		Label label = LabelServiceUtils.getLabelByLabelId(labelRepository, labelId);
 
-		return LabelResponseDto.from(label);
+		return LabelResponse.from(label);
 	}
 
 	@Override
-	public LabelListResponseDto getLabelsByMemberId(int memberId) {
-		return LabelListResponseDto.from(labelRepository.findByMemberId(memberId));
+	public LabelListResponse getLabelsByMemberId(int memberId) {
+		return LabelListResponse.from(labelRepository.findByMemberId(memberId));
 	}
 
 	private Label checkValidationAndGetLabel(int labelId, int memberId) {

@@ -1,13 +1,13 @@
 package com.butter.wypl.label.service;
 
-import com.butter.wypl.label.controller.request.LabelRequestDto;
-import com.butter.wypl.label.controller.response.LabelIdResponseDto;
-import com.butter.wypl.label.controller.response.LabelResponseDto;
+import com.butter.wypl.label.data.request.LabelRequest;
+import com.butter.wypl.label.data.response.LabelIdResponse;
+import com.butter.wypl.label.data.response.LabelResponse;
 
 public interface LabelModifyService {
-	LabelResponseDto createLabel(int memberId, LabelRequestDto labelRequestDto);
+	LabelResponse createLabel(int memberId, LabelRequest labelRequest);
 
-	LabelResponseDto updateLabel(int memberId, int labelId, LabelRequestDto labelRequestDto);
+	LabelResponse updateLabel(int memberId, int labelId, LabelRequest labelRequest);
 
-	LabelIdResponseDto deleteLabel(int labelId, int memberId);
+	LabelIdResponse deleteLabel(int labelId, int memberId);
 }

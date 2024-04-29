@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.butter.wypl.global.common.Message;
-import com.butter.wypl.label.controller.request.LabelRequestDto;
-import com.butter.wypl.label.controller.response.LabelIdResponseDto;
-import com.butter.wypl.label.controller.response.LabelListResponseDto;
-import com.butter.wypl.label.controller.response.LabelResponseDto;
+import com.butter.wypl.label.data.request.LabelRequest;
+import com.butter.wypl.label.data.response.LabelIdResponse;
+import com.butter.wypl.label.data.response.LabelListResponse;
+import com.butter.wypl.label.data.response.LabelResponse;
 import com.butter.wypl.label.service.LabelServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ public class LabelController {
 	private final LabelServiceImpl labelService;
 
 	@GetMapping("/")
-	public ResponseEntity<Message<LabelResponseDto>> getLabelByLabelId(
+	public ResponseEntity<Message<LabelResponse>> getLabelByLabelId(
 		@RequestParam int labelId
 	) {
 		return ResponseEntity
@@ -39,7 +39,7 @@ public class LabelController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Message<LabelListResponseDto>> getLabelsByMemberId(
+	public ResponseEntity<Message<LabelListResponse>> getLabelsByMemberId(
 		@RequestHeader("memberId") int memberId
 	) {
 		return ResponseEntity
@@ -50,32 +50,32 @@ public class LabelController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Message<LabelResponseDto>> createLabel(
+	public ResponseEntity<Message<LabelResponse>> createLabel(
 		@RequestHeader("memberId") int memberId,
-		@RequestBody LabelRequestDto labelRequestDto
+		@RequestBody LabelRequest labelRequest
 	) {
 		return ResponseEntity
 			.ok()
 			.body(
-				new Message<>("라벨 생성 성공", labelService.createLabel(memberId, labelRequestDto))
+				new Message<>("라벨 생성 성공", labelService.createLabel(memberId, labelRequest))
 			);
 	}
 
 	@PatchMapping
-	public ResponseEntity<Message<LabelResponseDto>> updateLabel(
+	public ResponseEntity<Message<LabelResponse>> updateLabel(
 		@RequestHeader("memberId") int memberId,
 		@RequestParam int labelId,
-		@RequestBody LabelRequestDto labelRequestDto
+		@RequestBody LabelRequest labelRequest
 	) {
 		return ResponseEntity
 			.ok()
 			.body(
-				new Message<>("라벨 수정 성공", labelService.updateLabel(memberId, labelId, labelRequestDto))
+				new Message<>("라벨 수정 성공", labelService.updateLabel(memberId, labelId, labelRequest))
 			);
 	}
 
 	@DeleteMapping
-	public ResponseEntity<Message<LabelIdResponseDto>> deleteLabel(
+	public ResponseEntity<Message<LabelIdResponse>> deleteLabel(
 		@RequestHeader("memberId") int memberId,
 		@RequestHeader("labelId") int labelId
 	) {
