@@ -1,5 +1,42 @@
 import tw from 'twin.macro';
 
+const LabelColors = [
+  'labelRed',
+  'labelPink',
+  'labelOrange',
+  'labelYellow',
+  'labelGreen',
+  'labelLeaf',
+  'labelBlue',
+  'labelSky',
+  'labelNavy',
+  'labelIndigo',
+  'labelPurple',
+  'labelLavender',
+  'labelCharcoal',
+  'labelBrown',
+] as const;
+
+const AllColors = [
+  'labelRed',
+  'labelPink',
+  'labelOrange',
+  'labelYellow',
+  'labelGreen',
+  'labelLeaf',
+  'labelBlue',
+  'labelSky',
+  'labelNavy',
+  'labelIndigo',
+  'labelPurple',
+  'labelLavender',
+  'labelCharcoal',
+  'labelBrown',
+  'white',
+  'black',
+  'main',
+] as const;
+
 const BgTheme = {
   labelRed: tw`bg-label-red`,
   labelPink: tw`bg-label-pink`,
@@ -60,10 +97,14 @@ const BorderTheme = {
   main: tw`border border-main`,
 };
 
+export type AllColorsType = (typeof AllColors)[number];
+
+export type LabelColorsType = (typeof LabelColors)[number];
+
 export type BgColors = keyof typeof BgTheme;
 
 export type TextColors = keyof typeof TextTheme;
 
 export type BorderColors = keyof typeof BorderTheme;
 
-export { BgTheme, TextTheme, BorderTheme };
+export { AllColors, LabelColors, BgTheme, TextTheme, BorderTheme };

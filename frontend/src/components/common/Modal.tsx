@@ -70,6 +70,7 @@ function Modal({
                       $bgColor="white"
                       $textColor="black"
                       $border="black"
+                      $hover={true}
                       onClick={() => {
                         handleClose();
                       }}
