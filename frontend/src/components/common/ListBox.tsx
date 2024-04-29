@@ -14,7 +14,7 @@ type Props = {
 function renderSpan(values: Array<string | number>): Array<JSX.Element> {
   return values.map((value, index) => {
     return <span key={index}>{value}</span>;
-  })
+  });
 }
 
 function ListBox({
