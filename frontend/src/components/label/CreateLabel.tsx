@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from 'react';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 import ColorSelectButton from '@/components/color/ColorSelectButton';
-import { CreateDiv } from '@/components/label/CreateLabelStyle';
+import { CreateDiv } from '@/components/label/Styled';
 import { InputDefault } from '../common/InputText';
 
 type Props = {
