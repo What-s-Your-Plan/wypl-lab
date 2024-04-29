@@ -34,6 +34,7 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 		return new MemberNicknameUpdateResponse(findMember.getNickname());
 	}
 
+	@Transactional
 	@Override
 	public MemberBirthdayUpdateResponse updateBirthday(
 			final AuthMember authMember,
