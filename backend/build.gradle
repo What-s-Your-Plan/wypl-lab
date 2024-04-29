@@ -22,6 +22,9 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+
+    // 기본 logback 설정 제외 => log4j2 설정하기 위함
+    all*.exclude module: 'spring-boot-starter-logging'
 }
 
 repositories {
@@ -37,6 +40,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+
+    /* Log */
+    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 
     /* Database */
     runtimeOnly 'com.mysql:mysql-connector-j'

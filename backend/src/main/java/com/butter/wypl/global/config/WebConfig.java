@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.butter.wypl.auth.utils.AuthenticatedArgumentResolver;
 import com.butter.wypl.auth.utils.JwtProvider;
+import com.butter.wypl.global.common.interceptor.LoggingInterceptor;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+	private final LoggingInterceptor loggingInterceptor;
 	private final JwtProvider jwtProvider;
 
 	@Override
@@ -29,5 +32,10 @@ public class WebConfig implements WebMvcConfigurer {
 				.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "FETCH")
 				.allowedOrigins("*")
 				.maxAge(5000);
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(loggingInterceptor);
 	}
 }
