@@ -1,6 +1,7 @@
 package com.butter.wypl.member.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Message;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
+import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.service.MemberLoadService;
@@ -24,6 +26,14 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberLoadService memberLoadService;
 	private final MemberModifyService memberModifyService;
+
+	@GetMapping("/v1/timezones")
+	public ResponseEntity<Message<FindTimezonesResponse>> findTimezones(
+			@Authenticated AuthMember authMember
+	) {
+		FindTimezonesResponse response = memberLoadService.findMemberTimezones(authMember);
+		return ResponseEntity.ok(Message.withBody("", response));
+	}
 
 	@PatchMapping("/v1/members/nickname")
 	public ResponseEntity<Message<MemberNicknameUpdateResponse>> changeNickname(

@@ -1,5 +1,7 @@
 package com.butter.wypl.member.domain;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.TimeZone;
 
 import lombok.AllArgsConstructor;
@@ -12,4 +14,8 @@ public enum CalendarTimeZone {
 	ENGLAND(TimeZone.getTimeZone("Europe/London"));
 
 	private final TimeZone timeZone;
+
+	public static List<CalendarTimeZone> getTimeZones() {
+		return Arrays.stream(CalendarTimeZone.values()).toList();
+	}
 }
