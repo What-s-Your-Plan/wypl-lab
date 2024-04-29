@@ -1,10 +1,17 @@
 package com.butter.wypl.global.common;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
 public class Message<T> {
+	@JsonProperty("message")
 	private String message;
+
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonProperty("body")
 	private T body;
 
 	public Message() {

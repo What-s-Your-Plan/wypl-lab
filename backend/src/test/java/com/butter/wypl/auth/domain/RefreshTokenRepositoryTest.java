@@ -40,12 +40,6 @@ class RefreshTokenRepositoryTest {
 		}).doesNotThrowAnyException();
 	}
 
-	private JsonWebTokens generateTokens(
-			final int memberId
-	) {
-		return jwtProvider.generateJsonWebTokens(memberId);
-	}
-
 	@DisplayName("Refresh Token 삭제에 성공한다.")
 	@ParameterizedTest
 	@ValueSource(ints = {1, Integer.MAX_VALUE})
@@ -60,5 +54,11 @@ class RefreshTokenRepositoryTest {
 
 		/* Then */
 		assertThat(refreshTokenRepository.existsById(memberId)).isFalse();
+	}
+
+	private JsonWebTokens generateTokens(
+			final int memberId
+	) {
+		return jwtProvider.generateJsonWebTokens(memberId);
 	}
 }
