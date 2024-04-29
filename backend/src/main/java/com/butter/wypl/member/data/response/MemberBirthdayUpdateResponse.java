@@ -1,4 +1,17 @@
 package com.butter.wypl.member.data.response;
 
-public record MemberBirthdayUpdateResponse() {
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record MemberBirthdayUpdateResponse(
+		@JsonProperty("birthday")
+		@DateTimeFormat(pattern = "yyyy-MM-dd")
+		LocalDate birthday,
+
+		@JsonProperty("birthday_as_string")
+		String birthdayAsString
+) {
 }

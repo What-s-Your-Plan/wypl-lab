@@ -39,6 +39,10 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 			final AuthMember authMember,
 			final MemberBirthdayUpdateRequest request
 	) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
+
+
+
 		return null;
 	}
 }
