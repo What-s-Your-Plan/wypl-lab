@@ -6,6 +6,7 @@ import RText from './RText';
 import RWeather from './REmotion';
 import RPicture from './RPicture';
 import RKpt from './RKpt';
+import R4F from './R4F';
 
 function WriteBlockList() {
   return (
@@ -20,6 +21,7 @@ function WriteBlockList() {
         <RWeather />
         <RPicture />
         <RKpt />
+        <R4F />
       </div>
     </S.Container>
   );

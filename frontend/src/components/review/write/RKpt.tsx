@@ -2,7 +2,7 @@ import { WhiteContainer } from '@/components/common/Container';
 import { InputTextArea } from '@/components/common/InputText';
 import { Divider, DividerY } from '@/components/common/Divider';
 
-function RText() {
+function RKpt() {
   return (
     <WhiteContainer $width="900" className="flex flex-row gap-5">
       <div className="flex flex-col w-500 gap-2">
@@ -45,4 +45,4 @@ function RText() {
   );
 }
 
-export default RText;
+export default RKpt;

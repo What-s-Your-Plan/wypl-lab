@@ -47,6 +47,17 @@ function BlockList() {
       title: 'KPT 회고',
       content: <div>Keep Problem Try 세가지로 일정을 회고해보세요</div>,
     },
+    {
+      icon: Pen,
+      blockType: '4F',
+      title: '4F 회고',
+      content: (
+        <div>
+          '사실(Facts)','느낌(Feelings)','찾아낸 점(Findings)','미래의
+          행동(Futureactions)' 으로 일정을 회고해보세요
+        </div>
+      ),
+    },
   ];
 
   const renderBlock = () => {
