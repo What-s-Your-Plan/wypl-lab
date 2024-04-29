@@ -16,30 +16,19 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.butter.wypl.auth.data.response.AuthTokensResponse;
 import com.butter.wypl.auth.service.AuthService;
-import com.butter.wypl.auth.utils.AuthenticatedArgumentResolver;
-import com.butter.wypl.auth.utils.JwtProvider;
-import com.butter.wypl.global.annotation.MockControllerTest;
+import com.butter.wypl.global.common.ControllerTest;
 
-@MockControllerTest
-class AuthControllerTest {
-	private static final String AUTHORIZATION_HEADER_VALUE = "Bearer header.payload.signature";
+class AuthControllerTest extends ControllerTest {
 
-	@Autowired
-	private MockMvc mockMvc;
 	@Autowired
 	private AuthController authController;
 
 	@MockBean
 	private AuthService authService;
-	@MockBean
-	private AuthenticatedArgumentResolver authenticatedArgumentResolver;
-	@MockBean
-	private JwtProvider jwtProvider;
 
 	@DisplayName("회원 가입 및 로그인한다.")
 	@Test

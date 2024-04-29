@@ -153,7 +153,6 @@ tasks.register('copyOasToSwagger', Copy) {
     from("build/api-spec/openapi3.yaml")
     into("src/main/resources/static/swagger-ui/.")
 
-
     doLast {
         def securitySchemesContent = """
   securitySchemes:

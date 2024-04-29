@@ -56,11 +56,11 @@ class AuthServiceTest {
 				.willReturn(Optional.of(member));
 
 		JsonWebTokens tokens = new JsonWebTokens("at", "rt");
-		given(jwtProvider.generateJsonWebTokens(0))
+		given(jwtProvider.generateJsonWebTokens(any(Integer.class)))
 				.willReturn(tokens);
 
 		RefreshToken refreshToken = RefreshToken.of(0, tokens.refreshToken());
-		given(refreshTokenRepository.save(refreshToken))
+		given(refreshTokenRepository.save(any(RefreshToken.class)))
 				.willReturn(refreshToken);
 
 		/* When */
