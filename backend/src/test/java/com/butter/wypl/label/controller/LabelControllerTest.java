@@ -73,8 +73,8 @@ public class LabelControllerTest extends ControllerTest {
 				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-					fieldWithPath("body.labelId").type(JsonFieldType.NUMBER).description("생성된 라벨의 인덱스"),
-					fieldWithPath("body.memberId").type(JsonFieldType.NUMBER).description("라벨을 생성한 멤버의 인덱스"),
+					fieldWithPath("body.label_id").type(JsonFieldType.NUMBER).description("생성된 라벨의 인덱스"),
+					fieldWithPath("body.member_id").type(JsonFieldType.NUMBER).description("라벨을 생성한 멤버의 인덱스"),
 					fieldWithPath("body.title").type(JsonFieldType.STRING).description("생성된 라벨의 제목"),
 					fieldWithPath("body.color").type(JsonFieldType.STRING).description("생성된 라벨의 색상")
 				)
@@ -114,8 +114,8 @@ public class LabelControllerTest extends ControllerTest {
 				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-					fieldWithPath("body.labelId").type(JsonFieldType.NUMBER).description("수정된 라벨의 인덱스"),
-					fieldWithPath("body.memberId").type(JsonFieldType.NUMBER).description("라벨을 수정한 멤버의 인덱스"),
+					fieldWithPath("body.label_id").type(JsonFieldType.NUMBER).description("수정된 라벨의 인덱스"),
+					fieldWithPath("body.member_id").type(JsonFieldType.NUMBER).description("라벨을 수정한 멤버의 인덱스"),
 					fieldWithPath("body.title").type(JsonFieldType.STRING).description("수정된 라벨의 제목"),
 					fieldWithPath("body.color").type(JsonFieldType.STRING).description("수정된 라벨의 색상")
 				)
@@ -148,8 +148,8 @@ public class LabelControllerTest extends ControllerTest {
 				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-					fieldWithPath("body.labelId").type(JsonFieldType.NUMBER).description("조회한 라벨의 인덱스"),
-					fieldWithPath("body.memberId").type(JsonFieldType.NUMBER).description("라벨을 조회한 멤버의 인덱스"),
+					fieldWithPath("body.label_id").type(JsonFieldType.NUMBER).description("조회한 라벨의 인덱스"),
+					fieldWithPath("body.member_id").type(JsonFieldType.NUMBER).description("라벨을 조회한 멤버의 인덱스"),
 					fieldWithPath("body.title").type(JsonFieldType.STRING).description("조회된 라벨의 제목"),
 					fieldWithPath("body.color").type(JsonFieldType.STRING).description("조회된 라벨의 색상")
 				)
@@ -182,9 +182,9 @@ public class LabelControllerTest extends ControllerTest {
 				preprocessResponse(prettyPrint()),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-					fieldWithPath("body.labelCount").type(JsonFieldType.NUMBER).description("조회한 라벨의 개수"),
-					fieldWithPath("body.labels[].memberId").type(JsonFieldType.NUMBER).description("라벨 주인의 인덱스"),
-					fieldWithPath("body.labels[].labelId").type(JsonFieldType.NUMBER).description("라벨의 인덱스"),
+					fieldWithPath("body.label_count").type(JsonFieldType.NUMBER).description("조회한 라벨의 개수"),
+					fieldWithPath("body.labels[].member_id").type(JsonFieldType.NUMBER).description("라벨 주인의 인덱스"),
+					fieldWithPath("body.labels[].label_id").type(JsonFieldType.NUMBER).description("라벨의 인덱스"),
 					fieldWithPath("body.labels[].title").type(JsonFieldType.STRING).description("라벨의 제목"),
 					fieldWithPath("body.labels[].color").type(JsonFieldType.STRING).description("라벨의 색상")
 				)
@@ -203,7 +203,7 @@ public class LabelControllerTest extends ControllerTest {
 		ResultActions resultActions = mockMvc.perform(
 			RestDocumentationRequestBuilders.delete("/label/v1/labels")
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-				.header("labelId", 1)
+				.header("label_id", 1)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 
@@ -214,7 +214,7 @@ public class LabelControllerTest extends ControllerTest {
 				preprocessResponse(prettyPrint()),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
-					fieldWithPath("body.labelId").type(JsonFieldType.NUMBER).description("삭제한 라벨의 인덱스")
+					fieldWithPath("body.label_id").type(JsonFieldType.NUMBER).description("삭제한 라벨의 인덱스")
 				)
 			))
 			.andExpect(status().isOk());
