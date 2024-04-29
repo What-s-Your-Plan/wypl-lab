@@ -1,5 +1,6 @@
 package com.butter.wypl.member.utils;
 
+import com.butter.wypl.global.annotation.Generated;
 import com.butter.wypl.global.exception.CallConstructorException;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberErrorCode;
@@ -8,8 +9,17 @@ import com.butter.wypl.member.repository.MemberRepository;
 
 public class MemberServiceUtils {
 
+	@Generated
 	private MemberServiceUtils() {
 		throw new CallConstructorException();
+	}
+
+	public static Member findById(
+			final MemberRepository memberRepository,
+			final int id
+	) {
+		return memberRepository.findById(id)
+				.orElseThrow(() -> new MemberException(MemberErrorCode.NOT_EXIST_MEMBER));
 	}
 
 	public static Member findByEmail(

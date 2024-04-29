@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.domain.Member;
 
+import lombok.Getter;
+
+@Getter
 public enum MemberFixture {
 	KIM_JEONG_UK(LocalDate.of(1998, 11, 24), "workju1124@gmail.com", "김세이", null, "CA965C"),
 	JO_DA_MIN(LocalDate.of(1999, 8, 6), "jdm080620@gmail.com", "댬니", null, "7F99D9"),

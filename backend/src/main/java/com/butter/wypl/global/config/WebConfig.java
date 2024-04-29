@@ -7,7 +7,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.butter.wypl.auth.annotation.AuthenticatedArgumentResolver;
+import com.butter.wypl.auth.utils.AuthenticatedArgumentResolver;
 import com.butter.wypl.auth.utils.JwtProvider;
 
 import lombok.RequiredArgsConstructor;
@@ -26,6 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
+				.allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "FETCH")
 				.allowedOrigins("*")
 				.maxAge(5000);
 	}
