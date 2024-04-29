@@ -41,7 +41,7 @@ class MemberControllerTest extends ControllerTest {
 		String nickname = "wypl";
 		String json = convertToJson(new MemberNicknameUpdateRequest(nickname));
 
-		given(memberModifyService.modifyNickname(any(AuthMember.class), any(MemberNicknameUpdateRequest.class)))
+		given(memberModifyService.updateNickname(any(AuthMember.class), any(MemberNicknameUpdateRequest.class)))
 				.willReturn(new MemberNicknameUpdateResponse(nickname));
 
 		givenMockLoginMember();
