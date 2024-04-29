@@ -1,5 +1,6 @@
-package com.butter.wypl.infrastructure.ouath;
+package com.butter.wypl.infrastructure.ouath.google;
 
+import com.butter.wypl.infrastructure.ouath.OAuthResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GoogleOAuthResponse(
@@ -11,5 +12,5 @@ public record GoogleOAuthResponse(
 		String tokenType,
 		@JsonProperty("id_token")
 		String idToken
-) {
+) implements OAuthResponse {
 }

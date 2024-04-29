@@ -1,4 +1,4 @@
-package com.butter.wypl.auth.perproties;
+package com.butter.wypl.auth.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
