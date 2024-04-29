@@ -37,7 +37,7 @@ public class LabelController {
 	) {
 		return ResponseEntity
 			.ok().body(
-				new Message<>("라벨 id로 라벨 조회 성공", labelReadService.getLabelByLabelId(labelId))
+				Message.withBody("라벨 id로 라벨 조회 성공", labelReadService.getLabelByLabelId(labelId))
 			);
 	}
 
@@ -47,7 +47,7 @@ public class LabelController {
 	) {
 		return ResponseEntity
 			.ok().body(
-				new Message<>("멤버 id로 라벨 리스트 조회 성공", labelReadService.getLabelsByMemberId(authMember.getId()))
+				Message.withBody("멤버 id로 라벨 리스트 조회 성공", labelReadService.getLabelsByMemberId(authMember.getId()))
 			);
 	}
 
@@ -58,7 +58,7 @@ public class LabelController {
 	) {
 		return ResponseEntity
 			.ok().body(
-				new Message<>("라벨 생성 성공", labelModifyService.createLabel(authMember.getId(), labelRequest))
+				Message.withBody("라벨 생성 성공", labelModifyService.createLabel(authMember.getId(), labelRequest))
 			);
 	}
 
@@ -70,7 +70,7 @@ public class LabelController {
 	) {
 		return ResponseEntity
 			.ok().body(
-				new Message<>("라벨 수정 성공", labelModifyService.updateLabel(authMember.getId(), labelId, labelRequest))
+				Message.withBody("라벨 수정 성공", labelModifyService.updateLabel(authMember.getId(), labelId, labelRequest))
 			);
 	}
 
@@ -81,7 +81,7 @@ public class LabelController {
 	) {
 		return ResponseEntity
 			.ok().body(
-				new Message<>("라벨 삭제 성공", labelModifyService.deleteLabel(labelId, authMember.getId()))
+				Message.withBody("라벨 삭제 성공", labelModifyService.deleteLabel(labelId, authMember.getId()))
 			);
 	}
 }
