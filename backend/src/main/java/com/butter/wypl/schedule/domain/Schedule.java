@@ -45,8 +45,8 @@ public class Schedule extends BaseEntity {
 	@Column(nullable = false)
 	private Category category;
 
-	@Column(name = "group_id")
-	private int groupId;
+	@Column(name = "owner_id", nullable = false)
+	private int ownerId;
 
 	@Column(name = "start_date", nullable = false)
 	private LocalDateTime startDate;
@@ -72,4 +72,8 @@ public class Schedule extends BaseEntity {
 
 	@Embedded
 	private Repetition repetition;
+
+	public void updateRepeatScheduleId(int repeatScheduleId) {
+		this.repeatScheduleId = repeatScheduleId;
+	}
 }
