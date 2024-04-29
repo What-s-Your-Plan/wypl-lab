@@ -1,10 +1,11 @@
 import * as S from '@/components/common/Container';
 import RTitle from './RTitle';
-import Divider from '@/components/common/Divider';
+import { Divider } from '@/components/common/Divider';
 import RSchedule from './RSchedule';
 import RText from './RText';
 import RWeather from './REmotion';
 import RPicture from './RPicture';
+import RKpt from './RKpt';
 
 function WriteBlockList() {
   return (
@@ -18,6 +19,7 @@ function WriteBlockList() {
         <RText />
         <RWeather />
         <RPicture />
+        <RKpt />
       </div>
     </S.Container>
   );
