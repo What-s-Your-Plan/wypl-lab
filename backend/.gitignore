@@ -5,6 +5,9 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+htmlReport
+reports
+**/resources/static/swagger-ui
 
 ### STS ###
 .apt_generated
