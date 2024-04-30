@@ -88,7 +88,7 @@
     sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  color: #2A2E34;
+  color: #2a2e34;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -129,4 +129,18 @@
 .scrollBar::-webkit-scrollbar-button:vertical:end:decrement {
   display: block;
   width: 10px;
+}
+
+.shaking {
+  animation: vibration 0.3s infinite;
+}
+
+@keyframes vibration {
+  0%,
+  100% {
+    transform: rotate(0.5deg);
+  }
+  50% {
+    transform: rotate(-0.5deg);
+  }
 }
