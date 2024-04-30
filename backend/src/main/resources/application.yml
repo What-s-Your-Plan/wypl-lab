@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: wypl
+  config:
+    import:
+      - security/application-jwt.yml
+      - security/application-oauth.yml
+      - security/application-redis.yml
+      - security/application-s3.yml
+    activate:
+      on-profile:
+        - default
+        - deploy
+        - dev
+        - local
+
+logging:
+  config: classpath:log4j2-dev.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
