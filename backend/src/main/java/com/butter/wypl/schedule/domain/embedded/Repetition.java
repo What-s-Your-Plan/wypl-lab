@@ -1,8 +1,6 @@
 package com.butter.wypl.schedule.domain.embedded;
 
-import java.time.LocalDateTime;
-
-import org.hibernate.annotations.ColumnDefault;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
@@ -25,21 +23,13 @@ public class Repetition {
 	@Enumerated(EnumType.STRING)
 	private RepetitionCycle repetitionCycle;
 
-	@Column(name = "repetition_start_date", nullable = false)
-	private LocalDateTime repetitionStartDate;
+	@Column(name = "repetition_start_date")
+	private LocalDate repetitionStartDate;
 
 	@Column(name = "repetition_end_date")
-	private LocalDateTime repetitionEndDate;
-
-	private int month;
+	private LocalDate repetitionEndDate;
 
 	private int week;
-
-	private int day;
-
-	@ColumnDefault("false")
-	@Column(name = "last_day", nullable = false, columnDefinition = "TINYINT(1)")
-	private boolean lastDay;
 
 	@Column(name = "day_of_week", columnDefinition = "BINARY(7)")
 	private byte dayOfWeek;

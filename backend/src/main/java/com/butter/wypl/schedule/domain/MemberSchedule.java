@@ -36,4 +36,5 @@ public class MemberSchedule extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "schedule_id", nullable = false)
 	private Schedule schedule;
+
 }

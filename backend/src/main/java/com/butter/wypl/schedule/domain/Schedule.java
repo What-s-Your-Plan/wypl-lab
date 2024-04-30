@@ -1,7 +1,6 @@
 package com.butter.wypl.schedule.domain;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.label.domain.Label;
@@ -54,17 +53,8 @@ public class Schedule extends BaseEntity {
 	@Column(name = "end_date", nullable = false)
 	private LocalDateTime endDate;
 
-	@Column(name = "alarm_time")
-	private LocalTime alarmTime;
-
-	@Column(name = "creator_id", nullable = false)
-	private int creatorId;
-
-	@Column(name = "updator_id", nullable = false)
-	private int updatorId;
-
 	@Column(name = "repeat_schedule_id")
-	private int repeatScheduleId;
+	private Integer repeatScheduleId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "label_id")
@@ -73,7 +63,26 @@ public class Schedule extends BaseEntity {
 	@Embedded
 	private Repetition repetition;
 
-	public void updateRepeatScheduleId(int repeatScheduleId) {
-		this.repeatScheduleId = repeatScheduleId;
+	public void updateLabel(Label label) {
+		this.label = label;
 	}
+
+	public void updateRepetition(Repetition repetition) {
+		this.repeatScheduleId = this.scheduleId;
+		this.repetition = repetition;
+	}
+
+	public Schedule toRepetitionSchedule(LocalDateTime startDate, LocalDateTime endDate) {
+		return Schedule.builder()
+			.title(title)
+			.description(description)
+			.startDate(startDate)
+			.endDate(endDate)
+			.category(category)
+			.ownerId(ownerId)
+			.label(label)
+			.repeatScheduleId(repeatScheduleId)
+			.build();
+	}
+
 }

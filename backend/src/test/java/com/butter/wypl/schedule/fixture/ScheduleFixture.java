@@ -1,13 +1,12 @@
 package com.butter.wypl.schedule.fixture;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.util.List;
 
-import com.butter.wypl.label.domain.Label;
-import com.butter.wypl.label.fixture.LabelFixture;
+import com.butter.wypl.schedule.data.request.RepetitionRequest;
+import com.butter.wypl.schedule.data.request.ScheduleRequest;
+import com.butter.wypl.schedule.data.response.MemberIdResponse;
 import com.butter.wypl.schedule.domain.Category;
-import com.butter.wypl.schedule.domain.Schedule;
-import com.butter.wypl.schedule.domain.embedded.Repetition;
 import com.butter.wypl.schedule.fixture.embedded.RepetitionFixture;
 
 import lombok.Getter;
@@ -15,55 +14,53 @@ import lombok.Getter;
 @Getter
 public enum ScheduleFixture {
 
-	//반복이 없는 개인 스케줄
+	//라벨 없는 반복이 없는 개인 스케줄
 	PERSONAL_EXERCISE_SCHEDULE(
 		"테니스 가기",
 		"장소 : 신촌 테니스",
-		LocalDateTime.of(2024, 04,26, 11, 0),
-		LocalDateTime.of(2024, 04,26, 13, 0),
+		LocalDateTime.of(2024, 04, 26, 11, 0),
+		LocalDateTime.of(2024, 04, 26, 13, 0),
 		null,
-		LabelFixture.EXERCISE_LABEL.toLabel(),
 		null,
 		Category.MEMBER,
-		0
+		1,
+		List.of(new MemberIdResponse(1))
 	),
-	//반복 있는 개인 스케줄
+	//라벨 있고 반복 있는 개인 스케줄
 	PERSONAL_REPEAT_EXERCISE_SCHEDULE(
 		"헬스장 가기",
 		null,
-		LocalDateTime.of(2024, 04,27, 11, 0),
-		LocalDateTime.of(2024, 04,27, 12, 0),
-		LocalTime.of(10, 50),
-		LabelFixture.EXERCISE_LABEL.toLabel(),
-		RepetitionFixture.MONDAY_REPETITION.toRepetition(),
+		LocalDateTime.of(2024, 04, 25, 11, 0),
+		LocalDateTime.of(2024, 04, 25, 12, 0),
+		1,
+		RepetitionFixture.TUESDAY_THRUSDAY_REPETITION.toRepetitionRequest(),
 		Category.MEMBER,
-		0
+		1,
+		List.of(new MemberIdResponse(1))
 	),
-	//라벨 없는 반복 있는 개인 스케줄
-	PERSONAL_REPEAT_NO_LABEL_SCHEDULE(
-		"소연이 생일",
-		"생일 파티 할 사람?",
-		LocalDateTime.of(2024, 10,5, 0, 0),
-		LocalDateTime.of(2024,10,5,23,59),
-		LocalTime.of(0,0),
-		null,
-		RepetitionFixture.YEARLY_REPETITION.toRepetition(),
-		Category.MEMBER,
-		0
-	),
-	//그룹 스케줄
-	GROUP_SCHEDULE(
+	//반복 있는 그룹 스케줄
+	REPEAT_GROUP_SCHEDULE(
 		"알고르즘 스터디",
 		"하루에 한문제씩 풀기",
-		LocalDateTime.of(2024, 04,27, 11, 0),
-		LocalDateTime.of(2024, 04,27, 12, 0),
-		LocalTime.of(17,55),
+		LocalDateTime.of(2024, 04, 27, 11, 0),
+		LocalDateTime.of(2024, 04, 27, 12, 0),
 		null,
-		RepetitionFixture.MONDAY_REPETITION.toRepetition(),
+		RepetitionFixture.LAST_DAY_REPETITION.toRepetitionRequest(),
 		Category.GROUP,
-		1
-	)
-	;
+		1,
+		List.of(new MemberIdResponse(1), new MemberIdResponse(2), new MemberIdResponse(3))
+	),
+	NO_REPEAT_GROUP_SCHEDULE(
+		"알고르즘 스터디",
+		"하루에 한문제씩 풀기",
+		LocalDateTime.of(2024, 04, 27, 11, 0),
+		LocalDateTime.of(2024, 04, 27, 12, 0),
+		null,
+		null,
+		Category.GROUP,
+		1,
+		List.of(new MemberIdResponse(1), new MemberIdResponse(2), new MemberIdResponse(3))
+	);
 
 	private final String title;
 
@@ -73,38 +70,41 @@ public enum ScheduleFixture {
 
 	private final LocalDateTime endDate;
 
-	private final LocalTime alarmTime;
+	private final Integer labelId;
 
-	private final Label label;
-
-	private final Repetition repetition;
+	private final RepetitionRequest repetition;
 
 	private final Category category;
 
-	private final int groupId;
+	private final int ownerId;
+
+	private final List<MemberIdResponse> members;
 
 	ScheduleFixture(String title, String description, LocalDateTime startDate, LocalDateTime endDate,
-		LocalTime alarmTime,  Label label, Repetition repetition, Category category, int groupId) {
+		Integer labelId, RepetitionRequest repetition, Category category, int ownerId, List<MemberIdResponse> members) {
 		this.title = title;
 		this.category = category;
-		this.groupId = groupId;
+		this.ownerId = ownerId;
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.alarmTime = alarmTime;
-		this.label = label;
+		this.labelId = labelId;
 		this.repetition = repetition;
+		this.members = members;
 	}
 
-	public Schedule toSchedule(){
-		return Schedule.builder()
+	public ScheduleRequest toScheduleRequest() {
+		return ScheduleRequest.builder()
 			.title(title)
 			.description(description)
+			.category(category)
 			.startDate(startDate)
 			.endDate(endDate)
-			.alarmTime(alarmTime)
-			.label(label)
 			.repetition(repetition)
+			.labelId(labelId)
+			.ownerId(ownerId)
+			.members(members)
 			.build();
 	}
+
 }
