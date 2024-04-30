@@ -7,6 +7,6 @@ interface Layout {
 }
 
 interface Widget {
-  type: string;
-  layout: Layout[];
+  widgetType: string;
+  layout: Layout;
 }
