@@ -3,24 +3,17 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 
 import * as S from '@/components/common/Container';
 import Button from '../common/Button';
+import WGoal from './WGoal';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 function WidgetList() {
   const [isModifying, setIsModifying] = useState<boolean>(false);
   const [layouts, setLayouts] = useState<ReactGridLayout.Layouts>();
-  const [widgetArray, setWidgetArray] = useState<
-    {
-      i: string;
-      x: number;
-      y: number;
-      w: number;
-      h: number;
-    }[]
-  >([
-    { i: 'widget1', x: 0, y: 0, w: 2, h: 1 },
-    { i: 'widget2', x: 0, y: 0, w: 1, h: 1 },
-    { i: 'widget3', x: 1, y: 1, w: 1, h: 1 },
+  const [widgetArray, setWidgetArray] = useState<Widget[]>([
+    { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
+    { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
+    { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
   ]);
 
   const handleModify = (
@@ -30,10 +23,10 @@ function WidgetList() {
     const tempArray = widgetArray;
     setLayouts(allLayouts);
     currentLayout?.map((position) => {
-      tempArray[Number(position.i)].x = position.x;
-      tempArray[Number(position.i)].y = position.y;
-      tempArray[Number(position.i)].w = position.w;
-      tempArray[Number(position.i)].h = position.h;
+      tempArray[Number(position.i)].layout.x = position.x;
+      tempArray[Number(position.i)].layout.y = position.y;
+      tempArray[Number(position.i)].layout.w = position.w;
+      tempArray[Number(position.i)].layout.h = position.h;
     });
     setWidgetArray(tempArray);
   };
@@ -41,17 +34,28 @@ function WidgetList() {
   // 길게 누르기 위한 타이머 참조
   const pressTimer = useRef<ReturnType<typeof setTimeout>>();
 
-  const handleLongPress = (event: React.MouseEvent | React.TouchEvent) => {
-    console.log(typeof event);
+  const handleLongPress = () => {
     pressTimer.current = setTimeout(() => {
       setIsModifying(true);
-    }, 2000);
+    }, 1500);
   };
 
   const clearPressTimer = () => {
-    console.log('Clearing timer');
     if (pressTimer.current !== null) {
       clearTimeout(pressTimer.current);
+    }
+  };
+
+  const renderWidget = (widgetType: string) => {
+    switch (widgetType) {
+      case 'goal':
+        return <WGoal />;
+      case 'schedule':
+        return <div>Schedule</div>;
+      case 'todo':
+        return <div>Todo</div>;
+      default:
+        return <div>Unknown</div>;
     }
   };
 
@@ -98,11 +102,11 @@ function WidgetList() {
               className={containerClasses}
               key={index}
               data-grid={{
-                x: widget?.x,
-                y: widget?.y,
-                w: widget?.w,
-                h: widget?.h,
-                i: widget.i,
+                x: widget?.layout.x,
+                y: widget?.layout.y,
+                w: widget?.layout.w,
+                h: widget?.layout.h,
+                i: widget.layout.i,
                 minW: 1,
                 maxW: 2,
                 minH: 1,
@@ -111,7 +115,7 @@ function WidgetList() {
                 isResizable: { isModifying },
               }}
               onMouseDownCapture={handleLongPress}
-              onMouseUp={clearPressTimer}
+              onMouseUpCapture={clearPressTimer}
               onMouseLeave={clearPressTimer}
               onTouchStart={handleLongPress}
               onTouchEnd={clearPressTimer}
@@ -121,7 +125,7 @@ function WidgetList() {
                 $height="half"
                 className={animationClasses}
               >
-                <div>{widget.i}</div>
+                {renderWidget(widget.widgetType)}
               </S.WhiteContainer>
             </div>
           );
