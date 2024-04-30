@@ -23,7 +23,7 @@ import com.butter.wypl.global.exception.GlobalErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
-@Profile({"default", "local", "dev", "deploy"})
+@Profile({"default", "local", "dev", "prod"})
 @RequiredArgsConstructor
 @Component
 public class S3ImageService {
