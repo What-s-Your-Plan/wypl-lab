@@ -9,10 +9,12 @@ import com.butter.wypl.global.common.MongoBaseEntity;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @Builder
 @Document(collection = "notifications")
+@ToString
 public class Notification extends MongoBaseEntity {
 
 	@Id
