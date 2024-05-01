@@ -11,6 +11,7 @@ import com.butter.wypl.file.S3ImageProvider;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
 import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
+import com.butter.wypl.member.data.response.FindMemberProfileInfoResponse;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
@@ -39,6 +40,15 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 		List<CalendarTimeZone> timeZones = CalendarTimeZone.getTimeZones();
 
 		return FindTimezonesResponse.of(findMember.getTimeZone(), timeZones);
+	}
+
+	@Override
+	public FindMemberProfileInfoResponse findProfileInfo(
+			final AuthMember authMember,
+			final int memberId) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, memberId);
+
+		return FindMemberProfileInfoResponse.from(findMember);
 	}
 
 	@Transactional
