@@ -2,8 +2,10 @@ package com.butter.wypl.sidetab.service;
 
 import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +18,9 @@ import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
+import com.butter.wypl.sidetab.data.request.DDayUpdateRequest;
 import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
+import com.butter.wypl.sidetab.data.response.DDayWidgetResponse;
 import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
 import com.butter.wypl.sidetab.domain.SideTab;
 import com.butter.wypl.sidetab.repository.SideTabRepository;
@@ -60,5 +64,29 @@ class SideTabModifyServiceTest {
 
 		/* Then */
 		assertThat(response.content()).isEqualTo(goalAsString);
+	}
+
+	@DisplayName("디데이를 수정한다.")
+	@Test
+	void dDayUpdateSuccessTest() {
+		/* Given */
+		DDayUpdateRequest request = new DDayUpdateRequest("디데이", LocalDate.now());
+
+		Member member = KIM_JEONG_UK.toMember();
+		given(memberRepository.findById(anyInt()))
+				.willReturn(Optional.of(member));
+
+		SideTab sideTab = SideTab.from(member);
+		given(sideTabRepository.findById(anyInt()))
+				.willReturn(Optional.of(sideTab));
+
+		/* When */
+		DDayWidgetResponse response = sideTabService.updateDDay(authMember, 0, request);
+
+		/* Then */
+		assertAll(
+				() -> assertThat(response.title()).isEqualTo(request.title()),
+				() -> assertThat(response.dDay()).isEqualTo("D-DAY")
+		);
 	}
 }
