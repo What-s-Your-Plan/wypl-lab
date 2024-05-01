@@ -4,6 +4,7 @@ import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -64,6 +65,9 @@ class SideTabControllerTest extends ControllerTest {
 				.andDo(document("side-tab/update-goal",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
+						pathParameters(
+								parameterWithName("goal_id").description("목표 식별자")
+						),
 						requestFields(
 								fieldWithPath("content").type(JsonFieldType.STRING)
 										.description("수정 요청한 목표 내용")
@@ -103,6 +107,9 @@ class SideTabControllerTest extends ControllerTest {
 				.andDo(document("side-tab/find-goal",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
+						pathParameters(
+								parameterWithName("goal_id").description("목표 식별자")
+						),
 						responseFields(
 								fieldWithPath("message").type(JsonFieldType.STRING)
 										.description("응답 메시지"),
@@ -143,11 +150,55 @@ class SideTabControllerTest extends ControllerTest {
 				.andDo(document("side-tab/update-d-day",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
+						pathParameters(
+								parameterWithName("d_day_id").description("디데이 식별자")
+						),
 						requestFields(
 								fieldWithPath("title").type(JsonFieldType.STRING)
 										.description("수정 요청한 디데이 제목"),
 								fieldWithPath("date").type(JsonFieldType.STRING)
 										.description("수정 요청한 디데이 날짜")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.title").type(JsonFieldType.STRING)
+										.description("수정한 디데이 제목"),
+								fieldWithPath("body.d_day").type(JsonFieldType.STRING)
+										.description("수정한 디데이"),
+								fieldWithPath("body.date").type(JsonFieldType.STRING)
+										.description("수정한 디데이 날짜")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사이드탭의 디데이를 조회한다.")
+	@Test
+	void findSideTabDDayTest() throws Exception {
+		/* Given */
+		given(sideTabLoadService.findDDay(any(AuthMember.class), anyInt()))
+				.willReturn(new DDayWidgetResponse(
+						"디데이의 제목",
+						"D-DAY",
+						LocalDateUtils.toString(LocalDate.now())));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/side/v1/d-day/{d_day_id}", 0)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("side-tab/update-d-day",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						pathParameters(
+								parameterWithName("d_day_id").description("디데이 식별자")
 						),
 						responseFields(
 								fieldWithPath("message").type(JsonFieldType.STRING)
