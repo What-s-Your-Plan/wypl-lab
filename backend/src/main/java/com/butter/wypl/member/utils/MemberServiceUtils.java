@@ -29,4 +29,13 @@ public class MemberServiceUtils {
 		return memberRepository.findByEmail(email)
 				.orElseThrow(() -> new MemberException(MemberErrorCode.NOT_EXIST_MEMBER));
 	}
+
+	public static void validateOwnership(
+			final Member member,
+			final int checkMemberId
+	) {
+		if (member.getId() != checkMemberId) {
+			throw new MemberException(MemberErrorCode.PERMISSION_DENIED);
+		}
+	}
 }

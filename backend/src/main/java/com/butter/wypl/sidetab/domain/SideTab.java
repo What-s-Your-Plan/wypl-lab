@@ -56,6 +56,10 @@ public class SideTab {
 		return new SideTab(member);
 	}
 
+	public int getMemberId() {
+		return member.getId();
+	}
+
 	public String getMemo() {
 		return memo.getValue();
 	}
