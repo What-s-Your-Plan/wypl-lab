@@ -37,6 +37,6 @@ public class SideTabServiceImpl implements SideTabLoadService, SideTabModifyServ
 		GoalWidget goalWidget = GoalWidget.from(goalUpdateRequest.content());
 		findSideTab.updateGoal(goalWidget);
 
-		return new GoalUpdateResponse(findSideTab.getGoal());
+		return GoalUpdateResponse.from(findSideTab);
 	}
 }
