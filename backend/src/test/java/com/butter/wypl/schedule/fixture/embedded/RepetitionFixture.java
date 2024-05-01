@@ -2,7 +2,7 @@ package com.butter.wypl.schedule.fixture.embedded;
 
 import java.time.LocalDate;
 
-import com.butter.wypl.schedule.data.request.RepetitionRequest;
+import com.butter.wypl.schedule.domain.embedded.Repetition;
 import com.butter.wypl.schedule.domain.embedded.RepetitionCycle;
 
 public enum RepetitionFixture {
@@ -62,14 +62,14 @@ public enum RepetitionFixture {
 		this.dayOfWeek = dayOfWeek;
 	}
 
-	public RepetitionRequest toRepetitionRequest() {
-		return new RepetitionRequest(
-			repetitionCycle,
-			repetitionStartDate,
-			repetitionEndDate,
-			dayOfWeek,
-			week
-		);
+	public Repetition toRepetition() {
+		return Repetition.builder()
+			.repetitionCycle(repetitionCycle)
+			.repetitionStartDate(repetitionStartDate)
+			.repetitionEndDate(repetitionEndDate)
+			.week(week)
+			.dayOfWeek(dayOfWeek)
+			.build();
 	}
 
 }

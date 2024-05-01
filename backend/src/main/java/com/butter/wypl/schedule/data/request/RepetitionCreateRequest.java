@@ -6,7 +6,7 @@ import com.butter.wypl.schedule.domain.embedded.Repetition;
 import com.butter.wypl.schedule.domain.embedded.RepetitionCycle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record RepetitionRequest(
+public record RepetitionCreateRequest(
 	@JsonProperty("repetition_cycle")
 	RepetitionCycle repetitionCycle,
 
@@ -30,5 +30,18 @@ public record RepetitionRequest(
 			.dayOfWeek(dayOfWeek)
 			.week(week)
 			.build();
+	}
+
+	public static RepetitionCreateRequest from(Repetition repetition) {
+		if (repetition == null)
+			return null;
+
+		return new RepetitionCreateRequest(
+			repetition.getRepetitionCycle(),
+			repetition.getRepetitionStartDate(),
+			repetition.getRepetitionEndDate(),
+			repetition.getDayOfWeek(),
+			repetition.getWeek()
+		);
 	}
 }

@@ -1,5 +1,7 @@
 package com.butter.wypl.schedule.domain;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.member.domain.Member;
 
@@ -22,6 +24,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@SQLRestriction("deleted_at is null")
 public class MemberSchedule extends BaseEntity {
 
 	@Id

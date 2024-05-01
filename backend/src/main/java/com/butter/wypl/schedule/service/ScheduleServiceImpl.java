@@ -11,14 +11,18 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.repository.LabelRepository;
 import com.butter.wypl.label.utils.LabelServiceUtils;
-import com.butter.wypl.schedule.data.request.RepetitionRequest;
-import com.butter.wypl.schedule.data.request.ScheduleRequest;
-import com.butter.wypl.schedule.data.response.MemberResponse;
+import com.butter.wypl.member.domain.Member;
+import com.butter.wypl.schedule.data.ModificationType;
+import com.butter.wypl.schedule.data.request.RepetitionCreateRequest;
+import com.butter.wypl.schedule.data.request.ScheduleCreateRequest;
+import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
 import com.butter.wypl.schedule.data.response.ScheduleIdResponse;
 import com.butter.wypl.schedule.data.response.ScheduleResponse;
 import com.butter.wypl.schedule.domain.Schedule;
+import com.butter.wypl.schedule.domain.embedded.Repetition;
 import com.butter.wypl.schedule.exception.ScheduleErrorCode;
 import com.butter.wypl.schedule.exception.ScheduleException;
 import com.butter.wypl.schedule.respository.ScheduleRepository;
@@ -38,55 +42,91 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 	@Override
 	@Transactional
-	public ScheduleResponse createSchedule(int memberId, ScheduleRequest scheduleRequest) {
-		Schedule schedule = scheduleRepository.save(scheduleRequest.toEntity()); //반복이 없다는 가정하에 저장
+	public ScheduleResponse createSchedule(int memberId, ScheduleCreateRequest scheduleCreateRequest) {
+		Label label = scheduleCreateRequest.labelId() == null ? null
+			: LabelServiceUtils.getLabelByLabelId(labelRepository, scheduleCreateRequest.labelId()); //라벨 유효성 검사
 
-		//라벨이 있을 경우 라벨 추가
-		if (scheduleRequest.labelId() != null) {
-			schedule.updateLabel(LabelServiceUtils.getLabelByLabelId(labelRepository, scheduleRequest.labelId()));
-		}
+		Schedule schedule = scheduleRepository.save(scheduleCreateRequest.toEntity(label)); //반복이 없다는 가정하에 저장
 
 		//멤버-일정 테이블 업데이트
-		List<MemberResponse> memberResponses = memberScheduleService.createMemberSchedule(schedule,
-			scheduleRequest.members());
+		List<Member> memberResponses = memberScheduleService.createMemberSchedule(schedule,
+			scheduleCreateRequest.members());
 
 		//반복이 있을 경우 반복 일정 추가
-		if (scheduleRequest.repetition() != null) {
-			schedule.updateRepetition(scheduleRequest.repetition().toEntity());
-			createRepetition(schedule, scheduleRequest.repetition());
+		if (scheduleCreateRequest.repetition() != null) {
+			schedule.updateRepetition(scheduleCreateRequest.repetition().toEntity());
+			createRepetition(schedule, scheduleCreateRequest.repetition());
 		}
 
-		return ScheduleResponse.from(schedule, memberResponses);
+		return ScheduleResponse.of(schedule, memberResponses);
 	}
 
 	@Override
 	@Transactional
-	public ScheduleResponse updateSchedule(int memberId, int scheduleId, ScheduleRequest scheduleRequest) {
+	public ScheduleResponse updateSchedule(int memberId, int scheduleId, ScheduleUpdateRequest scheduleUpdateRequest) {
 		Schedule schedule = ScheduleServiceUtils.findById(scheduleRepository, scheduleId);
 
-		//TODO : schedule에 속한 멤버인지 확인해야 됨
+		//스케줄에 속한 멤버인지 확인(권한 확인)
+		memberScheduleService.validateMemberSchedule(schedule, memberId);
+
+		//라벨, 속한 멤버, 반복 외의 일정 update
+		schedule.update(scheduleUpdateRequest);
+
+		//라벨 update
+		if (scheduleUpdateRequest.labelId() != null) {
+			schedule.updateLabel(LabelServiceUtils.getLabelByLabelId(labelRepository, scheduleUpdateRequest.labelId()));
+		} else {
+			schedule.updateLabel(null);
+		}
+
+		//멤버-일정 update
+		memberScheduleService.updateMemberSchedule(schedule, scheduleUpdateRequest.members());
+
+		//반복 update TODO:어케 하지..
 
 		return null;
 	}
 
 	@Override
 	@Transactional
-	public ScheduleIdResponse deleteSchedule(int memberId, int scheduleId) {
-		return null;
-	}
+	public List<ScheduleIdResponse> deleteSchedule(int memberId, int scheduleId, ModificationType modificationType) {
+		Schedule schedule = ScheduleServiceUtils.findById(scheduleRepository, scheduleId);
 
-	@Override
-	@Transactional
-	public ScheduleIdResponse deleteRepeatSchedule(int memberId, int scheduleId) {
-		return null;
+		//스케줄에 속한 멤버인지 확인(권한 확인)
+		memberScheduleService.validateMemberSchedule(schedule, memberId);
+
+		List<ScheduleIdResponse> scheduleIdResponses = new ArrayList<>();
+
+		switch (modificationType) {
+			case NOW -> {
+				schedule.delete();
+				scheduleIdResponses.add(ScheduleIdResponse.from(schedule));
+				break;
+			}
+			case AFTER -> {
+
+				break;
+			}
+			case ALL -> {
+
+				break;
+			}
+			default -> throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_MODIFICATION_TYPE);
+		}
+
+		return scheduleIdResponses;
 	}
 
 	@Override
 	public ScheduleResponse getScheduleByScheduleId(int scheduleId) {
-		return null;
+		Schedule schedule = ScheduleServiceUtils.findById(scheduleRepository, scheduleId);
+		Repetition repetition = null;
+
+		return ScheduleResponse.of(schedule,
+			memberScheduleService.getMembersBySchedule(schedule));
 	}
 
-	private void createRepetition(Schedule originSchedule, RepetitionRequest repetition) {
+	private void createRepetition(Schedule originSchedule, RepetitionCreateRequest repetition) {
 		LocalDate repetitionStartDate = repetition.repetitionStartDate();
 		LocalDate repetitionEndDate =
 			repetition.repetitionEndDate() == null ? repetitionStartDate.plusYears(3) : repetition.repetitionEndDate();

@@ -3,6 +3,7 @@ package com.butter.wypl.schedule.data.request;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.schedule.data.response.MemberIdResponse;
 import com.butter.wypl.schedule.domain.Category;
 import com.butter.wypl.schedule.domain.Schedule;
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 
 @Builder
-public record ScheduleRequest(
+public record ScheduleCreateRequest(
 	//TODO : validation
 	String title,
 	String description,
@@ -23,10 +24,10 @@ public record ScheduleRequest(
 	LocalDateTime endDate,
 	Category category,
 
-	@JsonProperty("owner_id")
-	int ownerId,
+	@JsonProperty("group_id")
+	Integer groupId,
 
-	RepetitionRequest repetition,
+	RepetitionCreateRequest repetition,
 
 	@JsonProperty("label_id")
 	Integer labelId,
@@ -34,14 +35,29 @@ public record ScheduleRequest(
 	List<MemberIdResponse> members
 ) {
 
-	public Schedule toEntity() {
+	public Schedule toEntity(Label label) {
 		return Schedule.builder()
 			.title(title)
 			.description(description)
 			.startDate(startDate)
 			.endDate(endDate)
 			.category(category)
-			.ownerId(ownerId)
+			.groupId(groupId)
+			.label(label)
 			.build();
+	}
+
+	public static ScheduleCreateRequest of(Schedule schedule, List<MemberIdResponse> members) {
+		return new ScheduleCreateRequest(
+			schedule.getTitle(),
+			schedule.getDescription(),
+			schedule.getStartDate(),
+			schedule.getEndDate(),
+			schedule.getCategory(),
+			schedule.getGroupId(),
+			RepetitionCreateRequest.from(schedule.getRepetition()),
+			schedule.getLabel() == null ? null : schedule.getLabel().getLabelId(),
+			members
+		);
 	}
 }

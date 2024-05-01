@@ -1,12 +1,12 @@
 package com.butter.wypl.schedule.fixture;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.butter.wypl.schedule.data.request.RepetitionRequest;
-import com.butter.wypl.schedule.data.request.ScheduleRequest;
-import com.butter.wypl.schedule.data.response.MemberIdResponse;
+import com.butter.wypl.label.domain.Label;
+import com.butter.wypl.label.fixture.LabelFixture;
 import com.butter.wypl.schedule.domain.Category;
+import com.butter.wypl.schedule.domain.Schedule;
+import com.butter.wypl.schedule.domain.embedded.Repetition;
 import com.butter.wypl.schedule.fixture.embedded.RepetitionFixture;
 
 import lombok.Getter;
@@ -23,8 +23,7 @@ public enum ScheduleFixture {
 		null,
 		null,
 		Category.MEMBER,
-		1,
-		List.of(new MemberIdResponse(1))
+		null
 	),
 	//라벨 있고 반복 있는 개인 스케줄
 	PERSONAL_REPEAT_EXERCISE_SCHEDULE(
@@ -32,11 +31,10 @@ public enum ScheduleFixture {
 		null,
 		LocalDateTime.of(2024, 04, 25, 11, 0),
 		LocalDateTime.of(2024, 04, 25, 12, 0),
-		1,
-		RepetitionFixture.TUESDAY_THRUSDAY_REPETITION.toRepetitionRequest(),
+		LabelFixture.STUDY_LABEL.toLabel(),
+		RepetitionFixture.TUESDAY_THRUSDAY_REPETITION.toRepetition(),
 		Category.MEMBER,
-		1,
-		List.of(new MemberIdResponse(1))
+		null
 	),
 	//반복 있는 그룹 스케줄
 	REPEAT_GROUP_SCHEDULE(
@@ -45,10 +43,9 @@ public enum ScheduleFixture {
 		LocalDateTime.of(2024, 04, 27, 11, 0),
 		LocalDateTime.of(2024, 04, 27, 12, 0),
 		null,
-		RepetitionFixture.LAST_DAY_REPETITION.toRepetitionRequest(),
+		RepetitionFixture.LAST_DAY_REPETITION.toRepetition(),
 		Category.GROUP,
-		1,
-		List.of(new MemberIdResponse(1), new MemberIdResponse(2), new MemberIdResponse(3))
+		1
 	),
 	NO_REPEAT_GROUP_SCHEDULE(
 		"알고르즘 스터디",
@@ -58,8 +55,7 @@ public enum ScheduleFixture {
 		null,
 		null,
 		Category.GROUP,
-		1,
-		List.of(new MemberIdResponse(1), new MemberIdResponse(2), new MemberIdResponse(3))
+		1
 	);
 
 	private final String title;
@@ -70,40 +66,36 @@ public enum ScheduleFixture {
 
 	private final LocalDateTime endDate;
 
-	private final Integer labelId;
+	private final Label label;
 
-	private final RepetitionRequest repetition;
+	private final Repetition repetition;
 
 	private final Category category;
 
-	private final int ownerId;
-
-	private final List<MemberIdResponse> members;
+	private final Integer groupId;
 
 	ScheduleFixture(String title, String description, LocalDateTime startDate, LocalDateTime endDate,
-		Integer labelId, RepetitionRequest repetition, Category category, int ownerId, List<MemberIdResponse> members) {
+		Label label, Repetition repetition, Category category, Integer groupId) {
 		this.title = title;
 		this.category = category;
-		this.ownerId = ownerId;
+		this.groupId = groupId;
 		this.description = description;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.labelId = labelId;
+		this.label = label;
 		this.repetition = repetition;
-		this.members = members;
 	}
 
-	public ScheduleRequest toScheduleRequest() {
-		return ScheduleRequest.builder()
+	public Schedule toSchedule() {
+		return Schedule.builder()
 			.title(title)
 			.description(description)
 			.category(category)
 			.startDate(startDate)
 			.endDate(endDate)
 			.repetition(repetition)
-			.labelId(labelId)
-			.ownerId(ownerId)
-			.members(members)
+			.label(label)
+			.groupId(groupId)
 			.build();
 	}
 

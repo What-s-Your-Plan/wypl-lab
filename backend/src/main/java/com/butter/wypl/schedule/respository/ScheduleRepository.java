@@ -11,3 +11,4 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 	Optional<Schedule> findById(int scheduleId);
 
 }
+

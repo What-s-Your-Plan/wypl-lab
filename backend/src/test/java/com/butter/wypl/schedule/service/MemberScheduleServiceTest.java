@@ -18,7 +18,6 @@ import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.schedule.data.response.MemberIdResponse;
-import com.butter.wypl.schedule.data.response.MemberResponse;
 import com.butter.wypl.schedule.domain.MemberSchedule;
 import com.butter.wypl.schedule.domain.Schedule;
 import com.butter.wypl.schedule.respository.MemberScheduleRepository;
@@ -72,12 +71,12 @@ public class MemberScheduleServiceTest {
 				));
 
 			//when
-			List<MemberResponse> memberResponses =
+			List<Member> members =
 				memberScheduleService.createMemberSchedule(schedule, memberIdResponses);
 
 			//then
-			assertThat(memberResponses.size()).isEqualTo(2);
-			assertThat(memberResponses.get(0).nickname()).isEqualTo(member1.getNickname());
+			assertThat(members.size()).isEqualTo(2);
+			assertThat(members.get(0).getNickname()).isEqualTo(member1.getNickname());
 		}
 
 	}

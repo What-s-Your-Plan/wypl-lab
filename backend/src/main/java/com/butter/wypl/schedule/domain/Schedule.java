@@ -2,8 +2,11 @@ package com.butter.wypl.schedule.domain;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.SQLRestriction;
+
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.label.domain.Label;
+import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
 import com.butter.wypl.schedule.domain.embedded.Repetition;
 
 import jakarta.persistence.Column;
@@ -28,6 +31,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@SQLRestriction("deleted_at is null")
 public class Schedule extends BaseEntity {
 
 	@Id
@@ -44,17 +48,14 @@ public class Schedule extends BaseEntity {
 	@Column(nullable = false)
 	private Category category;
 
-	@Column(name = "owner_id", nullable = false)
-	private int ownerId;
+	@Column(name = "group_id")
+	private Integer groupId;
 
 	@Column(name = "start_date", nullable = false)
 	private LocalDateTime startDate;
 
 	@Column(name = "end_date", nullable = false)
 	private LocalDateTime endDate;
-
-	@Column(name = "repeat_schedule_id")
-	private Integer repeatScheduleId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "label_id")
@@ -63,12 +64,18 @@ public class Schedule extends BaseEntity {
 	@Embedded
 	private Repetition repetition;
 
+	public void update(ScheduleUpdateRequest scheduleUpdateRequest) {
+		this.title = scheduleUpdateRequest.title();
+		this.description = scheduleUpdateRequest.description();
+		this.startDate = scheduleUpdateRequest.startDate();
+		this.endDate = scheduleUpdateRequest.endDate();
+	}
+
 	public void updateLabel(Label label) {
 		this.label = label;
 	}
 
 	public void updateRepetition(Repetition repetition) {
-		this.repeatScheduleId = this.scheduleId;
 		this.repetition = repetition;
 	}
 
@@ -79,9 +86,9 @@ public class Schedule extends BaseEntity {
 			.startDate(startDate)
 			.endDate(endDate)
 			.category(category)
-			.ownerId(ownerId)
+			.groupId(groupId)
 			.label(label)
-			.repeatScheduleId(repeatScheduleId)
+			.repetition(repetition)
 			.build();
 	}
 

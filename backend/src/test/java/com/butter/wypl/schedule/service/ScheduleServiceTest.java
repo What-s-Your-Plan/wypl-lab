@@ -3,6 +3,7 @@ package com.butter.wypl.schedule.service;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -19,9 +20,12 @@ import com.butter.wypl.label.repository.LabelRepository;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.member.repository.MemberRepository;
-import com.butter.wypl.schedule.data.request.ScheduleRequest;
+import com.butter.wypl.schedule.data.request.ScheduleCreateRequest;
+import com.butter.wypl.schedule.data.response.MemberIdResponse;
+import com.butter.wypl.schedule.data.response.RepetitionResponse;
 import com.butter.wypl.schedule.data.response.ScheduleResponse;
 import com.butter.wypl.schedule.domain.Category;
+import com.butter.wypl.schedule.domain.Schedule;
 import com.butter.wypl.schedule.fixture.ScheduleFixture;
 import com.butter.wypl.schedule.respository.ScheduleRepository;
 
@@ -72,42 +76,47 @@ public class ScheduleServiceTest {
 		@DisplayName("반복 없는 개인 일정 등록이 정상적으로 이루어지는지 확인")
 		void noRepeatPersonalSchedule() {
 			//given
-			ScheduleRequest scheduleRequest = ScheduleFixture.PERSONAL_EXERCISE_SCHEDULE.toScheduleRequest();
-			lenient().when(scheduleRepository.save(any())).thenReturn(scheduleRequest.toEntity());
+			Schedule schedule = ScheduleFixture.PERSONAL_EXERCISE_SCHEDULE.toSchedule();
+			lenient().when(scheduleRepository.save(any()))
+				.thenReturn(schedule);
 
 			//when
-			ScheduleResponse result = scheduleService.createSchedule(1, scheduleRequest);
+			ScheduleResponse result = scheduleService.createSchedule(1,
+				ScheduleCreateRequest.of(schedule, List.of(new MemberIdResponse(1)))
+			);
 
 			//then
 			assertThat(result).isNotNull();
-			assertThat(result.ownerId()).isEqualTo(1);
-			assertThat(result.title()).isEqualTo(scheduleRequest.title());
-			assertThat(result.startDate()).isEqualTo(scheduleRequest.startDate());
-			assertThat(result.endDate()).isEqualTo(scheduleRequest.endDate());
+			assertThat(result.groupId()).isNull();
+			assertThat(result.title()).isEqualTo(schedule.getTitle());
+			assertThat(result.startDate()).isEqualTo(schedule.getStartDate());
+			assertThat(result.endDate()).isEqualTo(schedule.getEndDate());
 			assertThat(result.category()).isEqualTo(Category.MEMBER);
 			assertThat(result.labelId()).isNull();
-			assertThat(result.repetitionScheduleId()).isNull();
+			assertThat(result.repetition()).isNull();
 		}
 
 		@Test
 		@DisplayName("반복 있는 개인 일정 등록이 정상적으로 이루어지는지 확인")
 		void repeatPersonalSchedule() {
 			//given
-			ScheduleRequest scheduleRequest = ScheduleFixture.PERSONAL_REPEAT_EXERCISE_SCHEDULE.toScheduleRequest();
-			lenient().when(scheduleRepository.save(any())).thenReturn(scheduleRequest.toEntity());
+			Schedule schedule = ScheduleFixture.PERSONAL_REPEAT_EXERCISE_SCHEDULE.toSchedule();
+			lenient().when(scheduleRepository.save(any()))
+				.thenReturn(schedule);
 
 			//when
-			ScheduleResponse result = scheduleService.createSchedule(1, scheduleRequest);
+			ScheduleResponse result = scheduleService.createSchedule(1,
+				ScheduleCreateRequest.of(schedule, List.of(new MemberIdResponse(1))));
 
 			//then
 			assertThat(result).isNotNull();
-			assertThat(result.ownerId()).isEqualTo(1);
-			assertThat(result.title()).isEqualTo(scheduleRequest.title());
-			assertThat(result.startDate()).isEqualTo(scheduleRequest.startDate());
-			assertThat(result.endDate()).isEqualTo(scheduleRequest.endDate());
+			assertThat(result.groupId()).isNull();
+			assertThat(result.title()).isEqualTo(schedule.getTitle());
+			assertThat(result.startDate()).isEqualTo(schedule.getStartDate());
+			assertThat(result.endDate()).isEqualTo(schedule.getEndDate());
 			assertThat(result.category()).isEqualTo(Category.MEMBER);
 			assertThat(result.labelId()).isNotNull();
-			assertThat(result.repetitionScheduleId()).isEqualTo(result.scheduleId());
+			assertThat(result.repetition()).isEqualTo(RepetitionResponse.from(schedule.getRepetition()));
 		}
 
 		@Test
