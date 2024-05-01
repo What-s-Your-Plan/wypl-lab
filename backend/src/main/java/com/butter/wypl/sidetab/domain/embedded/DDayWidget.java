@@ -1,4 +1,4 @@
-package com.butter.wypl.member.domain.embedded;
+package com.butter.wypl.sidetab.domain.embedded;
 
 import java.time.LocalDate;
 

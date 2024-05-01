@@ -14,6 +14,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.fixture.SideTabFixture;
+import com.butter.wypl.sidetab.domain.embedded.DDayWidget;
 
 class DDayWidgetTest {
 

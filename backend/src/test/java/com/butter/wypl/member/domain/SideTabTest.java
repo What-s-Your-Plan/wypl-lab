@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import com.butter.wypl.member.fixture.MemberFixture;
+import com.butter.wypl.sidetab.domain.SideTab;
 
 class SideTabTest {
 

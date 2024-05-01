@@ -1,10 +1,11 @@
-package com.butter.wypl.member.domain;
+package com.butter.wypl.sidetab.domain;
 
 import java.time.LocalDate;
 
-import com.butter.wypl.member.domain.embedded.DDayWidget;
-import com.butter.wypl.member.domain.embedded.GoalWidget;
-import com.butter.wypl.member.domain.embedded.MemoWidget;
+import com.butter.wypl.member.domain.Member;
+import com.butter.wypl.sidetab.domain.embedded.DDayWidget;
+import com.butter.wypl.sidetab.domain.embedded.GoalWidget;
+import com.butter.wypl.sidetab.domain.embedded.MemoWidget;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
