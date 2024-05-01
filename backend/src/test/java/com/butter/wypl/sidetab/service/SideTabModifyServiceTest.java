@@ -17,7 +17,7 @@ import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
-import com.butter.wypl.sidetab.data.response.GoalUpdateResponse;
+import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
 import com.butter.wypl.sidetab.domain.SideTab;
 import com.butter.wypl.sidetab.repository.SideTabRepository;
 
@@ -56,7 +56,7 @@ class SideTabModifyServiceTest {
 				.willReturn(Optional.of(sideTab));
 
 		/* When */
-		GoalUpdateResponse response = sideTabService.updateGoal(authMember, 0, request);
+		GoalWidgetResponse response = sideTabService.updateGoal(authMember, 0, request);
 
 		/* Then */
 		assertThat(response.content()).isEqualTo(goalAsString);

@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
-import com.butter.wypl.sidetab.data.response.GoalUpdateResponse;
+import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
 import com.butter.wypl.sidetab.service.SideTabLoadService;
 import com.butter.wypl.sidetab.service.SideTabModifyService;
 
@@ -42,7 +42,7 @@ class SideTabControllerTest extends ControllerTest {
 		String json = convertToJson(new GoalUpdateRequest(goalAsString));
 
 		given(sideTabModifyService.updateGoal(any(AuthMember.class), anyInt(), any(GoalUpdateRequest.class)))
-				.willReturn(new GoalUpdateResponse(0, goalAsString));
+				.willReturn(new GoalWidgetResponse(0, goalAsString));
 
 		givenMockLoginMember();
 

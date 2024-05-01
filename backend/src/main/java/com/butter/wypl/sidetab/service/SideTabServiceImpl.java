@@ -8,7 +8,7 @@ import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.member.utils.MemberServiceUtils;
 import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
-import com.butter.wypl.sidetab.data.response.GoalUpdateResponse;
+import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
 import com.butter.wypl.sidetab.domain.SideTab;
 import com.butter.wypl.sidetab.domain.embedded.GoalWidget;
 import com.butter.wypl.sidetab.repository.SideTabRepository;
@@ -25,7 +25,7 @@ public class SideTabServiceImpl implements SideTabLoadService, SideTabModifyServ
 
 	@Transactional
 	@Override
-	public GoalUpdateResponse updateGoal(
+	public GoalWidgetResponse updateGoal(
 			final AuthMember authMember,
 			final int sideTabId,
 			final GoalUpdateRequest goalUpdateRequest
@@ -37,6 +37,18 @@ public class SideTabServiceImpl implements SideTabLoadService, SideTabModifyServ
 		GoalWidget goalWidget = GoalWidget.from(goalUpdateRequest.content());
 		findSideTab.updateGoal(goalWidget);
 
-		return GoalUpdateResponse.from(findSideTab);
+		return GoalWidgetResponse.from(findSideTab);
+	}
+
+	@Override
+	public GoalWidgetResponse findGoal(
+			final AuthMember authMember,
+			final int sideTabId
+	) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
+		SideTab findSideTab = SideTabServiceUtils.findById(sideTabRepository, sideTabId);
+		MemberServiceUtils.validateOwnership(findMember, findSideTab.getMemberId());
+
+		return GoalWidgetResponse.from(findSideTab);
 	}
 }
