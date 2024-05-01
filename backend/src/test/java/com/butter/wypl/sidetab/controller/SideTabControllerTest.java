@@ -74,4 +74,39 @@ class SideTabControllerTest extends ControllerTest {
 				))
 				.andExpect(status().isOk());
 	}
+
+	@DisplayName("사이드탭의 목표를 조회한다.")
+	@Test
+	void findSideTabGoalTest() throws Exception {
+		/* Given */
+		String goalAsString = "사이드탭의 목표";
+
+		given(sideTabLoadService.findGoal(any(AuthMember.class), anyInt()))
+				.willReturn(new GoalWidgetResponse(0, goalAsString));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/side/v1/goals/{goal_id}", 0)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("side-tab/find-goal",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.goal_id").type(JsonFieldType.NUMBER)
+										.description("목표 식별자"),
+								fieldWithPath("body.content").type(JsonFieldType.STRING)
+										.description("수정한 목표 내용")
+						)
+				))
+				.andExpect(status().isOk());
+	}
 }
