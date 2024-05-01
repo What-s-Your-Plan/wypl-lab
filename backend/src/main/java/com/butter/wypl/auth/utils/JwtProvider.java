@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import com.butter.wypl.auth.data.JsonWebTokens;
 import com.butter.wypl.auth.exception.AuthErrorCode;
 import com.butter.wypl.auth.exception.AuthException;
+import com.butter.wypl.global.annotation.Generated;
+import com.butter.wypl.global.utils.Base64Utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -74,11 +76,12 @@ public class JwtProvider {
 				.setExpiration(expireTime)
 				.claim("member_id", memberId)
 				.claim("type", tokenType)
-				.claim("expireTime", expireTime.getTime())
+				.claim("expire_time", expireTime.getTime())
 				.signWith(key, SignatureAlgorithm.HS512)
 				.compact();
 	}
 
+	@Generated
 	public void validateToken(
 			final String token
 	) {
@@ -87,8 +90,11 @@ public class JwtProvider {
 		try {
 			if (type.equals("accessToken")) {
 				Jwts.parserBuilder().setSigningKey(accessKey).build().parseClaimsJws(token);
-			} else if (type.equals("refreshToken")) {
+				return;
+			}
+			if (type.equals("refreshToken")) {
 				Jwts.parserBuilder().setSigningKey(refreshKey).build().parseClaimsJws(token);
+				return;
 			}
 		} catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
 			throw new AuthException(AuthErrorCode.WRONG_TYPE_TOKEN);
@@ -110,7 +116,7 @@ public class JwtProvider {
 
 	private String getTokenType(final String payload) {
 		try {
-			return objectMapper.readValue(payload, TokenType.class).type();
+			return objectMapper.readValue(Base64Utils.decode(payload), TokenType.class).type();
 		} catch (JsonProcessingException e) {
 			throw new AuthException(AuthErrorCode.INVALID_JWT);
 		}
