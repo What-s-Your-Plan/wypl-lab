@@ -1,10 +1,12 @@
 package com.butter.wypl.member.controller;
 
+import static com.butter.wypl.file.fixture.FileFixture.*;
 import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -19,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.ControllerTest;
@@ -28,6 +31,7 @@ import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
+import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
 import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.service.MemberLoadService;
@@ -192,6 +196,42 @@ class MemberControllerTest extends ControllerTest {
 										.description("응답 메시지"),
 								fieldWithPath("body.timezone").type(JsonFieldType.STRING)
 										.description("변경한 사용자의 타임존")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사용자가 프로필 이미지를 수정한다.")
+	@Test
+	void updateProfileImageTest() throws Exception {
+		/* Given */
+		String newProfileImageUrl = "aws.image.url";
+
+		given(memberModifyService.updateProfileImage(any(AuthMember.class), any(MultipartFile.class)))
+				.willReturn(new MemberProfileImageUpdateResponse(newProfileImageUrl));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.multipart("/member/v1/members/profile-iamge")
+						.file(PNG_IMAGE.getMockMultipartFile())
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/update-profile-image",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestParts(
+								partWithName("image").description("변경 요청한 사용자 프로필 이미지")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.profile_image_url").type(JsonFieldType.STRING)
+										.description("변경한 사용자의 프로필 이미지 URL")
 						)
 				))
 				.andExpect(status().isOk());

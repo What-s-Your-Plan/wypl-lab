@@ -1,5 +1,6 @@
 package com.butter.wypl.member.service;
 
+import static com.butter.wypl.file.fixture.FileFixture.*;
 import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -12,8 +13,11 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.butter.wypl.auth.domain.AuthMember;
+import com.butter.wypl.file.S3ImageProvider;
 import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
@@ -31,6 +35,8 @@ class MemberModifyServiceTest {
 	private MemberServiceImpl memberService;
 	@Mock
 	private MemberRepository memberRepository;
+	@Mock
+	private S3ImageProvider s3ImageProvider;
 
 	private AuthMember authMember;
 
@@ -88,6 +94,22 @@ class MemberModifyServiceTest {
 
 			/* Then */
 			assertThat(request.timeZone()).isEqualTo(response.timeZone());
+		}
+
+		@DisplayName("회원의 프로필 이미지를 수정한다.")
+		@Test
+		void updateProfileImageTest() {
+			/* Given */
+			MockMultipartFile multipartFile = PNG_IMAGE.getMockMultipartFile();
+
+			given(memberRepository.findById(any(Integer.class)))
+					.willReturn(Optional.of(KIM_JEONG_UK.toMember()));
+			given(s3ImageProvider.uploadImage(any(MultipartFile.class)))
+					.willReturn(anyString());
+
+			/* When & Then */
+			assertThatCode(() -> memberService.updateProfileImage(authMember, multipartFile))
+					.doesNotThrowAnyException();
 		}
 	}
 }

@@ -77,4 +77,8 @@ public class Member extends BaseEntity {
 	public void changeTimezone(final CalendarTimeZone newTimezone) {
 		timeZone = newTimezone;
 	}
+
+	public void changeProfileImage(final String newProfileImage) {
+		profileImage = newProfileImage;
+	}
 }

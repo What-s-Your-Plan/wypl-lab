@@ -19,10 +19,10 @@ import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.global.exception.GlobalErrorCode;
 
 @MockServiceTest
-class MockS3ImageServiceTest {
+class S3ImageProviderTest {
 
 	@InjectMocks
-	private S3ImageService s3ImageService;
+	private S3ImageProvider s3ImageService;
 
 	@Mock
 	private AmazonS3Client amazonS3Client;

@@ -25,7 +25,7 @@ import io.findify.s3mock.S3Mock;
 
 @Import(S3MockConfig.class)
 @ServiceTest
-class S3ImageServiceTest {
+class S3ImageClientTest {
 
 	private static final String BUCKET_NAME = "butter-wypl";
 

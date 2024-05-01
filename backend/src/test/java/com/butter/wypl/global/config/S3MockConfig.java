@@ -13,8 +13,10 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 import io.findify.s3mock.S3Mock;
+import lombok.RequiredArgsConstructor;
 
 @Profile({"test"})
+@RequiredArgsConstructor
 @TestConfiguration
 public class S3MockConfig {
 

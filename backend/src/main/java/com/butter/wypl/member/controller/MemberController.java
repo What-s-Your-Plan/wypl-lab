@@ -3,9 +3,12 @@ package com.butter.wypl.member.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
@@ -16,6 +19,7 @@ import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
+import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
 import com.butter.wypl.member.service.MemberLoadService;
 import com.butter.wypl.member.service.MemberModifyService;
@@ -62,5 +66,14 @@ public class MemberController {
 	) {
 		MemberTimezoneUpdateResponse response = memberModifyService.updateTimezone(authMember, request);
 		return ResponseEntity.ok(Message.withBody("타임존을 수정하였습니다.", response));
+	}
+
+	@PostMapping("/v1/members/profile-iamge")
+	public ResponseEntity<Message<MemberProfileImageUpdateResponse>> changeProfileImage(
+			@Authenticated AuthMember authMember,
+			@RequestParam("image") MultipartFile image
+	) {
+		MemberProfileImageUpdateResponse response = memberModifyService.updateProfileImage(authMember, image);
+		return ResponseEntity.ok(Message.withBody("프로필 이미지를 수정했습니다.", response));
 	}
 }
