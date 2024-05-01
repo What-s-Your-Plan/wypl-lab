@@ -19,6 +19,8 @@ import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
 import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.domain.Member;
+import com.butter.wypl.member.exception.MemberErrorCode;
+import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.member.utils.MemberServiceUtils;
 
@@ -45,10 +47,19 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 	@Override
 	public FindMemberProfileInfoResponse findProfileInfo(
 			final AuthMember authMember,
-			final int memberId) {
+			final int memberId
+	) {
+		validateOwnership(authMember, memberId);
+
 		Member findMember = MemberServiceUtils.findById(memberRepository, memberId);
 
 		return FindMemberProfileInfoResponse.from(findMember);
+	}
+
+	private void validateOwnership(AuthMember authMember, int memberId) {
+		if (authMember.getId() != memberId) {
+			throw new MemberException(MemberErrorCode.PERMISSION_DENIED);
+		}
 	}
 
 	@Transactional
