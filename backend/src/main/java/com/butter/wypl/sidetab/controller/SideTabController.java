@@ -25,9 +25,9 @@ public class SideTabController {
 	private final SideTabLoadService sideTabLoadService;
 	private final SideTabModifyService sideTabModifyService;
 
-	@PatchMapping("/v1/goals/{sidetab_id}")
+	@PatchMapping("/v1/goals/{goal_id}")
 	public ResponseEntity<Message<GoalWidgetResponse>> updateGoal(
-			@PathVariable("sidetab_id") int sideTabId,
+			@PathVariable("goal_id") int sideTabId,
 			@RequestBody GoalUpdateRequest goalUpdateRequest,
 			@Authenticated AuthMember authMember
 	) {
@@ -36,9 +36,9 @@ public class SideTabController {
 		return ResponseEntity.ok(Message.withBody("목표를 수정했습니다", response));
 	}
 
-	@GetMapping("/v1/goals/{sidetab_id}")
+	@GetMapping("/v1/goals/{goal_id}")
 	public ResponseEntity<Message<GoalWidgetResponse>> findGoal(
-			@PathVariable("sidetab_id") int sideTabId,
+			@PathVariable("goal_id") int sideTabId,
 			@Authenticated AuthMember authMember
 	) {
 		GoalWidgetResponse response = sideTabLoadService.findGoal(authMember, sideTabId);
