@@ -7,4 +7,7 @@ public record OpenWeatherCond(
 		boolean isMetric,
 		boolean isLangKr
 ) {
+	public static OpenWeatherCond from(WeatherRegion city) {
+		return new OpenWeatherCond(city, true, true);
+	}
 }

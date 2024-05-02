@@ -3,6 +3,7 @@ package com.butter.wypl.member.domain;
 import java.time.LocalDate;
 
 import com.butter.wypl.global.common.BaseEntity;
+import com.butter.wypl.infrastructure.weather.WeatherRegion;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
 
@@ -48,6 +49,17 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "timezone", length = 10, nullable = false)
 	private CalendarTimeZone timeZone;
+
+	public WeatherRegion getWeatherRegion() {
+		for (CalendarTimeZone calendarTimeZone : CalendarTimeZone.values()) {
+			for (WeatherRegion weatherRegion : WeatherRegion.values()) {
+				if (calendarTimeZone.getTimeZone().getDisplayName().equals(weatherRegion.getTimeZone())) {
+					return weatherRegion;
+				}
+			}
+		}
+		throw new IllegalArgumentException("존재하지 않는 지역입니다.");
+	}
 
 	public void changeBirthday(final LocalDate newBirthday) {
 		validateBirthday(newBirthday);
