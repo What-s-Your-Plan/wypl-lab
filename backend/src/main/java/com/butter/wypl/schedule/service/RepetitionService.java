@@ -24,8 +24,9 @@ public class RepetitionService {
 
 	@Transactional
 	public void deleteRepetition(Repetition repetition) {
-		if (repetition == null)
+		if (repetition == null) {
 			return;
+		}
 
 		repetition.delete();
 	}

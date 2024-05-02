@@ -33,8 +33,9 @@ public record RepetitionCreateRequest(
 	}
 
 	public static RepetitionCreateRequest from(Repetition repetition) {
-		if (repetition == null)
+		if (repetition == null) {
 			return null;
+		}
 
 		return new RepetitionCreateRequest(
 			repetition.getRepetitionCycle(),

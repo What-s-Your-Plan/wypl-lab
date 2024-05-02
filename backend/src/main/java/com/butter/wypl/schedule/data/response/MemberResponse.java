@@ -1,6 +1,5 @@
 package com.butter.wypl.schedule.data.response;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.butter.wypl.member.domain.Member;
@@ -18,15 +17,8 @@ public record MemberResponse(
 	}
 
 	public static List<MemberResponse> from(List<Member> members) {
-		List<MemberResponse> memberResponses = new ArrayList<>();
-
-		for (Member member : members) {
-			memberResponses.add(
-				MemberResponse.from(member)
-			);
-		}
-
-		return memberResponses;
+		return members.stream().map(MemberResponse::from)
+			.toList();
 	}
 
 }

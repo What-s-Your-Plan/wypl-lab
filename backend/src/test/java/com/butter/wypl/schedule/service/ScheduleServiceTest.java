@@ -85,8 +85,8 @@ public class ScheduleServiceTest {
 		void noRepeatPersonalSchedule() {
 			//given
 			Schedule schedule = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
-			lenient().when(scheduleRepository.save(any()))
-				.thenReturn(schedule);
+			given(scheduleRepository.save(any()))
+				.willReturn(schedule);
 
 			//when
 			ScheduleResponse result = scheduleService.createSchedule(1,
@@ -112,11 +112,11 @@ public class ScheduleServiceTest {
 			void weeklyRepeat() {
 				//given
 				Repetition repetition = RepetitionFixture.MONDAY_REPETITION.toRepetition();
-				lenient().when(repetitionService.createRepetition(any())).thenReturn(repetition);
+				given(repetitionService.createRepetition(any())).willReturn(repetition);
 
 				Schedule schedule = ScheduleFixture.LABEL_REPEAT_PERSONAL_SCHEDULE.toSchedule();
-				lenient().when(scheduleRepository.save(any()))
-					.thenReturn(schedule);
+				given(scheduleRepository.save(any()))
+					.willReturn(schedule);
 
 				//when
 				ScheduleResponse result = scheduleService.createSchedule(1,
@@ -138,11 +138,11 @@ public class ScheduleServiceTest {
 			void monthlyRepeat() {
 				//given
 				Repetition repetition = RepetitionFixture.MONTHLY_REPETITION.toRepetition();
-				lenient().when(repetitionService.createRepetition(any())).thenReturn(repetition);
+				given(repetitionService.createRepetition(any())).willReturn(repetition);
 
 				Schedule schedule = ScheduleFixture.REPEAT_PERSONAL_SCHEDULE.toSchedule();
-				lenient().when(scheduleRepository.save(any()))
-					.thenReturn(schedule);
+				given(scheduleRepository.save(any()))
+					.willReturn(schedule);
 
 				//when
 				ScheduleResponse result = scheduleService.createSchedule(1,
@@ -164,11 +164,11 @@ public class ScheduleServiceTest {
 			void yearlyRepeat() {
 				//given
 				Repetition repetition = RepetitionFixture.YEARLY_REPETITION.toRepetition();
-				lenient().when(repetitionService.createRepetition(any())).thenReturn(repetition);
+				given(repetitionService.createRepetition(any())).willReturn(repetition);
 
 				Schedule schedule = ScheduleFixture.REPEAT_GROUP_SCHEDULE.toSchedule();
-				lenient().when(scheduleRepository.save(any()))
-					.thenReturn(schedule);
+				given(scheduleRepository.save(any()))
+					.willReturn(schedule);
 
 				//when
 				ScheduleResponse result = scheduleService.createSchedule(1,
@@ -363,7 +363,8 @@ public class ScheduleServiceTest {
 			Schedule schedule = ScheduleFixture.REPEAT_PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
-			given(scheduleRepository.findAllByRepetitionAndStartDateAfter(any(), any()))
+			given(scheduleRepository.findAllByRepetitionAndStartDateAfter(any(Repetition.class),
+				any(LocalDateTime.class)))
 				.willReturn(
 					List.of(schedule2)
 				);

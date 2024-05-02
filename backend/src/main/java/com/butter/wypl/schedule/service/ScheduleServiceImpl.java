@@ -134,8 +134,9 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 	}
 
 	private void createRepetitionSchedules(Schedule originSchedule, Repetition repetition) {
-		if (repetition == null)
+		if (repetition == null) {
 			return;
+		}
 
 		LocalDate repetitionStartDate = repetition.getRepetitionStartDate();
 		LocalDate repetitionEndDate =

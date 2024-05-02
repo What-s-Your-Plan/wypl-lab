@@ -2,7 +2,6 @@ package com.butter.wypl.schedule.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,22 +28,19 @@ public class MemberScheduleService {
 
 	@Transactional
 	public List<Member> createMemberSchedule(Schedule schedule, List<MemberIdResponse> memberIdResponses) {
-		List<MemberSchedule> memberSchedules = new ArrayList<>();
-
-		for (MemberIdResponse memberIdResponse : memberIdResponses) {
-			memberSchedules.add(
+		List<MemberSchedule> memberSchedules = memberIdResponses.stream()
+			.map(memberIdResponse ->
 				MemberSchedule.builder()
 					.member(MemberServiceUtils.findById(memberRepository, memberIdResponse.memberId()))
 					.schedule(schedule)
-					.build()
-			);
-		}
+					.build())
+			.toList();
 
 		List<MemberSchedule> savedMemberSchedules = memberScheduleRepository.saveAll(memberSchedules);
 
 		return savedMemberSchedules.stream()
-			.map(memberSchedule -> memberSchedule.getMember())
-			.collect(Collectors.toList());
+			.map(MemberSchedule::getMember)
+			.toList();
 	}
 
 	public void validateMemberSchedule(Schedule schedule, int memberId) {

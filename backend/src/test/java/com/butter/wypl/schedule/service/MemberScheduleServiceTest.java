@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.member.domain.Member;
@@ -60,7 +61,7 @@ public class MemberScheduleServiceTest {
 			given(memberRepository.findById(2))
 				.willReturn(Optional.of(member2));
 
-			given(memberScheduleRepository.saveAll(any()))
+			given(memberScheduleRepository.saveAll(Mockito.<MemberSchedule>anyList()))
 				.willReturn(List.of(
 					MemberSchedule.builder()
 						.member(member1)
