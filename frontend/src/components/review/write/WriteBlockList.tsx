@@ -14,7 +14,7 @@ function WriteBlockList() {
   const renderBlockList = () => {
     const blockList = reviewStore.contents;
     return blockList.map((block, index) => {
-      return <ReviewWrite $index={index} $content={block} />;
+      return <ReviewWrite index={index} content={block} />;
     });
   };
 
@@ -29,7 +29,7 @@ function WriteBlockList() {
       <S.WhiteContainer
         $width="900"
         $height="quarter"
-        onClick={() => reviewStore.addContent('text')}
+        onClick={() => reviewStore.addContent('weather')}
       >
         +
       </S.WhiteContainer>
