@@ -14,7 +14,7 @@ public enum ScheduleErrorCode implements ErrorCode {
 	NO_SCHEDULE(HttpStatus.BAD_REQUEST, "SCHEDULE_002", "해당 스케줄이 없습니다."),
 	NOT_PERMISSION_UPDATE_SCHEDUEL(HttpStatus.BAD_REQUEST, "SCHEDULE_003", "스케줄 수정 권한이 없습니다."),
 	NOT_APPROPRIATE_MODIFICATION_TYPE(HttpStatus.BAD_REQUEST, "SCHEDULE_004", "삭제 유형 입력이 잘못되었습니다."),
-	;
+	NO_REPETITION(HttpStatus.BAD_REQUEST, "SCHEDULE_005", "해당 반복이 존재하지 않습니다.");
 	private final HttpStatus httpStatus;
 	private final String errorCode;
 	private final String message;

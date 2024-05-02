@@ -2,8 +2,8 @@ package com.butter.wypl.schedule.data.request;
 
 import java.time.LocalDate;
 
-import com.butter.wypl.schedule.domain.embedded.Repetition;
-import com.butter.wypl.schedule.domain.embedded.RepetitionCycle;
+import com.butter.wypl.schedule.domain.Repetition;
+import com.butter.wypl.schedule.domain.RepetitionCycle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record RepetitionCreateRequest(

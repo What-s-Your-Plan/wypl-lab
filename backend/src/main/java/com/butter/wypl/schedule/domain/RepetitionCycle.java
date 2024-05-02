@@ -1,4 +1,4 @@
-package com.butter.wypl.schedule.domain.embedded;
+package com.butter.wypl.schedule.domain;
 
 public enum RepetitionCycle {
 	WEEK,

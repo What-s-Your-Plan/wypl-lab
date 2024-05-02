@@ -2,8 +2,8 @@ package com.butter.wypl.schedule.fixture.embedded;
 
 import java.time.LocalDate;
 
-import com.butter.wypl.schedule.domain.embedded.Repetition;
-import com.butter.wypl.schedule.domain.embedded.RepetitionCycle;
+import com.butter.wypl.schedule.domain.Repetition;
+import com.butter.wypl.schedule.domain.RepetitionCycle;
 
 public enum RepetitionFixture {
 	MONDAY_REPETITION(

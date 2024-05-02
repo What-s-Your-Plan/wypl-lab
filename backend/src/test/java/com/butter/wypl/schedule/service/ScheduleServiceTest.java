@@ -25,8 +25,10 @@ import com.butter.wypl.schedule.data.response.MemberIdResponse;
 import com.butter.wypl.schedule.data.response.RepetitionResponse;
 import com.butter.wypl.schedule.data.response.ScheduleResponse;
 import com.butter.wypl.schedule.domain.Category;
+import com.butter.wypl.schedule.domain.Repetition;
 import com.butter.wypl.schedule.domain.Schedule;
 import com.butter.wypl.schedule.fixture.ScheduleFixture;
+import com.butter.wypl.schedule.fixture.embedded.RepetitionFixture;
 import com.butter.wypl.schedule.respository.ScheduleRepository;
 
 @MockServiceTest
@@ -44,6 +46,9 @@ public class ScheduleServiceTest {
 	private ScheduleRepository scheduleRepository;
 	@Mock
 	private MemberScheduleService memberScheduleService;
+
+	@Mock
+	private RepetitionService repetitionService;
 
 	//라벨 미리 생성
 	@BeforeEach
@@ -68,6 +73,13 @@ public class ScheduleServiceTest {
 			.thenReturn(Optional.of(member2));
 	}
 
+	@BeforeEach
+	void initRepetition() {
+		Repetition repetition = RepetitionFixture.MONTHLY_REPETITION.toRepetition();
+
+		lenient().when(repetitionService.createRepetition(any())).thenReturn(repetition);
+	}
+
 	@Nested
 	@DisplayName("일정 등록")
 	class create {
@@ -76,7 +88,7 @@ public class ScheduleServiceTest {
 		@DisplayName("반복 없는 개인 일정 등록이 정상적으로 이루어지는지 확인")
 		void noRepeatPersonalSchedule() {
 			//given
-			Schedule schedule = ScheduleFixture.PERSONAL_EXERCISE_SCHEDULE.toSchedule();
+			Schedule schedule = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			lenient().when(scheduleRepository.save(any()))
 				.thenReturn(schedule);
 
@@ -100,7 +112,7 @@ public class ScheduleServiceTest {
 		@DisplayName("반복 있는 개인 일정 등록이 정상적으로 이루어지는지 확인")
 		void repeatPersonalSchedule() {
 			//given
-			Schedule schedule = ScheduleFixture.PERSONAL_REPEAT_EXERCISE_SCHEDULE.toSchedule();
+			Schedule schedule = ScheduleFixture.REPEAT_PERSONAL_SCHEDULE.toSchedule();
 			lenient().when(scheduleRepository.save(any()))
 				.thenReturn(schedule);
 
@@ -115,7 +127,7 @@ public class ScheduleServiceTest {
 			assertThat(result.startDate()).isEqualTo(schedule.getStartDate());
 			assertThat(result.endDate()).isEqualTo(schedule.getEndDate());
 			assertThat(result.category()).isEqualTo(Category.MEMBER);
-			assertThat(result.labelId()).isNotNull();
+			assertThat(result.labelId()).isNull();
 			assertThat(result.repetition()).isEqualTo(RepetitionResponse.from(schedule.getRepetition()));
 		}
 
@@ -140,5 +152,17 @@ public class ScheduleServiceTest {
 			// Then
 
 		}
+	}
+
+	@Nested
+	@DisplayName("일정 조회")
+	class get {
+		
+	}
+
+	@Nested
+	@DisplayName("일정 삭제")
+	class delete {
+
 	}
 }

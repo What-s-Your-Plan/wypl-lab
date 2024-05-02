@@ -16,13 +16,13 @@ import com.butter.wypl.label.repository.LabelRepository;
 import com.butter.wypl.label.utils.LabelServiceUtils;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.schedule.data.ModificationType;
-import com.butter.wypl.schedule.data.request.RepetitionCreateRequest;
 import com.butter.wypl.schedule.data.request.ScheduleCreateRequest;
 import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
+import com.butter.wypl.schedule.data.response.ScheduleIdListResponse;
 import com.butter.wypl.schedule.data.response.ScheduleIdResponse;
 import com.butter.wypl.schedule.data.response.ScheduleResponse;
+import com.butter.wypl.schedule.domain.Repetition;
 import com.butter.wypl.schedule.domain.Schedule;
-import com.butter.wypl.schedule.domain.embedded.Repetition;
 import com.butter.wypl.schedule.exception.ScheduleErrorCode;
 import com.butter.wypl.schedule.exception.ScheduleException;
 import com.butter.wypl.schedule.respository.ScheduleRepository;
@@ -39,6 +39,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 	private final LabelRepository labelRepository;
 
 	private final MemberScheduleService memberScheduleService;
+	private final RepetitionService repetitionService;
 
 	@Override
 	@Transactional
@@ -48,14 +49,17 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		Schedule schedule = scheduleRepository.save(scheduleCreateRequest.toEntity(label)); //반복이 없다는 가정하에 저장
 
+		//TODO : 그룹 아이디 받았을 때 그룹에 포함된 사람인지 확인 해야 됨
 		//멤버-일정 테이블 업데이트
 		List<Member> memberResponses = memberScheduleService.createMemberSchedule(schedule,
 			scheduleCreateRequest.members());
 
 		//반복이 있을 경우 반복 일정 추가
 		if (scheduleCreateRequest.repetition() != null) {
-			schedule.updateRepetition(scheduleCreateRequest.repetition().toEntity());
-			createRepetition(schedule, scheduleCreateRequest.repetition());
+			Repetition repetition = repetitionService.createRepetition(scheduleCreateRequest.repetition());
+
+			schedule.updateRepetition(repetition);
+			createRepetitionSchedules(schedule, repetition);
 		}
 
 		return ScheduleResponse.of(schedule, memberResponses);
@@ -69,67 +73,61 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		//스케줄에 속한 멤버인지 확인(권한 확인)
 		memberScheduleService.validateMemberSchedule(schedule, memberId);
 
-		//라벨, 속한 멤버, 반복 외의 일정 update
-		schedule.update(scheduleUpdateRequest);
-
-		//라벨 update
+		//라벨 update & 라벨 유효성 검사
 		if (scheduleUpdateRequest.labelId() != null) {
 			schedule.updateLabel(LabelServiceUtils.getLabelByLabelId(labelRepository, scheduleUpdateRequest.labelId()));
 		} else {
 			schedule.updateLabel(null);
 		}
 
+		//라벨, 속한 멤버, 반복 외의 일정 update
+		schedule.update(scheduleUpdateRequest);
+
 		//멤버-일정 update
 		memberScheduleService.updateMemberSchedule(schedule, scheduleUpdateRequest.members());
 
-		//반복 update TODO:어케 하지..
+		//반복 update
+		//FIXME : repetition이 null일 경우 ?
 
 		return null;
 	}
 
 	@Override
 	@Transactional
-	public List<ScheduleIdResponse> deleteSchedule(int memberId, int scheduleId, ModificationType modificationType) {
+	public ScheduleIdListResponse deleteSchedule(int memberId, int scheduleId, ModificationType modificationType) {
 		Schedule schedule = ScheduleServiceUtils.findById(scheduleRepository, scheduleId);
 
 		//스케줄에 속한 멤버인지 확인(권한 확인)
 		memberScheduleService.validateMemberSchedule(schedule, memberId);
 
+		List<Schedule> deleteSchedules = modifyRepetitionSchedule(schedule, modificationType);
 		List<ScheduleIdResponse> scheduleIdResponses = new ArrayList<>();
 
-		switch (modificationType) {
-			case NOW -> {
-				schedule.delete();
-				scheduleIdResponses.add(ScheduleIdResponse.from(schedule));
-				break;
-			}
-			case AFTER -> {
-
-				break;
-			}
-			case ALL -> {
-
-				break;
-			}
-			default -> throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_MODIFICATION_TYPE);
+		//전체 삭제일 경우에는 관련 반복도 삭제
+		if (modificationType.equals(ModificationType.ALL)) {
+			repetitionService.deleteRepetition(schedule.getRepetition());
 		}
 
-		return scheduleIdResponses;
+		for (Schedule deleteSchedule : deleteSchedules) {
+			deleteSchedule.delete();
+			scheduleIdResponses.add(ScheduleIdResponse.from(deleteSchedule));
+		}
+
+		return ScheduleIdListResponse.from(scheduleIdResponses);
 	}
 
 	@Override
 	public ScheduleResponse getScheduleByScheduleId(int scheduleId) {
 		Schedule schedule = ScheduleServiceUtils.findById(scheduleRepository, scheduleId);
-		Repetition repetition = null;
 
-		return ScheduleResponse.of(schedule,
-			memberScheduleService.getMembersBySchedule(schedule));
+		return ScheduleResponse.of(schedule, memberScheduleService.getMembersBySchedule(schedule));
 	}
 
-	private void createRepetition(Schedule originSchedule, RepetitionCreateRequest repetition) {
-		LocalDate repetitionStartDate = repetition.repetitionStartDate();
+	private void createRepetitionSchedules(Schedule originSchedule, Repetition repetition) {
+		LocalDate repetitionStartDate = repetition.getRepetitionStartDate();
 		LocalDate repetitionEndDate =
-			repetition.repetitionEndDate() == null ? repetitionStartDate.plusYears(3) : repetition.repetitionEndDate();
+			repetition.getRepetitionEndDate() == null ? repetitionStartDate.plusYears(3) :
+				repetition.getRepetitionEndDate();
 
 		LocalDateTime startDateTime, endDateTime;
 		startDateTime = originSchedule.getStartDate();
@@ -137,7 +135,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		List<Schedule> addSchedules = new ArrayList<>();
 
-		switch (repetition.repetitionCycle()) {
+		switch (repetition.getRepetitionCycle()) {
 			case YEAR -> {
 				startDateTime = startDateTime.plusYears(1);
 				endDateTime = endDateTime.plusYears(1);
@@ -199,6 +197,32 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		}
 
 		scheduleRepository.saveAll(addSchedules);
+	}
+
+	private List<Schedule> modifyRepetitionSchedule(Schedule originalSchedule,
+		ModificationType modificationType) {
+		List<Schedule> modifySchedules = new ArrayList<>();
+
+		switch (modificationType) {
+			case NOW -> {
+				modifySchedules.add(originalSchedule);
+				break;
+			}
+			case AFTER -> {
+				modifySchedules.add(originalSchedule);
+				modifySchedules.addAll(
+					scheduleRepository.findAllByRepetitionAndStartDateAfter(originalSchedule.getRepetition(),
+						originalSchedule.getStartDate()));
+				break;
+			}
+			case ALL -> {
+				modifySchedules.addAll(scheduleRepository.findAllByRepetition(originalSchedule.getRepetition()));
+				break;
+			}
+			default -> throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_MODIFICATION_TYPE);
+		}
+
+		return modifySchedules;
 	}
 
 }

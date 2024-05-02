@@ -1,23 +1,36 @@
-package com.butter.wypl.schedule.domain.embedded;
+package com.butter.wypl.schedule.domain;
 
 import java.time.LocalDate;
 
+import org.hibernate.annotations.SQLRestriction;
+
+import com.butter.wypl.global.common.BaseEntity;
+
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Embeddable
+@AllArgsConstructor
+@Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
-@AllArgsConstructor
-public class Repetition {
+@Entity
+@SQLRestriction("deleted_at is null")
+public class Repetition extends BaseEntity {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "repetition_id")
+	private int repetitionId;
 
 	@Column(name = "repetition_cycle")
 	@Enumerated(EnumType.STRING)
@@ -33,4 +46,5 @@ public class Repetition {
 
 	@Column(name = "day_of_week", columnDefinition = "BINARY(7)")
 	private byte dayOfWeek;
+
 }

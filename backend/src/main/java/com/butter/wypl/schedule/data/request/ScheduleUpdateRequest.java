@@ -23,4 +23,5 @@ public record ScheduleUpdateRequest(
 
 	List<MemberIdResponse> members
 ) {
+	
 }

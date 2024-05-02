@@ -5,17 +5,16 @@ import java.time.LocalDateTime;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.fixture.LabelFixture;
 import com.butter.wypl.schedule.domain.Category;
+import com.butter.wypl.schedule.domain.Repetition;
 import com.butter.wypl.schedule.domain.Schedule;
-import com.butter.wypl.schedule.domain.embedded.Repetition;
 import com.butter.wypl.schedule.fixture.embedded.RepetitionFixture;
 
 import lombok.Getter;
 
 @Getter
 public enum ScheduleFixture {
-
-	//라벨 없는 반복이 없는 개인 스케줄
-	PERSONAL_EXERCISE_SCHEDULE(
+	//라벨 X, 반복 X, 개인
+	PERSONAL_SCHEDULE(
 		"테니스 가기",
 		"장소 : 신촌 테니스",
 		LocalDateTime.of(2024, 04, 26, 11, 0),
@@ -25,38 +24,91 @@ public enum ScheduleFixture {
 		Category.MEMBER,
 		null
 	),
-	//라벨 있고 반복 있는 개인 스케줄
-	PERSONAL_REPEAT_EXERCISE_SCHEDULE(
+
+	//라벨 O, 반복 X, 개인
+	LABEL_PERSONAL_SCHEDULE(
+		"테니스 가기",
+		"장소 : 신촌 테니스",
+		LocalDateTime.of(2024, 04, 26, 11, 0),
+		LocalDateTime.of(2024, 04, 26, 13, 0),
+		LabelFixture.STUDY_LABEL.toLabel(),
+		null,
+		Category.MEMBER,
+		null
+	),
+
+	//라벨 X, 반복 X, 그룹
+	GROUP_SCHEDUEL(
+		"알고르즘 스터디",
+		"하루에 한문제씩 풀기",
+		LocalDateTime.of(2024, 04, 27, 11, 0),
+		LocalDateTime.of(2024, 04, 27, 12, 0),
+		null,
+		null,
+		Category.GROUP,
+		1
+	),
+
+	//라벨 O, 반복 X, 그룹
+	LABEL_GROUP_SCHEDUEL(
+		"알고르즘 스터디",
+		"하루에 한문제씩 풀기",
+		LocalDateTime.of(2024, 04, 27, 11, 0),
+		LocalDateTime.of(2024, 04, 27, 12, 0),
+		LabelFixture.STUDY_LABEL.toLabel(),
+		null,
+		Category.GROUP,
+		1
+	),
+
+	//라벨 X, 반복 O, 개인
+	REPEAT_PERSONAL_SCHEDULE(
+		"헬스장 가기",
+		null,
+		LocalDateTime.of(2024, 04, 25, 11, 0),
+		LocalDateTime.of(2024, 04, 25, 12, 0),
+		null,
+		RepetitionFixture.MONTHLY_REPETITION.toRepetition(),
+		Category.MEMBER,
+		null
+	),
+
+	//라벨 O, 반복 O, 개인
+	LABEL_REPEAT_PERSONAL_SCHEDULE(
 		"헬스장 가기",
 		null,
 		LocalDateTime.of(2024, 04, 25, 11, 0),
 		LocalDateTime.of(2024, 04, 25, 12, 0),
 		LabelFixture.STUDY_LABEL.toLabel(),
-		RepetitionFixture.TUESDAY_THRUSDAY_REPETITION.toRepetition(),
+		RepetitionFixture.MONTHLY_REPETITION.toRepetition(),
 		Category.MEMBER,
 		null
 	),
-	//반복 있는 그룹 스케줄
+
+	//라벨 X, 반복 O, 그룹
 	REPEAT_GROUP_SCHEDULE(
 		"알고르즘 스터디",
 		"하루에 한문제씩 풀기",
 		LocalDateTime.of(2024, 04, 27, 11, 0),
 		LocalDateTime.of(2024, 04, 27, 12, 0),
 		null,
-		RepetitionFixture.LAST_DAY_REPETITION.toRepetition(),
+		RepetitionFixture.MONTHLY_REPETITION.toRepetition(),
 		Category.GROUP,
 		1
 	),
-	NO_REPEAT_GROUP_SCHEDULE(
+
+	//라벨 O, 반복 O, 그룹
+	LABEL_REPEAT_GROUP_SCHEDULE(
 		"알고르즘 스터디",
 		"하루에 한문제씩 풀기",
 		LocalDateTime.of(2024, 04, 27, 11, 0),
 		LocalDateTime.of(2024, 04, 27, 12, 0),
-		null,
-		null,
+		LabelFixture.STUDY_LABEL.toLabel(),
+		RepetitionFixture.MONDAY_REPETITION.toRepetition(),
 		Category.GROUP,
 		1
-	);
+	),
+	;
 
 	private final String title;
 

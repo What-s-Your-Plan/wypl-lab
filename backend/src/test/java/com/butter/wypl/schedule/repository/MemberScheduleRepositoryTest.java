@@ -40,7 +40,7 @@ public class MemberScheduleRepositoryTest {
 	@BeforeEach
 	void init() {
 		member = memberRepository.save(MemberFixture.JWA_SO_YEON.toMember());
-		schedule = scheduleRepository.save(ScheduleFixture.PERSONAL_EXERCISE_SCHEDULE.toSchedule());
+		schedule = scheduleRepository.save(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule());
 	}
 
 	@Test
