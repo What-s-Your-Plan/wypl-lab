@@ -10,7 +10,9 @@ type RScheduleProps = {
 };
 
 function RSchedule({ $scheduleId }: RScheduleProps) {
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log($scheduleId);
+  }, []);
   return (
     <WhiteContainer $width="900" className="flex gap-4">
       <div className="flex gap-4 text-sm">
