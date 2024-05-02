@@ -1,8 +1,1 @@
-type ReviewType =
-  | 'title'
-  | 'text'
-  | 'picture'
-  | 'emotion'
-  | 'weather'
-  | 'kpt'
-  | '4f';
+type ReviewType = 'text' | 'picture' | 'emotion' | 'weather' | 'kpt' | '4f';

@@ -32,31 +32,31 @@ function ReviewWrite({ $index, $content }: ReviewWriteProps) {
         }
       case 'picture':
         if ($content instanceof PictureContent) {
-          return <RPicture $content={$content} />;
+          return <RPicture />;
         } else {
           throw new Error('Content for text block is missing text property');
         }
       case 'emotion':
         if ($content instanceof EmotionContent) {
-          return <REmotion $content={$content} />;
+          return <REmotion />;
         } else {
           throw new Error('Content for text block is missing text property');
         }
       case 'weather':
         if ($content instanceof WeatherContent) {
-          return <RWeather $content={$content} />;
+          return <RWeather />;
         } else {
           throw new Error('Content for text block is missing text property');
         }
       case 'kpt':
         if ($content instanceof KPTContent) {
-          return <RKpt $content={$content} />;
+          return <RKpt />;
         } else {
           throw new Error('Content for text block is missing text property');
         }
       case '4f':
         if ($content instanceof FourFContent) {
-          return <R4F $content={$content} />;
+          return <R4F />;
         } else {
           throw new Error('Content for text block is missing text property');
         }
