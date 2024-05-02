@@ -52,7 +52,7 @@ const useReviewStore = create<ReviewState>()((set) => ({
         newContent = new EmotionContent('', '');
         break;
       case 'weather':
-        newContent = new WeatherContent('');
+        newContent = new WeatherContent('', '');
         break;
       case '4f':
         newContent = new FourFContent('', '', '', '');

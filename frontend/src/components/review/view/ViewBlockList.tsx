@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import { Container } from '@/components/common/Container';
 
 import ReviewBlock from '@/components/review/view/ReviewBlock';
-import TextHOne from '@/assets/icons/textHOne.svg';
 import TextAlignLeft from '@/assets/icons/textAlignLeft.svg';
 import Image from '@/assets/icons/image.svg';
 import Smiley from '@/assets/icons/smiley.svg';
@@ -11,12 +10,6 @@ import Pen from '@/assets/icons/pen.svg';
 
 function BlockList() {
   const blocks = [
-    {
-      icon: TextHOne,
-      blockType: 'title',
-      title: '제목',
-      content: <div>제목을 입력하세요</div>,
-    },
     {
       icon: TextAlignLeft,
       blockType: 'text',

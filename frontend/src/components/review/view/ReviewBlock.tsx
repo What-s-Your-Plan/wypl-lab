@@ -2,14 +2,14 @@ import { ReactNode } from 'react';
 
 import { WhiteContainer } from '@/components/common/Container';
 
-type Props = {
+type ReviewBlockProps = {
   icon: string;
   blockType: string;
   title: string;
   content: ReactNode;
 };
 
-function ReviewBlock({ icon, blockType, title, content }: Props) {
+function ReviewBlock({ icon, blockType, title, content }: ReviewBlockProps) {
   console.log(blockType);
   return (
     <WhiteContainer $width="1300" className="flex flex-col">

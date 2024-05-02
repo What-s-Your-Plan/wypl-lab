@@ -37,10 +37,12 @@ class EmotionContent extends Content {
 
 class WeatherContent extends Content {
   weather: string;
+  description: string;
 
-  constructor(weather: string) {
+  constructor(weather: string, description: string) {
     super('weather');
     this.weather = weather;
+    this.description = description;
   }
 }
 
@@ -58,16 +60,16 @@ class KPTContent extends Content {
 }
 
 class FourFContent extends Content {
+  facts: string;
   feeling: string;
-  focus: string;
-  fix: string;
+  finding: string;
   future: string;
 
-  constructor(feeling: string, focus: string, fix: string, future: string) {
+  constructor(facts: string, feeling: string, finding: string, future: string) {
     super('4f');
+    this.facts = facts;
     this.feeling = feeling;
-    this.focus = focus;
-    this.fix = fix;
+    this.finding = finding;
     this.future = future;
   }
 }
