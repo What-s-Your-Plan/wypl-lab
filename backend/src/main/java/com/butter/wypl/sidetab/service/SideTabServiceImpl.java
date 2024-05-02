@@ -66,6 +66,16 @@ public class SideTabServiceImpl implements SideTabLoadService, SideTabModifyServ
 		return DDayWidgetResponse.from(findSideTab.getDDay());
 	}
 
+	@Override
+	public DDayWidgetResponse findDDay(
+			final AuthMember authMember,
+			final int dDayId
+	) {
+		SideTab findSideTab = findSideTabWidget(authMember, dDayId);
+
+		return DDayWidgetResponse.from(findSideTab.getDDay());
+	}
+
 	private SideTab findSideTabWidget(AuthMember authMember, int dDayId) {
 		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
 		SideTab findSideTab = SideTabServiceUtils.findById(sideTabRepository, dDayId);

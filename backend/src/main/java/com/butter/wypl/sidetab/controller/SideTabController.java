@@ -29,8 +29,8 @@ public class SideTabController {
 
 	@GetMapping("/v1/goals/{goal_id}")
 	public ResponseEntity<Message<GoalWidgetResponse>> findGoal(
-			@PathVariable("goal_id") int goalId,
-			@Authenticated AuthMember authMember
+			@Authenticated AuthMember authMember,
+			@PathVariable("goal_id") int goalId
 	) {
 		GoalWidgetResponse response = sideTabLoadService.findGoal(authMember, goalId);
 		return ResponseEntity.ok(Message.withBody("목표를 조회했습니다", response));
@@ -38,20 +38,29 @@ public class SideTabController {
 
 	@PatchMapping("/v1/goals/{goal_id}")
 	public ResponseEntity<Message<GoalWidgetResponse>> updateGoal(
+			@Authenticated AuthMember authMember,
 			@PathVariable("goal_id") int goalId,
-			@RequestBody GoalUpdateRequest request,
-			@Authenticated AuthMember authMember
+			@RequestBody GoalUpdateRequest request
 	) {
 		GoalWidgetResponse response
 				= sideTabModifyService.updateGoal(authMember, goalId, request);
 		return ResponseEntity.ok(Message.withBody("목표를 수정했습니다", response));
 	}
 
+	@GetMapping("/v1/d-day/{d_day_id}")
+	public ResponseEntity<Message<DDayWidgetResponse>> findDDay(
+			@Authenticated AuthMember authMember,
+			@PathVariable("d_day_id") int dDayId
+	) {
+		DDayWidgetResponse response = sideTabLoadService.findDDay(authMember, dDayId);
+		return ResponseEntity.ok(Message.withBody("디데이를 조회했습니다", response));
+	}
+
 	@PatchMapping("/v1/d-day/{d_day_id}")
 	public ResponseEntity<Message<DDayWidgetResponse>> updateDDay(
+			@Authenticated AuthMember authMember,
 			@PathVariable("d_day_id") int dDayId,
-			@RequestBody DDayUpdateRequest request,
-			@Authenticated AuthMember authMember
+			@RequestBody DDayUpdateRequest request
 	) {
 		DDayWidgetResponse response
 				= sideTabModifyService.updateDDay(authMember, dDayId, request);
