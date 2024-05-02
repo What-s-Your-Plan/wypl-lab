@@ -1,18 +1,17 @@
 package com.butter.wypl.notification.repository;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
 import com.butter.wypl.global.annotation.MongoRepositoryTest;
+import com.butter.wypl.notification.data.NotificationTypeCode;
 import com.butter.wypl.notification.domain.Notification;
 import com.butter.wypl.notification.domain.NotificationButton;
 
@@ -108,19 +107,17 @@ class NotificationRepositoryTest {
 			NotificationButton.builder()
 				.text("취소")
 				.actionUrl("cancel")
-				.color("#000000")
+					.color("#000000")
 				.logo("취소지롱")
 				.build()
 		);
-
-		String type = "Group";
 
 		Notification notification = Notification.builder()
 			.memberId(1)
 			.message(message)
 			.buttons(buttons)
 			.isRead(false)
-			.type(type)
+			.typeCode(NotificationTypeCode.GROUP)
 			.build();
 
 		// when
@@ -137,7 +134,6 @@ class NotificationRepositoryTest {
 		//given
 		int memberId = 99;
 		PageRequest pageReq = PageRequest.of(0, 10);
-
 		//when
 
 		//then
