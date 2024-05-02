@@ -9,10 +9,10 @@ import com.butter.wypl.global.annotation.FacadeService;
 import com.butter.wypl.infrastructure.ouath.OAuthMember;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.domain.OauthProvider;
-import com.butter.wypl.member.domain.SideTab;
+import com.butter.wypl.sidetab.domain.SideTab;
 import com.butter.wypl.member.domain.SocialMember;
 import com.butter.wypl.member.repository.MemberRepository;
-import com.butter.wypl.member.repository.SideTabRepository;
+import com.butter.wypl.sidetab.repository.SideTabRepository;
 import com.butter.wypl.member.repository.SocialMemberRepository;
 
 import lombok.RequiredArgsConstructor;
