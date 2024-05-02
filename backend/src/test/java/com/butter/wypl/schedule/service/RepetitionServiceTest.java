@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.butter.wypl.global.annotation.ServiceTest;
-import com.butter.wypl.schedule.data.request.RepetitionCreateRequest;
 import com.butter.wypl.schedule.domain.Repetition;
 import com.butter.wypl.schedule.exception.ScheduleErrorCode;
 import com.butter.wypl.schedule.exception.ScheduleException;
@@ -30,7 +29,7 @@ public class RepetitionServiceTest {
 		Repetition repetition = RepetitionFixture.MONTHLY_REPETITION.toRepetition();
 
 		// When
-		Repetition savedRepetition = repetitionService.createRepetition(RepetitionCreateRequest.from(repetition));
+		Repetition savedRepetition = repetitionService.createRepetition(repetition);
 
 		// Then
 		assertThat(savedRepetition).isNotNull();
@@ -44,7 +43,7 @@ public class RepetitionServiceTest {
 	void deleteRepetition() {
 		// Given
 		Repetition repetition = RepetitionFixture.MONTHLY_REPETITION.toRepetition();
-		Repetition savedRepetition = repetitionService.createRepetition(RepetitionCreateRequest.from(repetition));
+		Repetition savedRepetition = repetitionService.createRepetition(repetition);
 
 		// When
 		repetitionService.deleteRepetition(savedRepetition);
@@ -58,7 +57,7 @@ public class RepetitionServiceTest {
 	void getRepetition() {
 		// Given
 		Repetition repetition = RepetitionFixture.MONTHLY_REPETITION.toRepetition();
-		Repetition savedRepetition = repetitionService.createRepetition(RepetitionCreateRequest.from(repetition));
+		Repetition savedRepetition = repetitionService.createRepetition(repetition);
 
 		// When
 		Repetition findRepetition = repetitionService.getRepetition(savedRepetition.getRepetitionId());

@@ -11,7 +11,7 @@ public enum RepetitionFixture {
 		LocalDate.of(2024, 4, 25),
 		LocalDate.of(2025, 4, 25),
 		1,
-		(byte)0b000011
+		(byte)0b000010
 	),
 	TUESDAY_THRUSDAY_REPETITION(
 		RepetitionCycle.WEEK,
@@ -23,7 +23,7 @@ public enum RepetitionFixture {
 	MONTHLY_REPETITION(
 		RepetitionCycle.MONTH,
 		LocalDate.of(2024, 4, 25),
-		LocalDate.of(2025, 4, 25),
+		LocalDate.of(2024, 7, 25),
 		0,
 		(byte)0b0000000
 	),

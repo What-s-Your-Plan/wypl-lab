@@ -62,7 +62,7 @@ public class ScheduleRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("반복이 같은 일정이 모두 조회된다.")
+	@DisplayName("반복의 이전 일정이 모두 조회된다.")
 	void getScheduleByRepetition() {
 		//given
 		Repetition repetition = RepetitionFixture.MONTHLY_REPETITION.toRepetition();
@@ -75,10 +75,11 @@ public class ScheduleRepositoryTest {
 		schedule2.updateRepetition(repetition);
 
 		//when
-		List<Schedule> scheduleList = scheduleRepository.findAllByRepetition(repetition);
+		List<Schedule> scheduleList = scheduleRepository.findAllByRepetitionAndStartDateBefore(repetition,
+			schedule2.getStartDate());
 
 		//then
-		assertThat(scheduleList.size()).isEqualTo(2);
+		assertThat(scheduleList.size()).isEqualTo(1);
 	}
 
 	@Test

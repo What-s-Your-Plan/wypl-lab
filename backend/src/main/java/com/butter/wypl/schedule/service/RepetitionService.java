@@ -3,7 +3,6 @@ package com.butter.wypl.schedule.service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.butter.wypl.global.annotation.FacadeService;
-import com.butter.wypl.schedule.data.request.RepetitionCreateRequest;
 import com.butter.wypl.schedule.domain.Repetition;
 import com.butter.wypl.schedule.exception.ScheduleErrorCode;
 import com.butter.wypl.schedule.exception.ScheduleException;
@@ -19,12 +18,15 @@ public class RepetitionService {
 	private final RepetitionRepository repetitionRepository;
 
 	@Transactional
-	public Repetition createRepetition(RepetitionCreateRequest repetitionCreateRequest) {
-		return repetitionRepository.save(repetitionCreateRequest.toEntity());
+	public Repetition createRepetition(Repetition repetition) {
+		return repetitionRepository.save(repetition);
 	}
 
 	@Transactional
 	public void deleteRepetition(Repetition repetition) {
+		if (repetition == null)
+			return;
+
 		repetition.delete();
 	}
 

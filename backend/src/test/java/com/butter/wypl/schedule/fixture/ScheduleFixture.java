@@ -80,7 +80,7 @@ public enum ScheduleFixture {
 		LocalDateTime.of(2024, 04, 25, 11, 0),
 		LocalDateTime.of(2024, 04, 25, 12, 0),
 		LabelFixture.STUDY_LABEL.toLabel(),
-		RepetitionFixture.MONTHLY_REPETITION.toRepetition(),
+		RepetitionFixture.MONDAY_REPETITION.toRepetition(),
 		Category.MEMBER,
 		null
 	),
@@ -92,7 +92,7 @@ public enum ScheduleFixture {
 		LocalDateTime.of(2024, 04, 27, 11, 0),
 		LocalDateTime.of(2024, 04, 27, 12, 0),
 		null,
-		RepetitionFixture.MONTHLY_REPETITION.toRepetition(),
+		RepetitionFixture.YEARLY_REPETITION.toRepetition(),
 		Category.GROUP,
 		1
 	),

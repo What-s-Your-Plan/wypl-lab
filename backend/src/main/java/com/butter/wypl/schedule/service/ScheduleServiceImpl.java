@@ -56,7 +56,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		//반복이 있을 경우 반복 일정 추가
 		if (scheduleCreateRequest.repetition() != null) {
-			Repetition repetition = repetitionService.createRepetition(scheduleCreateRequest.repetition());
+			Repetition repetition = repetitionService.createRepetition(scheduleCreateRequest.repetition().toEntity());
 
 			schedule.updateRepetition(repetition);
 			createRepetitionSchedules(schedule, repetition);
@@ -84,12 +84,21 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		schedule.update(scheduleUpdateRequest);
 
 		//멤버-일정 update
-		memberScheduleService.updateMemberSchedule(schedule, scheduleUpdateRequest.members());
+		List<Member> members = memberScheduleService.updateMemberSchedule(schedule, scheduleUpdateRequest.members());
 
-		//반복 update
-		//FIXME : repetition이 null일 경우 ?
+		//이전 일정의 반복과 관련된
+		List<Schedule> modifySchedules = modifyRepetitionSchedule(schedule, scheduleUpdateRequest.modificationType());
+		for (Schedule modifySchedule : modifySchedules) {
+			modifySchedule.delete();
+		}
 
-		return null;
+		Repetition updatedRepetition =
+			(scheduleUpdateRequest.repetition() == null) ? null : scheduleUpdateRequest.repetition().toEntity();
+		schedule.updateRepetition(updatedRepetition);
+
+		createRepetitionSchedules(schedule, updatedRepetition);
+
+		return ScheduleResponse.of(schedule, members);
 	}
 
 	@Override
@@ -101,18 +110,19 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		memberScheduleService.validateMemberSchedule(schedule, memberId);
 
 		List<Schedule> deleteSchedules = modifyRepetitionSchedule(schedule, modificationType);
-		List<ScheduleIdResponse> scheduleIdResponses = new ArrayList<>();
+		deleteSchedules.add(schedule);
 
-		//전체 삭제일 경우에는 관련 반복도 삭제
-		if (modificationType.equals(ModificationType.ALL)) {
-			repetitionService.deleteRepetition(schedule.getRepetition());
-		}
+		List<ScheduleIdResponse> scheduleIdResponses = new ArrayList<>();
 
 		for (Schedule deleteSchedule : deleteSchedules) {
 			deleteSchedule.delete();
 			scheduleIdResponses.add(ScheduleIdResponse.from(deleteSchedule));
 		}
 
+		//전체 삭제일 경우에는 관련 반복도 삭제
+		if (modificationType.equals(ModificationType.ALL)) {
+			repetitionService.deleteRepetition(schedule.getRepetition());
+		}
 		return ScheduleIdListResponse.from(scheduleIdResponses);
 	}
 
@@ -124,6 +134,9 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 	}
 
 	private void createRepetitionSchedules(Schedule originSchedule, Repetition repetition) {
+		if (repetition == null)
+			return;
+
 		LocalDate repetitionStartDate = repetition.getRepetitionStartDate();
 		LocalDate repetitionEndDate =
 			repetition.getRepetitionEndDate() == null ? repetitionStartDate.plusYears(3) :
@@ -170,13 +183,13 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 				for (int i = 0; i < 7; i++) {
 					if ((repetitionWeek & (1 << i)) > 0) {
 						dayOfWeek = switch (i) {
-							case 6 -> DayOfWeek.SUNDAY;
-							case 5 -> DayOfWeek.MONDAY;
-							case 4 -> DayOfWeek.TUESDAY;
+							case 0 -> DayOfWeek.SUNDAY;
+							case 1 -> DayOfWeek.MONDAY;
+							case 2 -> DayOfWeek.TUESDAY;
 							case 3 -> DayOfWeek.WEDNESDAY;
-							case 2 -> DayOfWeek.THURSDAY;
-							case 1 -> DayOfWeek.FRIDAY;
-							case 0 -> DayOfWeek.SATURDAY;
+							case 4 -> DayOfWeek.THURSDAY;
+							case 5 -> DayOfWeek.FRIDAY;
+							case 6 -> DayOfWeek.SATURDAY;
 							default -> throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_REPETITION_CYCLE);
 						};
 
@@ -205,18 +218,21 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		switch (modificationType) {
 			case NOW -> {
-				modifySchedules.add(originalSchedule);
 				break;
 			}
 			case AFTER -> {
-				modifySchedules.add(originalSchedule);
 				modifySchedules.addAll(
 					scheduleRepository.findAllByRepetitionAndStartDateAfter(originalSchedule.getRepetition(),
 						originalSchedule.getStartDate()));
 				break;
 			}
 			case ALL -> {
-				modifySchedules.addAll(scheduleRepository.findAllByRepetition(originalSchedule.getRepetition()));
+				modifySchedules.addAll(
+					scheduleRepository.findAllByRepetitionAndStartDateBefore(originalSchedule.getRepetition(),
+						originalSchedule.getStartDate()));
+				modifySchedules.addAll(
+					scheduleRepository.findAllByRepetitionAndStartDateAfter(originalSchedule.getRepetition(),
+						originalSchedule.getStartDate()));
 				break;
 			}
 			default -> throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_MODIFICATION_TYPE);

@@ -14,7 +14,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
 	Optional<Schedule> findById(int scheduleId);
 
 	//해당 반복에 대해 모든 일정 찾기
-	List<Schedule> findAllByRepetition(Repetition repetition);
+	List<Schedule> findAllByRepetitionAndStartDateBefore(Repetition repetition, LocalDateTime startDate);
 
 	//해당 반복에 대해 이후 일정 찾기
 	List<Schedule> findAllByRepetitionAndStartDateAfter(Repetition repetition, LocalDateTime startDate);
