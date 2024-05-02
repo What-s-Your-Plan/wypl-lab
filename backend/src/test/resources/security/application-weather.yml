@@ -1,3 +1,11 @@
+#open-weather:
+#  key: open.weather.key
+#  base-url: open.weather.url
+
 open-weather:
-  key: open.weather.key
-  base-url: open.weather.url
+  key: 59e48bac43a36114dbfa303542a49e85
+  base-url: https://api.openweathermap.org/data/2.5/weather
+
+# https://api.openweathermap.org/data/2.5/weather?lat=37.5683&lon=126.9778&appid=59e48bac43a36114dbfa303542a49e85&lang=kr
+# https://api.openweathermap.org/data/2.5/weather?q=seoul&appid=59e48bac43a36114dbfa303542a49e85&lang=kr
+# https://api.openweathermap.org/data/2.5/weather?lat=37.5683&lon=126.9778&appid=59e48bac43a36114dbfa303542a49e85&lang=kr&units=metric
