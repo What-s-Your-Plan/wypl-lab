@@ -32,7 +32,7 @@ function ListBox({
       <Listbox value={selected} onChange={setSelected}>
         <div className="relative">
           <Listbox.Button
-            className={`${height} flex items-center justify-between relative w-full cursor-pointer rounded-lg px-2 min-h-8 text-left shadow-lg focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-default-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm`}
+            className={`${height} flex items-center justify-between relative w-full cursor-pointer rounded-lg px-2 min-h-8 text-left border border-gray-300 hover:border-gray-400 focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-default-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm`}
           >
             {render(selected)}
             <span className="pointer-events-none flex items-center">
