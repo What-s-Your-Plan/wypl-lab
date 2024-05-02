@@ -24,6 +24,7 @@ import com.butter.wypl.auth.exception.AuthErrorCode;
 import com.butter.wypl.auth.exception.AuthException;
 import com.butter.wypl.auth.utils.JwtProvider;
 import com.butter.wypl.global.annotation.MockServiceTest;
+import com.butter.wypl.infrastructure.ouath.OAuthMember;
 import com.butter.wypl.infrastructure.ouath.OAuthMemberProvider;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
@@ -33,6 +34,8 @@ class AuthServiceTest {
 
 	@InjectMocks
 	private AuthService authService;
+	@Mock
+	private SignInService signInService;
 	@Mock
 	private OAuthMemberProvider oAuthMemberProvider;
 	@Mock
@@ -58,6 +61,40 @@ class AuthServiceTest {
 		JsonWebTokens tokens = new JsonWebTokens("at", "rt");
 		given(jwtProvider.generateJsonWebTokens(any(Integer.class)))
 				.willReturn(tokens);
+
+		RefreshToken refreshToken = RefreshToken.of(0, tokens.refreshToken());
+		given(refreshTokenRepository.save(any(RefreshToken.class)))
+				.willReturn(refreshToken);
+
+		/* When */
+		AuthTokensResponse response = authService.generateTokens(googleProvider, dummyCode);
+
+		/* Then */
+		assertAll(
+				() -> assertThat(response.accessToken()).isNotNull(),
+				() -> assertThat(response.refreshToken()).isNotNull()
+		);
+	}
+
+	@DisplayName("신규 회원의 JsonWebToken 발급에 성공한다.")
+	@Test
+	void getMemberElseGetTest() {
+		/* Given */
+		String googleProvider = "google";
+		String dummyCode = "dummy_code";
+		given(oAuthMemberProvider.getOAuthMember(googleProvider, dummyCode))
+				.willReturn(GOOGLE_OAUTH_MEMBER.toGoogleOAuthMember());
+
+		Member member = KIM_JEONG_UK.toMember();
+		given(memberRepository.findByEmail(member.getEmail()))
+				.willReturn(Optional.empty());
+
+		JsonWebTokens tokens = new JsonWebTokens("at", "rt");
+		given(jwtProvider.generateJsonWebTokens(any(Integer.class)))
+				.willReturn(tokens);
+
+		given(signInService.signIn(any(OAuthMember.class), anyString()))
+				.willReturn(member);
 
 		RefreshToken refreshToken = RefreshToken.of(0, tokens.refreshToken());
 		given(refreshTokenRepository.save(any(RefreshToken.class)))

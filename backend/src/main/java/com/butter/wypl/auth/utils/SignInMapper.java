@@ -7,7 +7,7 @@ import com.butter.wypl.infrastructure.ouath.OAuthMember;
 import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.domain.OauthProvider;
-import com.butter.wypl.member.domain.SideTab;
+import com.butter.wypl.sidetab.domain.SideTab;
 import com.butter.wypl.member.domain.SocialMember;
 
 @EntityMapper

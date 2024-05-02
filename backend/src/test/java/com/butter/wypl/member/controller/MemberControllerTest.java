@@ -1,10 +1,12 @@
 package com.butter.wypl.member.controller;
 
+import static com.butter.wypl.file.fixture.FileFixture.*;
 import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -19,13 +21,20 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
+import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
+import com.butter.wypl.member.data.response.FindMemberProfileInfoResponse;
+import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
+import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
+import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
+import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.service.MemberLoadService;
 import com.butter.wypl.member.service.MemberModifyService;
 
@@ -38,6 +47,81 @@ class MemberControllerTest extends ControllerTest {
 	private MemberModifyService memberModifyService;
 	@MockBean
 	private MemberLoadService memberLoadService;
+
+	@DisplayName("사용자가 서버의 타임존을 조회한다.")
+	@Test
+	void findTimezones() throws Exception {
+		/* Given */
+		given(memberLoadService.findAllTimezones(any(AuthMember.class)))
+				.willReturn(FindTimezonesResponse.of(KIM_JEONG_UK.toMember().getTimeZone(),
+						CalendarTimeZone.getTimeZones()));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/member/v1/timezones")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/timezones",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.member_timezone").type(JsonFieldType.STRING)
+										.description("사용자의 타임존"),
+								fieldWithPath("body.timezones[]").type(JsonFieldType.ARRAY)
+										.description("서버의 타임존 목록"),
+								fieldWithPath("body.timezone_count").type(JsonFieldType.NUMBER)
+										.description("서버의 타임존 개수")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사용자의 프로필을 조회한다.")
+	@Test
+	void findProfile() throws Exception {
+		/* Given */
+		given(memberLoadService.findProfileInfo(any(AuthMember.class), anyInt()))
+				.willReturn(FindMemberProfileInfoResponse.from(KIM_JEONG_UK.toMember()));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/member/v1/members/{member_id}", 1)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/profile",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.id").type(JsonFieldType.NUMBER)
+										.description("사용자 식별자"),
+								fieldWithPath("body.email").type(JsonFieldType.STRING)
+										.description("사용자 이메일"),
+								fieldWithPath("body.nickname").type(JsonFieldType.STRING)
+										.description("사용자 닉네임"),
+								fieldWithPath("body.profile_image_url").type(JsonFieldType.STRING).optional()
+										.description("사용자 프로필 이미지 URL"),
+								fieldWithPath("body.main_color").type(JsonFieldType.STRING)
+										.description("사용자 기본 색상")
+						)
+				))
+				.andExpect(status().isOk());
+	}
 
 	@DisplayName("사용자가 닉네임을 수정한다.")
 	@Test
@@ -114,6 +198,80 @@ class MemberControllerTest extends ControllerTest {
 										.description("변경한 사용자의 생일 형식"),
 								fieldWithPath("body.birthday_as_string").type(JsonFieldType.STRING)
 										.description("변경한 사용자의 생일")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사용자가 타임존을 수정한다.")
+	@Test
+	void updateTimezoneTest() throws Exception {
+		/* Given */
+		String json = convertToJson(new MemberTimezoneUpdateRequest(CalendarTimeZone.ENGLAND));
+
+		given(memberModifyService.updateTimezone(any(AuthMember.class), any(MemberTimezoneUpdateRequest.class)))
+				.willReturn(new MemberTimezoneUpdateResponse(CalendarTimeZone.ENGLAND));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.patch("/member/v1/members/timezones")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(json)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/update-timezone",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestFields(
+								fieldWithPath("timezone").type(JsonFieldType.STRING)
+										.description("변경 요청한 사용자의 타임존")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.timezone").type(JsonFieldType.STRING)
+										.description("변경한 사용자의 타임존")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사용자가 프로필 이미지를 수정한다.")
+	@Test
+	void updateProfileImageTest() throws Exception {
+		/* Given */
+		String newProfileImageUrl = "aws.image.url";
+
+		given(memberModifyService.updateProfileImage(any(AuthMember.class), any(MultipartFile.class)))
+				.willReturn(new MemberProfileImageUpdateResponse(newProfileImageUrl));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.multipart("/member/v1/members/profile-iamge")
+						.file(PNG_IMAGE.getMockMultipartFile())
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/update-profile-image",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestParts(
+								partWithName("image").description("변경 요청한 사용자 프로필 이미지")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.profile_image_url").type(JsonFieldType.STRING)
+										.description("변경한 사용자의 프로필 이미지 URL")
 						)
 				))
 				.andExpect(status().isOk());

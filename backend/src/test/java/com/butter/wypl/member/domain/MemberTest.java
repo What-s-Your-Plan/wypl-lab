@@ -18,6 +18,34 @@ import com.butter.wypl.member.fixture.MemberFixture;
 
 class MemberTest {
 
+	@DisplayName("타임존 수정에 성공한다.")
+	@Test
+	void updateTimezoneTest() {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+		CalendarTimeZone timezone = CalendarTimeZone.ENGLAND;
+
+		/* When */
+		member.changeTimezone(timezone);
+
+		/* Then */
+		assertThat(member.getTimeZone()).isEqualTo(timezone);
+	}
+
+	@DisplayName("프로필 이미지 수정에 성공한다.")
+	@Test
+	void updateProfileImageTest() {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+		String newProfileImageUrl = "aws.image.url";
+
+		/* When */
+		member.changeProfileImage(newProfileImageUrl);
+
+		/* Then */
+		assertThat(member.getProfileImage()).isEqualTo(newProfileImageUrl);
+	}
+
 	@DisplayName("닉네임 Test")
 	@Nested
 	class NicknameTest {

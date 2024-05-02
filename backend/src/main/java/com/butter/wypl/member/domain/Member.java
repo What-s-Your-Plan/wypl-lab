@@ -73,4 +73,12 @@ public class Member extends BaseEntity {
 			throw new MemberException(MemberErrorCode.TOO_LONG_NICKNAME);
 		}
 	}
+
+	public void changeTimezone(final CalendarTimeZone newTimezone) {
+		timeZone = newTimezone;
+	}
+
+	public void changeProfileImage(final String newProfileImage) {
+		profileImage = newProfileImage;
+	}
 }

@@ -1,4 +1,4 @@
-package com.butter.wypl.global.config;
+package com.butter.wypl.global.config.redis;
 
 import lombok.Getter;
 
@@ -8,6 +8,7 @@ public enum OS {
 	WINDOWS("Windows 10"),
 	LINUX("Linux"),
 	UBUNTU("Ubuntu"),
+	DEBIAN("Debian"),
 	;
 
 	private final String value;
