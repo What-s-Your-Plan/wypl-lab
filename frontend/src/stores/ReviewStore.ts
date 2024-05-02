@@ -2,7 +2,6 @@ import { create } from 'zustand';
 
 import {
   Content,
-  TitleContent,
   TextContent,
   PictureContent,
   EmotionContent,
@@ -17,6 +16,7 @@ type ReviewState = {
   contents: Content[];
   setTitle: (title: string) => void;
   setScheduleId: (scheduleId: number) => void;
+  setContent: (index: number, content: Content) => void;
   addContent: (type: ReviewType) => void;
 };
 
@@ -30,12 +30,18 @@ const useReviewStore = create<ReviewState>()((set) => ({
   setScheduleId(newScheduleId: number) {
     set({ scheduleId: newScheduleId });
   },
+  setContent(index: number, newContent: Content) {
+    set((state) => ({
+      contents: [
+        ...state.contents.slice(0, index),
+        newContent,
+        ...state.contents.slice(index + 1),
+      ],
+    }));
+  },
   addContent(blockType: ReviewType) {
     let newContent: Content;
     switch (blockType) {
-      case 'title':
-        newContent = new TitleContent('');
-        break;
       case 'text':
         newContent = new TextContent('');
         break;

@@ -1,33 +1,10 @@
 abstract class Content {
-  blockType:
-    | 'title'
-    | 'text'
-    | 'picture'
-    | 'emotion'
-    | 'weather'
-    | 'kpt'
-    | '4f';
+  blockType: 'text' | 'picture' | 'emotion' | 'weather' | 'kpt' | '4f';
 
   constructor(
-    blockType:
-      | 'title'
-      | 'text'
-      | 'picture'
-      | 'emotion'
-      | 'weather'
-      | 'kpt'
-      | '4f',
+    blockType: 'text' | 'picture' | 'emotion' | 'weather' | 'kpt' | '4f',
   ) {
     this.blockType = blockType;
-  }
-}
-
-class TitleContent extends Content {
-  title: string;
-
-  constructor(title: string) {
-    super('title');
-    this.title = title;
   }
 }
 
@@ -99,7 +76,6 @@ class FourFContent extends Content {
 
 export {
   Content,
-  TitleContent,
   TextContent,
   PictureContent,
   EmotionContent,

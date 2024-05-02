@@ -4,15 +4,19 @@ import useReviewStore from '@/stores/ReviewStore';
 
 import RTitle from './RTitle';
 import RSchedule from './RSchedule';
-import RText from './RText';
-import RWeather from './REmotion';
-import RPicture from './RPicture';
-import RKpt from './RKpt';
-import R4F from './R4F';
+import ReviewWrite from './ReviewWrite';
+
 import { Divider } from '@/components/common/Divider';
 
 function WriteBlockList() {
   const reviewStore = useReviewStore();
+
+  const renderBlockList = () => {
+    const blockList = reviewStore.contents;
+    return blockList.map((block, index) => {
+      return <ReviewWrite $index={index} $content={block} />;
+    });
+  };
 
   return (
     <S.Container $width="800" className="scrollBar flex flex-col gap-4">
@@ -21,13 +25,14 @@ function WriteBlockList() {
         <RSchedule $scheduleId={reviewStore.scheduleId} />
       </div>
       <Divider />
-      <div>
-        <RText />
-        <RWeather />
-        <RPicture />
-        <RKpt />
-        <R4F />
-      </div>
+      <div>{renderBlockList()}</div>
+      <S.WhiteContainer
+        $width="900"
+        $height="quarter"
+        onClick={() => reviewStore.addContent('text')}
+      >
+        +
+      </S.WhiteContainer>
     </S.Container>
   );
 }
