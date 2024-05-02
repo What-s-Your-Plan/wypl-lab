@@ -1,9 +1,16 @@
+import { useEffect } from 'react';
+
 import { WhiteContainer } from '@/components/common/Container';
 import Calendar from '@/assets/icons/calendar.svg';
 import Tag from '@/assets/icons/tag.svg';
 import Users from '@/assets/icons/users.svg';
 
-function RSchedule() {
+type RScheduleProps = {
+  $scheduleId: number;
+};
+
+function RSchedule({ $scheduleId }: RScheduleProps) {
+  useEffect(() => {}, []);
   return (
     <WhiteContainer $width="900" className="flex gap-4">
       <div className="flex gap-4 text-sm">
