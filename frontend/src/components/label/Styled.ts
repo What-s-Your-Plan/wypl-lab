@@ -5,7 +5,7 @@ const CreateDiv = styled.div`
   ${tw`
     flex
     px-2
-    gap-1
+    gap-3
     justify-center
     content-center
     items-center

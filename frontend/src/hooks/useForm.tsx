@@ -1,39 +1,21 @@
-import { useState } from 'react';
-
-const initialSchedule: Schedule & Repeat = {
-  title: '',
-  description: '',
-  startDate: new Date(),
-  endDate: new Date(),
-  startAMPM: 'AM',
-  endAMPM: 'AM',
-  startHour: 12,
-  endHour: 12,
-  startMinute: 0,
-  endMinute: 0,
-  category: 'Member',
-  ownerId: 0,
-  alarmTime: '',
-  labelId: 0,
-  members: [],
-  repeat: false,
-  repeatCycle: 'week',
-  week: 1,
-  dayOfWeek: 0,
-  day: 1,
-  month: 1,
-  lastDay: false,
-  startRDate: new Date(),
-  hasEndDate: false,
-  endRDate: new Date(),
-};
+import { Dispatch, SetStateAction, useState } from 'react';
 
 function useForm<S>(
   initialState: S | (() => S), // Object
-  onSubmit: () => Promise<void>,
+  onSubmit: (state: S) => Promise<void>,
   validate?: (values: S) => Array<boolean>,
-) {
-  const [states, setStates] = useState<S>({ ...(initialState as S) });
+): {
+  form: S;
+  errors: boolean[];
+  handleChange: (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
+  ) => void;
+  handleSubmit: () => Promise<void>;
+  setForm: Dispatch<SetStateAction<S>>;
+} {
+  const [form, setForm] = useState<S>({ ...(initialState as S) });
   const [errors, setErrors] = useState<Array<boolean>>(
     Object.keys(initialState as object).map(() => {
       return true;
@@ -46,7 +28,7 @@ function useForm<S>(
       | React.ChangeEvent<HTMLTextAreaElement>,
   ) => {
     const { name, value } = event.target;
-    setStates((prev) => {
+    setForm((prev) => {
       return {
         ...prev,
         [name]: value,
@@ -54,20 +36,18 @@ function useForm<S>(
     });
   };
 
-  const handleSubmit = async (event: React.SyntheticEvent) => {
-    event.preventDefault();
+  const handleSubmit = async () => {
     if (validate) {
-      const result = validate(states);
+      const result = validate(form);
       setErrors(result);
       if (result.includes(false)) {
         return;
       }
     }
-    await onSubmit();
+    await onSubmit(form);
   };
 
-  return [states, errors, handleChange, handleSubmit];
+  return { form, errors, handleChange, handleSubmit, setForm };
 }
 
 export default useForm;
-export { initialSchedule };

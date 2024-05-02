@@ -6,11 +6,11 @@ import {
 import * as S from '@/components/color/PalettePanelStyle';
 import ColorCircle from '@/components/common/ColorCircle';
 
-type Props = {
+type PalettePanelProps = {
   setColor: (color: LabelColorsType) => void;
 };
 
-function PalettePanel({ setColor }: Props) {
+function PalettePanel({ setColor }: PalettePanelProps) {
   const renderColors = () => {
     return LabelColors.map((color) => {
       return (

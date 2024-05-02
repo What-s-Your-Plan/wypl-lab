@@ -1,13 +1,14 @@
 import tw from 'twin.macro';
 import styled from 'styled-components';
 
-type Props = {
+type InputTextProps = {
   $width?: string;
   $isValid?: boolean;
   $void?: boolean;
+  $resize?: boolean;
 };
 
-const InputDefault = styled.input<Props>`
+const InputDefault = styled.input<InputTextProps>`
   ${tw`
     h-8
     rounded-md
@@ -28,7 +29,7 @@ const InputDefault = styled.input<Props>`
   ${(props) => (props.$width ? `width:${props.$width};` : tw`grow`)}
 `;
 
-const InputTitle = styled.input<Props>`
+const InputTitle = styled.input<InputTextProps>`
   ${tw`
       h-8
       bg-transparent
@@ -49,7 +50,7 @@ const InputTitle = styled.input<Props>`
   ${(props) => (props.$width ? `width:${props.$width};` : tw`grow`)}
 `;
 
-const InputTextArea = styled.textarea<Props>`
+const InputTextArea = styled.textarea<InputTextProps>`
   ${tw`
     rounded-md
     px-2
@@ -67,6 +68,7 @@ const InputTextArea = styled.textarea<Props>`
       ? tw`outline-label-red text-label-red`
       : tw`outline-gray-300`}
   ${(props) => (props.$width ? `width:${props.$width};` : tw`grow`)}
+  ${(props) => (props.$resize === false ? tw`resize-none` : '')}
 `;
 
 export { InputDefault, InputTitle, InputTextArea };
