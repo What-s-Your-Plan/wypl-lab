@@ -1,6 +1,6 @@
 import { Switch } from '@headlessui/react';
 
-type Props = {
+type ToggleProps = {
   enabled: boolean;
   setEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -9,7 +9,7 @@ function classNames(...classes: Array<string>): string {
   return classes.filter(Boolean).join(' ');
 }
 
-function Toggle({ enabled, setEnabled }: Props) {
+function Toggle({ enabled, setEnabled }: ToggleProps) {
   return (
     <Switch
       checked={enabled}

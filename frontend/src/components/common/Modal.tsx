@@ -2,7 +2,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment } from 'react';
 import Button from '@/components/common/Button';
 
-type Props = {
+type ModalProps = {
   isOpen: boolean;
   cancel?: string;
   confirm?: string;
@@ -20,7 +20,7 @@ function Modal({
   contents,
   handleClose,
   handleConfirm,
-}: Props) {
+}: ModalProps) {
   return (
     <>
       <Transition appear show={isOpen} as={Fragment}>

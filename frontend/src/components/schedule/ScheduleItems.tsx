@@ -8,7 +8,7 @@ import {
 import LabelButton from '@/components/common/LabelButton';
 import ListBox from '@/components/common/ListBox';
 import Toggle from '@/components/common/Toggle';
-import CreateLabel from '../label/CreateLabel';
+import CreateLabel from '@/components/label/CreateLabel';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 import CalendarAddIcon from '@/assets/icons/calendarAdd.svg';
 import ClockIcon from '@/assets/icons/clock.svg';
@@ -117,7 +117,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
               onChange={handleChange}
             />
             {states.isAllday ? null : (
-              <div className="flex flex-row gap-x-1">
+              <S.TimeContainer>
                 <ListBox
                   list={ampm}
                   width="w-16"
@@ -147,7 +147,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   onInput={onInputMinute}
                   onChange={handleChange}
                 />
-              </div>
+              </S.TimeContainer>
             )}
           </div>
           <img src={ArrowRightIcon} alt="arrow-right" />
@@ -159,7 +159,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
               onChange={handleChange}
             />
             {states.isAllday ? null : (
-              <div className="flex flex-row gap-x-1">
+              <S.TimeContainer>
                 <ListBox
                   list={ampm}
                   width="w-16"
@@ -189,7 +189,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   onInput={onInputMinute}
                   onChange={handleChange}
                 />
-              </div>
+              </S.TimeContainer>
             )}
           </div>
         </div>

@@ -22,10 +22,26 @@ const DayButton = styled.button<{
   $sun?: boolean;
   $satur?: boolean;
 }>`
-  ${tw`size-8 rounded-full cursor-pointer bg-default-black text-default-white`}
-  ${(props) => (props.$sun ? tw`bg-red-600` : '')}
-  ${(props) => (props.$satur ? tw`bg-blue-700` : '')}
-  ${(props) => (props.$isSelected ? tw`bg-main text-default-black` : '')}
+  ${tw`size-8 rounded-full cursor-pointer border-2 font-bold`}
+  ${(props) => (props.$sun ? tw`text-red-500` : '')}
+  ${(props) => (props.$satur ? tw`text-blue-600` : '')}
+  ${(props) => {
+    if (props.$isSelected) {
+      if (props.$sun) {
+        return tw`border-red-500`;
+      } else if (props.$satur) {
+        return tw`border-blue-600`;
+      }
+      return tw`border-default-black`;
+    }
+    return '';
+  }}
 `;
 
-export { TitleDiv, ItemDiv, InputDiv, BetweenDiv, DayButton };
+const TimeContainer = tw.div`
+  flex
+  flex-row
+  gap-x-1
+`;
+
+export { TitleDiv, ItemDiv, InputDiv, BetweenDiv, DayButton, TimeContainer };

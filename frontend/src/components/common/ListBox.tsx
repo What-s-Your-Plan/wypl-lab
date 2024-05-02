@@ -2,7 +2,7 @@ import { Fragment, SetStateAction, Dispatch } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
 
-type Props = {
+type ListBoxProps = {
   list: Array<any>;
   render?: (value: any) => JSX.Element | Array<JSX.Element>;
   selected: any; // state
@@ -26,7 +26,7 @@ function ListBox({
   setSelected,
   topList,
   bottomList,
-}: Props) {
+}: ListBoxProps) {
   return (
     <div className={`${width}`}>
       <Listbox value={selected} onChange={setSelected}>

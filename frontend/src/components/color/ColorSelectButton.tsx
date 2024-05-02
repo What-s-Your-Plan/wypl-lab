@@ -4,12 +4,12 @@ import { LabelColorsType, BgColors } from '@/assets/styles/colorThemes';
 import PopOver from '@/components/common/PopOver';
 import PalettePanel from '@/components/color/PalettePanel';
 
-type Props = {
+type ColorSelectProps = {
   color: LabelColorsType;
   setColor: Dispatch<SetStateAction<LabelColorsType>>;
 };
 
-function ColorSelectButton({ color, setColor }: Props) {
+function ColorSelectButton({ color, setColor }: ColorSelectProps) {
   const changeColor = (color: LabelColorsType) => {
     setColor(color);
   };

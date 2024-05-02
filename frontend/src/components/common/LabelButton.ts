@@ -2,11 +2,11 @@ import tw from 'twin.macro';
 import styled from 'styled-components';
 import { LabelColorsType, BgTheme } from '@/assets/styles/colorThemes';
 
-type Props = {
+type LabelProps = {
   $bgColor: LabelColorsType;
 };
 
-const LabelButton = styled.button<Props>`
+const LabelButton = styled.button<LabelProps>`
   ${tw`rounded-full
     flex
     justify-center

@@ -2,14 +2,14 @@ import tw from 'twin.macro';
 import styled from 'styled-components';
 import { BgColors, BgTheme } from '@/assets/styles/colorThemes';
 
-type Props = {
+type CircleProps = {
   $bgColor: BgColors;
   $size?: string;
   $cursor?: string;
   $hover?: boolean;
 };
 
-const ColorCircle = styled.div<Props>`
+const ColorCircle = styled.div<CircleProps>`
   ${tw`
     rounded-full
     aspect-square

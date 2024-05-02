@@ -1,9 +1,10 @@
 import Modal from '@/components/common/Modal';
-import useForm, { initialSchedule } from '@/hooks/useForm';
+import useForm from '@/hooks/useForm';
+import initialSchedule from '@/constants/ScheduleFormInit';
 import SchedulePanel from '@/components/schedule/SchedulePanel';
 import PostSchedule from '@/services/schedule/PostSchedule';
 
-type Props = {
+type ScheduleModalProps = {
   isOpen: boolean;
   init?: Schedule & Repeat;
   handleClose: (() => void) | (() => Promise<void>);
@@ -15,8 +16,8 @@ function ScheduleModal({
   init = { ...initialSchedule },
   handleClose,
   handleConfirm,
-}: Props) {
-  const { form, handleChange, setForm } = useForm<Schedule & Repeat>(
+}: ScheduleModalProps) {
+  const { form, setForm, handleChange } = useForm<Schedule & Repeat>(
     init,
     PostSchedule,
   );
