@@ -13,9 +13,7 @@ function RText({ $index, $content }: RTextProps) {
   const { setContent } = useReviewStore();
   const textarea = useRef<HTMLTextAreaElement>(null);
 
-  const handleResizeHeight = (
-    event: React.ChangeEvent<HTMLTextAreaElement>,
-  ) => {
+  const handleTextInput = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newContent = $content;
     newContent.text = event.target.value;
     setContent($index, newContent);
@@ -34,7 +32,7 @@ function RText({ $index, $content }: RTextProps) {
         rows={5}
         ref={textarea}
         placeholder="내용을 입력해주세요"
-        onChange={(e) => handleResizeHeight(e)}
+        onChange={(e) => handleTextInput(e)}
       />
     </WhiteContainer>
   );
