@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.butter.wypl.global.config.redis.OS;
 import com.butter.wypl.global.config.redis.RedisAvailablePortFind;
 import com.butter.wypl.global.config.redis.RedisAvailablePortFindForDebian;
 import com.butter.wypl.global.config.redis.RedisAvailablePortFindForLinux;
@@ -19,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import redis.embedded.RedisServer;
 
 @Slf4j
-@Profile({"test"})
+@Profile({"local", "test"})
 @Configuration
 public class EmbeddedRedisConfig {
 

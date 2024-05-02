@@ -32,6 +32,20 @@ class MemberTest {
 		assertThat(member.getTimeZone()).isEqualTo(timezone);
 	}
 
+	@DisplayName("프로필 이미지 수정에 성공한다.")
+	@Test
+	void updateProfileImageTest() {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+		String newProfileImageUrl = "aws.image.url";
+
+		/* When */
+		member.changeProfileImage(newProfileImageUrl);
+
+		/* Then */
+		assertThat(member.getProfileImage()).isEqualTo(newProfileImageUrl);
+	}
+
 	@DisplayName("닉네임 Test")
 	@Nested
 	class NicknameTest {

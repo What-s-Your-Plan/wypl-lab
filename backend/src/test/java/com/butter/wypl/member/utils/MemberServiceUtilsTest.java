@@ -4,6 +4,7 @@ import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -92,6 +93,41 @@ class MemberServiceUtilsTest {
 			assertThatThrownBy(() -> MemberServiceUtils.findById(memberRepository, 0))
 					.isInstanceOf(MemberException.class)
 					.hasMessageContaining(MemberErrorCode.NOT_EXIST_MEMBER.getMessage());
+		}
+	}
+
+	@DisplayName("사용자 권한 테스트")
+	@Nested
+	class ValidateOwnershipTest {
+
+		private Member member;
+
+		@BeforeEach
+		void setUp() {
+			member = KIM_JEONG_UK.toMember();
+		}
+
+		@DisplayName("사용자에게 권한이 있으면 예외를 던지지 않는다.")
+		@Test
+		void validateOwnershipSuccessTest() {
+			/* Given */
+			int checkedMemberId = member.getId();
+
+			/* When & Then */
+			assertThatCode(() -> MemberServiceUtils.validateOwnership(member, checkedMemberId))
+					.doesNotThrowAnyException();
+		}
+
+		@DisplayName("사용자에게 권한이 없으면 예외를 던진다.")
+		@Test
+		void validateOwnershipFailedTest() {
+			/* Given */
+			int checkedMemberId = member.getId() + 1;
+
+			/* When & Then */
+			assertThatThrownBy(() -> MemberServiceUtils.validateOwnership(member, checkedMemberId))
+					.isInstanceOf(MemberException.class)
+					.hasMessageContaining(MemberErrorCode.PERMISSION_DENIED.getMessage());
 		}
 	}
 }

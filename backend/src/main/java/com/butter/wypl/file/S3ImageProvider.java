@@ -3,14 +3,11 @@ package com.butter.wypl.file;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3Client;
@@ -18,15 +15,15 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.butter.wypl.file.exception.FileErrorCode;
 import com.butter.wypl.file.exception.FileException;
+import com.butter.wypl.global.annotation.InfraComponent;
 import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.global.exception.GlobalErrorCode;
 
 import lombok.RequiredArgsConstructor;
 
-@Profile({"default", "local", "dev", "deploy"})
 @RequiredArgsConstructor
-@Component
-public class S3ImageService {
+@InfraComponent
+public class S3ImageProvider {
 
 	private final AmazonS3Client amazonS3Client;
 
@@ -79,9 +76,17 @@ public class S3ImageService {
 	}
 
 	private void checkFileExtension(final String ext) {
-		List<String> allowedExtensions = Arrays.asList(".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG");
-		if (!allowedExtensions.contains(ext)) {
+		if (ImageExtension.notContains(ext)) {
 			throw new CustomException(GlobalErrorCode.NOT_ALLOWED_EXTENSION);
+		}
+	}
+
+	private static class ImageExtension {
+		private static final Set<String> ALLOWED_EXTENSIONS =
+				Set.of(".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG");
+
+		public static boolean notContains(final String extension) {
+			return !ALLOWED_EXTENSIONS.contains(extension);
 		}
 	}
 }

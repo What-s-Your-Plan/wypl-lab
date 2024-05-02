@@ -14,6 +14,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.auth.utils.AuthenticatedArgumentResolver;
 import com.butter.wypl.auth.utils.JwtProvider;
+import com.butter.wypl.file.S3ImageProvider;
 import com.butter.wypl.global.annotation.MockControllerTest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,6 +32,8 @@ public abstract class ControllerTest {
 	protected AuthenticatedArgumentResolver authenticatedArgumentResolver;
 	@MockBean
 	protected JwtProvider jwtProvider;
+	@MockBean
+	protected S3ImageProvider s3ImageProvider;
 
 	protected String convertToJson(Object object) {
 		try {

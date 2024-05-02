@@ -1,4 +1,4 @@
-package com.butter.wypl.member.domain.embedded;
+package com.butter.wypl.sidetab.domain.embedded;
 
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;

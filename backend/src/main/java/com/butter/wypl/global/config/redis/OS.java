@@ -1,4 +1,4 @@
-package com.butter.wypl.global.config;
+package com.butter.wypl.global.config.redis;
 
 import lombok.Getter;
 
