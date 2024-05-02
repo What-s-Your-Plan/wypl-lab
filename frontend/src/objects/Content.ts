@@ -1,9 +1,7 @@
 abstract class Content {
-  blockType: 'text' | 'picture' | 'emotion' | 'weather' | 'kpt' | '4f';
+  blockType: ReviewType;
 
-  constructor(
-    blockType: 'text' | 'picture' | 'emotion' | 'weather' | 'kpt' | '4f',
-  ) {
+  constructor(blockType: ReviewType) {
     this.blockType = blockType;
   }
 }
