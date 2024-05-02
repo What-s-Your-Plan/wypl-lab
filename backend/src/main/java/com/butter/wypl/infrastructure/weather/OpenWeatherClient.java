@@ -4,6 +4,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.butter.wypl.global.annotation.InfraComponent;
+import com.butter.wypl.infrastructure.exception.InfraErrorCode;
+import com.butter.wypl.infrastructure.exception.InfraException;
 import com.butter.wypl.infrastructure.weather.data.OpenWeatherCond;
 import com.butter.wypl.infrastructure.weather.data.OpenWeatherResponse;
 import com.butter.wypl.infrastructure.weather.properties.OpenWeatherProperties;
@@ -23,9 +25,13 @@ public class OpenWeatherClient {
 				OpenWeatherResponse.class
 		);
 
-		System.out.println(response.getStatusCode());
-
-		return response.getBody();
+		if (response.getStatusCode().is2xxSuccessful()) {
+			return response.getBody();
+		}
+		if (response.getStatusCode().is5xxServerError()) {
+			throw new InfraException(InfraErrorCode.OPEN_WEATHER_INTERNAL_SERVER_ERROR);
+		}
+		throw new InfraException(InfraErrorCode.INVALID_OPEN_WEATHER_REQUEST);
 	}
 
 	private String getUrl(OpenWeatherCond cond) {
