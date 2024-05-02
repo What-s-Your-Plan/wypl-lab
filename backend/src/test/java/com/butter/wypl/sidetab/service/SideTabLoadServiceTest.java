@@ -2,7 +2,7 @@ package com.butter.wypl.sidetab.service;
 
 import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
 import java.time.LocalDate;
@@ -18,15 +18,14 @@ import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
-import com.butter.wypl.sidetab.data.request.DDayUpdateRequest;
-import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
 import com.butter.wypl.sidetab.data.response.DDayWidgetResponse;
 import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
 import com.butter.wypl.sidetab.domain.SideTab;
+import com.butter.wypl.sidetab.domain.embedded.DDayWidget;
 import com.butter.wypl.sidetab.repository.SideTabRepository;
 
 @MockServiceTest
-class SideTabModifyServiceTest {
+class SideTabLoadServiceTest {
 
 	@InjectMocks
 	private SideTabServiceImpl sideTabService;
@@ -44,13 +43,10 @@ class SideTabModifyServiceTest {
 		authMember = AuthMember.from(0);
 	}
 
-	@DisplayName("목표를 수정한다.")
+	@DisplayName("목표를 조회한다.")
 	@Test
-	void goalUpdateSuccessTest() {
+	void findGoalWidgetTest() {
 		/* Given */
-		String goalAsString = "새로운 목표";
-		GoalUpdateRequest request = new GoalUpdateRequest(goalAsString);
-
 		Member member = KIM_JEONG_UK.toMember();
 		given(memberRepository.findById(anyInt()))
 				.willReturn(Optional.of(member));
@@ -60,33 +56,29 @@ class SideTabModifyServiceTest {
 				.willReturn(Optional.of(sideTab));
 
 		/* When */
-		GoalWidgetResponse response = sideTabService.updateGoal(authMember, 0, request);
+		GoalWidgetResponse response = sideTabService.findGoal(authMember, 0);
 
 		/* Then */
-		assertThat(response.content()).isEqualTo(goalAsString);
+		assertThat(response).isNotNull();
 	}
 
-	@DisplayName("디데이를 수정한다.")
+	@DisplayName("디데이를 조회한다.")
 	@Test
-	void dDayUpdateSuccessTest() {
+	void findDDayWidgetTest() {
 		/* Given */
-		DDayUpdateRequest request = new DDayUpdateRequest("디데이", LocalDate.now());
-
 		Member member = KIM_JEONG_UK.toMember();
 		given(memberRepository.findById(anyInt()))
 				.willReturn(Optional.of(member));
 
 		SideTab sideTab = SideTab.from(member);
+		sideTab.updateDDay(DDayWidget.of("디데이", LocalDate.now()));
 		given(sideTabRepository.findById(anyInt()))
 				.willReturn(Optional.of(sideTab));
 
 		/* When */
-		DDayWidgetResponse response = sideTabService.updateDDay(authMember, 0, request);
+		DDayWidgetResponse response = sideTabService.findDDay(authMember, 0);
 
 		/* Then */
-		assertAll(
-				() -> assertThat(response.title()).isEqualTo(request.title()),
-				() -> assertThat(response.dDay()).isEqualTo("D-DAY")
-		);
+		assertThat(response).isNotNull();
 	}
 }

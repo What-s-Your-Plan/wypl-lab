@@ -1,6 +1,7 @@
 package com.butter.wypl.sidetab.domain.embedded;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
@@ -44,5 +45,16 @@ public class DDayWidget {
 		if (newTitle.length() > 20) {
 			throw new MemberException(MemberErrorCode.TOO_LONG_CONTENT);
 		}
+	}
+
+	public String getDDay() {
+		long between = ChronoUnit.DAYS.between(LocalDate.now(), value);
+		if (between < 0) {
+			return "D +" + Math.abs(between);
+		}
+		if (between > 0) {
+			return "D -" + Math.abs(between);
+		}
+		return "D-DAY";
 	}
 }

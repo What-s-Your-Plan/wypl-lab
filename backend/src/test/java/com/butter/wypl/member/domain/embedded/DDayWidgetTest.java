@@ -35,6 +35,26 @@ class DDayWidgetTest {
 		}).doesNotThrowAnyException();
 	}
 
+	@DisplayName("D-Day 의 날짜 차이를 조회한다.")
+	@ParameterizedTest
+	@ValueSource(longs = {10L, -10L, 0L})
+	void dDayBetweenTest(long days) {
+		/* Given */
+		DDayWidget dDayWidget = DDayWidget.of("디데이", LocalDate.now().plusDays(days));
+
+		/* When */
+		String dDay = dDayWidget.getDDay();
+
+		/* Then */
+		if (days > 0) {
+			assertThat(dDay).isEqualTo("D -" + Math.abs(days));
+		} else if (days < 0) {
+			assertThat(dDay).isEqualTo("D +" + Math.abs(days));
+		} else {
+			assertThat(dDay).isEqualTo("D-DAY");
+		}
+	}
+
 	@DisplayName("목표 Length Test")
 	@Nested
 	class MemoLengthTest {
