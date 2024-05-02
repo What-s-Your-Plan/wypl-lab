@@ -28,6 +28,7 @@ import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
 import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
+import com.butter.wypl.member.data.response.FindMemberProfileInfoResponse;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
@@ -78,6 +79,45 @@ class MemberControllerTest extends ControllerTest {
 										.description("서버의 타임존 목록"),
 								fieldWithPath("body.timezone_count").type(JsonFieldType.NUMBER)
 										.description("서버의 타임존 개수")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사용자의 프로필을 조회한다.")
+	@Test
+	void findProfile() throws Exception {
+		/* Given */
+		given(memberLoadService.findProfileInfo(any(AuthMember.class), anyInt()))
+				.willReturn(FindMemberProfileInfoResponse.from(KIM_JEONG_UK.toMember()));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/member/v1/members/{member_id}", 1)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/profile",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.id").type(JsonFieldType.NUMBER)
+										.description("사용자 식별자"),
+								fieldWithPath("body.email").type(JsonFieldType.STRING)
+										.description("사용자 이메일"),
+								fieldWithPath("body.nickname").type(JsonFieldType.STRING)
+										.description("사용자 닉네임"),
+								fieldWithPath("body.profile_image_url").type(JsonFieldType.STRING).optional()
+										.description("사용자 프로필 이미지 URL"),
+								fieldWithPath("body.main_color").type(JsonFieldType.STRING)
+										.description("사용자 기본 색상")
 						)
 				))
 				.andExpect(status().isOk());

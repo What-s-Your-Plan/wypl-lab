@@ -20,7 +20,7 @@ public class RedisAvailablePortFindForWindows extends RedisAvailablePortFind {
 	}
 
 	@Override
-	public boolean isRedisRunning(int redisPort) throws IOException {
+	public boolean isRedisRunning(int redisPort) {
 		return isRunning(redisPort);
 	}
 

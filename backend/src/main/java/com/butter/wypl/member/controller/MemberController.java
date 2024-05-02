@@ -3,6 +3,7 @@ package com.butter.wypl.member.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import com.butter.wypl.global.common.Message;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
 import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
+import com.butter.wypl.member.data.response.FindMemberProfileInfoResponse;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
@@ -32,6 +34,15 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberLoadService memberLoadService;
 	private final MemberModifyService memberModifyService;
+
+	@GetMapping("/v1/members/{member_id}")
+	public ResponseEntity<Message<FindMemberProfileInfoResponse>> findProfileInfo(
+			@Authenticated AuthMember authMember,
+			@PathVariable("member_id") int memberId
+	) {
+		FindMemberProfileInfoResponse response = memberLoadService.findProfileInfo(authMember, memberId);
+		return ResponseEntity.ok(Message.withBody("프로필 조회하였습니다.", response));
+	}
 
 	@GetMapping("/v1/timezones")
 	public ResponseEntity<Message<FindTimezonesResponse>> findTimezones(
