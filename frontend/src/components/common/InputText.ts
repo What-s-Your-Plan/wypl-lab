@@ -5,6 +5,7 @@ type Props = {
   $width?: string;
   $isValid?: boolean;
   $void?: boolean;
+  $resize?: boolean;
 };
 
 const InputDefault = styled.input<Props>`
@@ -67,6 +68,7 @@ const InputTextArea = styled.textarea<Props>`
       ? tw`outline-label-red text-label-red`
       : tw`outline-gray-300`}
   ${(props) => (props.$width ? `width:${props.$width};` : tw`grow`)}
+  ${(props) => (props.$resize === false ? tw`resize-none` : '')}
 `;
 
 export { InputDefault, InputTitle, InputTextArea };

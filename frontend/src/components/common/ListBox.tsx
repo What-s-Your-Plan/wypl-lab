@@ -3,34 +3,38 @@ import { Listbox, Transition } from '@headlessui/react';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
 
 type Props = {
-  list: Array<JSX.Element>;
-  selected: string; // state
-  setSelected: Dispatch<SetStateAction<string>>; // state setter
+  list: Array<any>;
+  render?: (value: any) => JSX.Element | Array<JSX.Element>;
+  selected: any; // state
+  setSelected: Dispatch<SetStateAction<any>>; // state setter
   width?: string; //tailwind class로 넣어 주세요
+  height?: string;
   topList?: React.ReactNode; // 리스트 상단에 추가할 컴포넌트
   bottomList?: React.ReactNode; // 리스트 하단에 추가할 컴포넌트
 };
 
-function renderSpan(values: Array<string | number>): Array<JSX.Element> {
-  return values.map((value, index) => {
-    return <span key={index}>{value}</span>;
-  });
+function renderSpan(value: string | number): JSX.Element {
+  return <span className="truncate">{value}</span>;
 }
 
 function ListBox({
   width = 'w-72',
+  height = 'h-8',
   list,
+  render = renderSpan,
   selected,
   setSelected,
   topList,
   bottomList,
 }: Props) {
   return (
-    <div className={width}>
+    <div className={`${width}`}>
       <Listbox value={selected} onChange={setSelected}>
-        <div className="relative mt-1">
-          <Listbox.Button className="flex justify-between relative w-full cursor-pointer rounded-lg bg-default-white py-2 px-3 text-left shadow-lg focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-default-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-            <span className="truncate">{selected}</span>
+        <div className="relative">
+          <Listbox.Button
+            className={`${height} flex items-center justify-between relative w-full cursor-pointer rounded-lg px-2 min-h-8 text-left shadow-lg focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-default-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm`}
+          >
+            {render(selected)}
             <span className="pointer-events-none flex items-center">
               <img src={ChevronDown} className="h-5 w-5" aria-hidden="true" />
             </span>
@@ -41,9 +45,9 @@ function ListBox({
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-default-warmgray/30 py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+            <Listbox.Options className="scrollBar absolute z-20 mt-1 max-h-60 w-full overflow-auto rounded-md bg-default-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
               {topList ? (
-                <li className="relative, cursor-pointer, select-none">
+                <li className="relative cursor-pointer select-none">
                   {topList}
                 </li>
               ) : null}
@@ -51,13 +55,13 @@ function ListBox({
                 <Listbox.Option
                   key={itemIdx}
                   className={({ active }) =>
-                    `relative cursor-pointer select-none py-2 px-4 text-gray-700 ${
+                    `relative cursor-pointer select-none px-4 py-2 text-gray-700 ${
                       active ? 'bg-main/20' : ''
                     }`
                   }
                   value={item}
                 >
-                  {item}
+                  {render(item)}
                 </Listbox.Option>
               ))}
               {bottomList ? <li>{bottomList}</li> : null}
