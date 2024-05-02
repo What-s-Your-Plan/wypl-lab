@@ -7,9 +7,12 @@ import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@Getter
+/**
+ * <a href="https://openweathermap.org/weather-conditions#Weather-Condition-Codes-2">OPEN WEATHER ID</a>
+ */
 @AllArgsConstructor
-public enum Weather {
+@Getter
+public enum WeatherType {
 	THUNDERSTORM(new HashSet<>(List.of(200, 201, 202, 210, 211, 212, 221, 230, 231, 232)), "천둥"),
 	DRIZZLE(new HashSet<>(List.of(300, 301, 302, 310, 311, 312, 313, 314, 321)), "이슬비"),
 	RAIN(new HashSet<>(List.of(500, 501, 502, 503, 504, 511, 520, 521, 522, 531)), "비"),

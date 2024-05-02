@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.TimeZone;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+@Getter
 @AllArgsConstructor
 public enum CalendarTimeZone {
 	KOREA(TimeZone.getTimeZone("Asia/Korea")),
