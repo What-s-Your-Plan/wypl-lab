@@ -55,8 +55,9 @@ public class MemberScheduleService {
 	}
 
 	@Transactional
-	public void updateMemberSchedule(Schedule schedule, List<MemberIdResponse> memberIdResponses) {
+	public List<Member> updateMemberSchedule(Schedule schedule, List<MemberIdResponse> memberIdResponses) {
 		List<Member> newMembers = new ArrayList<>();
+		List<Member> savedMembers = new ArrayList<>();
 		for (MemberIdResponse memberIdResponse : memberIdResponses) {
 			newMembers.add(MemberServiceUtils.findById(memberRepository, memberIdResponse.memberId()));
 		}
@@ -68,22 +69,29 @@ public class MemberScheduleService {
 		for (MemberSchedule memberSchedule : existingMemberSchedules) {
 			if (!newMembers.contains(memberSchedule.getMember())) {
 				memberSchedule.delete();
+				continue;
 			}
+
+			savedMembers.add(memberSchedule.getMember());
 		}
 
 		// 새로운 MemberSchedule 추가
 		for (Member newMember : newMembers) {
 			if (existingMemberSchedules.stream()
 				.noneMatch(memberSchedule -> memberSchedule.getMember().getId() == newMember.getId())) {
-				memberScheduleRepository.save(
-					MemberSchedule
-						.builder()
-						.schedule(schedule)
-						.member(newMember)
-						.build()
+				savedMembers.add(
+					memberScheduleRepository.save(
+						MemberSchedule
+							.builder()
+							.schedule(schedule)
+							.member(newMember)
+							.build()
+					).getMember()
 				);
 			}
 		}
+
+		return savedMembers;
 	}
 
 	public List<Member> getMembersBySchedule(Schedule schedule) {
