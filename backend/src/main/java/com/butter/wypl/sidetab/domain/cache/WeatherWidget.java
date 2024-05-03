@@ -19,6 +19,8 @@ public class WeatherWidget {
 	private WeatherRegion weatherRegion;
 	private int weatherId;
 	private int temp;
+	private int minTemp;
+	private int maxTemp;
 	private String updateTime;
 	private String main;
 	private String desc;

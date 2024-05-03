@@ -10,6 +10,10 @@ public record WeatherWidgetResponse(
 		int weatherId,
 		@JsonProperty("temp")
 		int temp,
+		@JsonProperty("min_temp")
+		int minTemp,
+		@JsonProperty("max_temp")
+		int maxTemp,
 		@JsonProperty("update_time")
 		String updateTime,
 		@JsonProperty("main")
@@ -25,6 +29,8 @@ public record WeatherWidgetResponse(
 				isLangKr ? weatherWidget.getWeatherRegion().getCityEn()
 						: weatherWidget.getWeatherRegion().getCityKr(),
 				weatherWidget.getWeatherId(),
+				weatherWidget.getTemp(),
+				weatherWidget.getTemp(),
 				weatherWidget.getTemp(),
 				weatherWidget.getUpdateTime(),
 				weatherWidget.getMain(),

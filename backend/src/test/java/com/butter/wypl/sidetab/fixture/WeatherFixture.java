@@ -14,10 +14,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum WeatherFixture {
-	DEGREE_KR_KOREA(WeatherRegion.KOREA, true, true, 800, 1, "yyyy.MM.dd HH:mm 업데이트", "Clear", "맑음", 15.51F,
-			1714694049),
-	FAHRENHEIT_EN_USA(WeatherRegion.EAST_USA, false, false, 800, 1, "yyyy.MM.dd HH:mm 업데이트", "Clear", "맑음", 288.81F,
-			1714694049);
+	DEGREE_KR_KOREA(WeatherRegion.KOREA, true, true,
+			800, 1, "14:20 갱신", "Clear", "맑음",
+			15.51F, 26.72F, 20.75F, 1714694049),
+	FAHRENHEIT_EN_USA(WeatherRegion.EAST_USA, false, false,
+			800, 1, "14:20 갱신", "Clear", "맑음",
+			297.34F, 294.84F, 298.81F, 1714694049);
 
 	private final WeatherRegion weatherRegion;
 	private final boolean isMetric;
@@ -29,6 +31,8 @@ public enum WeatherFixture {
 	private final String weatherMain;
 	private final String desc;
 	private final float temp;
+	private final float maxTemp;
+	private final float minTemp;
 	private final long dt;
 
 	public OpenWeatherCond toCond() {
@@ -38,7 +42,7 @@ public enum WeatherFixture {
 	public OpenWeatherResponse toOpenWeatherResponse() {
 		return new OpenWeatherResponse(
 				List.of(OpenWeatherResponse.ofByWeatherResponse(responseWeatherId, weatherMain, desc)),
-				OpenWeatherResponse.fromByMainResponse(temp),
+				OpenWeatherResponse.fromByMainResponse(temp, maxTemp, minTemp),
 				dt
 		);
 	}
@@ -46,7 +50,7 @@ public enum WeatherFixture {
 	public OpenWeatherResponse toInvalidOpenWeatherResponse() {
 		return new OpenWeatherResponse(
 				List.of(OpenWeatherResponse.ofByWeatherResponse(-1, weatherMain, desc)),
-				OpenWeatherResponse.fromByMainResponse(temp),
+				OpenWeatherResponse.fromByMainResponse(temp, maxTemp, minTemp),
 				dt
 		);
 	}
@@ -56,6 +60,8 @@ public enum WeatherFixture {
 				weatherRegion,
 				responseWeatherId,
 				Math.round(temp),
+				Math.round(maxTemp),
+				Math.round(minTemp),
 				updateTime,
 				weatherMain,
 				desc
@@ -67,6 +73,8 @@ public enum WeatherFixture {
 				weatherRegion.getCityKr(),
 				weatherId,
 				Math.round(temp),
+				Math.round(maxTemp),
+				Math.round(minTemp),
 				updateTime,
 				weatherMain,
 				desc

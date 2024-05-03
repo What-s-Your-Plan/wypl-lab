@@ -255,6 +255,10 @@ class SideTabControllerTest extends ControllerTest {
 										.description("날씨 식별자"),
 								fieldWithPath("body.temp").type(JsonFieldType.NUMBER)
 										.description("온도"),
+								fieldWithPath("body.min_temp").type(JsonFieldType.NUMBER)
+										.description("최소 온도"),
+								fieldWithPath("body.max_temp").type(JsonFieldType.NUMBER)
+										.description("최대 온도"),
 								fieldWithPath("body.update_time").type(JsonFieldType.STRING)
 										.description("날씨를 조회한 시간"),
 								fieldWithPath("body.main").type(JsonFieldType.STRING)

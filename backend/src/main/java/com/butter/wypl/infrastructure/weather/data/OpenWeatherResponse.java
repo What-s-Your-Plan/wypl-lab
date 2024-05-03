@@ -17,8 +17,12 @@ public record OpenWeatherResponse(
 		return new WeatherResponse(id, main, desc);
 	}
 
-	public static MainResponse fromByMainResponse(final float temp) {
-		return new MainResponse(temp);
+	public static MainResponse fromByMainResponse(
+			final float temp,
+			final float maxTemp,
+			final float minTemp
+	) {
+		return new MainResponse(temp, maxTemp, minTemp);
 	}
 
 	public int getWeatherId() {
@@ -37,6 +41,14 @@ public record OpenWeatherResponse(
 		return main.temp();
 	}
 
+	public float getMaxTemperature() {
+		return main.maxTemp();
+	}
+
+	public float getMinTemperature() {
+		return main.minTemp();
+	}
+
 	private record WeatherResponse(
 			@JsonProperty("id")
 			int id,
@@ -49,7 +61,11 @@ public record OpenWeatherResponse(
 
 	private record MainResponse(
 			@JsonProperty("temp")
-			float temp
+			float temp,
+			@JsonProperty("temp_min")
+			float maxTemp,
+			@JsonProperty("temp_max")
+			float minTemp
 	) {
 	}
 }

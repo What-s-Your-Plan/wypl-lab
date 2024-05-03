@@ -128,6 +128,8 @@ public class SideTabServiceImpl implements
 		return new WeatherWidget(cond.city(),
 				getWeatherId(response.getWeatherId()),
 				Math.round(response.getTemperature()),
+				Math.round(response.getMinTemperature()),
+				Math.round(response.getMaxTemperature()),
 				updateTime,
 				response.getWeatherName(),
 				response.getWeatherDescription());
@@ -145,7 +147,7 @@ public class SideTabServiceImpl implements
 	private String getUpdateTime(final WeatherRegion weatherRegion) {
 		Instant instant = Instant.ofEpochMilli(System.currentTimeMillis());
 		ZonedDateTime datetime = ZonedDateTime.ofInstant(instant, ZoneId.of(weatherRegion.getTimeZone()));
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm 업데이트");
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm 갱신");
 		return datetime.format(dateTimeFormatter);
 	}
 }
