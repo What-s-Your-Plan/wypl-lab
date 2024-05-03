@@ -1,4 +1,4 @@
-package com.butter.wypl.member.fixture;
+package com.butter.wypl.sidetab.fixture;
 
 import java.time.LocalDate;
 

@@ -27,8 +27,10 @@ import com.butter.wypl.sidetab.data.request.DDayUpdateRequest;
 import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
 import com.butter.wypl.sidetab.data.response.DDayWidgetResponse;
 import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
+import com.butter.wypl.sidetab.fixture.WeatherFixture;
 import com.butter.wypl.sidetab.service.SideTabLoadService;
 import com.butter.wypl.sidetab.service.SideTabModifyService;
+import com.butter.wypl.sidetab.service.WeatherWidgetService;
 
 class SideTabControllerTest extends ControllerTest {
 
@@ -39,6 +41,8 @@ class SideTabControllerTest extends ControllerTest {
 	private SideTabModifyService sideTabModifyService;
 	@MockBean
 	private SideTabLoadService sideTabLoadService;
+	@MockBean
+	private WeatherWidgetService weatherWidgetService;
 
 	@DisplayName("사이드탭의 목표를 수정한다.")
 	@Test
@@ -194,7 +198,7 @@ class SideTabControllerTest extends ControllerTest {
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("side-tab/update-d-day",
+				.andDo(document("side-tab/find-d-day",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
 						pathParameters(
@@ -209,6 +213,54 @@ class SideTabControllerTest extends ControllerTest {
 										.description("수정한 디데이"),
 								fieldWithPath("body.date").type(JsonFieldType.STRING)
 										.description("수정한 디데이 날짜")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사이드탭의 날씨를 조회한다.")
+	@Test
+	void findSideTabWeatherTest() throws Exception {
+		/* Given */
+		given(weatherWidgetService.findCurrentWeather(any(AuthMember.class), anyBoolean(), anyBoolean()))
+				.willReturn(WeatherFixture.DEGREE_KR_KOREA.toWeatherWidgetResponse());
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/side/v1/weathers?metric={metric}&lang={lang}",
+								"true", "true")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("side-tab/find-weather",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						queryParameters(
+								parameterWithName("metric").optional()
+										.description("도씨 유무"),
+								parameterWithName("lang").optional()
+										.description("한국어 유무")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.city").type(JsonFieldType.STRING)
+										.description("날씨를 측정한 도시"),
+								fieldWithPath("body.weather_id").type(JsonFieldType.NUMBER)
+										.description("날씨 식별자"),
+								fieldWithPath("body.temp").type(JsonFieldType.NUMBER)
+										.description("온도"),
+								fieldWithPath("body.update_time").type(JsonFieldType.STRING)
+										.description("날씨를 조회한 시간"),
+								fieldWithPath("body.main").type(JsonFieldType.STRING)
+										.description("날씨"),
+								fieldWithPath("body.desc").type(JsonFieldType.STRING)
+										.description("날씨 설명")
 						)
 				))
 				.andExpect(status().isOk());
