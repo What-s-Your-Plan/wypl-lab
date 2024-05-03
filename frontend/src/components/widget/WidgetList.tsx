@@ -95,17 +95,16 @@ function WidgetList() {
         }}
       >
         {widgetArray?.map((widget, index) => {
-          const containerClasses = `reactGridItem`;
           const animationClasses = `${isModifying ? 'shaking' : ''}`;
           return (
             <div
-              className={containerClasses}
+              className="reactGridItem"
               key={index}
               data-grid={{
-                x: widget?.layout.x,
-                y: widget?.layout.y,
-                w: widget?.layout.w,
-                h: widget?.layout.h,
+                x: widget.layout.x,
+                y: widget.layout.y,
+                w: widget.layout.w,
+                h: widget.layout.h,
                 i: widget.layout.i,
                 minW: 1,
                 maxW: 2,

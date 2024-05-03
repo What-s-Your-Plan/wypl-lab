@@ -17,10 +17,12 @@ type ReviewState = {
   setTitle: (title: string) => void;
   setScheduleId: (scheduleId: number) => void;
   setContent: (index: number, content: Content) => void;
-  addContent: (type: ReviewType) => void;
+  setContents: (contents: Content[]) => void;
+  addContent: (index: number, type: ReviewType) => void;
+  moveContent: (fromIndex: number, toIndex: number) => void;
 };
 
-const useReviewStore = create<ReviewState>()((set) => ({
+const useReviewStore = create<ReviewState>()((set, get) => ({
   title: '',
   scheduleId: -1,
   contents: [],
@@ -39,7 +41,10 @@ const useReviewStore = create<ReviewState>()((set) => ({
       ],
     }));
   },
-  addContent(blockType: ReviewType) {
+  setContents(newContents: Content[]) {
+    set({ contents: newContents });
+  },
+  addContent(index: number, blockType: ReviewType) {
     let newContent: Content;
     switch (blockType) {
       case 'text':
@@ -64,8 +69,33 @@ const useReviewStore = create<ReviewState>()((set) => ({
         console.error('Invalid blockType');
     }
     set((state) => ({
-      contents: [...state.contents, newContent],
+      contents: [
+        ...state.contents.slice(0, index + 1),
+        newContent,
+        ...state.contents.slice(index + 1),
+      ],
     }));
+  },
+  moveContent(fromIndex: number, toIndex: number) {
+    const content = get().contents[fromIndex];
+    get().contents.splice(fromIndex, 1);
+    if (fromIndex < toIndex) {
+      set((state) => ({
+        contents: [
+          ...state.contents.slice(0, toIndex - 1),
+          content,
+          ...state.contents.slice(toIndex - 1),
+        ],
+      }));
+    } else {
+      set((state) => ({
+        contents: [
+          ...state.contents.slice(0, toIndex),
+          content,
+          ...state.contents.slice(toIndex),
+        ],
+      }));
+    }
   },
 }));
 

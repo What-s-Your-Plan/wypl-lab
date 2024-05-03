@@ -38,29 +38,29 @@ function RWeather({ index, content }: RWeatherProps) {
       </div>
       <div className="flex flex-row flex-wrap items-center">
         <div>
-          <div className="mx-10 mt-5 mb-1 flex gap-3">
+          <div className="mx-6 mt-1 mb-1 flex">
             <button onClick={() => handleWeather(Sun)}>
-              <img src={Sun} alt="맑음" className="w-8" />
+              <img src={Sun} alt="맑음" className="w-12" />
             </button>
             <button onClick={() => handleWeather(Cloud)}>
-              <img src={Cloud} alt="흐림" className="w-8" />
+              <img src={Cloud} alt="흐림" className="w-12" />
             </button>
             <button onClick={() => handleWeather(FastWind)}>
-              <img src={FastWind} alt="바람" className="w-8" />
+              <img src={FastWind} alt="바람" className="w-12" />
             </button>
             <button onClick={() => handleWeather(CloudAngledRain)}>
-              <img src={CloudAngledRain} alt="비" className="w-8" />
+              <img src={CloudAngledRain} alt="비" className="w-12" />
             </button>
             <button onClick={() => handleWeather(CloudSnow)}>
-              <img src={CloudSnow} alt="눈" className="w-8" />
+              <img src={CloudSnow} alt="눈" className="w-12" />
             </button>
           </div>
         </div>
         <div className="flex gap-4">
           <img
             src={content.weather === '' ? Question : content.weather}
-            alt="맑음"
-            className="w-10"
+            alt="오늘의 날씨"
+            className="w-12"
           />
           <InputDefault
             placeholder="오늘의 날씨를 입력해주세요"

@@ -1,8 +1,10 @@
 abstract class Content {
   blockType: ReviewType;
+  isDraggable: boolean;
 
   constructor(blockType: ReviewType) {
     this.blockType = blockType;
+    this.isDraggable = true;
   }
 }
 
