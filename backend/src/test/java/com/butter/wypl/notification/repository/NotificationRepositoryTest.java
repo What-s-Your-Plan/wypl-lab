@@ -41,54 +41,6 @@ class NotificationRepositoryTest {
 	 *  - 읽은 알림 => 읽고 난 뒤 7일 뒤 삭제
 	 */
 
-	// @Test
-	// void 임시저장() throws InterruptedException {
-	// 	// given
-	// 	String message = "";
-	// 	String type = "Group";
-	//
-	// 	for (int i = 0; i < 30; i++) {
-	// 		List<NotificationButton> buttons = new ArrayList<>();
-	// 		buttons.add(
-	// 			NotificationButton.builder()
-	// 				.text("수락")
-	// 				.actionUrl("ok")
-	// 				.color("#000000")
-	// 				.logo("수락 로고" + i)
-	// 				.build()
-	// 		);
-	// 		buttons.add(
-	// 			NotificationButton.builder()
-	// 				.text("취소")
-	// 				.actionUrl("cancel")
-	// 				.color("#000000")
-	// 				.logo("버튼 로고" + i)
-	// 				.build()
-	// 		);
-	//
-	// 		if (i % 2 == 0) {
-	// 			message = "그룹초대메시지" + i;
-	// 			type = "Group";
-	// 		} else {
-	// 			message = "회고작성메시지" + i;
-	// 			type = "Review";
-	// 		}
-	//
-	// 		Thread.sleep(1000);
-	//
-	// 		Notification notification = Notification.builder()
-	// 			.memberId(99)
-	// 			.message(message)
-	// 			.buttons(buttons)
-	// 			.isRead(false)
-	// 			.type(type)
-	// 			.build();
-	//
-	// 		notificationRepository.save(notification);
-	// 	}
-	// 	// when
-	// }
-
 	@Test
 	@DisplayName("특정 이벤트 발생 후 알림을 생성한다.")
 	void createNotificationTest() {
@@ -157,25 +109,5 @@ class NotificationRepositoryTest {
 			List<Notification> result = notificationRepository.findAllById(memberId, lastId, pageReq);
 			assertThat(result).isNotNull();
 		}).doesNotThrowAnyException();
-	}
-
-	@Test
-	@DisplayName("사용자 알림 삭제")
-	void removeNotification() {
-		//given
-
-		//when
-
-		//then
-	}
-
-	@Test
-	@DisplayName("배치 알림 삭제")
-	void removeNotificationBatch() {
-		//given
-
-		//when
-
-		//then
 	}
 }

@@ -20,7 +20,7 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class NotificationServiceImpl implements NotificationLoadService, NotificationModifyService {
+public class NotificationServiceImpl implements NotificationModifyService {
 
 	private final NotificationRepository notificationRepository;
 
@@ -42,7 +42,7 @@ public class NotificationServiceImpl implements NotificationLoadService, Notific
 			return createReviewNotification(notificationCreateRequest);
 		}
 
-		return null;
+		throw new IllegalStateException("알림 타입 코드가 없습니다");
 	}
 
 	private Notification createGroupNotification(final NotificationCreateRequest request) {
@@ -78,13 +78,13 @@ public class NotificationServiceImpl implements NotificationLoadService, Notific
 			.map(info -> {
 				switch (info) {
 					case ACCEPT -> {
-						return makeButton(info, "accept url");
+						return NotificationButton.from(info, "accept url");
 					}
 					case CANCEL -> {
-						return makeButton(info, "cancel url");
+						return NotificationButton.from(info, "cancel url");
 					}
 					case REVIEW -> {
-						return makeButton(info, "review url");
+						return NotificationButton.from(info, "review url");
 					}
 					//TODO 예외내용 수정
 					default -> throw new IllegalStateException("Unexpected value: " + info);
@@ -120,17 +120,5 @@ public class NotificationServiceImpl implements NotificationLoadService, Notific
 			}
 			default -> throw new IllegalStateException("Unexpected value: " + typeCode);
 		}
-	}
-
-	private NotificationButton makeButton(
-		final ButtonInfo buttonInfo,
-		final String actionURL
-	) {
-		return NotificationButton.builder()
-			.text(buttonInfo.getText())
-			.actionUrl(actionURL)
-			.color(buttonInfo.getColor())
-			.logo(buttonInfo.getLogo())
-			.build();
 	}
 }
