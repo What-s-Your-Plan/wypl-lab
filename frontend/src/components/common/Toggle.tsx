@@ -5,7 +5,7 @@ type ToggleProps = {
   setEnabled: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function classNames(...classes: Array<string>): string {
+function classNames(...classes: Array<string | boolean>): string {
   return classes.filter(Boolean).join(' ');
 }
 
