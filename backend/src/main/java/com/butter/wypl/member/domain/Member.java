@@ -1,8 +1,10 @@
 package com.butter.wypl.member.domain;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import com.butter.wypl.global.common.BaseEntity;
+import com.butter.wypl.infrastructure.weather.WeatherRegion;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
 
@@ -48,6 +50,16 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "timezone", length = 10, nullable = false)
 	private CalendarTimeZone timeZone;
+
+	public WeatherRegion getWeatherRegion() {
+		return Arrays.stream(CalendarTimeZone.values())
+				.flatMap(calendarTimeZone -> Arrays.stream(WeatherRegion.values())
+						.filter(weatherRegion -> calendarTimeZone.getTimeZone()
+								.getDisplayName()
+								.equals(weatherRegion.getTimeZone()))
+				).findFirst()
+				.orElse(WeatherRegion.KOREA);
+	}
 
 	public void changeBirthday(final LocalDate newBirthday) {
 		validateBirthday(newBirthday);

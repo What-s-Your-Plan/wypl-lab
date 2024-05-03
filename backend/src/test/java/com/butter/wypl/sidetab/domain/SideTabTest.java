@@ -1,4 +1,4 @@
-package com.butter.wypl.member.domain;
+package com.butter.wypl.sidetab.domain;
 
 import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import com.butter.wypl.sidetab.domain.SideTab;
+import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.sidetab.domain.embedded.GoalWidget;
 
 class SideTabTest {
