@@ -20,8 +20,9 @@ public class OpenWeatherClient {
 	private final OpenWeatherProperties openWeatherProperties;
 
 	public OpenWeatherResponse fetchWeather(OpenWeatherCond cond) {
+		String url = getUrl(cond);
 		ResponseEntity<OpenWeatherResponse> response = restTemplate.getForEntity(
-				getUrl(cond),
+				url,
 				OpenWeatherResponse.class
 		);
 
@@ -47,7 +48,7 @@ public class OpenWeatherClient {
 	}
 
 	private void addParamByCity(StringBuilder url, WeatherRegion region) {
-		url.append("&q=").append(region.getCity());
+		url.append("&q=").append(region.getCityKr());
 	}
 
 	private void addParamByLang(StringBuilder url, boolean isLangKr) {

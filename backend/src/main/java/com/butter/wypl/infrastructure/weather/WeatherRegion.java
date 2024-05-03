@@ -6,11 +6,12 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum WeatherRegion {
-	KOREA("Asia/Seoul", "Seoul"),
-	WEST_USA("America/Los_Angeles", "Los Angeles"),
-	EAST_USA("America/New_York", "New York"),
-	ENGLAND("Europe/London", "London");
+	KOREA("Asia/Seoul", "Seoul", "서울"),
+	WEST_USA("America/Los_Angeles", "Los Angeles", "로스엔젤레스"),
+	EAST_USA("America/New_York", "New York", "뉴욕"),
+	ENGLAND("Europe/London", "London", "런던");
 
 	private final String timeZone;
-	private final String city;
+	private final String cityEn;
+	private final String cityKr;
 }

@@ -7,18 +7,18 @@ import com.butter.wypl.infrastructure.weather.WeatherRegion;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RedisHash(timeToLive = 60 * 60)
-@ToString
+@Getter
 public class WeatherWidget {
 	@Id
 	private WeatherRegion weatherRegion;
 	private int weatherId;
-	private String temp;
+	private int temp;
 	private String updateTime;
 	private String main;
 	private String desc;

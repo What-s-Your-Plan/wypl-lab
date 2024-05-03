@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.butter.wypl.auth.annotation.Authenticated;
@@ -15,8 +16,10 @@ import com.butter.wypl.sidetab.data.request.DDayUpdateRequest;
 import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
 import com.butter.wypl.sidetab.data.response.DDayWidgetResponse;
 import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
+import com.butter.wypl.sidetab.data.response.WeatherWidgetResponse;
 import com.butter.wypl.sidetab.service.SideTabLoadService;
 import com.butter.wypl.sidetab.service.SideTabModifyService;
+import com.butter.wypl.sidetab.service.WeatherWidgetService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class SideTabController {
 	private final SideTabLoadService sideTabLoadService;
 	private final SideTabModifyService sideTabModifyService;
+	private final WeatherWidgetService weatherWidgetService;
 
 	@GetMapping("/v1/goals/{goal_id}")
 	public ResponseEntity<Message<GoalWidgetResponse>> findGoal(
@@ -54,6 +58,16 @@ public class SideTabController {
 	) {
 		DDayWidgetResponse response = sideTabLoadService.findDDay(authMember, dDayId);
 		return ResponseEntity.ok(Message.withBody("디데이를 조회했습니다", response));
+	}
+
+	@GetMapping("/v1/weathers")
+	public ResponseEntity<Message<WeatherWidgetResponse>> findWeather(
+			@Authenticated AuthMember authMember,
+			@RequestParam(name = "metric", defaultValue = "true") boolean metric,
+			@RequestParam(name = "lang", defaultValue = "true") boolean lang
+	) {
+		WeatherWidgetResponse response = weatherWidgetService.findCurrentWeather(authMember, metric, lang);
+		return ResponseEntity.ok(Message.withBody("날씨 위젯 조회하였습니다.", response));
 	}
 
 	@PatchMapping("/v1/d-day/{d_day_id}")
