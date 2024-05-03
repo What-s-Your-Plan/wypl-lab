@@ -25,7 +25,7 @@ type ReviewState = {
 const useReviewStore = create<ReviewState>()((set, get) => ({
   title: '',
   scheduleId: -1,
-  contents: [new TextContent(0, ''), new EmotionContent(1, '', '')],
+  contents: [],
   setTitle(newTitle: string) {
     set({ title: newTitle });
   },
@@ -48,22 +48,22 @@ const useReviewStore = create<ReviewState>()((set, get) => ({
     let newContent: Content;
     switch (blockType) {
       case 'text':
-        newContent = new TextContent(get().contents.length, '');
+        newContent = new TextContent('');
         break;
       case 'picture':
-        newContent = new PictureContent(get().contents.length, '');
+        newContent = new PictureContent('');
         break;
       case 'emotion':
-        newContent = new EmotionContent(get().contents.length, '', '');
+        newContent = new EmotionContent('', '');
         break;
       case 'weather':
-        newContent = new WeatherContent(get().contents.length, '', '');
+        newContent = new WeatherContent('', '');
         break;
       case '4f':
-        newContent = new FourFContent(get().contents.length, '', '', '', '');
+        newContent = new FourFContent('', '', '', '');
         break;
       case 'kpt':
-        newContent = new KPTContent(get().contents.length, '', '', '');
+        newContent = new KPTContent('', '', '');
         break;
       default:
         console.error('Invalid blockType');
