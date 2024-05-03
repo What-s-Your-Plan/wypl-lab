@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import useReviewStore from '@/stores/ReviewStore';
 import {
   Content,
   TextContent,
@@ -14,6 +16,10 @@ import REmotion from './REmotion';
 import RWeather from './RWeather';
 import RKpt from './RKpt';
 import R4F from './R4F';
+import Button from '@/components/common/Button';
+import ArrowUp from '@/assets/icons/arrowUp.svg';
+import ArrowDown from '@/assets/icons/arrowDown.svg';
+import Trash from '@/assets/icons/trash.svg';
 
 type ReviewWriteProps = {
   index: number;
@@ -22,6 +28,40 @@ type ReviewWriteProps = {
 
 //type에 맞는 컴포넌트를 생성하기 위한 블록
 function ReviewWrite({ index, content }: ReviewWriteProps) {
+  const reviewStore = useReviewStore();
+  const [isFocus, setIsFocus] = useState(false);
+  const handleDropItem = (event: React.DragEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const dragItem = event.dataTransfer.getData('blockType');
+    if (dragItem) {
+      reviewStore.addContent(index, dragItem as ReviewType);
+    } else {
+      const itemIndex = event.dataTransfer.getData('nowIndex');
+      if (itemIndex) {
+        const dropY = event.clientY;
+
+        const targetRect = (
+          event.target as HTMLElement
+        ).getBoundingClientRect();
+
+        const dropDirection =
+          dropY < targetRect.top + targetRect.height / 2 ? 0 : 1;
+        console.log(dropY, targetRect, targetRect.top + targetRect.height / 2);
+        // Move the item in the reviewStore
+        reviewStore.moveContent(Number(itemIndex), index + dropDirection);
+      }
+    }
+  };
+
+  const handleFocus = () => {
+    setIsFocus(true);
+  };
+
+  const handleBlur = () => {
+    setIsFocus(false);
+  };
+
   const renderBlock = () => {
     switch (content.blockType) {
       case 'text':
@@ -64,7 +104,32 @@ function ReviewWrite({ index, content }: ReviewWriteProps) {
         return null;
     }
   };
-  return <div>{renderBlock()}</div>;
+  return (
+    <div
+      draggable={true}
+      onDragStart={(e: React.DragEvent) =>
+        e.dataTransfer.setData('nowIndex', index.toString())
+      }
+      onDrop={handleDropItem}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+    >
+      {isFocus && (
+        <span className="float-right isolate inline-flex gap-1 rounded-md shadow-sm bg-default-white p-1">
+          <Button $size="none">
+            <img src={ArrowUp} alt="위로 이동" className="w-5" />
+          </Button>
+          <Button $size="none">
+            <img src={ArrowDown} alt="아래로 이동" className="w-5" />
+          </Button>
+          <Button $size="none">
+            <img src={Trash} alt="삭제" className="w-5" />
+          </Button>
+        </span>
+      )}
+      {renderBlock()}
+    </div>
+  );
 }
 
 export default ReviewWrite;

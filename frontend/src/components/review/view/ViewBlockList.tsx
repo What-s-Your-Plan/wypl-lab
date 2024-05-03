@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
-import { Container } from '@/components/common/Container';
 
-import ReviewBlock from '@/components/review/view/ReviewBlock';
+import { Container } from '@/components/common/Container';
+import ReviewView from '@/components/review/view/ReviewView';
 import TextAlignLeft from '@/assets/icons/textAlignLeft.svg';
 import Image from '@/assets/icons/image.svg';
 import Smiley from '@/assets/icons/smiley.svg';
@@ -42,12 +42,12 @@ function BlockList() {
     },
     {
       icon: Pen,
-      blockType: '4F',
+      blockType: '4f',
       title: '4F 회고',
       content: (
         <div>
-          '사실(Facts)','느낌(Feelings)','찾아낸 점(Findings)','미래의
-          행동(Futureactions)' 으로 일정을 회고해보세요
+          사실(Facts), 느낌(Feelings), 찾아낸 점(Findings),미래의
+          행동(Futureactions) 으로 일정을 회고해보세요
         </div>
       ),
     },
@@ -55,9 +55,10 @@ function BlockList() {
 
   const renderBlock = () => {
     const blockList: ReactNode[] = [];
-    blocks.forEach((block) => {
+    blocks.forEach((block, index) => {
       blockList.push(
-        <ReviewBlock
+        <ReviewView
+          key={index}
           icon={block.icon}
           blockType={block.blockType}
           title={block.title}

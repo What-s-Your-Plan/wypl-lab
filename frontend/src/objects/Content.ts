@@ -1,16 +1,18 @@
 abstract class Content {
   blockType: ReviewType;
+  isDraggable: boolean;
 
-  constructor(blockType: ReviewType) {
+  constructor(index: number, blockType: ReviewType) {
     this.blockType = blockType;
+    this.isDraggable = true;
   }
 }
 
 class TextContent extends Content {
   text: string;
 
-  constructor(text: string) {
-    super('text');
+  constructor(index: number, text: string) {
+    super(index, 'text');
     this.text = text;
   }
 }
@@ -18,8 +20,8 @@ class TextContent extends Content {
 class PictureContent extends Content {
   path: string;
 
-  constructor(path: string) {
-    super('picture');
+  constructor(index: number, path: string) {
+    super(index, 'picture');
     this.path = path;
   }
 }
@@ -28,8 +30,8 @@ class EmotionContent extends Content {
   emoji: string;
   description: string;
 
-  constructor(emoji: string, description: string) {
-    super('emotion');
+  constructor(index: number, emoji: string, description: string) {
+    super(index, 'emotion');
     this.emoji = emoji;
     this.description = description;
   }
@@ -39,8 +41,8 @@ class WeatherContent extends Content {
   weather: string;
   description: string;
 
-  constructor(weather: string, description: string) {
-    super('weather');
+  constructor(index: number, weather: string, description: string) {
+    super(index, 'weather');
     this.weather = weather;
     this.description = description;
   }
@@ -51,8 +53,13 @@ class KPTContent extends Content {
   problemStr: string;
   tryStr: string;
 
-  constructor(keepStr: string, problemStr: string, tryStr: string) {
-    super('kpt');
+  constructor(
+    index: number,
+    keepStr: string,
+    problemStr: string,
+    tryStr: string,
+  ) {
+    super(index, 'kpt');
     this.keepStr = keepStr;
     this.problemStr = problemStr;
     this.tryStr = tryStr;
@@ -65,8 +72,14 @@ class FourFContent extends Content {
   finding: string;
   future: string;
 
-  constructor(facts: string, feeling: string, finding: string, future: string) {
-    super('4f');
+  constructor(
+    index: number,
+    facts: string,
+    feeling: string,
+    finding: string,
+    future: string,
+  ) {
+    super(index, '4f');
     this.facts = facts;
     this.feeling = feeling;
     this.finding = finding;

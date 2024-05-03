@@ -17,13 +17,15 @@ type ReviewState = {
   setTitle: (title: string) => void;
   setScheduleId: (scheduleId: number) => void;
   setContent: (index: number, content: Content) => void;
-  addContent: (type: ReviewType) => void;
+  setContents: (contents: Content[]) => void;
+  addContent: (index: number, type: ReviewType) => void;
+  moveContent: (fromIndex: number, toIndex: number) => void;
 };
 
-const useReviewStore = create<ReviewState>()((set) => ({
+const useReviewStore = create<ReviewState>()((set, get) => ({
   title: '',
   scheduleId: -1,
-  contents: [],
+  contents: [new TextContent(0, ''), new EmotionContent(1, '', '')],
   setTitle(newTitle: string) {
     set({ title: newTitle });
   },
@@ -39,33 +41,61 @@ const useReviewStore = create<ReviewState>()((set) => ({
       ],
     }));
   },
-  addContent(blockType: ReviewType) {
+  setContents(newContents: Content[]) {
+    set({ contents: newContents });
+  },
+  addContent(index: number, blockType: ReviewType) {
     let newContent: Content;
     switch (blockType) {
       case 'text':
-        newContent = new TextContent('');
+        newContent = new TextContent(get().contents.length, '');
         break;
       case 'picture':
-        newContent = new PictureContent('');
+        newContent = new PictureContent(get().contents.length, '');
         break;
       case 'emotion':
-        newContent = new EmotionContent('', '');
+        newContent = new EmotionContent(get().contents.length, '', '');
         break;
       case 'weather':
-        newContent = new WeatherContent('', '');
+        newContent = new WeatherContent(get().contents.length, '', '');
         break;
       case '4f':
-        newContent = new FourFContent('', '', '', '');
+        newContent = new FourFContent(get().contents.length, '', '', '', '');
         break;
       case 'kpt':
-        newContent = new KPTContent('', '', '');
+        newContent = new KPTContent(get().contents.length, '', '', '');
         break;
       default:
         console.error('Invalid blockType');
     }
     set((state) => ({
-      contents: [...state.contents, newContent],
+      contents: [
+        ...state.contents.slice(0, index + 1),
+        newContent,
+        ...state.contents.slice(index + 1),
+      ],
     }));
+  },
+  moveContent(fromIndex: number, toIndex: number) {
+    const content = get().contents[fromIndex];
+    get().contents.splice(fromIndex, 1);
+    if (fromIndex < toIndex) {
+      set((state) => ({
+        contents: [
+          ...state.contents.slice(0, toIndex - 1),
+          content,
+          ...state.contents.slice(toIndex - 1),
+        ],
+      }));
+    } else {
+      set((state) => ({
+        contents: [
+          ...state.contents.slice(0, toIndex),
+          content,
+          ...state.contents.slice(toIndex),
+        ],
+      }));
+    }
   },
 }));
 
