@@ -1,4 +1,4 @@
-package com.butter.wypl.global.config;
+package com.butter.wypl.global.config.local;
 
 import java.io.IOException;
 
@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.butter.wypl.global.config.redis.OS;
-import com.butter.wypl.global.config.redis.RedisAvailablePortFind;
-import com.butter.wypl.global.config.redis.RedisAvailablePortFindForDebian;
-import com.butter.wypl.global.config.redis.RedisAvailablePortFindForLinux;
-import com.butter.wypl.global.config.redis.RedisAvailablePortFindForMac;
-import com.butter.wypl.global.config.redis.RedisAvailablePortFindForUbuntu;
-import com.butter.wypl.global.config.redis.RedisAvailablePortFindForWindows;
+import com.butter.wypl.global.config.local.redis.OS;
+import com.butter.wypl.global.config.local.redis.RedisAvailablePortFind;
+import com.butter.wypl.global.config.local.redis.RedisAvailablePortFindForDebian;
+import com.butter.wypl.global.config.local.redis.RedisAvailablePortFindForLinux;
+import com.butter.wypl.global.config.local.redis.RedisAvailablePortFindForMac;
+import com.butter.wypl.global.config.local.redis.RedisAvailablePortFindForUbuntu;
+import com.butter.wypl.global.config.local.redis.RedisAvailablePortFindForWindows;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
