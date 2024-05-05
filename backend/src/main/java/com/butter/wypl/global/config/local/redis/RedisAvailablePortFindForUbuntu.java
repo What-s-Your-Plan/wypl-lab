@@ -1,8 +1,8 @@
-package com.butter.wypl.global.config.redis;
+package com.butter.wypl.global.config.local.redis;
 
 import java.io.IOException;
 
-public class RedisAvailablePortFindForLinux extends RedisAvailablePortFind {
+public class RedisAvailablePortFindForUbuntu extends RedisAvailablePortFind {
 
 	private final RedisAvailablePortFindForMac redisAvailablePortFindForMac = new RedisAvailablePortFindForMac();
 

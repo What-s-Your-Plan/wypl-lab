@@ -1,4 +1,4 @@
-package com.butter.wypl.global.config.redis;
+package com.butter.wypl.global.config.local.redis;
 
 import java.io.BufferedReader;
 import java.io.IOException;

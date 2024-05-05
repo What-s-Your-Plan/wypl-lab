@@ -1,4 +1,4 @@
-package com.butter.wypl.global.config;
+package com.butter.wypl.global.config.local;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;

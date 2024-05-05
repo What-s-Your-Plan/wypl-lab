@@ -1,11 +1,8 @@
-package com.butter.wypl.global.config.redis;
+package com.butter.wypl.global.config.local.redis;
 
 import java.io.IOException;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
-public class RedisAvailablePortFindForDebian extends RedisAvailablePortFind {
+public class RedisAvailablePortFindForLinux extends RedisAvailablePortFind {
 
 	private final RedisAvailablePortFindForMac redisAvailablePortFindForMac = new RedisAvailablePortFindForMac();
 

@@ -1,4 +1,4 @@
-package com.butter.wypl.global.config;
+package com.butter.wypl.global.config.dev;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;

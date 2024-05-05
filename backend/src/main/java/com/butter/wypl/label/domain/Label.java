@@ -1,6 +1,5 @@
 package com.butter.wypl.label.domain;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.SQLRestriction;
@@ -46,12 +45,7 @@ public class Label extends BaseEntity {
 	private int memberId;
 
 	@OneToMany(mappedBy = "label")
-	private List<Schedule> schedules = new ArrayList<>();
-
-	public void update(String title, Color color) {
-		this.title = title;
-		this.color = color;
-	}
+	private List<Schedule> schedules;
 
 	public static void titleValidation(String title) {
 		if (title == null) {
@@ -59,4 +53,8 @@ public class Label extends BaseEntity {
 		}
 	}
 
+	public void update(String title, Color color) {
+		this.title = title;
+		this.color = color;
+	}
 }
