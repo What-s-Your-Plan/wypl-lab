@@ -13,6 +13,10 @@ public record LabelResponse(
 	String color
 ) {
 	public static LabelResponse from(Label label) {
+		if (label == null) {
+			return null;
+		}
+
 		return new LabelResponse(
 			label.getLabelId(),
 			label.getMemberId(),

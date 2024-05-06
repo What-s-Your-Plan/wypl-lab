@@ -88,14 +88,15 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		//멤버-일정 update
 		List<Member> members = memberScheduleService.updateMemberSchedule(schedule, scheduleUpdateRequest.members());
 
-		//이전 일정의 반복과 관련된
+		//이전 일정의 반복과 관련된 일정 삭제
 		List<Schedule> modifySchedules = modifyRepetitionSchedule(schedule, scheduleUpdateRequest.modificationType());
 		for (Schedule modifySchedule : modifySchedules) {
 			modifySchedule.delete();
 		}
 
 		Repetition updatedRepetition =
-			(scheduleUpdateRequest.repetition() == null) ? null : scheduleUpdateRequest.repetition().toEntity();
+			(scheduleUpdateRequest.repetition() == null) ? null :
+				repetitionService.createRepetition(scheduleUpdateRequest.repetition().toEntity());
 		schedule.updateRepetition(updatedRepetition);
 
 		createRepetitionSchedules(schedule, updatedRepetition);

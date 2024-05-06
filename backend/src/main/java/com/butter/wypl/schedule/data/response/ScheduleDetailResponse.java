@@ -3,6 +3,7 @@ package com.butter.wypl.schedule.data.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.butter.wypl.label.data.response.LabelResponse;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.schedule.domain.Category;
 import com.butter.wypl.schedule.domain.Schedule;
@@ -22,13 +23,13 @@ public record ScheduleDetailResponse(
 	LocalDateTime endDate,
 	Category category,
 
-	@JsonProperty("owner_id")
+	@JsonProperty("group_id")
 	Integer groupId,
 
 	RepetitionResponse repetition,
 
-	@JsonProperty("label_id")
-	Integer labelId,
+	@JsonProperty("label")
+	LabelResponse labelId,
 
 	@JsonProperty("member_count")
 	int member_count,
@@ -48,7 +49,7 @@ public record ScheduleDetailResponse(
 			schedule.getCategory(),
 			schedule.getGroupId(),
 			(schedule.getRepetition() == null) ? null : RepetitionResponse.from(schedule.getRepetition()),
-			(schedule.getLabel() == null) ? null : schedule.getLabel().getLabelId(),
+			LabelResponse.from(schedule.getLabel()),
 			members.size(),
 			MemberResponse.from(members)
 		);
