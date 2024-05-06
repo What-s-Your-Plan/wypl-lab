@@ -76,7 +76,7 @@ public class ScheduleRepositoryTest {
 
 		//when
 		List<Schedule> scheduleList = scheduleRepository.findAllByRepetitionAndStartDateBefore(repetition,
-			schedule2.getStartDate());
+				schedule2.getStartDate());
 
 		//then
 		assertThat(scheduleList.size()).isEqualTo(1);
@@ -97,7 +97,7 @@ public class ScheduleRepositoryTest {
 
 		// When
 		List<Schedule> scheduleList = scheduleRepository.findAllByRepetitionAndStartDateAfter(repetition,
-			schedule1.getStartDate());
+				schedule1.getStartDate());
 
 		// Then
 		assertThat(scheduleList.size()).isEqualTo(1);

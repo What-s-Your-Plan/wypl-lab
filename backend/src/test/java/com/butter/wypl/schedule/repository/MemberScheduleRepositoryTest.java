@@ -31,7 +31,7 @@ public class MemberScheduleRepositoryTest {
 
 	@Autowired
 	public MemberScheduleRepositoryTest(MemberScheduleRepository memberScheduleRepository,
-		MemberRepository memberRepository, ScheduleRepository scheduleRepository) {
+			MemberRepository memberRepository, ScheduleRepository scheduleRepository) {
 		this.memberScheduleRepository = memberScheduleRepository;
 		this.memberRepository = memberRepository;
 		this.scheduleRepository = scheduleRepository;
@@ -48,9 +48,9 @@ public class MemberScheduleRepositoryTest {
 	void create() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-			.schedule(schedule)
-			.member(member)
-			.build();
+				.schedule(schedule)
+				.member(member)
+				.build();
 
 		// When
 		MemberSchedule savedMemberSchedule = memberScheduleRepository.save(memberSchedule);

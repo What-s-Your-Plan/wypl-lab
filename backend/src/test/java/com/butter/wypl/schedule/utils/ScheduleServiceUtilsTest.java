@@ -49,7 +49,7 @@ public class ScheduleServiceUtilsTest {
 		assertThatThrownBy(() -> {
 			ScheduleServiceUtils.findById(scheduleRepository, 1);
 		}).isInstanceOf(ScheduleException.class)
-			.hasMessageContaining(ScheduleErrorCode.NO_SCHEDULE.getMessage());
+				.hasMessageContaining(ScheduleErrorCode.NO_SCHEDULE.getMessage());
 
 	}
 }
