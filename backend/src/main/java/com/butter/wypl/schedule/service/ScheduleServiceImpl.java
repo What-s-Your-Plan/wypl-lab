@@ -94,6 +94,10 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 			modifySchedule.delete();
 		}
 
+		if (scheduleUpdateRequest.modificationType().equals(ModificationType.ALL)) {
+			repetitionService.deleteRepetition(schedule.getRepetition());
+		}
+
 		Repetition updatedRepetition =
 			(scheduleUpdateRequest.repetition() == null) ? null :
 				repetitionService.createRepetition(scheduleUpdateRequest.repetition().toEntity());
@@ -115,6 +119,11 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		List<Schedule> deleteSchedules = modifyRepetitionSchedule(schedule, modificationType);
 		deleteSchedules.add(schedule);
 
+		//전체 삭제일 경우에는 관련 반복도 삭제
+		if (modificationType.equals(ModificationType.ALL)) {
+			repetitionService.deleteRepetition(schedule.getRepetition());
+		}
+
 		List<ScheduleIdResponse> scheduleIdResponses = new ArrayList<>();
 
 		for (Schedule deleteSchedule : deleteSchedules) {
@@ -122,10 +131,6 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 			scheduleIdResponses.add(ScheduleIdResponse.from(deleteSchedule));
 		}
 
-		//전체 삭제일 경우에는 관련 반복도 삭제
-		if (modificationType.equals(ModificationType.ALL)) {
-			repetitionService.deleteRepetition(schedule.getRepetition());
-		}
 		return ScheduleIdListResponse.from(scheduleIdResponses);
 	}
 
