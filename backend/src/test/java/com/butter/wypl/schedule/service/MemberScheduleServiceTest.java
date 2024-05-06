@@ -42,9 +42,36 @@ public class MemberScheduleServiceTest {
 
 	private Schedule schedule;
 
+	@Test
+	@DisplayName("멤버-일정 조회")
+	void getMemberBySchedule() {
+		// Given
+		Member member1 = MemberFixture.JWA_SO_YEON.toMember();
+		Member member2 = MemberFixture.KIM_JEONG_UK.toMember();
+
+		given(memberScheduleRepository.findAllBySchedule(schedule))
+				.willReturn(List.of(
+						MemberSchedule.builder()
+								.schedule(schedule)
+								.member(member1)
+								.build(),
+						MemberSchedule.builder()
+								.schedule(schedule)
+								.member(member2)
+								.build()
+				));
+
+		// When
+		List<Member> members = memberScheduleService.getMembersBySchedule(schedule);
+
+		// Then
+		assertThat(members.size()).isEqualTo(2);
+
+	}
+
 	@Nested
 	@DisplayName("생성")
-	class create {
+	class CreateTest {
 		@DisplayName("멤버-일정 생성")
 		@Test
 		void createMemberSchedule() {
@@ -57,36 +84,35 @@ public class MemberScheduleServiceTest {
 			memberIdResponses.add(new MemberIdResponse(2));
 
 			given(memberRepository.findById(1))
-				.willReturn(Optional.of(member1));
+					.willReturn(Optional.of(member1));
 			given(memberRepository.findById(2))
-				.willReturn(Optional.of(member2));
+					.willReturn(Optional.of(member2));
 
 			given(memberScheduleRepository.saveAll(Mockito.<MemberSchedule>anyList()))
-				.willReturn(List.of(
-					MemberSchedule.builder()
-						.member(member1)
-						.schedule(schedule)
-						.build(),
-					MemberSchedule.builder()
-						.member(member2)
-						.schedule(schedule)
-						.build()
-				));
+					.willReturn(List.of(
+							MemberSchedule.builder()
+									.member(member1)
+									.schedule(schedule)
+									.build(),
+							MemberSchedule.builder()
+									.member(member2)
+									.schedule(schedule)
+									.build()
+					));
 
 			//when
 			List<Member> members =
-				memberScheduleService.createMemberSchedule(schedule, memberIdResponses);
+					memberScheduleService.createMemberSchedule(schedule, memberIdResponses);
 
 			//then
 			assertThat(members.size()).isEqualTo(2);
 			assertThat(members.get(0).getNickname()).isEqualTo(member1.getNickname());
 		}
-
 	}
 
 	@Nested
 	@DisplayName("유효성 검사")
-	class validate {
+	class ValidateTest {
 
 		@Test
 		@DisplayName("유효성 검사 정상 동작")
@@ -94,14 +120,14 @@ public class MemberScheduleServiceTest {
 			// Given
 			Member member = MemberFixture.JWA_SO_YEON.toMember();
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(member));
+					.willReturn(Optional.of(member));
 
 			given(memberScheduleRepository.findByScheduleAndMember(any(), any()))
-				.willReturn(
-					Optional.ofNullable(MemberSchedule.builder()
-						.member(member)
-						.schedule(schedule)
-						.build()));
+					.willReturn(
+							Optional.ofNullable(MemberSchedule.builder()
+									.member(member)
+									.schedule(schedule)
+									.build()));
 
 			// When
 			// Then
@@ -117,14 +143,14 @@ public class MemberScheduleServiceTest {
 			// Given
 			Member member = MemberFixture.JWA_SO_YEON.toMember();
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(member));
+					.willReturn(Optional.of(member));
 
 			// When
 			// Then
 			assertThatThrownBy(() -> {
 				memberScheduleService.validateMemberSchedule(schedule, member.getId());
 			}).isInstanceOf(ScheduleException.class)
-				.hasMessageContaining(ScheduleErrorCode.NOT_PERMISSION_UPDATE_SCHEDUEL.getMessage());
+					.hasMessageContaining(ScheduleErrorCode.NOT_PERMISSION_UPDATE_SCHEDUEL.getMessage());
 		}
 	}
 
@@ -143,67 +169,40 @@ public class MemberScheduleServiceTest {
 			memberIdResponses.add(new MemberIdResponse(1));
 
 			given(memberRepository.findById(1))
-				.willReturn(Optional.of(member1));
+					.willReturn(Optional.of(member1));
 			given(memberRepository.findById(2))
-				.willReturn(Optional.of(member2));
+					.willReturn(Optional.of(member2));
 
 			given(memberScheduleRepository.saveAll(any()))
-				.willReturn(List.of(
-					MemberSchedule.builder()
-						.member(member1)
-						.schedule(schedule)
-						.build()
-				));
+					.willReturn(List.of(
+							MemberSchedule.builder()
+									.member(member1)
+									.schedule(schedule)
+									.build()
+					));
 
 			given(memberScheduleRepository.findAllBySchedule(schedule))
-				.willReturn(List.of(
-					MemberSchedule.builder()
-						.member(member1)
-						.schedule(schedule)
-						.build()
-				));
+					.willReturn(List.of(
+							MemberSchedule.builder()
+									.member(member1)
+									.schedule(schedule)
+									.build()
+					));
 
 			memberScheduleService.createMemberSchedule(schedule, memberIdResponses);
 
 			given(memberScheduleRepository.save(any()))
-				.willReturn(MemberSchedule.builder()
-					.member(member2)
-					.schedule(schedule)
-					.build());
+					.willReturn(MemberSchedule.builder()
+							.member(member2)
+							.schedule(schedule)
+							.build());
 			//when
 			List<Member> updatedMembers = memberScheduleService.updateMemberSchedule(schedule,
-				List.of(new MemberIdResponse(2)));
+					List.of(new MemberIdResponse(2)));
 
 			//then
 			assertThat(updatedMembers.size()).isEqualTo(1);
-			assertThat(updatedMembers.getFirst().getNickname()).isEqualTo(member2.getNickname());
+			assertThat(updatedMembers.get(0).getNickname()).isEqualTo(member2.getNickname());
 		}
-	}
-
-	@Test
-	@DisplayName("멤버-일정 조회")
-	void getMemberBySchedule() {
-		// Given
-		Member member1 = MemberFixture.JWA_SO_YEON.toMember();
-		Member member2 = MemberFixture.KIM_JEONG_UK.toMember();
-
-		given(memberScheduleRepository.findAllBySchedule(schedule))
-			.willReturn(List.of(
-				MemberSchedule.builder()
-					.schedule(schedule)
-					.member(member1)
-					.build(),
-				MemberSchedule.builder()
-					.schedule(schedule)
-					.member(member2)
-					.build()
-			));
-
-		// When
-		List<Member> members = memberScheduleService.getMembersBySchedule(schedule);
-
-		// Then
-		assertThat(members.size()).isEqualTo(2);
-
 	}
 }

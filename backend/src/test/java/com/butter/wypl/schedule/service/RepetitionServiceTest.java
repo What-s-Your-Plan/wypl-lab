@@ -81,6 +81,6 @@ public class RepetitionServiceTest {
 		assertThatThrownBy(() -> {
 			repetitionService.getRepetition(1);
 		}).isInstanceOf(ScheduleException.class)
-			.hasMessageContaining(ScheduleErrorCode.NO_REPETITION.getMessage());
+				.hasMessageContaining(ScheduleErrorCode.NO_REPETITION.getMessage());
 	}
 }

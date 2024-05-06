@@ -25,19 +25,19 @@ class NotificationServiceImplTest {
 	NotificationServiceImpl notificationService;
 
 	@DisplayName("알림 생성 테스트")
-	@ParameterizedTest()
+	@ParameterizedTest
 	@EnumSource(NotificationFixture.class)
 	void createNotification(NotificationFixture notificationFixture) {
-	    //given
+		//given
 		NotificationCreateRequest request = notificationFixture.toNotificationCreateRequest();
 		given(notificationRepository.save(any(Notification.class)))
-			.willReturn(notificationFixture.toNotification());
+				.willReturn(notificationFixture.toNotification());
 		//when
-	    //then
+		//then
 		assertThatCode(() -> {
 			Notification notification = notificationService.createNotification(request);
 			assertThat(notification).isNotNull();
 		})
-			.doesNotThrowAnyException();
+				.doesNotThrowAnyException();
 	}
 }
