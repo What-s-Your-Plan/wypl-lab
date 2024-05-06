@@ -25,8 +25,10 @@ import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.global.utils.LocalDateUtils;
 import com.butter.wypl.sidetab.data.request.DDayUpdateRequest;
 import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
+import com.butter.wypl.sidetab.data.request.MemoUpdateRequest;
 import com.butter.wypl.sidetab.data.response.DDayWidgetResponse;
 import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
+import com.butter.wypl.sidetab.data.response.MemoWidgetResponse;
 import com.butter.wypl.sidetab.fixture.WeatherFixture;
 import com.butter.wypl.sidetab.service.SideTabLoadService;
 import com.butter.wypl.sidetab.service.SideTabModifyService;
@@ -213,6 +215,82 @@ class SideTabControllerTest extends ControllerTest {
 										.description("수정한 디데이"),
 								fieldWithPath("body.date").type(JsonFieldType.STRING)
 										.description("수정한 디데이 날짜")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사이드탭의 메모를 조회한다.")
+	@Test
+	void findSideTabMemoTest() throws Exception {
+		/* Given */
+		given(sideTabLoadService.findMemo(any(AuthMember.class), anyInt()))
+				.willReturn(new MemoWidgetResponse("메모의 내용"));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/side/v1/memo/{memo_id}", 0)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("side-tab/update-memo",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						pathParameters(
+								parameterWithName("memo_id").description("메모 식별자")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.memo").type(JsonFieldType.STRING)
+										.description("수정한 메모")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사이드탭의 메모를 수정한다.")
+	@Test
+	void updateSideTabMemoTest() throws Exception {
+		/* Given */
+		String memo = "메모의 내용";
+		String json = convertToJson(new MemoUpdateRequest(memo));
+
+		given(sideTabModifyService.updateMemo(any(AuthMember.class), anyInt(), any(MemoUpdateRequest.class)))
+				.willReturn(new MemoWidgetResponse("메모의 내용"));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.patch("/side/v1/memo/{memo_id}", 0)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(json)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("side-tab/update-memo",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						pathParameters(
+								parameterWithName("memo_id").description("메모 식별자")
+						),
+						requestFields(
+								fieldWithPath("memo").type(JsonFieldType.STRING)
+										.description("수정 요청한 메모")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.memo").type(JsonFieldType.STRING)
+										.description("수정한 메모")
 						)
 				))
 				.andExpect(status().isOk());
