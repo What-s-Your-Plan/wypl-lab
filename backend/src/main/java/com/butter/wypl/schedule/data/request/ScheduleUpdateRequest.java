@@ -18,7 +18,7 @@ public record ScheduleUpdateRequest(
 	LocalDateTime endDate,
 	@JsonProperty("modification_type")
 	ModificationType modificationType,
-	RepetitionUpdateRequest repetition,
+	RepetitionRequest repetition,
 
 	@JsonProperty("label_id")
 	Integer labelId,

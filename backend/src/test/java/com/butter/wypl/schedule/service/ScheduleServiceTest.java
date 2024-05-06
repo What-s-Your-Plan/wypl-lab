@@ -22,7 +22,7 @@ import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.schedule.data.ModificationType;
-import com.butter.wypl.schedule.data.request.RepetitionUpdateRequest;
+import com.butter.wypl.schedule.data.request.RepetitionRequest;
 import com.butter.wypl.schedule.data.request.ScheduleCreateRequest;
 import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
 import com.butter.wypl.schedule.data.response.MemberIdResponse;
@@ -325,6 +325,10 @@ public class ScheduleServiceTest {
 			// Given
 			Schedule schedule = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
+			given(repetitionService.createRepetition(any(Repetition.class)))
+				.willReturn(
+					RepetitionFixture.MONDAY_REPETITION.toRepetition()
+				);
 
 			// When
 			ScheduleDetailResponse updateSchedule = scheduleService.updateSchedule(1, 1,
@@ -334,7 +338,7 @@ public class ScheduleServiceTest {
 					schedule.getStartDate(),
 					schedule.getEndDate(),
 					ModificationType.NOW,
-					RepetitionUpdateRequest.from(RepetitionFixture.MONDAY_REPETITION.toRepetition()),
+					RepetitionRequest.from(RepetitionFixture.MONDAY_REPETITION.toRepetition()),
 					1,
 					List.of(new MemberIdResponse(1))
 				));
@@ -342,8 +346,6 @@ public class ScheduleServiceTest {
 			//then
 			assertThat(updateSchedule).isNotNull();
 			assertThat(updateSchedule.title()).isEqualTo("바뀐 제목");
-			assertThat(updateSchedule.repetition().repetitionId()).isEqualTo(
-				RepetitionFixture.MONDAY_REPETITION.toRepetition().getRepetitionId());
 			assertThat(updateSchedule.repetition().repetitionStartDate()).isEqualTo(
 				RepetitionFixture.MONDAY_REPETITION.toRepetition().getRepetitionStartDate());
 		}
@@ -386,6 +388,10 @@ public class ScheduleServiceTest {
 				.willReturn(
 					List.of(schedule2)
 				);
+			given(repetitionService.createRepetition(any(Repetition.class)))
+				.willReturn(
+					RepetitionFixture.MONDAY_REPETITION.toRepetition()
+				);
 			// When
 			ScheduleDetailResponse updateSchedule = scheduleService.updateSchedule(1, 1,
 				new ScheduleUpdateRequest(
@@ -394,7 +400,7 @@ public class ScheduleServiceTest {
 					schedule.getStartDate(),
 					schedule.getEndDate(),
 					ModificationType.AFTER,
-					RepetitionUpdateRequest.from(RepetitionFixture.MONDAY_REPETITION.toRepetition()),
+					RepetitionRequest.from(RepetitionFixture.MONDAY_REPETITION.toRepetition()),
 					1,
 					List.of(new MemberIdResponse(1))
 				));
@@ -402,8 +408,6 @@ public class ScheduleServiceTest {
 			//then
 			assertThat(updateSchedule).isNotNull();
 			assertThat(updateSchedule.title()).isEqualTo("바뀐 제목");
-			assertThat(updateSchedule.repetition().repetitionId()).isEqualTo(
-				RepetitionFixture.MONDAY_REPETITION.toRepetition().getRepetitionId());
 			assertThat(updateSchedule.repetition().repetitionStartDate()).isEqualTo(
 				RepetitionFixture.MONDAY_REPETITION.toRepetition().getRepetitionStartDate());
 

@@ -6,10 +6,7 @@ import com.butter.wypl.schedule.domain.Repetition;
 import com.butter.wypl.schedule.domain.RepetitionCycle;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record RepetitionUpdateRequest(
-	@JsonProperty("repetition_id")
-	int repetitionId,
-
+public record RepetitionRequest(
 	@JsonProperty("repetition_cycle")
 	RepetitionCycle repetitionCycle,
 
@@ -27,7 +24,6 @@ public record RepetitionUpdateRequest(
 
 	public Repetition toEntity() {
 		return Repetition.builder()
-			.repetitionId(repetitionId)
 			.repetitionCycle(repetitionCycle)
 			.repetitionStartDate(repetitionStartDate)
 			.repetitionEndDate(repetitionEndDate)
@@ -36,13 +32,12 @@ public record RepetitionUpdateRequest(
 			.build();
 	}
 
-	public static RepetitionUpdateRequest from(Repetition repetition) {
+	public static RepetitionRequest from(Repetition repetition) {
 		if (repetition == null) {
 			return null;
 		}
 
-		return new RepetitionUpdateRequest(
-			repetition.getRepetitionId(),
+		return new RepetitionRequest(
 			repetition.getRepetitionCycle(),
 			repetition.getRepetitionStartDate(),
 			repetition.getRepetitionEndDate(),
