@@ -198,7 +198,8 @@ public class ScheduleServiceTest {
 			.willReturn(Optional.of(schedule));
 
 		//when
-		ScheduleResponse scheduleResponse = scheduleService.getScheduleByScheduleId(schedule.getScheduleId());
+		ScheduleResponse scheduleResponse = scheduleService.getScheduleByScheduleId(member1.getId(),
+			schedule.getScheduleId());
 
 		//then
 		assertThat(scheduleResponse.scheduleId()).isEqualTo(schedule.getScheduleId());

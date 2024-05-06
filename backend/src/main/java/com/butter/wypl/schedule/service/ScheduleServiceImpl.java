@@ -127,8 +127,10 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 	}
 
 	@Override
-	public ScheduleResponse getScheduleByScheduleId(int scheduleId) {
+	public ScheduleResponse getScheduleByScheduleId(int memberId, int scheduleId) {
 		Schedule schedule = ScheduleServiceUtils.findById(scheduleRepository, scheduleId);
+
+		memberScheduleService.validateMemberSchedule(schedule, memberId);
 
 		return ScheduleResponse.of(schedule, memberScheduleService.getMembersBySchedule(schedule));
 	}

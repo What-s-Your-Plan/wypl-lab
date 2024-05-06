@@ -4,6 +4,6 @@ import com.butter.wypl.schedule.data.response.ScheduleResponse;
 
 public interface ScheduleReadService {
 
-	ScheduleResponse getScheduleByScheduleId(int scheduleId);
+	ScheduleResponse getScheduleByScheduleId(int memberId, int scheduleId);
 
 }

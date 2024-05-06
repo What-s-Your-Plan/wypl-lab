@@ -124,7 +124,7 @@ public class MemberScheduleServiceTest {
 			assertThatThrownBy(() -> {
 				memberScheduleService.validateMemberSchedule(schedule, member.getId());
 			}).isInstanceOf(ScheduleException.class)
-				.hasMessageContaining(ScheduleErrorCode.NOT_PERMISSION_UPDATE_SCHEDUEL.getMessage());
+				.hasMessageContaining(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL.getMessage());
 		}
 	}
 
@@ -176,7 +176,7 @@ public class MemberScheduleServiceTest {
 
 			//then
 			assertThat(updatedMembers.size()).isEqualTo(1);
-			assertThat(updatedMembers.getFirst().getNickname()).isEqualTo(member2.getNickname());
+			assertThat(updatedMembers.get(0).getNickname()).isEqualTo(member2.getNickname());
 		}
 	}
 
