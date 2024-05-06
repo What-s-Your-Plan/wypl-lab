@@ -8,10 +8,10 @@ public record ScheduleListResponse(
 	@JsonProperty("schedule_count")
 	int scheduleCount,
 
-	List<ScheduleResponse> schedules
+	List<ScheduleDetailResponse> schedules
 ) {
 
-	public static ScheduleListResponse from(List<ScheduleResponse> scheduleResponses) {
-		return new ScheduleListResponse(scheduleResponses.size(), scheduleResponses);
+	public static ScheduleListResponse from(List<ScheduleDetailResponse> scheduleDetailRespons) {
+		return new ScheduleListResponse(scheduleDetailRespons.size(), scheduleDetailRespons);
 	}
 }

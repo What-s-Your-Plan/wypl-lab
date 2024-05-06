@@ -27,6 +27,7 @@ import com.butter.wypl.schedule.data.request.ScheduleCreateRequest;
 import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
 import com.butter.wypl.schedule.data.response.MemberIdResponse;
 import com.butter.wypl.schedule.data.response.RepetitionResponse;
+import com.butter.wypl.schedule.data.response.ScheduleDetailResponse;
 import com.butter.wypl.schedule.data.response.ScheduleIdListResponse;
 import com.butter.wypl.schedule.data.response.ScheduleResponse;
 import com.butter.wypl.schedule.domain.Category;
@@ -89,7 +90,7 @@ public class ScheduleServiceTest {
 				.willReturn(schedule);
 
 			//when
-			ScheduleResponse result = scheduleService.createSchedule(1,
+			ScheduleDetailResponse result = scheduleService.createSchedule(1,
 				ScheduleCreateRequest.of(schedule, List.of(new MemberIdResponse(1)))
 			);
 
@@ -119,7 +120,7 @@ public class ScheduleServiceTest {
 					.willReturn(schedule);
 
 				//when
-				ScheduleResponse result = scheduleService.createSchedule(1,
+				ScheduleDetailResponse result = scheduleService.createSchedule(1,
 					ScheduleCreateRequest.of(schedule, List.of(new MemberIdResponse(1))));
 
 				//then
@@ -145,7 +146,7 @@ public class ScheduleServiceTest {
 					.willReturn(schedule);
 
 				//when
-				ScheduleResponse result = scheduleService.createSchedule(1,
+				ScheduleDetailResponse result = scheduleService.createSchedule(1,
 					ScheduleCreateRequest.of(schedule, List.of(new MemberIdResponse(1))));
 
 				//then
@@ -171,7 +172,7 @@ public class ScheduleServiceTest {
 					.willReturn(schedule);
 
 				//when
-				ScheduleResponse result = scheduleService.createSchedule(1,
+				ScheduleDetailResponse result = scheduleService.createSchedule(1,
 					ScheduleCreateRequest.of(schedule, List.of(new MemberIdResponse(1))));
 
 				//then
@@ -187,6 +188,22 @@ public class ScheduleServiceTest {
 			}
 		}
 
+	}
+
+	@Test
+	@DisplayName("상세 일정 조회")
+	void getDetailSchedule() {
+		//given
+		Schedule schedule = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
+		given(scheduleRepository.findById(anyInt()))
+			.willReturn(Optional.of(schedule));
+
+		//when
+		ScheduleDetailResponse scheduleDetailResponse = scheduleService.getDetailScheduleByScheduleId(member1.getId(),
+			schedule.getScheduleId());
+
+		//then
+		assertThat(scheduleDetailResponse.scheduleId()).isEqualTo(schedule.getScheduleId());
 	}
 
 	@Test
@@ -285,7 +302,7 @@ public class ScheduleServiceTest {
 			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
 
 			// When
-			ScheduleResponse updateSchedule = scheduleService.updateSchedule(1, 1,
+			ScheduleDetailResponse updateSchedule = scheduleService.updateSchedule(1, 1,
 				new ScheduleUpdateRequest(
 					"바뀐 제목",
 					"바뀐 설명",
@@ -310,7 +327,7 @@ public class ScheduleServiceTest {
 			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
 
 			// When
-			ScheduleResponse updateSchedule = scheduleService.updateSchedule(1, 1,
+			ScheduleDetailResponse updateSchedule = scheduleService.updateSchedule(1, 1,
 				new ScheduleUpdateRequest(
 					"바뀐 제목",
 					"바뀐 설명",
@@ -339,7 +356,7 @@ public class ScheduleServiceTest {
 			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
 
 			// When
-			ScheduleResponse updateSchedule = scheduleService.updateSchedule(1, 1,
+			ScheduleDetailResponse updateSchedule = scheduleService.updateSchedule(1, 1,
 				new ScheduleUpdateRequest(
 					"바뀐 제목",
 					"바뀐 설명",
@@ -370,7 +387,7 @@ public class ScheduleServiceTest {
 					List.of(schedule2)
 				);
 			// When
-			ScheduleResponse updateSchedule = scheduleService.updateSchedule(1, 1,
+			ScheduleDetailResponse updateSchedule = scheduleService.updateSchedule(1, 1,
 				new ScheduleUpdateRequest(
 					"바뀐 제목",
 					"바뀐 설명",

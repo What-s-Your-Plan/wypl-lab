@@ -18,6 +18,7 @@ import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.schedule.data.ModificationType;
 import com.butter.wypl.schedule.data.request.ScheduleCreateRequest;
 import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
+import com.butter.wypl.schedule.data.response.ScheduleDetailResponse;
 import com.butter.wypl.schedule.data.response.ScheduleIdListResponse;
 import com.butter.wypl.schedule.data.response.ScheduleIdResponse;
 import com.butter.wypl.schedule.data.response.ScheduleResponse;
@@ -43,7 +44,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 	@Override
 	@Transactional
-	public ScheduleResponse createSchedule(int memberId, ScheduleCreateRequest scheduleCreateRequest) {
+	public ScheduleDetailResponse createSchedule(int memberId, ScheduleCreateRequest scheduleCreateRequest) {
 		Label label = scheduleCreateRequest.labelId() == null ? null
 			: LabelServiceUtils.getLabelByLabelId(labelRepository, scheduleCreateRequest.labelId()); //라벨 유효성 검사
 
@@ -62,12 +63,13 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 			createRepetitionSchedules(schedule, repetition);
 		}
 
-		return ScheduleResponse.of(schedule, memberResponses);
+		return ScheduleDetailResponse.of(schedule, memberResponses);
 	}
 
 	@Override
 	@Transactional
-	public ScheduleResponse updateSchedule(int memberId, int scheduleId, ScheduleUpdateRequest scheduleUpdateRequest) {
+	public ScheduleDetailResponse updateSchedule(int memberId, int scheduleId,
+		ScheduleUpdateRequest scheduleUpdateRequest) {
 		Schedule schedule = ScheduleServiceUtils.findById(scheduleRepository, scheduleId);
 
 		//스케줄에 속한 멤버인지 확인(권한 확인)
@@ -98,7 +100,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		createRepetitionSchedules(schedule, updatedRepetition);
 
-		return ScheduleResponse.of(schedule, members);
+		return ScheduleDetailResponse.of(schedule, members);
 	}
 
 	@Override
@@ -124,6 +126,15 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 			repetitionService.deleteRepetition(schedule.getRepetition());
 		}
 		return ScheduleIdListResponse.from(scheduleIdResponses);
+	}
+
+	@Override
+	public ScheduleDetailResponse getDetailScheduleByScheduleId(int memberId, int scheduleId) {
+		Schedule schedule = ScheduleServiceUtils.findById(scheduleRepository, scheduleId);
+
+		memberScheduleService.validateMemberSchedule(schedule, memberId);
+
+		return ScheduleDetailResponse.of(schedule, memberScheduleService.getMembersBySchedule(schedule));
 	}
 
 	@Override
