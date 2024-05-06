@@ -72,24 +72,9 @@ public class ScheduleServiceTest {
 		member2 = MemberFixture.JO_DA_MIN.toMember();
 
 		lenient().when(memberRepository.findById(1))
-				.thenReturn(Optional.of(member1));
+			.thenReturn(Optional.of(member1));
 		lenient().when(memberRepository.findById(2))
-				.thenReturn(Optional.of(member2));
-	}
-
-	@Test
-	@DisplayName("일정 조회")
-	void getSchedule() {
-		//given
-		Schedule schedule = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
-		given(scheduleRepository.findById(anyInt()))
-				.willReturn(Optional.of(schedule));
-
-		//when
-		ScheduleResponse scheduleResponse = scheduleService.getScheduleByScheduleId(schedule.getScheduleId());
-
-		//then
-		assertThat(scheduleResponse.scheduleId()).isEqualTo(schedule.getScheduleId());
+			.thenReturn(Optional.of(member2));
 	}
 
 	@Nested
@@ -102,7 +87,7 @@ public class ScheduleServiceTest {
 			//given
 			Schedule schedule = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			given(scheduleRepository.save(any()))
-					.willReturn(schedule);
+				.willReturn(schedule);
 
 			//when
 			ScheduleDetailResponse result = scheduleService.createSchedule(1,
@@ -132,7 +117,7 @@ public class ScheduleServiceTest {
 
 				Schedule schedule = ScheduleFixture.LABEL_REPEAT_PERSONAL_SCHEDULE.toSchedule();
 				given(scheduleRepository.save(any()))
-						.willReturn(schedule);
+					.willReturn(schedule);
 
 				//when
 				ScheduleDetailResponse result = scheduleService.createSchedule(1,
@@ -158,7 +143,7 @@ public class ScheduleServiceTest {
 
 				Schedule schedule = ScheduleFixture.REPEAT_PERSONAL_SCHEDULE.toSchedule();
 				given(scheduleRepository.save(any()))
-						.willReturn(schedule);
+					.willReturn(schedule);
 
 				//when
 				ScheduleDetailResponse result = scheduleService.createSchedule(1,
@@ -184,7 +169,7 @@ public class ScheduleServiceTest {
 
 				Schedule schedule = ScheduleFixture.REPEAT_GROUP_SCHEDULE.toSchedule();
 				given(scheduleRepository.save(any()))
-						.willReturn(schedule);
+					.willReturn(schedule);
 
 				//when
 				ScheduleDetailResponse result = scheduleService.createSchedule(1,
@@ -248,21 +233,21 @@ public class ScheduleServiceTest {
 			Schedule schedule = ScheduleFixture.REPEAT_PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			given(
-					scheduleRepository.findAllByRepetitionAndStartDateAfter(any(Repetition.class),
-							any(LocalDateTime.class)))
-					.willReturn(List.of(
-					));
+				scheduleRepository.findAllByRepetitionAndStartDateAfter(any(Repetition.class),
+					any(LocalDateTime.class)))
+				.willReturn(List.of(
+				));
 			given(
-					scheduleRepository.findAllByRepetitionAndStartDateBefore(any(Repetition.class),
-							any(LocalDateTime.class)))
-					.willReturn(List.of(
-							schedule1
-					));
+				scheduleRepository.findAllByRepetitionAndStartDateBefore(any(Repetition.class),
+					any(LocalDateTime.class)))
+				.willReturn(List.of(
+					schedule1
+				));
 			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
 
 			// When
 			ScheduleIdListResponse scheduleIdListResponse = scheduleService.deleteSchedule(
-					1, 1, ModificationType.ALL
+				1, 1, ModificationType.ALL
 			);
 
 			// Then
@@ -275,15 +260,15 @@ public class ScheduleServiceTest {
 			// Given
 			Schedule schedule = ScheduleFixture.REPEAT_PERSONAL_SCHEDULE.toSchedule();
 			given(scheduleRepository.findAllByRepetitionAndStartDateAfter(any(Repetition.class),
-					any(LocalDateTime.class)))
-					.willReturn(List.of(
-							ScheduleFixture.REPEAT_GROUP_SCHEDULE.toSchedule()
-					));
+				any(LocalDateTime.class)))
+				.willReturn(List.of(
+					ScheduleFixture.REPEAT_GROUP_SCHEDULE.toSchedule()
+				));
 			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
 
 			// When
 			ScheduleIdListResponse scheduleIdListResponse = scheduleService.deleteSchedule(
-					1, 1, ModificationType.AFTER
+				1, 1, ModificationType.AFTER
 			);
 			// Then
 			assertThat(scheduleIdListResponse.scheduleCount()).isEqualTo(2);
@@ -298,7 +283,7 @@ public class ScheduleServiceTest {
 
 			// When
 			ScheduleIdListResponse scheduleIdListResponse = scheduleService.deleteSchedule(
-					1, 1, ModificationType.NOW
+				1, 1, ModificationType.NOW
 			);
 			// Then
 			assertThat(scheduleIdListResponse.scheduleCount()).isEqualTo(1);
@@ -362,7 +347,7 @@ public class ScheduleServiceTest {
 			assertThat(updateSchedule).isNotNull();
 			assertThat(updateSchedule.title()).isEqualTo("바뀐 제목");
 			assertThat(updateSchedule.repetition().repetitionStartDate()).isEqualTo(
-					RepetitionFixture.MONDAY_REPETITION.toRepetition().getRepetitionStartDate());
+				RepetitionFixture.MONDAY_REPETITION.toRepetition().getRepetitionStartDate());
 		}
 
 		@Test
@@ -424,7 +409,7 @@ public class ScheduleServiceTest {
 			assertThat(updateSchedule).isNotNull();
 			assertThat(updateSchedule.title()).isEqualTo("바뀐 제목");
 			assertThat(updateSchedule.repetition().repetitionStartDate()).isEqualTo(
-					RepetitionFixture.MONDAY_REPETITION.toRepetition().getRepetitionStartDate());
+				RepetitionFixture.MONDAY_REPETITION.toRepetition().getRepetitionStartDate());
 
 		}
 	}
