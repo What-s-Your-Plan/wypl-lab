@@ -32,11 +32,22 @@ public enum MemberFixture {
 
 	public Member toMember() {
 		return Member.builder()
-				.email(email)
-				.nickname(nickname)
-				.profileImage(image)
-				.color(color)
-				.timeZone(CalendarTimeZone.KOREA)
-				.build();
+			.email(email)
+			.nickname(nickname)
+			.profileImage(image)
+			.color(color)
+			.timeZone(CalendarTimeZone.KOREA)
+			.build();
+	}
+
+	public Member toMemberWithId(int id) {
+		return Member.builder()
+			.id(id)
+			.email(email)
+			.nickname(nickname)
+			.profileImage(image)
+			.color(color)
+			.timeZone(CalendarTimeZone.KOREA)
+			.build();
 	}
 }

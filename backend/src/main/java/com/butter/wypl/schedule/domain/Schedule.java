@@ -1,14 +1,14 @@
 package com.butter.wypl.schedule.domain;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+
+import org.hibernate.annotations.SQLRestriction;
 
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.label.domain.Label;
-import com.butter.wypl.schedule.domain.embedded.Repetition;
+import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -29,6 +29,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@SQLRestriction("deleted_at is null")
 public class Schedule extends BaseEntity {
 
 	@Id
@@ -46,7 +47,7 @@ public class Schedule extends BaseEntity {
 	private Category category;
 
 	@Column(name = "group_id")
-	private int groupId;
+	private Integer groupId;
 
 	@Column(name = "start_date", nullable = false)
 	private LocalDateTime startDate;
@@ -54,22 +55,40 @@ public class Schedule extends BaseEntity {
 	@Column(name = "end_date", nullable = false)
 	private LocalDateTime endDate;
 
-	@Column(name = "alarm_time")
-	private LocalTime alarmTime;
-
-	@Column(name = "creator_id", nullable = false)
-	private int creatorId;
-
-	@Column(name = "updator_id", nullable = false)
-	private int updatorId;
-
-	@Column(name = "repeat_schedule_id")
-	private int repeatScheduleId;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "label_id")
 	private Label label;
 
-	@Embedded
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "repetition_id")
 	private Repetition repetition;
+
+	public void update(ScheduleUpdateRequest scheduleUpdateRequest) {
+		this.title = scheduleUpdateRequest.title();
+		this.description = scheduleUpdateRequest.description();
+		this.startDate = scheduleUpdateRequest.startDate();
+		this.endDate = scheduleUpdateRequest.endDate();
+	}
+
+	public void updateLabel(Label label) {
+		this.label = label;
+	}
+
+	public void updateRepetition(Repetition repetition) {
+		this.repetition = repetition;
+	}
+
+	public Schedule toRepetitionSchedule(LocalDateTime startDate, LocalDateTime endDate) {
+		return Schedule.builder()
+			.title(title)
+			.description(description)
+			.startDate(startDate)
+			.endDate(endDate)
+			.category(category)
+			.groupId(groupId)
+			.label(label)
+			.repetition(repetition)
+			.build();
+	}
+
 }
