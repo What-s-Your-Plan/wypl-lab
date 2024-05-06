@@ -15,98 +15,98 @@ import lombok.Getter;
 public enum ScheduleFixture {
 	//라벨 X, 반복 X, 개인
 	PERSONAL_SCHEDULE(
-		"테니스 가기",
-		"장소 : 신촌 테니스",
-		LocalDateTime.of(2024, 04, 26, 11, 0),
-		LocalDateTime.of(2024, 04, 26, 13, 0),
-		null,
-		null,
-		Category.MEMBER,
-		null
+			"테니스 가기",
+			"장소 : 신촌 테니스",
+			LocalDateTime.of(2024, 04, 26, 11, 0),
+			LocalDateTime.of(2024, 04, 26, 13, 0),
+			null,
+			null,
+			Category.MEMBER,
+			null
 	),
 
 	//라벨 O, 반복 X, 개인
 	LABEL_PERSONAL_SCHEDULE(
-		"테니스 가기",
-		"장소 : 신촌 테니스",
-		LocalDateTime.of(2024, 04, 26, 11, 0),
-		LocalDateTime.of(2024, 04, 26, 13, 0),
-		LabelFixture.STUDY_LABEL.toLabel(),
-		null,
-		Category.MEMBER,
-		null
+			"테니스 가기",
+			"장소 : 신촌 테니스",
+			LocalDateTime.of(2024, 04, 26, 11, 0),
+			LocalDateTime.of(2024, 04, 26, 13, 0),
+			LabelFixture.STUDY_LABEL.toLabel(),
+			null,
+			Category.MEMBER,
+			null
 	),
 
 	//라벨 X, 반복 X, 그룹
 	GROUP_SCHEDUEL(
-		"알고르즘 스터디",
-		"하루에 한문제씩 풀기",
-		LocalDateTime.of(2024, 04, 27, 11, 0),
-		LocalDateTime.of(2024, 04, 27, 12, 0),
-		null,
-		null,
-		Category.GROUP,
-		1
+			"알고르즘 스터디",
+			"하루에 한문제씩 풀기",
+			LocalDateTime.of(2024, 04, 27, 11, 0),
+			LocalDateTime.of(2024, 04, 27, 12, 0),
+			null,
+			null,
+			Category.GROUP,
+			1
 	),
 
 	//라벨 O, 반복 X, 그룹
 	LABEL_GROUP_SCHEDUEL(
-		"알고르즘 스터디",
-		"하루에 한문제씩 풀기",
-		LocalDateTime.of(2024, 04, 27, 11, 0),
-		LocalDateTime.of(2024, 04, 27, 12, 0),
-		LabelFixture.STUDY_LABEL.toLabel(),
-		null,
-		Category.GROUP,
-		1
+			"알고르즘 스터디",
+			"하루에 한문제씩 풀기",
+			LocalDateTime.of(2024, 04, 27, 11, 0),
+			LocalDateTime.of(2024, 04, 27, 12, 0),
+			LabelFixture.STUDY_LABEL.toLabel(),
+			null,
+			Category.GROUP,
+			1
 	),
 
 	//라벨 X, 반복 O, 개인
 	REPEAT_PERSONAL_SCHEDULE(
-		"헬스장 가기",
-		null,
-		LocalDateTime.of(2024, 04, 25, 11, 0),
-		LocalDateTime.of(2024, 04, 25, 12, 0),
-		null,
-		RepetitionFixture.MONTHLY_REPETITION.toRepetition(),
-		Category.MEMBER,
-		null
+			"헬스장 가기",
+			null,
+			LocalDateTime.of(2024, 04, 25, 11, 0),
+			LocalDateTime.of(2024, 04, 25, 12, 0),
+			null,
+			RepetitionFixture.MONTHLY_REPETITION.toRepetition(),
+			Category.MEMBER,
+			null
 	),
 
 	//라벨 O, 반복 O, 개인
 	LABEL_REPEAT_PERSONAL_SCHEDULE(
-		"헬스장 가기",
-		null,
-		LocalDateTime.of(2024, 04, 25, 11, 0),
-		LocalDateTime.of(2024, 04, 25, 12, 0),
-		LabelFixture.STUDY_LABEL.toLabel(),
-		RepetitionFixture.MONDAY_REPETITION.toRepetition(),
-		Category.MEMBER,
-		null
+			"헬스장 가기",
+			null,
+			LocalDateTime.of(2024, 04, 25, 11, 0),
+			LocalDateTime.of(2024, 04, 25, 12, 0),
+			LabelFixture.STUDY_LABEL.toLabel(),
+			RepetitionFixture.MONDAY_REPETITION.toRepetition(),
+			Category.MEMBER,
+			null
 	),
 
 	//라벨 X, 반복 O, 그룹
 	REPEAT_GROUP_SCHEDULE(
-		"알고르즘 스터디",
-		"하루에 한문제씩 풀기",
-		LocalDateTime.of(2024, 04, 27, 11, 0),
-		LocalDateTime.of(2024, 04, 27, 12, 0),
-		null,
-		RepetitionFixture.YEARLY_REPETITION.toRepetition(),
-		Category.GROUP,
-		1
+			"알고르즘 스터디",
+			"하루에 한문제씩 풀기",
+			LocalDateTime.of(2024, 04, 27, 11, 0),
+			LocalDateTime.of(2024, 04, 27, 12, 0),
+			null,
+			RepetitionFixture.YEARLY_REPETITION.toRepetition(),
+			Category.GROUP,
+			1
 	),
 
 	//라벨 O, 반복 O, 그룹
 	LABEL_REPEAT_GROUP_SCHEDULE(
-		"알고르즘 스터디",
-		"하루에 한문제씩 풀기",
-		LocalDateTime.of(2024, 04, 27, 11, 0),
-		LocalDateTime.of(2024, 04, 27, 12, 0),
-		LabelFixture.STUDY_LABEL.toLabel(),
-		RepetitionFixture.MONDAY_REPETITION.toRepetition(),
-		Category.GROUP,
-		1
+			"알고르즘 스터디",
+			"하루에 한문제씩 풀기",
+			LocalDateTime.of(2024, 04, 27, 11, 0),
+			LocalDateTime.of(2024, 04, 27, 12, 0),
+			LabelFixture.STUDY_LABEL.toLabel(),
+			RepetitionFixture.MONDAY_REPETITION.toRepetition(),
+			Category.GROUP,
+			1
 	),
 	;
 
@@ -127,7 +127,7 @@ public enum ScheduleFixture {
 	private final Integer groupId;
 
 	ScheduleFixture(String title, String description, LocalDateTime startDate, LocalDateTime endDate,
-		Label label, Repetition repetition, Category category, Integer groupId) {
+			Label label, Repetition repetition, Category category, Integer groupId) {
 		this.title = title;
 		this.category = category;
 		this.groupId = groupId;
@@ -140,15 +140,15 @@ public enum ScheduleFixture {
 
 	public Schedule toSchedule() {
 		return Schedule.builder()
-			.title(title)
-			.description(description)
-			.category(category)
-			.startDate(startDate)
-			.endDate(endDate)
-			.repetition(repetition)
-			.label(label)
-			.groupId(groupId)
-			.build();
+				.title(title)
+				.description(description)
+				.category(category)
+				.startDate(startDate)
+				.endDate(endDate)
+				.repetition(repetition)
+				.label(label)
+				.groupId(groupId)
+				.build();
 	}
 
 }
