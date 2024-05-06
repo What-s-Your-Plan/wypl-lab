@@ -20,13 +20,16 @@ import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.member.utils.MemberServiceUtils;
 import com.butter.wypl.sidetab.data.request.DDayUpdateRequest;
 import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
+import com.butter.wypl.sidetab.data.request.MemoUpdateRequest;
 import com.butter.wypl.sidetab.data.response.DDayWidgetResponse;
 import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
+import com.butter.wypl.sidetab.data.response.MemoWidgetResponse;
 import com.butter.wypl.sidetab.data.response.WeatherWidgetResponse;
 import com.butter.wypl.sidetab.domain.SideTab;
 import com.butter.wypl.sidetab.domain.cache.WeatherWidget;
 import com.butter.wypl.sidetab.domain.embedded.DDayWidget;
 import com.butter.wypl.sidetab.domain.embedded.GoalWidget;
+import com.butter.wypl.sidetab.domain.embedded.MemoWidget;
 import com.butter.wypl.sidetab.exception.SideTabErrorCode;
 import com.butter.wypl.sidetab.exception.SideTabException;
 import com.butter.wypl.sidetab.repository.SideTabRepository;
@@ -97,13 +100,6 @@ public class SideTabServiceImpl implements
 		return DDayWidgetResponse.from(findSideTab.getDDay());
 	}
 
-	private SideTab findSideTabWidget(AuthMember authMember, int dDayId) {
-		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
-		SideTab findSideTab = SideTabServiceUtils.findById(sideTabRepository, dDayId);
-		MemberServiceUtils.validateOwnership(findMember, findSideTab.getMemberId());
-		return findSideTab;
-	}
-
 	@Transactional
 	@Override
 	public WeatherWidgetResponse findCurrentWeather(
@@ -149,5 +145,36 @@ public class SideTabServiceImpl implements
 		ZonedDateTime datetime = ZonedDateTime.ofInstant(instant, ZoneId.of(weatherRegion.getTimeZone()));
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm 갱신");
 		return datetime.format(dateTimeFormatter);
+	}
+
+	@Override
+	public MemoWidgetResponse findMemo(
+			final AuthMember authMember,
+			final int memoId
+	) {
+		SideTab findSideTab = findSideTabWidget(authMember, memoId);
+
+		return MemoWidgetResponse.from(findSideTab.getMemo());
+	}
+
+	@Override
+	public MemoWidgetResponse updateMemo(
+			final AuthMember authMember,
+			final int memoId,
+			final MemoUpdateRequest request
+	) {
+		SideTab findSideTab = findSideTabWidget(authMember, memoId);
+
+		MemoWidget memoWidget = MemoWidget.from(request.memo());
+		findSideTab.updateMemo(memoWidget);
+
+		return MemoWidgetResponse.from(findSideTab.getMemo());
+	}
+
+	private SideTab findSideTabWidget(AuthMember authMember, int sideTabId) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
+		SideTab findSideTab = SideTabServiceUtils.findById(sideTabRepository, sideTabId);
+		MemberServiceUtils.validateOwnership(findMember, findSideTab.getMemberId());
+		return findSideTab;
 	}
 }
