@@ -27,7 +27,7 @@ public record ScheduleCreateRequest(
 	@JsonProperty("group_id")
 	Integer groupId,
 
-	RepetitionCreateRequest repetition,
+	RepetitionRequest repetition,
 
 	@JsonProperty("label_id")
 	Integer labelId,
@@ -55,7 +55,7 @@ public record ScheduleCreateRequest(
 			schedule.getEndDate(),
 			schedule.getCategory(),
 			schedule.getGroupId(),
-			RepetitionCreateRequest.from(schedule.getRepetition()),
+			schedule.getRepetition() == null ? null : RepetitionRequest.from(schedule.getRepetition()),
 			schedule.getLabel() == null ? null : schedule.getLabel().getLabelId(),
 			members
 		);

@@ -150,7 +150,7 @@ public class MemberScheduleServiceTest {
 			assertThatThrownBy(() -> {
 				memberScheduleService.validateMemberSchedule(schedule, member.getId());
 			}).isInstanceOf(ScheduleException.class)
-					.hasMessageContaining(ScheduleErrorCode.NOT_PERMISSION_UPDATE_SCHEDUEL.getMessage());
+				.hasMessageContaining(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL.getMessage());
 		}
 	}
 

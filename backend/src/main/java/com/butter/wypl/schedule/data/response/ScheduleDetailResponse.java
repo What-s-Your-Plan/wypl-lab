@@ -9,7 +9,7 @@ import com.butter.wypl.schedule.domain.Category;
 import com.butter.wypl.schedule.domain.Schedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public record ScheduleResponse(
+public record ScheduleDetailResponse(
 
 	@JsonProperty("schedule_id")
 	int scheduleId,
@@ -26,6 +26,8 @@ public record ScheduleResponse(
 	@JsonProperty("group_id")
 	Integer groupId,
 
+	RepetitionResponse repetition,
+
 	@JsonProperty("label")
 	LabelResponse labelId,
 
@@ -34,11 +36,11 @@ public record ScheduleResponse(
 	List<MemberResponse> members
 ) {
 
-	public static ScheduleResponse of(
+	public static ScheduleDetailResponse of(
 		Schedule schedule,
 		List<Member> members
 	) {
-		return new ScheduleResponse(
+		return new ScheduleDetailResponse(
 			schedule.getScheduleId(),
 			schedule.getTitle(),
 			schedule.getDescription(),
@@ -46,6 +48,7 @@ public record ScheduleResponse(
 			schedule.getEndDate(),
 			schedule.getCategory(),
 			schedule.getGroupId(),
+			(schedule.getRepetition() == null) ? null : RepetitionResponse.from(schedule.getRepetition()),
 			(schedule.getLabel() == null) ? null : LabelResponse.from(schedule.getLabel()),
 			members.size(),
 			MemberResponse.from(members)

@@ -47,7 +47,7 @@ public class MemberScheduleService {
 		Member member = MemberServiceUtils.findById(memberRepository, memberId);
 
 		memberScheduleRepository.findByScheduleAndMember(schedule, member)
-			.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NOT_PERMISSION_UPDATE_SCHEDUEL));
+			.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL));
 	}
 
 	@Transactional
