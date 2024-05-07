@@ -41,7 +41,7 @@ public class Group extends BaseEntity {
 	private Member owner;
 
 	@OneToMany(mappedBy = "group")
-	private List<MemberGroup> memberGroups;
+	private List<MemberGroup> memberGroupList;
 
 	public Group(String name, String description, Member owner) {
 		this.name = name;
