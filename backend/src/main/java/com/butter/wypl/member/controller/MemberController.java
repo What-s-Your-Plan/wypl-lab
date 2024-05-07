@@ -15,11 +15,14 @@ import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Message;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
+import com.butter.wypl.member.data.request.MemberColorUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
 import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
 import com.butter.wypl.member.data.response.FindMemberProfileInfoResponse;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
+import com.butter.wypl.member.data.response.MemberColorUpdateResponse;
+import com.butter.wypl.member.data.response.MemberColorsResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
@@ -86,5 +89,22 @@ public class MemberController {
 	) {
 		MemberProfileImageUpdateResponse response = memberModifyService.updateProfileImage(authMember, image);
 		return ResponseEntity.ok(Message.withBody("프로필 이미지를 수정했습니다.", response));
+	}
+
+	@GetMapping("/v1/members/colors")
+	public ResponseEntity<Message<MemberColorsResponse>> findColors(
+			@Authenticated AuthMember authMember
+	) {
+		MemberColorsResponse response = memberLoadService.findColors(authMember);
+		return ResponseEntity.ok(Message.withBody("컬러를 조회했습니다.", response));
+	}
+
+	@PatchMapping("/v1/member/colors")
+	public ResponseEntity<Message<MemberColorUpdateResponse>> changeColors(
+			@Authenticated AuthMember authMember,
+			@RequestBody MemberColorUpdateRequest request
+	) {
+		MemberColorUpdateResponse response = memberModifyService.updateColor(authMember, request);
+		return ResponseEntity.ok(Message.withBody("컬러를 수정하였습니다.", response));
 	}
 }

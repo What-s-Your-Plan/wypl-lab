@@ -95,4 +95,8 @@ public class Member extends BaseEntity {
 	public void changeProfileImage(final String newProfileImage) {
 		profileImage = newProfileImage;
 	}
+
+	public void changeColor(final Color newColor) {
+		color = newColor;
+	}
 }
