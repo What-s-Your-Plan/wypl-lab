@@ -1,9 +1,12 @@
 package com.butter.wypl.notification.service;
 
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 import com.butter.wypl.notification.data.request.NotificationCreateRequest;
-import com.butter.wypl.notification.domain.Notification;
 
 public interface NotificationModifyService {
 
-	Notification createNotification(final NotificationCreateRequest notificationCreateRequest);
+	void createNotification(final NotificationCreateRequest notificationCreateRequest);
+
+	SseEmitter subscribeNotification(final int memberId);
 }

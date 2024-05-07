@@ -13,15 +13,16 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum NotificationFixture {
-	REVIEW_NOTI(1, "모코코님 운동 일정은 어떠셨나요?", false,
-			List.of(ButtonFixture.ACCEPT.toNotificationButton(), ButtonFixture.CANCEL.toNotificationButton()),
-			NotificationTypeCode.REVIEW),
-	REVIEW_READ_NOTI(1, "모코코님 운동 일정은 어떠셨나요?", true,
-			List.of(ButtonFixture.ACCEPT.toNotificationButton(), ButtonFixture.CANCEL.toNotificationButton()),
-			NotificationTypeCode.REVIEW),
-	GROUP_NOTI(1, "A602 팀 초대가 왔어요", true, List.of(ButtonFixture.REVIEW.toNotificationButton()),
-			NotificationTypeCode.GROUP);
+	REVIEW_NOTI("abcdefg1",1, "모코코님 운동 일정은 어떠셨나요?", false,
+		List.of(ButtonFixture.ACCEPT.toNotificationButton(), ButtonFixture.CANCEL.toNotificationButton()),
+		NotificationTypeCode.REVIEW),
+	REVIEW_READ_NOTI("abcdefg2",1, "모코코님 운동 일정은 어떠셨나요?", true,
+		List.of(ButtonFixture.ACCEPT.toNotificationButton(), ButtonFixture.CANCEL.toNotificationButton()),
+		NotificationTypeCode.REVIEW),
+	GROUP_NOTI("abcdefg3",1, "A602 팀 초대가 왔어요", true, List.of(ButtonFixture.REVIEW.toNotificationButton()),
+		NotificationTypeCode.GROUP);
 
+	private final String id;
 	private final int memberId;
 	private final String message;
 	private final boolean isRead;
@@ -30,12 +31,13 @@ public enum NotificationFixture {
 
 	public Notification toNotification() {
 		return Notification.builder()
-				.memberId(memberId)
-				.message(message)
-				.isRead(isRead)
-				.typeCode(typeCode)
-				.buttons(buttons)
-				.build();
+			.id(id)
+			.memberId(memberId)
+			.message(message)
+			.isRead(isRead)
+			.typeCode(typeCode)
+			.buttons(buttons)
+			.build();
 	}
 
 	public NotificationCreateRequest toNotificationCreateRequest() {
@@ -54,11 +56,12 @@ public enum NotificationFixture {
 
 		public NotificationButton toNotificationButton() {
 			return NotificationButton.builder()
-					.text(text)
-					.actionUrl(actionUrl)
-					.color(color)
-					.logo(logo)
-					.build();
+				.text(text)
+				.actionUrl(actionUrl)
+				.color(color)
+				.logo(logo)
+				.build();
 		}
 	}
+
 }

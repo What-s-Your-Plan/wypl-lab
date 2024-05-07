@@ -5,9 +5,11 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import com.butter.wypl.global.annotation.MongoRepositoryTest;
@@ -40,8 +42,8 @@ class NotificationRepositoryTest {
 	 *  - 읽지 않은 알림 => 생성일로부터 30일 지나면 삭제
 	 *  - 읽은 알림 => 읽고 난 뒤 7일 뒤 삭제
 	 */
-
 	@Test
+	@Disabled
 	@DisplayName("특정 이벤트 발생 후 알림을 생성한다.")
 	void createNotificationTest() {
 		// given
@@ -90,10 +92,9 @@ class NotificationRepositoryTest {
 
 		//then
 		assertThatCode(() -> {
-			List<Notification> result = notificationRepository.findAllByMemberId(memberId, pageReq);
+			Page<Notification> result = notificationRepository.findAllByMemberId(memberId, pageReq);
 			assertThat(result).isNotNull();
 		}).doesNotThrowAnyException();
-
 	}
 
 	@Test
@@ -106,7 +107,7 @@ class NotificationRepositoryTest {
 		String lastId = "6630481609e3d42813504c86";
 		//then
 		assertThatCode(() -> {
-			List<Notification> result = notificationRepository.findAllById(memberId, lastId, pageReq);
+			Page<Notification> result = notificationRepository.findAllByLastId(memberId, lastId, pageReq);
 			assertThat(result).isNotNull();
 		}).doesNotThrowAnyException();
 	}

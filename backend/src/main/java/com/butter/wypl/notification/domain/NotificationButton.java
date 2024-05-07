@@ -15,7 +15,7 @@ public class NotificationButton {
 	private String color;
 	private String logo; // 버튼 로고정보
 
-	public static NotificationButton from(
+	public static NotificationButton of(
 		final ButtonInfo buttonInfo,
 		final String actionUrl
 	) {
