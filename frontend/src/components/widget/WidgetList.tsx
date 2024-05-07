@@ -104,7 +104,7 @@ function WidgetList() {
         }}
       >
         {widgetArray?.map((widget, index) => {
-          const animationClasses = `${isModifying ? 'shaking' : ''}`;
+          const animationClasses = `h-full ${isModifying ? 'shaking' : ''}`;
           return (
             <div
               className="reactGridItem"
@@ -128,11 +128,7 @@ function WidgetList() {
               onTouchStart={handleLongPress}
               onTouchEnd={clearPressTimer}
             >
-              <S.WhiteContainer
-                $width="1300"
-                $height="third"
-                className={animationClasses}
-              >
+              <S.WhiteContainer $width="1300" className={animationClasses}>
                 {renderWidget(widget.widgetType)}
               </S.WhiteContainer>
             </div>

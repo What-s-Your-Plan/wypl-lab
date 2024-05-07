@@ -49,6 +49,7 @@ function WMemo() {
           $width="100%"
           $void={true}
           ref={textarea}
+          rows={7}
           value={userMemo}
           disabled={!isModifyingMemo}
           onChange={handleTextInput}
