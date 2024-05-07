@@ -1,20 +1,25 @@
 package com.butter.wypl.notification.service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.butter.wypl.notification.data.ButtonInfo;
 import com.butter.wypl.notification.data.NotificationTypeCode;
 import com.butter.wypl.notification.data.request.NotificationCreateRequest;
+import com.butter.wypl.notification.data.response.NotificationPageResponse;
 import com.butter.wypl.notification.data.response.NotificationResponse;
 import com.butter.wypl.notification.domain.Notification;
 import com.butter.wypl.notification.domain.NotificationButton;
+import com.butter.wypl.notification.exception.NotificationErrorCode;
+import com.butter.wypl.notification.exception.NotificationException;
 import com.butter.wypl.notification.repository.EmitterRepository;
 import com.butter.wypl.notification.repository.NotificationRepository;
 
@@ -25,9 +30,10 @@ import lombok.extern.log4j.Log4j2;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class NotificationServiceImpl implements NotificationModifyService {
+public class NotificationServiceImpl implements NotificationModifyService, NotificationLoadService {
 
 	private final static Long EMITTER_TIMEOUT = 30L * 1000 * 60;
+	public static final int PAGE_SIZE = 10;
 
 	private final NotificationRepository notificationRepository;
 	private final EmitterRepository emitterRepository;
@@ -51,7 +57,7 @@ public class NotificationServiceImpl implements NotificationModifyService {
 			Notification groupNotification = createGroupNotification(notificationCreateRequest);
 			sendEmitter(groupNotification);
 			return;
-		// } else if (notificationCreateRequest.typeCode() == NotificationTypeCode.REVIEW) {
+			// } else if (notificationCreateRequest.typeCode() == NotificationTypeCode.REVIEW) {
 		} else if (notificationCreateRequest.typeCode().equals(NotificationTypeCode.REVIEW)) {
 			log.info("REVIEW 생성");
 			Notification reviewNotification = createReviewNotification(notificationCreateRequest);
@@ -88,29 +94,6 @@ public class NotificationServiceImpl implements NotificationModifyService {
 			emitterRepository.deleteByMemberId(memberId);
 			emitter.completeWithError(e);
 		}
-	}
-
-	// TODO 테스트 끝난 뒤 삭제
-	public void sendTest(int memberId) {
-		log.info("받은 정보 : {}", memberId);
-		List<NotificationButton> buttons = new ArrayList<>();
-
-		buttons.add(NotificationButton.builder()
-			.text("버튼테스트")
-			.color("파란")
-			.logo("그룹")
-			.build()
-		);
-
-		Notification notification = Notification.builder()
-			.memberId(memberId)
-			.message("임시 메시지")
-			.buttons(buttons)
-			.isRead(false)
-			.typeCode(NotificationTypeCode.GROUP)
-			.build();
-
-		sendEmitter(notification);
 	}
 
 	private void sendEmitter(final Notification notification) {
@@ -173,8 +156,7 @@ public class NotificationServiceImpl implements NotificationModifyService {
 					case REVIEW -> {
 						return NotificationButton.from(info, "review url");
 					}
-					//TODO 예외내용 수정
-					default -> throw new IllegalStateException("Unexpected value: " + info);
+					default -> throw new NotificationException(NotificationErrorCode.NOTIFICATION_BUTTON_TYPE_ERROR);
 				}
 			}).toList();
 	}
@@ -205,7 +187,23 @@ public class NotificationServiceImpl implements NotificationModifyService {
 			case REVIEW -> {
 				return String.format("%s님, [%s] 일정은 잘 마치셨나요?", nickname, scheduleTitle);
 			}
-			default -> throw new IllegalStateException("Unexpected value: " + typeCode);
+			default -> throw new NotificationException(NotificationErrorCode.NOTIFICATION_TYPE_ERROR);
+		}
+	}
+
+	@Override
+	public NotificationPageResponse getNotifications(int memberId, String lastId) {
+		PageRequest pageRequest = PageRequest.of(0, PAGE_SIZE);
+		/*
+		 * 1. 최초 조회시 (알림버튼 클릭) 회원 ID로 조회
+		 * 2. 그 이후 조회시 no-offset 조회 마지막 행 알림 lastID 이용
+		 * */
+		if (StringUtils.hasText(lastId)) {
+			Page<Notification> result = notificationRepository.findAllByMemberId(memberId, pageRequest);
+			return NotificationPageResponse.of(result);
+		} else {
+			Page<Notification> result = notificationRepository.findAllByLastId(memberId, lastId, pageRequest);
+			return NotificationPageResponse.of(result);
 		}
 	}
 }
