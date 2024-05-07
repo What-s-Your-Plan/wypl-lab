@@ -77,7 +77,7 @@ public class LabelController {
 	@DeleteMapping
 	public ResponseEntity<Message<LabelIdResponse>> deleteLabel(
 		@Authenticated AuthMember authMember,
-		@RequestHeader("labelId") int labelId
+		@RequestHeader("label_id") int labelId
 	) {
 		return ResponseEntity
 			.ok().body(

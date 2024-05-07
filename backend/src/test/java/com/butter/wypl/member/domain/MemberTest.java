@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.butter.wypl.infrastructure.weather.WeatherRegion;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.fixture.MemberFixture;
@@ -44,6 +46,19 @@ class MemberTest {
 
 		/* Then */
 		assertThat(member.getProfileImage()).isEqualTo(newProfileImageUrl);
+	}
+
+	@DisplayName("날씨 지역 조회에 성공한다.")
+	@Test
+	void getWeatherRegionSuccess() {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+
+		/* When */
+		WeatherRegion weatherRegion = member.getWeatherRegion();
+
+		/* Then */
+		Assertions.assertThat(weatherRegion).isEqualTo(WeatherRegion.KOREA);
 	}
 
 	@DisplayName("닉네임 Test")

@@ -20,8 +20,10 @@ import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.sidetab.data.response.DDayWidgetResponse;
 import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
+import com.butter.wypl.sidetab.data.response.MemoWidgetResponse;
 import com.butter.wypl.sidetab.domain.SideTab;
 import com.butter.wypl.sidetab.domain.embedded.DDayWidget;
+import com.butter.wypl.sidetab.domain.embedded.MemoWidget;
 import com.butter.wypl.sidetab.repository.SideTabRepository;
 
 @MockServiceTest
@@ -77,6 +79,26 @@ class SideTabLoadServiceTest {
 
 		/* When */
 		DDayWidgetResponse response = sideTabService.findDDay(authMember, 0);
+
+		/* Then */
+		assertThat(response).isNotNull();
+	}
+
+	@DisplayName("메모를 조회한다.")
+	@Test
+	void findMemoWidgetTest() {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+		given(memberRepository.findById(anyInt()))
+				.willReturn(Optional.of(member));
+
+		SideTab sideTab = SideTab.from(member);
+		sideTab.updateMemo(MemoWidget.from("메모"));
+		given(sideTabRepository.findById(anyInt()))
+				.willReturn(Optional.of(sideTab));
+
+		/* When */
+		MemoWidgetResponse response = sideTabService.findMemo(authMember, 0);
 
 		/* Then */
 		assertThat(response).isNotNull();

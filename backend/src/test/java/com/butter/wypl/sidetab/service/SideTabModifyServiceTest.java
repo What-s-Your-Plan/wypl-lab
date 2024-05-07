@@ -20,8 +20,10 @@ import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.sidetab.data.request.DDayUpdateRequest;
 import com.butter.wypl.sidetab.data.request.GoalUpdateRequest;
+import com.butter.wypl.sidetab.data.request.MemoUpdateRequest;
 import com.butter.wypl.sidetab.data.response.DDayWidgetResponse;
 import com.butter.wypl.sidetab.data.response.GoalWidgetResponse;
+import com.butter.wypl.sidetab.data.response.MemoWidgetResponse;
 import com.butter.wypl.sidetab.domain.SideTab;
 import com.butter.wypl.sidetab.repository.SideTabRepository;
 
@@ -88,5 +90,27 @@ class SideTabModifyServiceTest {
 				() -> assertThat(response.title()).isEqualTo(request.title()),
 				() -> assertThat(response.dDay()).isEqualTo("D-DAY")
 		);
+	}
+
+	@DisplayName("메모를 수정한다.")
+	@Test
+	void memoUpdateSuccessTest() {
+		/* Given */
+		String memoAsString = "새로운 메모";
+		MemoUpdateRequest request = new MemoUpdateRequest(memoAsString);
+
+		Member member = KIM_JEONG_UK.toMember();
+		given(memberRepository.findById(anyInt()))
+				.willReturn(Optional.of(member));
+
+		SideTab sideTab = SideTab.from(member);
+		given(sideTabRepository.findById(anyInt()))
+				.willReturn(Optional.of(sideTab));
+
+		/* When */
+		MemoWidgetResponse response = sideTabService.updateMemo(authMember, 0, request);
+
+		/* Then */
+		assertThat(response.memo()).isEqualTo(memoAsString);
 	}
 }

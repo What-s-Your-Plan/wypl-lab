@@ -50,29 +50,29 @@ class NotificationRepositoryTest {
 		String message = "";
 		List<NotificationButton> buttons = new ArrayList<>();
 		buttons.add(
-			NotificationButton.builder()
-				.text("수락")
-				.actionUrl("ok")
-				.color("#000000")
-				.logo("수락이지롱")
-				.build()
+				NotificationButton.builder()
+						.text("수락")
+						.actionUrl("ok")
+						.color("#000000")
+						.logo("수락이지롱")
+						.build()
 		);
 		buttons.add(
-			NotificationButton.builder()
-				.text("취소")
-				.actionUrl("cancel")
-					.color("#000000")
-				.logo("취소지롱")
-				.build()
+				NotificationButton.builder()
+						.text("취소")
+						.actionUrl("cancel")
+						.color("#000000")
+						.logo("취소지롱")
+						.build()
 		);
 
 		Notification notification = Notification.builder()
-			.memberId(1)
-			.message(message)
-			.buttons(buttons)
-			.isRead(false)
-			.typeCode(NotificationTypeCode.GROUP)
-			.build();
+				.memberId(1)
+				.message(message)
+				.buttons(buttons)
+				.isRead(false)
+				.typeCode(NotificationTypeCode.GROUP)
+				.build();
 
 		// when
 		Notification savedNotification = notificationRepository.save(notification);
