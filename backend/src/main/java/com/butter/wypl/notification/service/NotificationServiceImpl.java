@@ -101,7 +101,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 	}
 
 	private void sendEmitter(final Notification notification) {
-		NotificationResponse response = NotificationResponse.of(notification);
+		NotificationResponse response = NotificationResponse.from(notification);
 
 		emitterRepository.getByMemberId(response.memberId())
 			.ifPresent(emitter -> {
@@ -152,13 +152,13 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 			.map(info -> {
 				switch (info) {
 					case ACCEPT -> {
-						return NotificationButton.from(info, "accept url");
+						return NotificationButton.of(info, "accept url");
 					}
 					case CANCEL -> {
-						return NotificationButton.from(info, "cancel url");
+						return NotificationButton.of(info, "cancel url");
 					}
 					case REVIEW -> {
-						return NotificationButton.from(info, "review url");
+						return NotificationButton.of(info, "review url");
 					}
 					default -> throw new NotificationException(NotificationErrorCode.NOTIFICATION_BUTTON_TYPE_ERROR);
 				}
@@ -204,10 +204,10 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		 * */
 		if (StringUtils.hasText(lastId)) {
 			Page<Notification> result = notificationRepository.findAllByMemberId(memberId, pageRequest);
-			return NotificationPageResponse.of(result);
+			return NotificationPageResponse.from(result);
 		} else {
 			Page<Notification> result = notificationRepository.findAllByLastId(memberId, lastId, pageRequest);
-			return NotificationPageResponse.of(result);
+			return NotificationPageResponse.from(result);
 		}
 	}
 }

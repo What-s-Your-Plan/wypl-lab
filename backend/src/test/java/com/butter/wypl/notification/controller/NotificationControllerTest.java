@@ -71,7 +71,7 @@ class NotificationControllerTest extends ControllerTest {
 		list.add(NotificationFixture.GROUP_NOTI.toNotification());
 
 		NotificationPageResponse response = new NotificationPageResponse(
-			NotificationResponse.of(list),
+			NotificationResponse.from(list),
 			list.get(list.size() - 1).getId(),
 			list.size(),
 			1,

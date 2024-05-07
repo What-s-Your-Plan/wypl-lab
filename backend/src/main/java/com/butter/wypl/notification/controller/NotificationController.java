@@ -23,7 +23,7 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/notification/v1")
+@RequestMapping("/notification/v1/notifications")
 public class NotificationController {
 
 	private final NotificationLoadService notificationLoadService;
