@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import useReviewStore from '@/stores/ReviewStore';
 import {
   Content,
@@ -29,7 +28,7 @@ type ReviewWriteProps = {
 //type에 맞는 컴포넌트를 생성하기 위한 블록
 function ReviewWrite({ index, content }: ReviewWriteProps) {
   const reviewStore = useReviewStore();
-  const [isFocus, setIsFocus] = useState(false);
+
   const handleDropItem = (event: React.DragEvent) => {
     event.preventDefault();
     event.stopPropagation();
@@ -54,12 +53,22 @@ function ReviewWrite({ index, content }: ReviewWriteProps) {
     }
   };
 
-  const handleFocus = () => {
-    setIsFocus(true);
+  const handleMoveUp = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    console.log('Move Up');
+    reviewStore.moveContent(index, index - 1);
+    event.stopPropagation();
   };
 
-  const handleBlur = () => {
-    setIsFocus(false);
+  const handleMoveDown = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    console.log('Move Down');
+    reviewStore.moveContent(index, index + 1);
+    event.stopPropagation();
+  };
+
+  const handleDelete = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    console.log('delete');
+    reviewStore.deleteContent(index);
+    event.stopPropagation();
   };
 
   const renderBlock = () => {
@@ -104,6 +113,11 @@ function ReviewWrite({ index, content }: ReviewWriteProps) {
         return null;
     }
   };
+
+  // useEffect(() => {
+  //   console.log(reviewStore.focusIndex);
+  // }, [reviewStore.focusIndex]);
+
   return (
     <div
       draggable={true}
@@ -111,18 +125,19 @@ function ReviewWrite({ index, content }: ReviewWriteProps) {
         e.dataTransfer.setData('nowIndex', index.toString())
       }
       onDrop={handleDropItem}
-      onFocus={handleFocus}
-      onBlur={handleBlur}
+      onClick={() => {
+        reviewStore.setFocusIndex(index);
+      }}
     >
-      {isFocus && (
-        <span className="float-right isolate inline-flex gap-1 rounded-md shadow-sm bg-default-white p-1">
-          <Button $size="none">
+      {reviewStore.focusIndex === index && (
+        <span className="float-right isolate inline-flex gap-1 rounded-md shadow-sm bg-default-white p-1 mr-64 -mt-2">
+          <Button $size="none" onClick={handleMoveUp}>
             <img src={ArrowUp} alt="위로 이동" className="w-5" />
           </Button>
-          <Button $size="none">
+          <Button $size="none" onClick={handleMoveDown}>
             <img src={ArrowDown} alt="아래로 이동" className="w-5" />
           </Button>
-          <Button $size="none">
+          <Button $size="none" onClick={handleDelete}>
             <img src={Trash} alt="삭제" className="w-5" />
           </Button>
         </span>
