@@ -1,5 +1,6 @@
 package com.butter.wypl.label.data.response;
 
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.label.domain.Label;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -10,7 +11,7 @@ public record LabelResponse(
 	@JsonProperty("member_id")
 	int memberId,
 	String title,
-	String color
+	Color color
 ) {
 	public static LabelResponse from(Label label) {
 		if (label == null) {
@@ -21,7 +22,7 @@ public record LabelResponse(
 			label.getLabelId(),
 			label.getMemberId(),
 			label.getTitle(),
-			label.getColor().getColor()
+			label.getColor()
 		);
 	}
 }

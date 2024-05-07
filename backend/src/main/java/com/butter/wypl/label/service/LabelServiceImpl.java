@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.butter.wypl.global.common.Color;
 import com.butter.wypl.label.data.request.LabelRequest;
 import com.butter.wypl.label.data.response.LabelIdResponse;
 import com.butter.wypl.label.data.response.LabelListResponse;
@@ -28,11 +27,9 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 	@Transactional
 	@Override
 	public LabelResponse createLabel(int memberId, LabelRequest labelRequest) {
-		Label.titleValidation(labelRequest.title());
-
 		Label label = Label.builder()
 			.title(labelRequest.title())
-			.color(Color.from(labelRequest.color()))
+			.color(labelRequest.color())
 			.memberId(memberId)
 			.schedules(new ArrayList<>())
 			.build();
@@ -46,9 +43,8 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 	@Override
 	public LabelResponse updateLabel(int memberId, int labelId, LabelRequest labelRequest) {
 		Label label = checkValidationAndGetLabel(labelId, memberId);
-		Label.titleValidation(labelRequest.title());
 
-		label.update(labelRequest.title(), Color.from(labelRequest.color()));
+		label.update(labelRequest.title(), labelRequest.color());
 
 		return LabelResponse.from(label);
 	}

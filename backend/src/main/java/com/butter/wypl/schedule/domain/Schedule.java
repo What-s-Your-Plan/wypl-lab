@@ -7,6 +7,8 @@ import org.hibernate.annotations.SQLRestriction;
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
+import com.butter.wypl.schedule.exception.ScheduleErrorCode;
+import com.butter.wypl.schedule.exception.ScheduleException;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,12 +21,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -63,7 +63,27 @@ public class Schedule extends BaseEntity {
 	@JoinColumn(name = "repetition_id")
 	private Repetition repetition;
 
+	@Builder
+	public Schedule(int scheduleId, String title, String description, Category category, Integer groupId,
+		LocalDateTime startDate, LocalDateTime endDate, Label label, Repetition repetition) {
+		titleValidation(title);
+		durationValidation(startDate, endDate);
+
+		this.scheduleId = scheduleId;
+		this.title = title;
+		this.description = description;
+		this.category = category;
+		this.groupId = groupId;
+		this.startDate = startDate;
+		this.endDate = endDate;
+		this.label = label;
+		this.repetition = repetition;
+	}
+
 	public void update(ScheduleUpdateRequest scheduleUpdateRequest) {
+		titleValidation(scheduleUpdateRequest.title());
+		durationValidation(scheduleUpdateRequest.startDate(), scheduleUpdateRequest.endDate());
+
 		this.title = scheduleUpdateRequest.title();
 		this.description = scheduleUpdateRequest.description();
 		this.startDate = scheduleUpdateRequest.startDate();
@@ -91,4 +111,15 @@ public class Schedule extends BaseEntity {
 			.build();
 	}
 
+	private void titleValidation(String title) {
+		if (title == null || title.length() > 50 || title.isEmpty()) {
+			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_TITLE);
+		}
+	}
+
+	private void durationValidation(LocalDateTime startDate, LocalDateTime endDate) {
+		if (startDate.isAfter(endDate) || startDate.isEqual(endDate)) {
+			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_DURATION);
+		}
+	}
 }

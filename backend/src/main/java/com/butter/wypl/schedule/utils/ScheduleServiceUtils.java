@@ -14,4 +14,5 @@ public class ScheduleServiceUtils {
 		return scheduleRepository.findById(id)
 			.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NO_SCHEDULE));
 	}
+
 }

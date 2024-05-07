@@ -17,12 +17,12 @@ public class LabelTest {
 		Label label = LabelFixture.STUDY_LABEL.toLabel();
 
 		//when
-		label.update("제목 바뀜", Color.from("FF0000"));
+		label.update("제목 바뀜", Color.labelBrown);
 
 		//then
 		assertThat(label.getMemberId()).isEqualTo(LabelFixture.STUDY_LABEL.toLabel().getMemberId());
 		assertThat(label.getTitle()).isEqualTo("제목 바뀜");
-		assertThat(label.getColor().getColor()).isEqualTo("FF0000");
+		assertThat(label.getColor()).isEqualTo(Color.labelBrown);
 	}
 
 }
