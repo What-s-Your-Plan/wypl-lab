@@ -81,12 +81,16 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		return emitter;
 	}
 
+	private String makeSseEmitterId(final int memberId) {
+		return memberId + "_" + System.currentTimeMillis();
+	}
+
 	private void sendEmitterInit(final int memberId, final SseEmitter emitter) {
 		log.info("sendEmitterInit");
 		try {
 			emitter.send(
 				SseEmitter.event()
-					.id(String.valueOf(memberId))
+					.id(makeSseEmitterId(memberId))
 					.name("init")
 					.data("최초 연결")
 			);
@@ -104,7 +108,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 				try {
 					emitter.send(
 						SseEmitter.event()
-							.id(String.valueOf(response.memberId()))
+							.id(makeSseEmitterId(response.memberId()))
 							.name("notification")
 							.data(response)
 					);
