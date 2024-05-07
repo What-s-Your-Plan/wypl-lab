@@ -1,5 +1,6 @@
 package com.butter.wypl.member.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,12 +9,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.file.S3ImageProvider;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
+import com.butter.wypl.member.data.request.MemberColorUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
 import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
 import com.butter.wypl.member.data.response.FindMemberProfileInfoResponse;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
+import com.butter.wypl.member.data.response.MemberColorUpdateResponse;
+import com.butter.wypl.member.data.response.MemberColorsResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
@@ -113,5 +118,27 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 		findMember.changeProfileImage(updateProfileImageUrl);
 
 		return new MemberProfileImageUpdateResponse(findMember.getProfileImage());
+	}
+
+	@Transactional
+	@Override
+	public MemberColorUpdateResponse updateColor(
+			final AuthMember authMember,
+			final MemberColorUpdateRequest request
+	) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
+
+		findMember.changeColor(request.color());
+
+		return MemberColorUpdateResponse.from(findMember.getColor());
+	}
+
+	@Override
+	public MemberColorsResponse findColors(final AuthMember authMember) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
+
+		List<Color> colors = Arrays.stream(Color.values()).toList();
+
+		return MemberColorsResponse.of(findMember.getColor(), colors);
 	}
 }

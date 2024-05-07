@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,6 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.infrastructure.weather.WeatherRegion;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
@@ -58,7 +58,21 @@ class MemberTest {
 		WeatherRegion weatherRegion = member.getWeatherRegion();
 
 		/* Then */
-		Assertions.assertThat(weatherRegion).isEqualTo(WeatherRegion.KOREA);
+		assertThat(weatherRegion).isEqualTo(WeatherRegion.KOREA);
+	}
+
+	@DisplayName("회원의 메인 컬러 수정에 성공한다.")
+	@ParameterizedTest
+	@EnumSource(Color.class)
+	void updateColorSuccessTest(Color color) {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+
+		/* When */
+		member.changeColor(color);
+
+		/* Then */
+		assertThat(member.getColor()).isEqualTo(color);
 	}
 
 	@DisplayName("닉네임 Test")

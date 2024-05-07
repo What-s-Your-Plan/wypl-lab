@@ -17,8 +17,10 @@ import org.mockito.Mock;
 
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.annotation.MockServiceTest;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.member.data.response.FindMemberProfileInfoResponse;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
+import com.butter.wypl.member.data.response.MemberColorsResponse;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
@@ -53,6 +55,24 @@ class MemberLoadServiceTest {
 		assertAll(
 				() -> assertThat(response.memberTimeZone()).isNotNull(),
 				() -> assertThat(response.timezones()).size().isNotZero()
+		);
+	}
+
+	@DisplayName("회원이 선택한 컬러와 서버의 모든 컬러를 조회한다.")
+	@Test
+	void findMemberColorTest() {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+		given(memberRepository.findById(any(Integer.class)))
+				.willReturn(Optional.of(member));
+
+		/* When */
+		MemberColorsResponse response = memberService.findColors(authMember);
+
+		/* Then */
+		assertAll(
+				() -> assertThat(response.colorCount()).isEqualTo(Color.values().length),
+				() -> assertThat(response.selectColor()).isEqualTo(member.getColor())
 		);
 	}
 

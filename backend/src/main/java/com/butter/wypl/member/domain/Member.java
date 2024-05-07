@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 
 import com.butter.wypl.global.common.BaseEntity;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.infrastructure.weather.WeatherRegion;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
@@ -44,8 +45,9 @@ public class Member extends BaseEntity {
 	@Column(name = "profile_image", length = 100)
 	private String profileImage;
 
-	@Column(name = "color", length = 6, nullable = false)
-	private String color;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "color", length = 20, nullable = false)
+	private Color color;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "timezone", length = 10, nullable = false)
@@ -92,5 +94,9 @@ public class Member extends BaseEntity {
 
 	public void changeProfileImage(final String newProfileImage) {
 		profileImage = newProfileImage;
+	}
+
+	public void changeColor(final Color newColor) {
+		color = newColor;
 	}
 }
