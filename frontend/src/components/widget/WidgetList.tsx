@@ -4,6 +4,7 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 import * as S from '@/components/common/Container';
 import Button from '../common/Button';
 import WGoal from './WGoal';
+import WDDay from './WDDay';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -12,8 +13,8 @@ function WidgetList() {
   const [layouts, setLayouts] = useState<ReactGridLayout.Layouts>();
   const [widgetArray, setWidgetArray] = useState<Widget[]>([
     { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
-    { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
-    { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
+    { widgetType: 'dday', layout: { i: 'widget1', x: 0, y: 0, w: 1, h: 1 } },
+    { widgetType: 'goal', layout: { i: 'widget1', x: 1, y: 1, w: 1, h: 1 } },
   ]);
 
   const handleModify = (
@@ -50,8 +51,8 @@ function WidgetList() {
     switch (widgetType) {
       case 'goal':
         return <WGoal />;
-      case 'schedule':
-        return <div>Schedule</div>;
+      case 'dday':
+        return <WDDay />;
       case 'todo':
         return <div>Todo</div>;
       default:
@@ -87,11 +88,11 @@ function WidgetList() {
         cols={{ lg: 2, md: 2, sm: 2, xs: 2, xxs: 2 }}
         autoSize={true}
         margin={{
-          lg: [20, 20],
-          md: [20, 20],
-          sm: [20, 20],
-          xs: [20, 20],
-          xxs: [20, 20],
+          lg: [10, 10],
+          md: [10, 10],
+          sm: [10, 10],
+          xs: [10, 10],
+          xxs: [10, 10],
         }}
       >
         {widgetArray?.map((widget, index) => {
