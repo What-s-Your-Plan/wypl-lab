@@ -30,7 +30,7 @@ function WGoal() {
       </div>
       <div>
         <InputDefault
-          className="disabled:bg-transparent"
+          className="disabled:bg-transparent mt-3"
           $width="100%"
           $void={true}
           value={userGoal}

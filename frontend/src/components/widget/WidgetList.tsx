@@ -6,6 +6,7 @@ import Button from '../common/Button';
 import WGoal from './WGoal';
 import WDDay from './WDDay';
 import WWeather from './WWeather';
+import WMemo from './WMemo';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -16,6 +17,7 @@ function WidgetList() {
     { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
     { widgetType: 'dday', layout: { i: 'widget1', x: 0, y: 0, w: 1, h: 1 } },
     { widgetType: 'weather', layout: { i: 'widget1', x: 1, y: 1, w: 1, h: 1 } },
+    { widgetType: 'memo', layout: { i: 'widget1', x: 0, y: 2, w: 2, h: 2 } },
   ]);
 
   const handleModify = (
@@ -54,8 +56,12 @@ function WidgetList() {
         return <WGoal />;
       case 'dday':
         return <WDDay />;
+      case 'todo':
+        return <div>Todo</div>;
       case 'weather':
         return <WWeather />;
+      case 'memo':
+        return <WMemo />;
       default:
         return <div>Unknown</div>;
     }
@@ -98,7 +104,7 @@ function WidgetList() {
         }}
       >
         {widgetArray?.map((widget, index) => {
-          const animationClasses = `${isModifying ? 'shaking' : ''}`;
+          const animationClasses = `h-full ${isModifying ? 'shaking' : ''}`;
           return (
             <div
               className="reactGridItem"
@@ -122,11 +128,7 @@ function WidgetList() {
               onTouchStart={handleLongPress}
               onTouchEnd={clearPressTimer}
             >
-              <S.WhiteContainer
-                $width="1300"
-                $height="third"
-                className={animationClasses}
-              >
+              <S.WhiteContainer $width="1300" className={animationClasses}>
                 {renderWidget(widget.widgetType)}
               </S.WhiteContainer>
             </div>
