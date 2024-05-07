@@ -1,5 +1,6 @@
 package com.butter.wypl.member.data.response;
 
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.member.domain.Member;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,7 +16,7 @@ public record FindMemberProfileInfoResponse(
 		@JsonProperty("profile_image_url")
 		String profileImage,
 		@JsonProperty("main_color")
-		String mainColor
+		Color mainColor
 ) {
 
 	public static FindMemberProfileInfoResponse from(final Member member) {

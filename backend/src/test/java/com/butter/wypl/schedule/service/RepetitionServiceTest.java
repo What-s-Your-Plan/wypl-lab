@@ -49,5 +49,4 @@ public class RepetitionServiceTest {
 		// Then
 		assertThat(savedRepetition.getDeletedAt()).isNotNull();
 	}
-
 }
