@@ -5,6 +5,7 @@ import * as S from '@/components/common/Container';
 import Button from '../common/Button';
 import WGoal from './WGoal';
 import WDDay from './WDDay';
+import WWeather from './WWeather';
 import WMemo from './WMemo';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
@@ -15,6 +16,7 @@ function WidgetList() {
   const [widgetArray, setWidgetArray] = useState<Widget[]>([
     { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
     { widgetType: 'dday', layout: { i: 'widget1', x: 0, y: 0, w: 1, h: 1 } },
+    { widgetType: 'weather', layout: { i: 'widget1', x: 1, y: 1, w: 1, h: 1 } },
     { widgetType: 'memo', layout: { i: 'widget1', x: 0, y: 2, w: 2, h: 2 } },
   ]);
 
@@ -56,6 +58,8 @@ function WidgetList() {
         return <WDDay />;
       case 'todo':
         return <div>Todo</div>;
+      case 'weather':
+        return <WWeather />;
       case 'memo':
         return <WMemo />;
       default:
@@ -84,6 +88,7 @@ function WidgetList() {
         onLayoutChange={handleModify}
         verticalCompact={true}
         layouts={layouts}
+        rowHeight={110}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         preventCollision={false}
         isDraggable={isModifying}
@@ -125,7 +130,7 @@ function WidgetList() {
             >
               <S.WhiteContainer
                 $width="1300"
-                $height="half"
+                $height="third"
                 className={animationClasses}
               >
                 {renderWidget(widget.widgetType)}
