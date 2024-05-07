@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 function Divider() {
   return (
     <div className="relative">
