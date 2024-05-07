@@ -17,11 +17,11 @@ public enum WeatherFixture {
 	DEGREE_KR_KOREA(WeatherRegion.KOREA, true, true,
 			800, 1, "14:20 갱신", "Clear", "맑음",
 			15.51F, 26.72F, 20.75F, 1714694049,
-			true, System.currentTimeMillis(), System.currentTimeMillis() + 1_000L),
+			true, 1715113755, 1715164074),
 	FAHRENHEIT_EN_USA(WeatherRegion.EAST_USA, false, false,
 			800, 1, "14:20 갱신", "Clear", "맑음",
 			297.34F, 294.84F, 298.81F, 1714694049,
-			false, System.currentTimeMillis(), System.currentTimeMillis() + 1_000L);
+			false, System.currentTimeMillis() / 1_000L, System.currentTimeMillis() / 1_000L + 6_000L);
 
 	private final WeatherRegion weatherRegion;
 	private final boolean isMetric;
