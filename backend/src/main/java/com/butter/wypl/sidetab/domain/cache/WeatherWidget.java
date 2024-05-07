@@ -24,4 +24,6 @@ public class WeatherWidget {
 	private String updateTime;
 	private String main;
 	private String desc;
+	private long sunrise;
+	private long sunset;
 }

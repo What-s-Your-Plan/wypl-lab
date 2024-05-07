@@ -9,6 +9,8 @@ public record OpenWeatherResponse(
 		List<WeatherResponse> weather,
 		@JsonProperty("main")
 		MainResponse main,
+		@JsonProperty("sys")
+		SysResponse sys,
 		@JsonProperty("dt")
 		long dateTime
 ) {
@@ -23,6 +25,13 @@ public record OpenWeatherResponse(
 			final float minTemp
 	) {
 		return new MainResponse(temp, maxTemp, minTemp);
+	}
+
+	public static SysResponse fromBySysResponse(
+			final long sunrise,
+			final long sunset
+	) {
+		return new SysResponse(sunrise, sunset);
 	}
 
 	public int getWeatherId() {
@@ -49,6 +58,14 @@ public record OpenWeatherResponse(
 		return main.minTemp();
 	}
 
+	public long getSunrise() {
+		return sys.sunrise();
+	}
+
+	public long getSunset() {
+		return sys.sunset();
+	}
+
 	private record WeatherResponse(
 			@JsonProperty("id")
 			int id,
@@ -66,6 +83,14 @@ public record OpenWeatherResponse(
 			float maxTemp,
 			@JsonProperty("temp_max")
 			float minTemp
+	) {
+	}
+
+	private record SysResponse(
+			@JsonProperty("sunrise")
+			long sunrise,
+			@JsonProperty("sunset")
+			long sunset
 	) {
 	}
 }

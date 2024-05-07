@@ -3,6 +3,7 @@ package com.butter.wypl.sidetab.service;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.chrono.ChronoZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
@@ -113,7 +114,10 @@ public class SideTabServiceImpl implements
 		WeatherWidget weatherWidget = weatherWidgetRepository.findById(weatherRegion)
 				.orElseGet(() -> saveWeatherWidget(OpenWeatherCond.of(weatherRegion, isMetric, isLangKr)));
 
-		return WeatherWidgetResponse.of(weatherWidget, isLangKr);
+		return WeatherWidgetResponse.of(
+				weatherWidget,
+				isLangKr,
+				isSunrise(findMember.getWeatherRegion(), weatherWidget));
 	}
 
 	private WeatherWidget saveWeatherWidget(final OpenWeatherCond cond) {
@@ -128,7 +132,9 @@ public class SideTabServiceImpl implements
 				Math.round(response.getMaxTemperature()),
 				updateTime,
 				response.getWeatherName(),
-				response.getWeatherDescription());
+				response.getWeatherDescription(),
+				response.getSunrise() * 1_000L,
+				response.getSunset() * 1_000L);
 	}
 
 	private int getWeatherId(final int id) {
@@ -136,7 +142,6 @@ public class SideTabServiceImpl implements
 				.filter(weatherType -> weatherType.containsIds(id))
 				.findFirst()
 				.orElseThrow(() -> new SideTabException(SideTabErrorCode.INVALID_WEATHER_ID));
-
 		return findWeatherType.getWeatherId();
 	}
 
@@ -145,6 +150,17 @@ public class SideTabServiceImpl implements
 		ZonedDateTime datetime = ZonedDateTime.ofInstant(instant, ZoneId.of(weatherRegion.getTimeZone()));
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm 갱신");
 		return datetime.format(dateTimeFormatter);
+	}
+
+	private boolean isSunrise(
+			final WeatherRegion weatherRegion,
+			final WeatherWidget weatherWidget
+	) {
+		Instant instant = Instant.ofEpochMilli(System.currentTimeMillis());
+		ZonedDateTime datetime = ZonedDateTime.ofInstant(instant, ZoneId.of(weatherRegion.getTimeZone()));
+
+		return datetime.isAfter(ChronoZonedDateTime.from(Instant.ofEpochMilli(weatherWidget.getSunrise())))
+				&& datetime.isBefore(ChronoZonedDateTime.from(Instant.ofEpochMilli(weatherWidget.getSunset())));
 	}
 
 	@Override
