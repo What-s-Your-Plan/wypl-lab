@@ -55,7 +55,7 @@ public record ScheduleCreateRequest(
 			schedule.getEndDate(),
 			schedule.getCategory(),
 			schedule.getGroupId(),
-			RepetitionRequest.from(schedule.getRepetition()),
+			schedule.getRepetition() == null ? null : RepetitionRequest.from(schedule.getRepetition()),
 			schedule.getLabel() == null ? null : schedule.getLabel().getLabelId(),
 			members
 		);

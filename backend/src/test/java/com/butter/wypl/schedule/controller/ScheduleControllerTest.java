@@ -208,7 +208,7 @@ public class ScheduleControllerTest extends ControllerTest {
 				schedule.getEndDate(),
 				schedule.getCategory(),
 				schedule.getGroupId(),
-				RepetitionRequest.from(schedule.getRepetition()),
+				schedule.getRepetition() == null ? null : RepetitionRequest.from(schedule.getRepetition()),
 				schedule.getLabel().getLabelId(),
 				List.of(new MemberIdResponse(1))
 			)
@@ -333,7 +333,7 @@ public class ScheduleControllerTest extends ControllerTest {
 				schedule.getEndDate(),
 				schedule.getCategory(),
 				schedule.getGroupId(),
-				RepetitionRequest.from(schedule.getRepetition()),
+				schedule.getRepetition() == null ? null : RepetitionRequest.from(schedule.getRepetition()),
 				schedule.getLabel().getLabelId(),
 				List.of(new MemberIdResponse(1))
 			)

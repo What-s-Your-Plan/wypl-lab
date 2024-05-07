@@ -49,7 +49,7 @@ public record ScheduleDetailResponse(
 			schedule.getCategory(),
 			schedule.getGroupId(),
 			(schedule.getRepetition() == null) ? null : RepetitionResponse.from(schedule.getRepetition()),
-			LabelResponse.from(schedule.getLabel()),
+			(schedule.getLabel() == null) ? null : LabelResponse.from(schedule.getLabel()),
 			members.size(),
 			MemberResponse.from(members)
 		);

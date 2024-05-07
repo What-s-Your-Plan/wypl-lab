@@ -46,7 +46,7 @@ public record ScheduleResponse(
 			schedule.getEndDate(),
 			schedule.getCategory(),
 			schedule.getGroupId(),
-			LabelResponse.from(schedule.getLabel()),
+			(schedule.getLabel() == null) ? null : LabelResponse.from(schedule.getLabel()),
 			members.size(),
 			MemberResponse.from(members)
 		);

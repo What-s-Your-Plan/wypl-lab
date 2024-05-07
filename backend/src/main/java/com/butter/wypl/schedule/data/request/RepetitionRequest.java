@@ -33,10 +33,6 @@ public record RepetitionRequest(
 	}
 
 	public static RepetitionRequest from(Repetition repetition) {
-		if (repetition == null) {
-			return null;
-		}
-
 		return new RepetitionRequest(
 			repetition.getRepetitionCycle(),
 			repetition.getRepetitionStartDate(),
