@@ -32,9 +32,15 @@ public record NotificationResponse(
 			notification.getId(),
 			notification.getMemberId(),
 			notification.getMessage(),
-			notification.isRead(),
+			notification.getIsRead(),
 			btnList,
 			notification.getTypeCode()
 		);
+	}
+
+	public static List<NotificationResponse> of(List<Notification> notifications) {
+		return notifications.stream()
+			.map(NotificationResponse::of)
+			.toList();
 	}
 }
