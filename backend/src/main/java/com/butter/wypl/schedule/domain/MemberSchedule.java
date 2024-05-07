@@ -5,6 +5,7 @@ import org.hibernate.annotations.SQLRestriction;
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.member.domain.Member;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -32,11 +33,11 @@ public class MemberSchedule extends BaseEntity {
 	@Column(name = "member_schedule_id")
 	private int memberScheduleId;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "schedule_id", nullable = false)
 	private Schedule schedule;
 
