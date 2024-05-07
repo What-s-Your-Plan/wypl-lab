@@ -11,6 +11,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.mock.web.MockMultipartFile;
@@ -19,10 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.file.S3ImageProvider;
 import com.butter.wypl.global.annotation.MockServiceTest;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
+import com.butter.wypl.member.data.request.MemberColorUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
 import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
+import com.butter.wypl.member.data.response.MemberColorUpdateResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
 import com.butter.wypl.member.domain.CalendarTimeZone;
@@ -110,6 +115,22 @@ class MemberModifyServiceTest {
 			/* When & Then */
 			assertThatCode(() -> memberService.updateProfileImage(authMember, multipartFile))
 					.doesNotThrowAnyException();
+		}
+
+		@DisplayName("회원의 컬러를 수정한다.")
+		@ParameterizedTest
+		@EnumSource(Color.class)
+		void updateColorTest(Color color) {
+			/* Given */
+			MemberColorUpdateRequest request = new MemberColorUpdateRequest(color);
+			given(memberRepository.findById(any(Integer.class)))
+					.willReturn(Optional.of(KIM_JEONG_UK.toMember()));
+
+			/* When */
+			MemberColorUpdateResponse response = memberService.updateColor(authMember, request);
+
+			/* Then */
+			assertThat(response.color()).isEqualTo(color);
 		}
 	}
 }

@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,13 +25,17 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.butter.wypl.auth.domain.AuthMember;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
+import com.butter.wypl.member.data.request.MemberColorUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
 import com.butter.wypl.member.data.request.MemberTimezoneUpdateRequest;
 import com.butter.wypl.member.data.response.FindMemberProfileInfoResponse;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberBirthdayUpdateResponse;
+import com.butter.wypl.member.data.response.MemberColorUpdateResponse;
+import com.butter.wypl.member.data.response.MemberColorsResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
@@ -47,6 +52,84 @@ class MemberControllerTest extends ControllerTest {
 	private MemberModifyService memberModifyService;
 	@MockBean
 	private MemberLoadService memberLoadService;
+
+	@DisplayName("회원의 메인 컬러와 서버의 색상을 조회한다.")
+	@Test
+	void findColorTest() throws Exception {
+		/* Given */
+		given(memberLoadService.findColors(any(AuthMember.class)))
+				.willReturn(
+						MemberColorsResponse.of(
+								KIM_JEONG_UK.toMember().getColor(),
+								Arrays.stream(Color.values()).toList()
+						));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/member/v1/members/colors")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/find-color",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.select_color").type(JsonFieldType.STRING)
+										.description("사용자 메인 컬러"),
+								fieldWithPath("body.colors[]").type(JsonFieldType.ARRAY)
+										.description("서버의 컬러 색상 목록"),
+								fieldWithPath("body.color_count").type(JsonFieldType.NUMBER)
+										.description("서버의 컬러 색상의 갯수")
+						)
+				))
+				.andExpect(status().isOk());
+	}
+
+	@DisplayName("사용자가 닉네임을 수정한다.")
+	@Test
+	void updateColorTest() throws Exception {
+		/* Given */
+		String json = convertToJson(new MemberColorUpdateRequest(Color.labelLavender));
+
+		given(memberModifyService.updateColor(any(AuthMember.class), any(MemberColorUpdateRequest.class)))
+				.willReturn(new MemberColorUpdateResponse(Color.labelLavender));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.patch("/member/v1/members/colors")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(json)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/update-color",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestFields(
+								fieldWithPath("color").type(JsonFieldType.STRING)
+										.description("변경 요청한 컬러 코드")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.color").type(JsonFieldType.STRING)
+										.description("변경한 컬러 코드")
+						)
+				))
+				.andExpect(status().isOk());
+	}
 
 	@DisplayName("사용자가 서버의 타임존을 조회한다.")
 	@Test

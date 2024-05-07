@@ -99,7 +99,7 @@ public class MemberController {
 		return ResponseEntity.ok(Message.withBody("컬러를 조회했습니다.", response));
 	}
 
-	@PatchMapping("/v1/member/colors")
+	@PatchMapping("/v1/members/colors")
 	public ResponseEntity<Message<MemberColorUpdateResponse>> changeColors(
 			@Authenticated AuthMember authMember,
 			@RequestBody MemberColorUpdateRequest request
