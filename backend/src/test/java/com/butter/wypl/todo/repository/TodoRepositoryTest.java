@@ -1,11 +1,11 @@
 package com.butter.wypl.todo.repository;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Stream;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,8 +36,8 @@ class TodoRepositoryTest {
 
 	@Test
 	@DisplayName("할 일 생성")
-	void createTodo () throws Exception {
-	    //given
+	void createTodo() throws Exception {
+		//given
 		Todo entity = Todo.builder()
 			.member(member)
 			.content("알고리즘 풀기")
@@ -53,8 +53,8 @@ class TodoRepositoryTest {
 
 	@Test
 	@DisplayName("할 일 수정")
-	void updateTodo () throws Exception {
-	    //given
+	void updateTodo() throws Exception {
+		//given
 		Todo entity = TodoFixture.ALGORITHM_STUDY.toTodo();
 		String preContent = entity.getContent();
 
@@ -62,25 +62,69 @@ class TodoRepositoryTest {
 		String updatedContent = "백준 말고 프로그래머스";
 		entity.updateContent(updatedContent);
 
-	    //then
+		//then
 		assertThat(preContent).isNotEqualTo(entity.getContent());
 		assertThat(entity.getContent()).isEqualTo(updatedContent);
 	}
 
 	@Test
 	@DisplayName("할 일 삭제, 논리삭제함")
-	void deleteTodo () throws Exception {
-	    //given
+	void deleteTodo() throws Exception {
+		//given
 		Todo entity = TodoFixture.CS_STUDY.toTodo();
 		LocalDateTime deletedAt = entity.getDeletedAt();
 
 		//when
 		entity.delete();
 
-	    //then
+		//then
 		assertThat(deletedAt).isNull();
 		assertThat(entity.getDeletedAt()).isNotNull();
 	}
 
-	// TODO 할 일 목록조회, 할 일 완료
+	@Test
+	@DisplayName("할 일 목록조회")
+	void getTodos() throws Exception {
+		//given
+		saveTodos();
+
+		//when
+		List<Todo> result = todoRepository.findByMember(member);
+
+		//then
+		result.forEach(todo -> System.out.println(todo.getContent()));
+		assertThat(result).isNotNull();
+		assertThat(result.size()).isEqualTo(5);
+	}
+
+	/**
+	 * 테스트 더미 데이터 저장을 위한 메소드
+	 */
+	void saveTodos() {
+		Stream.iterate(0, i -> i < 5, i -> i + 1)
+			.forEach(idx ->
+				{
+					todoRepository.save(
+						Todo.builder()
+							.member(member)
+							.content("알고리즘풀기" + idx)
+							.build()
+					);
+				}
+			);
+	}
+
+	@Test
+	@DisplayName("할 일 완료")
+	void doneTodo() throws Exception {
+		//given
+		saveTodos();
+		List<Todo> todos = todoRepository.findByMember(member);
+
+		//when
+		todos.get(0).doneTodo();
+
+		//then
+		assertThat(todos.get(0).isCompleted()).isTrue();
+	}
 }
