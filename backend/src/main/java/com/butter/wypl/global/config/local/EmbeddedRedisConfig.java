@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import redis.embedded.RedisServer;
 
 @Slf4j
-@Profile({"local", "test"})
+@Profile({"local", "test", "jenkins"})
 @Configuration
 public class EmbeddedRedisConfig {
 
