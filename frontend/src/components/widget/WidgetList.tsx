@@ -5,6 +5,7 @@ import * as S from '@/components/common/Container';
 import Button from '../common/Button';
 import WGoal from './WGoal';
 import WDDay from './WDDay';
+import WMemo from './WMemo';
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
@@ -14,7 +15,7 @@ function WidgetList() {
   const [widgetArray, setWidgetArray] = useState<Widget[]>([
     { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
     { widgetType: 'dday', layout: { i: 'widget1', x: 0, y: 0, w: 1, h: 1 } },
-    { widgetType: 'goal', layout: { i: 'widget1', x: 1, y: 1, w: 1, h: 1 } },
+    { widgetType: 'memo', layout: { i: 'widget1', x: 0, y: 2, w: 2, h: 2 } },
   ]);
 
   const handleModify = (
@@ -55,6 +56,8 @@ function WidgetList() {
         return <WDDay />;
       case 'todo':
         return <div>Todo</div>;
+      case 'memo':
+        return <WMemo />;
       default:
         return <div>Unknown</div>;
     }
