@@ -4,17 +4,17 @@ import com.butter.wypl.global.common.Color;
 import com.butter.wypl.label.domain.Label;
 
 public enum LabelFixture {
-	EXERCISE_LABEL("운동", "ff7f00", 1),
-	STUDY_LABEL("알고리즘 스터디", "000080", 1),
+	EXERCISE_LABEL("운동", Color.labelCharcoal, 1),
+	STUDY_LABEL("알고리즘 스터디", Color.labelCharcoal, 1),
 	;
 
 	private final String title;
 
-	private final String color;
+	private final Color color;
 
 	private final int memberId;
 
-	LabelFixture(String title, String color, int memberId) {
+	LabelFixture(String title, Color color, int memberId) {
 		this.title = title;
 		this.color = color;
 		this.memberId = memberId;
@@ -23,7 +23,7 @@ public enum LabelFixture {
 	public Label toLabel() {
 		return Label.builder()
 			.title(title)
-			.color(Color.from(color))
+			.color(color)
 			.memberId(memberId)
 			.build();
 	}

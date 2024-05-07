@@ -49,10 +49,10 @@ public class LabelControllerTest extends ControllerTest {
 	void createLabel() throws Exception {
 		// Given
 		Label label = LabelFixture.STUDY_LABEL.toLabel();
-		String json = convertToJson(new LabelRequest(label.getTitle(), label.getColor().getColor()));
+		String json = convertToJson(new LabelRequest(label.getTitle(), label.getColor()));
 
 		given(labelModifyService.createLabel(any(Integer.class), any(LabelRequest.class)))
-			.willReturn(new LabelResponse(1, 1, label.getTitle(), label.getColor().getColor()));
+			.willReturn(new LabelResponse(1, 1, label.getTitle(), label.getColor()));
 
 		// When
 		ResultActions resultActions = mockMvc.perform(
@@ -87,10 +87,10 @@ public class LabelControllerTest extends ControllerTest {
 	void updateLabel() throws Exception {
 		// Given
 		Label label = LabelFixture.STUDY_LABEL.toLabel();
-		String json = convertToJson(new LabelRequest(label.getTitle(), label.getColor().getColor()));
+		String json = convertToJson(new LabelRequest(label.getTitle(), label.getColor()));
 
 		given(labelModifyService.updateLabel(any(Integer.class), any(Integer.class), any(LabelRequest.class)))
-			.willReturn(new LabelResponse(1, 1, label.getTitle(), label.getColor().getColor()));
+			.willReturn(new LabelResponse(1, 1, label.getTitle(), label.getColor()));
 
 		// When
 		ResultActions resultActions = mockMvc.perform(
@@ -129,7 +129,7 @@ public class LabelControllerTest extends ControllerTest {
 		// Given
 		Label label = LabelFixture.STUDY_LABEL.toLabel();
 		given(labelReadService.getLabelByLabelId(any(Integer.class)))
-			.willReturn(new LabelResponse(1, 1, label.getTitle(), label.getColor().getColor()));
+			.willReturn(new LabelResponse(1, 1, label.getTitle(), label.getColor()));
 
 		// When
 		ResultActions resultActions = mockMvc.perform(

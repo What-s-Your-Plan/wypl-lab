@@ -11,7 +11,6 @@ import com.butter.wypl.label.exception.LabelException;
 import com.butter.wypl.schedule.domain.Schedule;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,7 +37,6 @@ public class Label extends BaseEntity {
 	@Column(nullable = false, length = 15)
 	private String title;
 
-	@Embedded
 	private Color color;
 
 	@Column(name = "member_id", nullable = false)
