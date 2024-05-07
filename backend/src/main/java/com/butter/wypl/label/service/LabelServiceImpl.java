@@ -27,8 +27,6 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 	@Transactional
 	@Override
 	public LabelResponse createLabel(int memberId, LabelRequest labelRequest) {
-		Label.titleValidation(labelRequest.title());
-
 		Label label = Label.builder()
 			.title(labelRequest.title())
 			.color(labelRequest.color())
@@ -45,7 +43,6 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 	@Override
 	public LabelResponse updateLabel(int memberId, int labelId, LabelRequest labelRequest) {
 		Label label = checkValidationAndGetLabel(labelId, memberId);
-		Label.titleValidation(labelRequest.title());
 
 		label.update(labelRequest.title(), labelRequest.color());
 

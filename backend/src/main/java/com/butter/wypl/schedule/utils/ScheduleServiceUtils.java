@@ -1,8 +1,5 @@
 package com.butter.wypl.schedule.utils;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import com.butter.wypl.schedule.domain.Schedule;
 import com.butter.wypl.schedule.exception.ScheduleErrorCode;
 import com.butter.wypl.schedule.exception.ScheduleException;
@@ -18,11 +15,4 @@ public class ScheduleServiceUtils {
 			.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NO_SCHEDULE));
 	}
 
-	public static List<Schedule> findSchedulesBetween(
-		final ScheduleRepository scheduleRepository,
-		final LocalDateTime firstDate,
-		final LocalDateTime endDate
-	) {
-		return scheduleRepository.findAllByStartDateBetween(firstDate, endDate);
-	}
 }

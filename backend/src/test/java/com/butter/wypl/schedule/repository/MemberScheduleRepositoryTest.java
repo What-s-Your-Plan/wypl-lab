@@ -31,7 +31,7 @@ public class MemberScheduleRepositoryTest {
 
 	@Autowired
 	public MemberScheduleRepositoryTest(MemberScheduleRepository memberScheduleRepository,
-			MemberRepository memberRepository, ScheduleRepository scheduleRepository) {
+		MemberRepository memberRepository, ScheduleRepository scheduleRepository) {
 		this.memberScheduleRepository = memberScheduleRepository;
 		this.memberRepository = memberRepository;
 		this.scheduleRepository = scheduleRepository;
@@ -39,7 +39,7 @@ public class MemberScheduleRepositoryTest {
 
 	@BeforeEach
 	void init() {
-		member = memberRepository.save(MemberFixture.JWA_SO_YEON.toMember());
+		member = memberRepository.save(MemberFixture.JWA_SO_YEON.toMemberWithId(1));
 		schedule = scheduleRepository.save(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule());
 	}
 
@@ -48,9 +48,9 @@ public class MemberScheduleRepositoryTest {
 	void create() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-				.schedule(schedule)
-				.member(member)
-				.build();
+			.schedule(schedule)
+			.member(member)
+			.build();
 
 		// When
 		MemberSchedule savedMemberSchedule = memberScheduleRepository.save(memberSchedule);
@@ -60,4 +60,35 @@ public class MemberScheduleRepositoryTest {
 		assertThat(savedMemberSchedule.getMember()).isEqualTo(memberSchedule.getMember());
 		assertThat(savedMemberSchedule.getSchedule()).isEqualTo(memberSchedule.getSchedule());
 	}
+	//
+	// @Test
+	// @DisplayName("캘린더 일정 목록 조회")
+	// void getCalendarSchedules() {
+	// 	// Given
+	// 	MemberSchedule memberSchedule = MemberSchedule.builder()
+	// 		.schedule(schedule)
+	// 		.member(member)
+	// 		.build();
+	//
+	// 	Schedule schedule1 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
+	// 	MemberSchedule memberSchedule2 = MemberSchedule.builder()
+	// 		.schedule(schedule1)
+	// 		.member(member)
+	// 		.build();
+	//
+	// 	memberScheduleRepository.saveAll(
+	// 		List.of(memberSchedule, memberSchedule2)
+	// 	);
+	//
+	// 	// When
+	// 	List<Schedule> schedules = memberScheduleRepository.getCalendarSchedules(
+	// 		1,
+	// 		LocalDateTime.of(2024, 4, 25, 0, 0),
+	// 		LocalDateTime.of(2024, 4, 27, 0, 0)
+	// 	);
+	//
+	// 	// Then
+	// 	assertThat(schedules.size()).isEqualTo(2);
+	//
+	// }
 }

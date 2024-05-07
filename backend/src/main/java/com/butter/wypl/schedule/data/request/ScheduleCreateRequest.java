@@ -13,7 +13,6 @@ import lombok.Builder;
 
 @Builder
 public record ScheduleCreateRequest(
-	//TODO : validation
 	String title,
 	String description,
 

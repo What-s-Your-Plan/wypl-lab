@@ -14,4 +14,12 @@ public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, 
 	Optional<MemberSchedule> findByScheduleAndMember(Schedule schedule, Member member);
 
 	List<MemberSchedule> findAllBySchedule(Schedule schedule);
+
+	// @Query("select s from MemberSchedule ms, ms.schedule s where ms.member.id = :member_id and s.startDate between :first_date and :last_date")
+	// List<Schedule> getCalendarSchedules(
+	// 	@Param("member_id") int memberId,
+	// 	@Param("first_date") LocalDateTime firstDate,
+	// 	@Param("last_date") LocalDateTime lastDate
+	// );
+
 }

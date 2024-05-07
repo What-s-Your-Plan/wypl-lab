@@ -17,12 +17,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -45,14 +43,28 @@ public class Label extends BaseEntity {
 	@OneToMany(mappedBy = "label")
 	private List<Schedule> schedules;
 
-	public static void titleValidation(String title) {
-		if (title == null) {
+	@Builder
+	public Label(int labelId, String title, Color color, int memberId, List<Schedule> schedules) {
+		titleValidation(title);
+
+		this.labelId = labelId;
+		this.title = title;
+		this.color = color;
+		this.memberId = memberId;
+		this.schedules = schedules;
+	}
+
+	public void update(String title, Color color) {
+		titleValidation(title);
+
+		this.title = title;
+		this.color = color;
+	}
+
+	private void titleValidation(String title) {
+		if (title == null || title.length() > 15) {
 			throw new LabelException(LabelErrorCode.NOT_APPROPRIATE_TITLE);
 		}
 	}
 
-	public void update(String title, Color color) {
-		this.title = title;
-		this.color = color;
-	}
 }
