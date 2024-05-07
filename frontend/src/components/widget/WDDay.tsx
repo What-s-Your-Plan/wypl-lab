@@ -61,7 +61,9 @@ function WDDay() {
             placeholder="디데이 날짜 선택"
           />
         ) : (
-          <div className="text-4xl text-center mt-4">{userDDay}</div>
+          <div className="text-4xl text-center mt-1 font-semibold">
+            {userDDay}
+          </div>
         )}
       </div>
     </div>

@@ -36,6 +36,7 @@ const containerTheme = {
   },
   height: {
     quarter: tw`h-[10vh]`,
+    third: tw`h-[15vh]`,
     half: tw`h-[20vh]`,
     one: tw`h-[40vh]`,
     max: tw`h-[85vh]`,
