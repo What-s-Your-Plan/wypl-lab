@@ -14,23 +14,34 @@ type ReviewState = {
   title: string;
   scheduleId: number;
   contents: Content[];
-  setTitle: (title: string) => void;
-  setScheduleId: (scheduleId: number) => void;
+  focusIndex: number;
+};
+
+type ReviewAction = {
+  setTitle: (newTitle: string) => void;
+  setScheduleId: (newScheduleId: number) => void;
+  setFocusIndex: (newFocusIndex: number) => void;
   setContent: (index: number, content: Content) => void;
   setContents: (contents: Content[]) => void;
   addContent: (index: number, type: ReviewType) => void;
   moveContent: (fromIndex: number, toIndex: number) => void;
+  deleteContent: (targetIndex: number) => void;
 };
 
-const useReviewStore = create<ReviewState>()((set, get) => ({
+const useReviewStore = create<ReviewState & ReviewAction>()((set, get) => ({
   title: '',
   scheduleId: -1,
   contents: [],
+  focusIndex: -1,
   setTitle(newTitle: string) {
     set({ title: newTitle });
   },
   setScheduleId(newScheduleId: number) {
     set({ scheduleId: newScheduleId });
+  },
+  setFocusIndex(newFocusIndex: number) {
+    console.log(newFocusIndex);
+    set({ focusIndex: newFocusIndex });
   },
   setContent(index: number, newContent: Content) {
     set((state) => ({
@@ -77,25 +88,19 @@ const useReviewStore = create<ReviewState>()((set, get) => ({
     }));
   },
   moveContent(fromIndex: number, toIndex: number) {
-    const content = get().contents[fromIndex];
-    get().contents.splice(fromIndex, 1);
-    if (fromIndex < toIndex) {
-      set((state) => ({
-        contents: [
-          ...state.contents.slice(0, toIndex - 1),
-          content,
-          ...state.contents.slice(toIndex - 1),
-        ],
-      }));
-    } else {
-      set((state) => ({
-        contents: [
-          ...state.contents.slice(0, toIndex),
-          content,
-          ...state.contents.slice(toIndex),
-        ],
-      }));
-    }
+    if (toIndex < 0 || toIndex >= get().contents.length) return;
+    const arr = get().contents;
+    arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+    this.setFocusIndex(toIndex);
+    set({
+      contents: arr,
+    });
+  },
+  deleteContent(targetIndex: number) {
+    set((state) => ({
+      contents: state.contents.filter((_, i) => i !== targetIndex),
+      focusIndex: -1,
+    }));
   },
 }));
 

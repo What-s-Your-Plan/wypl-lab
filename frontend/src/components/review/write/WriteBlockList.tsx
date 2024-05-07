@@ -37,16 +37,16 @@ function WriteBlockList() {
       <div>
         <span className="float-end flex gap-2">
           <Button
-            $size="sm"
-            $width="70px"
+            $size="lg"
+            $width="90px"
             $bgColor="labelCharcoal"
             $textColor="white"
           >
-            <img src={Cancle} alt="취소" className="w-5" />
+            <img src={Cancle} alt="취소" className="w-5 mr-2 whiteImg" />
             취소
           </Button>
-          <Button $size="sm" $width="70px">
-            <img src={Save} alt="취소" className="w-5" />
+          <Button $size="lg" $width="90px">
+            <img src={Save} alt="저장" className="w-5 mr-2" />
             저장
           </Button>
         </span>
