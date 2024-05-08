@@ -7,13 +7,15 @@ import OAUTH_PROVIDER from '@/constants/OAuth';
 import { BROWSER_PATH } from '@/constants/Path';
 import useQueryParams from '@/hooks/useSearchParams';
 import issueTokens from '@/services/auth/signIn';
+import GoogleLoadingAnimation from '@/components/animation/GoogleLoading';
+
+import * as S from './GoogleOAuth.styled';
 
 function GoogleOAuth() {
   const { code } = useQueryParams();
   const navigate = useNavigate();
 
   const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
-  // TODO: 로딩 화면 넣기
 
   const fetchJsonWebTokens = async () => {
     const param: IssueTokenParams = { code };
@@ -33,7 +35,11 @@ function GoogleOAuth() {
     }
   }, [code]);
 
-  return <div>{code}</div>;
+  return (
+    <S.Container>
+      <GoogleLoadingAnimation />
+    </S.Container>
+  );
 }
 
 export default GoogleOAuth;
