@@ -66,7 +66,7 @@ class GroupControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.post("group/create-groups")
+				RestDocumentationRequestBuilders.post("group/v1/groups")
 						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(convertToJson(createRequest))
@@ -74,7 +74,7 @@ class GroupControllerTest extends ControllerTest {
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("/group/v1/groups",
+				.andDo(document("group/create-group",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
 						requestFields(
