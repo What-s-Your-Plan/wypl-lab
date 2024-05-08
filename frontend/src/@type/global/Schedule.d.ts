@@ -15,11 +15,23 @@ type Label = {
   member_id: number;
 };
 
+type LabelResponse = {
+  label_id: number;
+  title: string;
+  color: string;
+};
+
 type Member = {
   member_id: number;
   nickname: string;
   oauth_id: string;
   profile_image: string;
+};
+
+type GroupResponse = {
+  group_id: number; // 그룹의 인덱스
+  color: string; // 헥사 코드(개인화된 그룹 색상)
+  title: string; // 그룹 이름
 };
 
 interface Schedule {
@@ -40,3 +52,18 @@ interface Schedule {
   members: Array<Member>; // 개인 일정은 한명만
   isRepetition: boolean; // 선택
 }
+
+type CalendarSchedule = {
+  schedule_id: number; // 일정의 인덱스
+  title: string;
+  category: string;
+  start_date: string; //ex) "2024-04-16T10:57:00"
+  end_date: string; //ex) "2024-04-16T10:57:00"
+  label: LabelResponse | null;
+  group: GroupResponse | null;
+};
+
+type CalendarsResponse = {
+  schedule_count: number; // 개인 일정의 총 개수
+  schedules: Array<CalendarSchedule>;
+};
