@@ -1,4 +1,4 @@
-const PATH = {
+const BROWSER_PATH = {
   OAUTH: {
     GOOGLE: '/login/oauth2/code/google',
   },
@@ -7,4 +7,10 @@ const PATH = {
   NOT_FOUND: '*',
 };
 
-export default PATH;
+const API_PATH = {
+  AUTH: {
+    ISSUE_TOKENS: '/auth/v1/sign-in',
+  },
+};
+
+export { API_PATH, BROWSER_PATH };

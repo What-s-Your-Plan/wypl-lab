@@ -1,9 +1,10 @@
 import Axios from 'axios';
 
-import useJsonWebTokensStore from '@/stores/token';
+// import useJsonWebTokensStore from '@/stores/token';
 
-const baseURL = process.env.BASE_URL;
-const { accessToken } = useJsonWebTokensStore();
+const baseURL = import.meta.env.VITE_BASE_URL;
+
+// const { accessToken } = useJsonWebTokensStore();
 
 const axios = Axios.create({
   baseURL,
@@ -26,18 +27,18 @@ const axiosWithMultiPart = Axios.create({
   },
 });
 
-axiosWithAccessToken.interceptors.request.use((config) => {
-  if (config.headers && accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  return config;
-});
+// axiosWithAccessToken.interceptors.request.use((config) => {
+//   if (config.headers && accessToken) {
+//     config.headers.Authorization = `Bearer ${accessToken}`;
+//   }
+//   return config;
+// });
 
-axiosWithMultiPart.interceptors.request.use((config) => {
-  if (config.headers && accessToken) {
-    config.headers.Authorization = `Bearer ${accessToken}`;
-  }
-  return config;
-});
+// axiosWithMultiPart.interceptors.request.use((config) => {
+//   if (config.headers && accessToken) {
+//     config.headers.Authorization = `Bearer ${accessToken}`;
+//   }
+//   return config;
+// });
 
 export { baseURL, axios, axiosWithAccessToken, axiosWithMultiPart };
