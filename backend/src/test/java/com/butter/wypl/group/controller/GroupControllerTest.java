@@ -56,42 +56,42 @@ class GroupControllerTest extends ControllerTest {
 
 		/* Given */
 		GroupCreateRequest createRequest = new GroupCreateRequest("group1", "group1 description",
-			new HashSet<>(Arrays.asList(2, 3)));
+				new HashSet<>(Arrays.asList(2, 3)));
 
 		GroupIdResponse createResponse = new GroupIdResponse(1);
 		given(groupModifyService.createGroup(anyInt(), any(GroupCreateRequest.class)))
-			.willReturn(createResponse);
+				.willReturn(createResponse);
 
 		givenMockLoginMember();
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.post("/group/v1/groups")
-				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(convertToJson(createRequest))
+				RestDocumentationRequestBuilders.post("group/create-groups")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(convertToJson(createRequest))
 		);
 
 		/* Then */
 		actions.andDo(print())
-			.andDo(document("/group/v1/groups",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()),
-				requestFields(
-					fieldWithPath("name").type(JsonFieldType.STRING)
-						.description("그룹 이름"),
-					fieldWithPath("description").type(JsonFieldType.STRING)
-						.description("그룹 설명"),
-					fieldWithPath("member_id_list[]").type(JsonFieldType.ARRAY)
-						.description("그룹 멤버 식별자 리스트")
-				),
-				responseFields(
-					fieldWithPath("message").type(JsonFieldType.STRING)
-						.description("응답 메시지"),
-					fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
-						.description("그룹 식별자")
-				)
-			))
-			.andExpect(status().isCreated());
+				.andDo(document("/group/v1/groups",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestFields(
+								fieldWithPath("name").type(JsonFieldType.STRING)
+										.description("그룹 이름"),
+								fieldWithPath("description").type(JsonFieldType.STRING)
+										.description("그룹 설명"),
+								fieldWithPath("member_id_list[]").type(JsonFieldType.ARRAY)
+										.description("그룹 멤버 식별자 리스트")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
+										.description("그룹 식별자")
+						)
+				))
+				.andExpect(status().isCreated());
 	}
 }
