@@ -1,6 +1,7 @@
 package com.butter.wypl.sidetab.service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -37,7 +38,9 @@ import com.butter.wypl.sidetab.repository.WeatherWidgetRepository;
 import com.butter.wypl.sidetab.utils.SideTabServiceUtils;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -112,8 +115,12 @@ public class SideTabServiceImpl implements
 
 		WeatherWidget weatherWidget = weatherWidgetRepository.findById(weatherRegion)
 				.orElseGet(() -> saveWeatherWidget(OpenWeatherCond.of(weatherRegion, isMetric, isLangKr)));
+		boolean sunrise = isSunrise(findMember.getWeatherRegion(), weatherWidget);
 
-		return WeatherWidgetResponse.of(weatherWidget, isLangKr);
+		return WeatherWidgetResponse.of(
+				weatherWidget,
+				isLangKr,
+				sunrise);
 	}
 
 	private WeatherWidget saveWeatherWidget(final OpenWeatherCond cond) {
@@ -128,7 +135,9 @@ public class SideTabServiceImpl implements
 				Math.round(response.getMaxTemperature()),
 				updateTime,
 				response.getWeatherName(),
-				response.getWeatherDescription());
+				response.getWeatherDescription(),
+				response.getSunrise(),
+				response.getSunset());
 	}
 
 	private int getWeatherId(final int id) {
@@ -136,7 +145,6 @@ public class SideTabServiceImpl implements
 				.filter(weatherType -> weatherType.containsIds(id))
 				.findFirst()
 				.orElseThrow(() -> new SideTabException(SideTabErrorCode.INVALID_WEATHER_ID));
-
 		return findWeatherType.getWeatherId();
 	}
 
@@ -145,6 +153,21 @@ public class SideTabServiceImpl implements
 		ZonedDateTime datetime = ZonedDateTime.ofInstant(instant, ZoneId.of(weatherRegion.getTimeZone()));
 		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm 갱신");
 		return datetime.format(dateTimeFormatter);
+	}
+
+	private boolean isSunrise(
+			final WeatherRegion weatherRegion,
+			final WeatherWidget weatherWidget
+	) {
+		ZonedDateTime nowZonedDateTime = ZonedDateTime.now(ZoneId.of(weatherRegion.getTimeZone()));
+		LocalDateTime nowLocalDateTime = nowZonedDateTime.toLocalDateTime();
+
+		LocalDateTime sunriseDateTime = LocalDateTime.ofInstant(
+				Instant.ofEpochSecond(weatherWidget.getSunrise()), nowZonedDateTime.getZone());
+		LocalDateTime sunsetDateTime = LocalDateTime.ofInstant(
+				Instant.ofEpochSecond(weatherWidget.getSunset()), nowZonedDateTime.getZone());
+
+		return nowLocalDateTime.isAfter(sunriseDateTime) && nowLocalDateTime.isBefore(sunsetDateTime);
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package com.butter.wypl.sidetab.data.response;
 
+import java.time.LocalDate;
+
 import com.butter.wypl.global.utils.LocalDateUtils;
 import com.butter.wypl.sidetab.domain.embedded.DDayWidget;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -10,9 +12,15 @@ public record DDayWidgetResponse(
 		@JsonProperty("d_day")
 		String dDay,
 		@JsonProperty("date")
-		String date
+		String date,
+		@JsonProperty("local_date")
+		LocalDate localDate
 ) {
 	public static DDayWidgetResponse from(final DDayWidget dDay) {
-		return new DDayWidgetResponse(dDay.getTitle(), dDay.getDDay(), LocalDateUtils.toString(dDay.getValue()));
+		return new DDayWidgetResponse(
+				dDay.getTitle(),
+				dDay.getDDay(),
+				LocalDateUtils.toString(dDay.getValue()),
+				dDay.getValue());
 	}
 }
