@@ -1,8 +1,11 @@
 package com.butter.wypl.group.domain;
 
+import static com.butter.wypl.group.exception.GroupErrorCode.*;
+
 import java.util.List;
 
 import com.butter.wypl.global.common.BaseEntity;
+import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.member.domain.Member;
 
 import jakarta.persistence.Column;
@@ -16,6 +19,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,14 +47,33 @@ public class Group extends BaseEntity {
 	@OneToMany(mappedBy = "group")
 	private List<MemberGroup> memberGroupList;
 
-	public Group(String name, String description, Member owner) {
+	@Builder
+	private Group(String name, String description, Member owner) {
 		this.name = name;
 		this.description = description;
 		this.owner = owner;
 	}
 
 	public static Group of(String name, String description, Member owner) {
-		return new Group(name, description, owner);
+		validateName(name);
+		validateDescription(description);
+		return Group.builder()
+			.name(name)
+			.description(description)
+			.owner(owner)
+			.build();
+	}
+
+	public static void validateName(String name) {
+		if (name == null || name.isEmpty() || name.isBlank() || name.length() > 20) {
+			throw new GroupException(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME);
+		}
+	}
+
+	public static void validateDescription(String description) {
+		if (description.length() > 50) {
+			throw new GroupException(EXCEED_MAX_LENGTH_OF_GROUP_DESCRIPTION);
+		}
 	}
 
 }
