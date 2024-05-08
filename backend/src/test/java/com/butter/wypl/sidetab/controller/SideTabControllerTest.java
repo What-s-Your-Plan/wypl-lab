@@ -139,7 +139,8 @@ class SideTabControllerTest extends ControllerTest {
 				.willReturn(new DDayWidgetResponse(
 						"디데이의 제목",
 						"D-DAY",
-						LocalDateUtils.toString(LocalDate.now())));
+						LocalDateUtils.toString(LocalDate.now()),
+						LocalDate.now()));
 
 		givenMockLoginMember();
 
@@ -173,7 +174,9 @@ class SideTabControllerTest extends ControllerTest {
 								fieldWithPath("body.d_day").type(JsonFieldType.STRING)
 										.description("수정한 디데이"),
 								fieldWithPath("body.date").type(JsonFieldType.STRING)
-										.description("수정한 디데이 날짜")
+										.description("수정한 디데이 날짜"),
+								fieldWithPath("body.local_date").type(JsonFieldType.STRING)
+										.description("수정한 디데이 포멧")
 						)
 				))
 				.andExpect(status().isOk());
@@ -187,7 +190,8 @@ class SideTabControllerTest extends ControllerTest {
 				.willReturn(new DDayWidgetResponse(
 						"디데이의 제목",
 						"D-DAY",
-						LocalDateUtils.toString(LocalDate.now())));
+						LocalDateUtils.toString(LocalDate.now()),
+						LocalDate.now()));
 
 		givenMockLoginMember();
 
@@ -214,7 +218,9 @@ class SideTabControllerTest extends ControllerTest {
 								fieldWithPath("body.d_day").type(JsonFieldType.STRING)
 										.description("수정한 디데이"),
 								fieldWithPath("body.date").type(JsonFieldType.STRING)
-										.description("수정한 디데이 날짜")
+										.description("수정한 디데이 날짜"),
+								fieldWithPath("body.local_date").type(JsonFieldType.STRING)
+										.description("수정한 디데이 포멧")
 						)
 				))
 				.andExpect(status().isOk());
