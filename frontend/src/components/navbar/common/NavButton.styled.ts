@@ -1,18 +1,7 @@
 import styled from 'styled-components';
 import tw from 'twin.macro';
 
-const Box = styled.div`
-  ${tw`
-    flex
-    items-center
-    justify-center
-
-    m-[5px]
-
-    w-[60px]
-    h-[60px]
-  `}
-`;
+const Container = styled.div``;
 
 const Button = styled.button`
   ${tw`
@@ -43,4 +32,4 @@ const Image = styled.img`
 `}
 `;
 
-export { Box, Button, Image };
+export { Container, Button, Image };
