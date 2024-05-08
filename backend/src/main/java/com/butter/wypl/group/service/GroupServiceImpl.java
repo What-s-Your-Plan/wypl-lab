@@ -3,7 +3,7 @@ package com.butter.wypl.group.service;
 import static com.butter.wypl.group.exception.GroupErrorCode.*;
 import static com.butter.wypl.member.exception.MemberErrorCode.*;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.butter.wypl.global.exception.CustomErrorCode;
 import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
@@ -34,7 +35,7 @@ public class GroupServiceImpl implements GroupModifyService, GroupLoadService {
 
 	@Transactional
 	@Override
-	public int createGroup(int memberId, GroupCreateRequest createRequest) {
+	public GroupIdResponse createGroup(int memberId, GroupCreateRequest createRequest) {
 
 		createRequest.memberIdList().add(memberId);
 
@@ -52,7 +53,7 @@ public class GroupServiceImpl implements GroupModifyService, GroupLoadService {
 		for (Integer memberIdInGroup : createRequest.memberIdList()) {
 			memberGroupRepository.save(memberIdInGroup, savedGroup.getId());
 		}
-		return savedGroup.getId();
+		return new GroupIdResponse(savedGroup.getId());
 	}
 
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {
@@ -78,8 +79,8 @@ public class GroupServiceImpl implements GroupModifyService, GroupLoadService {
 		}
 	}
 
-	private boolean isExceedMaxMember(List<Integer> memberIdList) {
-		return memberIdList.size() + 1 > 50;
+	private boolean isExceedMaxMember(Set<Integer> memberIdList) {
+		return memberIdList.size() > 50;
 	}
 
 }
