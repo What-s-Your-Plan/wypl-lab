@@ -62,7 +62,7 @@ function WFilter() {
   useEffect(() => {
     setAllBgColor(isAllSelected ? 'labelBrown' : 'coolGray');
     setAllClassName(isAllSelected ? 'font-semibold' : '!text-default-black');
-  });
+  }, [isAllSelected]);
 
   return (
     <div>
