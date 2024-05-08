@@ -10,7 +10,7 @@ import {
   DateWrapper,
   DateButton,
   Chevrons,
-} from '@/components/calendar/DatePickerStyled';
+} from '@/components/calendar/DatePicker.styled';
 import ChevronLeft from '@/assets/icons/chevronLeft.svg';
 import ChevronRight from '@/assets/icons/chevronRight.svg';
 
@@ -88,8 +88,11 @@ function DatePicker() {
         {currCalendar.getFullYear()}.{padding0(currCalendar.getMonth() + 1)}
       </h2>
       <div className="flex items-center justify-between mt-1">
-        <button className="text-xs size-6 rounded-md border font-medium border-gray-500"
-          onClick={() => {goToday()}}
+        <button
+          className="text-xs size-6 rounded-md border font-medium border-gray-500"
+          onClick={() => {
+            goToday();
+          }}
         >
           오늘
         </button>

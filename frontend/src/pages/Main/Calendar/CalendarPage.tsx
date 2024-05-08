@@ -1,7 +1,7 @@
 import * as S from '@/components/common/Container';
 import WidgetList from '@/components/widget/WidgetList';
 import DatePicker from '@/components/calendar/DatePicker';
-import MonthlyCalender from '@/components/calendar/Monthly/MonthlyCalendar';
+import WeeklyCalendar from '@/components/calendar/Weekly/WeeklyCalendar';
 
 function CalendarPage() {
   return (
@@ -9,10 +9,10 @@ function CalendarPage() {
       <div className="container flex items-center ss:max-sm:block h-dvh">
         <WidgetList />
         <S.Container $width="800">
-          <S.WhiteContainer $width="1300" $height='max'>
+          <S.WhiteContainer $width="1300" $height="max">
             <div className="flex gap-4 h-full">
-              <div className='w-900'>
-                <MonthlyCalender />
+              <div className="w-900">
+                <WeeklyCalendar />
               </div>
               <S.WhiteContainer $width="300" $height="one">
                 <DatePicker />

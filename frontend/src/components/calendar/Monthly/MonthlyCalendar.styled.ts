@@ -7,13 +7,14 @@ const DateContainer = styled.div`
 `;
 
 const ScheduleSpan = styled.span<{ $color: LabelColorsType, $top: number, $width: number }>`
-  ${tw`flex p-1 absolute left-0 justify-center items-center z-[5] text-xs h-4 text-default-white`}
+  ${tw`flex p-1 rounded absolute left-0 justify-center items-center z-[5] text-xs h-4 text-default-white`}
   ${(props) => BgTheme[props.$color]}
   ${(props) => `top: ${props.$top}rem;`}
   ${(props) => `width: ${props.$width}00%;`}
 `;
 
-const DateSpan = styled.span<{ $isCurrentMonth: boolean; $day: number }>`
+const DateSpan = styled.span<{ $isCurrentMonth: boolean, $day: number, $isSelected: boolean }>`
+  ${tw`pl-1`}
   ${(props) => {
     if (props.$day === 0) {
       return tw`text-label-red`;
@@ -24,6 +25,8 @@ const DateSpan = styled.span<{ $isCurrentMonth: boolean; $day: number }>`
   }}
   ${(props) =>
     props.$isCurrentMonth ? tw`text-default-black` : tw`text-gray-400`}
+  ${(props) => 
+    props.$isSelected ? tw`bg-label-brown text-default-white` : ''}
 `;
 
 const NoSchedule = styled.div<{$top: number}>`
