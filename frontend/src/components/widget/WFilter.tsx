@@ -1,22 +1,45 @@
+import { useEffect } from 'react';
+
 import useDateStore from '@/stores/DateStore';
 import LabelButton from '../common/LabelButton';
-type Props = {};
+import { LabelColorsType } from '@/assets/styles/colorThemes';
+import getLabelList from '@/services/label/getLabelList';
 
-function WFilter({}: Props) {
+function WFilter() {
   const dateStore = useDateStore();
-  
-  const renderLabels() = () => {
-    return dateStore.labels.map((label) => {
-      return <LabelButton label={label} />;
+  useEffect(() => {
+    const fetchLabelList = async () => {
+      const labelList = await getLabelList();
+      dateStore.setLabels(labelList);
+    };
+
+    fetchLabelList();
+  }, []);
+
+  const renderLabels = () => {
+    return dateStore.labels.map((label: LabelResponse) => {
+      return (
+        <LabelButton
+          $bgColor={label.color as LabelColorsType}
+          className="font-semibold"
+        >
+          {label.title}
+        </LabelButton>
+      );
     });
-  }
+  };
 
   return (
     <div>
       <div id="title">
-        <div>필터링</div>
+        <div className="font-bold">필터링</div>
       </div>
-      <div id="labelList"></div>
+      <div id="labelList" className="scrollBar flex flex-wrap gap-2 h-28 mt-2">
+        <LabelButton $bgColor="labelCharcoal" className="font-semibold">
+          전체
+        </LabelButton>
+        {renderLabels()}
+      </div>
     </div>
   );
 }

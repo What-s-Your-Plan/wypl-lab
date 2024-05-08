@@ -32,7 +32,7 @@ function WMemo() {
   return (
     <div>
       <div className="flex justify-between">
-        <div>Memo</div>
+        <div className="font-bold">Memo</div>
         {isModifyingMemo ? (
           <Button $size="none" onClick={handleModify}>
             <img src={Save} alt="저장" className="w-5" />

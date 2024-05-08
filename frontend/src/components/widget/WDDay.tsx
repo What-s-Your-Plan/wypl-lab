@@ -33,7 +33,7 @@ function WDDay() {
               placeholder="디데이 제목 입력"
             />
           ) : (
-            <span className="w-[60%] break-keep">{title}</span>
+            <span className="w-[60%] break-keep font-bold">{title}</span>
           )}
 
           {isModifyingDDay ? (
