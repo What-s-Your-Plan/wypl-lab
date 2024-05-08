@@ -1,5 +1,6 @@
 package com.butter.wypl.calendar.data.response;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.butter.wypl.member.domain.Member;
@@ -15,6 +16,12 @@ public record GroupCalendarResponse(
 
 	Category category,
 
+	@JsonProperty("start_date")
+	LocalDateTime startDate,
+
+	@JsonProperty("end_date")
+	LocalDateTime endDate,
+
 	@JsonProperty("member_count")
 	int memberCount,
 
@@ -27,6 +34,8 @@ public record GroupCalendarResponse(
 			schedule.getScheduleId(),
 			schedule.getTitle(),
 			schedule.getCategory(),
+			schedule.getStartDate(),
+			schedule.getEndDate(),
 			members.size(),
 			members.stream().map(MemberResponse::from).toList()
 		);
