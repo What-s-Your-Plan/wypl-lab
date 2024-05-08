@@ -12,7 +12,7 @@ import NotificationSvg from '@/assets/icons/bell.svg';
 function NavEventBar() {
   const navigate = useNavigate();
 
-  const goto = (url: string): void => {
+  const gotoPages = (url: string): void => {
     navigate(url);
   };
 
@@ -20,17 +20,17 @@ function NavEventBar() {
     {
       imageUrl: CalendarSvg,
       alt: '캘린더',
-      event: () => goto('./calendar'),
+      event: () => gotoPages('./calendar'),
     },
     {
       imageUrl: GroupSvg,
       alt: '그룹',
-      event: () => goto('./group'),
+      event: () => gotoPages('./group'),
     },
     {
       imageUrl: NotepadSvg,
       alt: '리뷰',
-      event: () => goto('./review'),
+      event: () => gotoPages('./review'),
     },
   ];
 

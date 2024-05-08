@@ -9,12 +9,12 @@ const Container = styled.div`
     flex-col
 
     items-center
-    mr-[80px]
+    mr-20
 
     shadow-md
     bg-default-white
 
-    w-[80px]
+    w-20
 
     h-full
     `}
