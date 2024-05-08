@@ -33,11 +33,11 @@ public class MemberSchedule extends BaseEntity {
 	@Column(name = "member_schedule_id")
 	private int memberScheduleId;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "member_id", nullable = false)
 	private Member member;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "schedule_id", nullable = false)
 	private Schedule schedule;
 

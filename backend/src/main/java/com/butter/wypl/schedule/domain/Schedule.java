@@ -10,7 +10,6 @@ import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
 import com.butter.wypl.schedule.exception.ScheduleErrorCode;
 import com.butter.wypl.schedule.exception.ScheduleException;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -56,7 +55,7 @@ public class Schedule extends BaseEntity {
 	@Column(name = "end_date", nullable = false)
 	private LocalDateTime endDate;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "label_id")
 	private Label label;
 

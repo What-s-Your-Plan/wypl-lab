@@ -36,4 +36,10 @@ public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, 
 		@Param("last_date") LocalDateTime lastDate,
 		@Param("label_id") int labelId
 	);
+
+	@Query("select m "
+		+ "from MemberSchedule ms join ms.member m "
+		+ "where ms.schedule.scheduleId = :schedule_id")
+	List<Member> getMemberWithSchedule(@Param("schedule_id") int scheduleId);
+
 }

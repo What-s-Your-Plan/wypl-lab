@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.butter.wypl.global.annotation.JpaRepositoryTest;
 import com.butter.wypl.label.domain.Label;
+import com.butter.wypl.label.fixture.LabelFixture;
 import com.butter.wypl.label.repository.LabelRepository;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.fixture.MemberFixture;
@@ -33,8 +34,9 @@ public class MemberScheduleRepositoryTest {
 
 	private final LabelRepository labelRepository;
 
-	Schedule schedule;
-	Member member;
+	private Schedule schedule1, schedule2;
+	private Member member1, member2;
+	private Label label;
 
 	@Autowired
 	public MemberScheduleRepositoryTest(MemberScheduleRepository memberScheduleRepository,
@@ -47,8 +49,13 @@ public class MemberScheduleRepositoryTest {
 
 	@BeforeEach
 	void init() {
-		member = memberRepository.save(MemberFixture.JWA_SO_YEON.toMemberWithId(1));
-		schedule = scheduleRepository.save(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule());
+		member1 = memberRepository.save(MemberFixture.JWA_SO_YEON.toMemberWithId(1));
+		member2 = memberRepository.save(MemberFixture.JO_DA_MIN.toMemberWithId(2));
+
+		label = labelRepository.save(LabelFixture.STUDY_LABEL.toLabel());
+
+		schedule1 = scheduleRepository.save(ScheduleFixture.PERSONAL_SCHEDULE.toScheduleWithLabel(1, label));
+		schedule2 = scheduleRepository.save(ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toScheduleWithLabel(2, label));
 	}
 
 	@Test
@@ -56,8 +63,8 @@ public class MemberScheduleRepositoryTest {
 	void create() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-			.schedule(schedule)
-			.member(member)
+			.schedule(schedule1)
+			.member(member1)
 			.build();
 
 		// When
@@ -74,14 +81,13 @@ public class MemberScheduleRepositoryTest {
 	void getCalendarSchedules() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-			.schedule(schedule)
-			.member(member)
+			.schedule(schedule1)
+			.member(member1)
 			.build();
 
-		Schedule schedule1 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 		MemberSchedule memberSchedule2 = MemberSchedule.builder()
-			.schedule(schedule1)
-			.member(member)
+			.schedule(schedule2)
+			.member(member1)
 			.build();
 
 		memberScheduleRepository.saveAll(
@@ -90,14 +96,14 @@ public class MemberScheduleRepositoryTest {
 
 		// When
 		List<Schedule> schedules = memberScheduleRepository.getCalendarSchedules(
-			1,
+			member1.getId(),
 			LocalDateTime.of(2024, 4, 25, 0, 0),
 			LocalDateTime.of(2024, 4, 27, 0, 0)
 		);
 
 		// Then
 		assertThat(schedules.size()).isEqualTo(2);
-		assertThat(schedules.get(0).getTitle()).contains(schedule.getTitle(), schedule1.getTitle());
+		assertThat(schedules.get(0).getTitle()).contains(schedule2.getTitle(), schedule1.getTitle());
 	}
 
 	@Test
@@ -105,25 +111,22 @@ public class MemberScheduleRepositoryTest {
 	void getCalendarSchedulesWithLabel() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-			.schedule(schedule)
-			.member(member)
+			.schedule(schedule1)
+			.member(member1)
 			.build();
 
-		Schedule schedule1 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 		MemberSchedule memberSchedule2 = MemberSchedule.builder()
 			.schedule(schedule1)
-			.member(member)
+			.member(member2)
 			.build();
 
 		memberScheduleRepository.saveAll(
 			List.of(memberSchedule, memberSchedule2)
 		);
 
-		Label label = labelRepository.save(schedule1.getLabel());
-
 		// When
 		List<Schedule> schedules = memberScheduleRepository.getCalendarSchedulesWithLabel(
-			1,
+			member1.getId(),
 			LocalDateTime.of(2024, 4, 25, 0, 0),
 			LocalDateTime.of(2024, 4, 27, 0, 0),
 			label.getLabelId()
@@ -132,5 +135,29 @@ public class MemberScheduleRepositoryTest {
 		// Then
 		assertThat(schedules.size()).isEqualTo(1);
 		assertThat(schedules.getFirst()).isEqualTo(schedule1);
+	}
+
+	@Test
+	@DisplayName("스케줄에 해당하는 멤버만 조회")
+	void getMembersBySchedule() {
+		// Given
+		MemberSchedule memberSchedule1 = MemberSchedule.builder()
+			.member(member1)
+			.schedule(schedule1)
+			.build();
+
+		MemberSchedule memberSchedule2 = MemberSchedule.builder()
+			.member(member2)
+			.schedule(schedule1)
+			.build();
+
+		memberScheduleRepository.saveAll(List.of(memberSchedule1, memberSchedule2));
+
+		// When
+		List<Member> members = memberScheduleRepository.getMemberWithSchedule(schedule1.getScheduleId());
+
+		// Then
+		assertThat(members.size()).isEqualTo(2);
+
 	}
 }
