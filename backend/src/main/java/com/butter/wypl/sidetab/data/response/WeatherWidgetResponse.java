@@ -19,11 +19,14 @@ public record WeatherWidgetResponse(
 		@JsonProperty("main")
 		String main,
 		@JsonProperty("desc")
-		String desc
+		String desc,
+		@JsonProperty("is_sunrise")
+		boolean isSunrise
 ) {
 	public static WeatherWidgetResponse of(
 			final WeatherWidget weatherWidget,
-			final boolean isLangKr
+			final boolean isLangKr,
+			final boolean isSunrise
 	) {
 		return new WeatherWidgetResponse(
 				isLangKr ? weatherWidget.getWeatherRegion().getCityEn()
@@ -34,7 +37,8 @@ public record WeatherWidgetResponse(
 				weatherWidget.getTemp(),
 				weatherWidget.getUpdateTime(),
 				weatherWidget.getMain(),
-				weatherWidget.getDesc()
+				weatherWidget.getDesc(),
+				isSunrise
 		);
 	}
 }
