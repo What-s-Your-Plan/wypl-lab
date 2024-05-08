@@ -10,7 +10,5 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Member
 
 	@Query("SELECT COUNT(mg) FROM MemberGroup mg WHERE mg.member.id = :memberId")
 	int countByMemberId(int memberId);
-	
-	void save(int memberId, int groupId);
 
 }
