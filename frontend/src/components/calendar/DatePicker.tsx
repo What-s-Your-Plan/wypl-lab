@@ -51,7 +51,7 @@ function DatePicker() {
       currCalendar.getMonth(),
       1,
     );
-    firstDay.setDate(currCalendar.getDate() - currCalendar.getDay());
+    firstDay.setDate(firstDay.getDate() - firstDay.getDay());
 
     const calendar: Array<JSX.Element> = [];
 
