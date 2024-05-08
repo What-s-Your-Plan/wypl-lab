@@ -54,16 +54,16 @@ interface Schedule {
 }
 
 type CalendarSchedule = {
-  scheduleId: number;
+  schedule_id: number; // 일정의 인덱스
   title: string;
   category: string;
-  startDate: string;
-  endDate: string;
+  start_date: string; //ex) "2024-04-16T10:57:00"
+  end_date: string; //ex) "2024-04-16T10:57:00"
   label: LabelResponse | null;
   group: GroupResponse | null;
 };
 
-type CalendarResponse = {
-  schedule_count: number;
-  schedules: Array<CalendarResponse>;
+type CalendarsResponse = {
+  schedule_count: number; // 개인 일정의 총 개수
+  schedules: Array<CalendarSchedule>;
 };
