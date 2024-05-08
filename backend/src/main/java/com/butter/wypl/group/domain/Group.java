@@ -65,7 +65,7 @@ public class Group extends BaseEntity {
 	}
 
 	public static void validateName(String name) {
-		if (name == null || name.isEmpty() || name.isBlank() || name.length() > 20) {
+		if (name == null || name.isBlank() || name.length() > 20) {
 			throw new GroupException(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME);
 		}
 	}
