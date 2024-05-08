@@ -68,7 +68,7 @@ public class Repetition extends BaseEntity {
 	}
 
 	private void durationValidation(LocalDate repetitionStartDate, LocalDate repetitionEndDate) {
-		if (repetitionStartDate.isAfter(repetitionEndDate)) {
+		if (repetitionEndDate != null && repetitionStartDate.isAfter(repetitionEndDate)) {
 			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_REPETITION_DURATION);
 		}
 	}

@@ -4,5 +4,5 @@ public enum CalendarType {
 
 	DAY,
 	WEEK,
-	MONT
+	MONTH
 }
