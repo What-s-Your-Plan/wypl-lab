@@ -2,7 +2,7 @@ import Modal from '@/components/common/Modal';
 import useForm from '@/hooks/useForm';
 import initialSchedule from '@/constants/ScheduleFormInit';
 import SchedulePanel from '@/components/schedule/SchedulePanel';
-import PostSchedule from '@/services/schedule/PostSchedule';
+import postSchedule from '@/services/schedule/postSchedule';
 
 type ScheduleModalProps = {
   isOpen: boolean;
@@ -19,7 +19,7 @@ function ScheduleModal({
 }: ScheduleModalProps) {
   const { form, setForm, handleChange } = useForm<Schedule & Repeat>(
     init,
-    PostSchedule,
+    postSchedule,
   );
   return (
     <Modal
