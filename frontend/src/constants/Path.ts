@@ -5,6 +5,12 @@ const BROWSER_PATH = {
   LANDING: '/',
   CALENDAR: '/calendar',
   NOT_FOUND: '*',
+  GROUP: 'group/:groupId?',
+  REVIEW: {
+    BASE: 'review',
+    WRITE: 'review/write',
+    DETAIL: 'review/:reviewId',
+  },
 };
 
 const API_PATH = {

@@ -18,10 +18,19 @@ function App() {
         <Route path={BROWSER_PATH.OAUTH.GOOGLE} element={<GoogleOAuth />} />
         <Route path={BROWSER_PATH.LANDING} element={<MainLayout />}>
           <Route path={BROWSER_PATH.CALENDAR} element={<CalendarPage />} />
-          <Route path="group/:groupId?" element={<GroupPage />} />
-          <Route path="review" element={<ReviewIndexPage />} />
-          <Route path="review/write" element={<ReviewWritePage />} />
-          <Route path="review/:reviewId" element={<ReviewDetailPage />} />
+          <Route path={BROWSER_PATH.GROUP} element={<GroupPage />} />
+          <Route
+            path={BROWSER_PATH.REVIEW.BASE}
+            element={<ReviewIndexPage />}
+          />
+          <Route
+            path={BROWSER_PATH.REVIEW.WRITE}
+            element={<ReviewWritePage />}
+          />
+          <Route
+            path={BROWSER_PATH.REVIEW.DETAIL}
+            element={<ReviewDetailPage />}
+          />
         </Route>
         <Route path={BROWSER_PATH.NOT_FOUND} element={<NotFoundPage />} />
       </Routes>
