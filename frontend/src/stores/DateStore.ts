@@ -3,9 +3,8 @@ import { create } from 'zustand';
 type DateStates = {
   today: Date;
   selectedDate: Date;
-  canlendarSchedules: CalendarSchedule[];
   labels: LabelResponse[];
-  selectedLables: LabelResponse[];
+  selectedLables: Array<number>;
 };
 
 type DateActions = {
@@ -31,24 +30,23 @@ const useDateStore = create<DateStates & DateActions>()((set, get) => ({
   },
   addSelectedLables: (labelId: number) => {
     set((state) => ({
-      selectedLables: [
-        ...state.selectedLables,
-        state.labels.filter((label) => label.label_id === labelId)[0],
-      ],
+      selectedLables: [...state.selectedLables, labelId],
     }));
   },
   removeSelectedLables: (labelId: number) => {
     set((state) => ({
-      selectedLables: state.selectedLables.filter(
-        (label) => label.label_id !== labelId,
-      ),
+      selectedLables: state.selectedLables.filter((label) => label !== labelId),
     }));
   },
   clearSelectedLabels: () => {
     set({ selectedLables: [] });
   },
   setAllSelected: () => {
-    set({ selectedLables: get().labels });
+    set({
+      selectedLables: get().labels.map((label) => {
+        return label.label_id;
+      }),
+    });
   },
 }));
 
