@@ -1,6 +1,6 @@
 // import { axiosWithAccessToken } from '@/services/axios';
 
-async function PostSchedule(schedule: Schedule & Repeat) {
+async function postSchedule(schedule: Schedule & Repeat) {
   const body: any = {
     title: schedule.title,
     category: schedule.category,
@@ -77,4 +77,4 @@ async function PostSchedule(schedule: Schedule & Repeat) {
   }
 }
 
-export default PostSchedule;
+export default postSchedule;

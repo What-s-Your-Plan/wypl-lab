@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import MonthlyDay from './MonthlyDay';
 import { isCurrentMonth, getDateDiff, dateToString } from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
-import GetCalendars from '@/services/calendar/getCalendars';
+import getCalendars from '@/services/calendar/getCalendars';
 
 export type DateSchedule = Array<Array<CalendarSchedule>>;
 
@@ -24,7 +24,7 @@ function MonthlyCalender() {
   };
 
   const updateInfo = useCallback(async (first: Date) => {
-    const response = await GetCalendars('MONTH', {
+    const response = await getCalendars('MONTH', {
       date: dateToString(selectedDate),
     });
 
