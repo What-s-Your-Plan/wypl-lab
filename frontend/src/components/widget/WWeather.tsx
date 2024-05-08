@@ -2,7 +2,7 @@ import Cloud from '@/assets/icons/weather/cloud.svg';
 import CloudAngledRain from '@/assets/icons/weather/cloudAngledRain.svg';
 import CloudAngledRainZap from '@/assets/icons/weather/cloudAngledRainZap.svg';
 import CloudSnow from '@/assets/icons/weather/cloudSnow.svg';
-// import Moon from '@/assets/icons/weather/moon.svg';
+import Moon from '@/assets/icons/weather/moon.svg';
 import Sun from '@/assets/icons/weather/sun.svg';
 import Tornado from '@/assets/icons/weather/tornado.svg';
 import MistSun from '@/assets/icons/weather/mistSun.svg';
@@ -17,7 +17,7 @@ function WWeather() {
       min: 13, // 8 - 최저 온도
       max: 25, // 28 - 최고 온도
     },
-    weather_id: 1, // 200 - 날씨 식별자
+    weather_id: 10, // 200 - 날씨 식별자
     desc: '맑음',
   };
 
@@ -40,7 +40,7 @@ function WWeather() {
       case 8:
         return Tornado;
       default:
-        return Sun;
+        return Moon;
     }
   };
 

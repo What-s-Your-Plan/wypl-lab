@@ -3,7 +3,6 @@ import { create } from 'zustand';
 type DateStates = {
   today: Date;
   selectedDate: Date;
-  calendarSchedules: Array<CalendarSchedule>;
   labels: LabelResponse[];
   selectedLabels: Array<number>;
 };
@@ -11,6 +10,7 @@ type DateStates = {
 type DateActions = {
   updateToday: () => void;
   setSelectedDate: (date: Date) => void;
+  setLabels: (labels: LabelResponse[]) => void;
   addSelectedLabels: (labelId: number) => void;
   removeSelectedLabels: (labelId: number) => void;
   clearSelectedLabels: () => void;
@@ -28,6 +28,9 @@ const useDateStore = create<DateStates & DateActions>()((set, get) => ({
   },
   setSelectedDate: (date: Date) => {
     set({ selectedDate: date });
+  },
+  setLabels(labels: LabelResponse[]) {
+    set({ labels: labels });
   },
   addSelectedLabels: (labelId: number) => {
     set((state) => ({

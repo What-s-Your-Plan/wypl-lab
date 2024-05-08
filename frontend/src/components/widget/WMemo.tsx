@@ -22,8 +22,8 @@ function WMemo() {
     if (textarea.current) {
       textarea.current.style.height = 'auto'; //height 초기화
       let newHeight = textarea.current.scrollHeight;
-      if (newHeight > 100) {
-        newHeight = 100;
+      if (newHeight > 120) {
+        newHeight = 120;
       }
       textarea.current.style.height = newHeight + 'px';
     }
@@ -32,7 +32,7 @@ function WMemo() {
   return (
     <div>
       <div className="flex justify-between">
-        <div>Memo</div>
+        <div className="font-bold">Memo</div>
         {isModifyingMemo ? (
           <Button $size="none" onClick={handleModify}>
             <img src={Save} alt="저장" className="w-5" />
@@ -49,7 +49,7 @@ function WMemo() {
           $width="100%"
           $void={true}
           ref={textarea}
-          rows={7}
+          rows={5}
           value={userMemo}
           disabled={!isModifyingMemo}
           onChange={handleTextInput}
