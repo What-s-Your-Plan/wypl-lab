@@ -121,9 +121,9 @@ function WidgetList() {
                 h: widget.layout.h,
                 i: widget.layout.i,
                 minW: 1,
-                maxW: 2,
+                maxW: 4,
                 minH: 1,
-                maxH: 2,
+                maxH: 4,
                 isDraggable: { isModifying },
                 isResizable: { isModifying },
               }}
