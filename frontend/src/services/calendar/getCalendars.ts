@@ -5,7 +5,7 @@ type Params = {
   date?: string; //'2024-04-17'
 };
 
-async function GetCalendars(type: 'DAY' | 'WEEK' | 'MONTH', params?: Params) {
+async function getCalendars(type: 'DAY' | 'WEEK' | 'MONTH', params?: Params) {
   console.log(type, params);
   // try {
   //   const response = await axiosWithAccessToken(`/calendar/v1/calendars/${type}`, {params: params});
@@ -53,4 +53,4 @@ async function GetCalendars(type: 'DAY' | 'WEEK' | 'MONTH', params?: Params) {
   };
 }
 
-export default GetCalendars;
+export default getCalendars;
