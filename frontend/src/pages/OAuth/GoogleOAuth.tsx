@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useJsonWebTokensStore from '@/stores/TokenStore';
+import useMemberStore from '@/stores/MemberStore';
 
 import OAUTH_PROVIDER from '@/constants/OAuth';
 import { BROWSER_PATH } from '@/constants/Path';
@@ -16,6 +17,7 @@ function GoogleOAuth() {
   const navigate = useNavigate();
 
   const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
+  const { setMemberId } = useMemberStore();
 
   const fetchJsonWebTokens = async () => {
     const param: IssueTokenParams = { code };
@@ -24,9 +26,18 @@ function GoogleOAuth() {
       navigate(BROWSER_PATH.LANDING);
       return;
     }
-    setAccessToken(body.access_token);
-    setRefreshToken(body.refresh_token);
+    await updateStores(body);
     navigate(BROWSER_PATH.CALENDAR);
+  };
+
+  const updateStores = ({
+    access_token,
+    refresh_token,
+    member_id,
+  }: IssueTokenResponse) => {
+    setAccessToken(access_token);
+    setRefreshToken(refresh_token);
+    setMemberId(member_id);
   };
 
   useEffect(() => {
