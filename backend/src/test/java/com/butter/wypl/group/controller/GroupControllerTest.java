@@ -1,8 +1,8 @@
 package com.butter.wypl.group.controller;
 
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
@@ -66,7 +66,7 @@ class GroupControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.post("group/v1/groups")
+				RestDocumentationRequestBuilders.post("/group/v1/groups")
 						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(convertToJson(createRequest))
