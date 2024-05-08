@@ -43,7 +43,6 @@ class NotificationRepositoryTest {
 	 *  - 읽은 알림 => 읽고 난 뒤 7일 뒤 삭제
 	 */
 	@Test
-	@Disabled
 	@DisplayName("특정 이벤트 발생 후 알림을 생성한다.")
 	void createNotificationTest() {
 		// given
