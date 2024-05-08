@@ -9,5 +9,5 @@ import com.butter.wypl.todo.domain.Todo;
 
 public interface TodoRepository extends JpaRepository<Todo, Integer> {
 
-	List<Todo> findByMember(Member member);
+	List<Todo> findByMemberAndDeletedAtIsNull(Member member);
 }
