@@ -1,9 +1,10 @@
 package com.butter.wypl.group.domain;
 
 import com.butter.wypl.global.common.BaseEntity;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.member.domain.Member;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
@@ -28,17 +29,17 @@ public class MemberGroup extends BaseEntity {
 	@JoinColumn(name = "group_id")
 	private Group group;
 
-	@Column(name = "color", columnDefinition = "varchar(6) default 'fb392c'")
-	private String color; // 기본 값: 오렌지 색
+	@Embedded
+	private Color color;
 
 	@Builder
-	protected MemberGroup(Member member, Group group, String color) {
+	private MemberGroup(Member member, Group group, Color color) {
 		this.member = member;
 		this.group = group;
 		this.color = color;
 	}
 
-	public static MemberGroup of(Member member, Group group, String color) {
+	public static MemberGroup of(Member member, Group group, Color color) {
 		return MemberGroup.builder()
 			.member(member)
 			.group(group)
@@ -52,4 +53,5 @@ public class MemberGroup extends BaseEntity {
 			.group(group)
 			.build();
 	}
+	
 }
