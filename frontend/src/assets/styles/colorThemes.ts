@@ -15,6 +15,8 @@ const LabelColors = [
   'labelLavender',
   'labelCharcoal',
   'labelBrown',
+  'warmGray',
+  'coolGray',
 ] as const;
 
 const AllColors = [
@@ -35,6 +37,8 @@ const AllColors = [
   'white',
   'black',
   'main',
+  'warmGray',
+  'coolGray',
 ] as const;
 
 const BgTheme = {
@@ -54,6 +58,8 @@ const BgTheme = {
   labelBrown: tw`bg-label-brown`,
   white: tw`bg-default-white`,
   black: tw`bg-default-black`,
+  warmGray: tw`bg-default-warmgray`,
+  coolGray: tw`bg-default-coolgray`,
   main: tw`bg-main`,
 };
 
@@ -74,6 +80,8 @@ const TextTheme = {
   labelBrown: tw`text-label-brown`,
   white: tw`text-default-white`,
   black: tw`text-default-black`,
+  warmGray: tw`text-default-warmgray`,
+  coolGray: tw`text-default-coolgray`,
   main: tw`text-main`,
 };
 
@@ -94,6 +102,8 @@ const BorderTheme = {
   labelBrown: tw`border border-label-brown`,
   white: tw`border border-default-white`,
   black: tw`border border-default-black`,
+  warmGray: tw`border-default-warmgray`,
+  coolGray: tw`border-default-coolgray`,
   main: tw`border border-main`,
 };
 
