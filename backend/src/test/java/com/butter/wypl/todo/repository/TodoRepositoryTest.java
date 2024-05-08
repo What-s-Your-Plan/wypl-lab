@@ -122,9 +122,10 @@ class TodoRepositoryTest {
 		List<Todo> todos = todoRepository.findByMember(member);
 
 		//when
-		todos.get(0).doneTodo();
+		boolean completed = todos.get(0).isCompleted();
+		todos.get(0).toggleTodo();
 
 		//then
-		assertThat(todos.get(0).isCompleted()).isTrue();
+		assertThat(completed).isNotEqualTo(todos.get(0).isCompleted());
 	}
 }

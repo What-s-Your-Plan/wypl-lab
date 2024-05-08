@@ -46,7 +46,7 @@ public class Todo extends BaseEntity {
 		this.content = content;
 	}
 
-	public void doneTodo() {
-		this.isCompleted = true;
+	public void toggleTodo() {
+		this.isCompleted = !this.isCompleted;
 	}
 }
