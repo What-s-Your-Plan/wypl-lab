@@ -23,8 +23,6 @@ import com.butter.wypl.calendar.data.response.CalendarListResponse;
 import com.butter.wypl.calendar.data.response.CalendarResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarListResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarResponse;
-import com.butter.wypl.calendar.exception.CalendarErrorCode;
-import com.butter.wypl.calendar.exception.CalendarException;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.repository.LabelRepository;
 import com.butter.wypl.label.utils.LabelServiceUtils;
@@ -53,19 +51,15 @@ public class CalendarService {
 		LocalDate endDate = startDate;
 		switch (calendarType) {
 			case DAY -> {
-				break;
 			}
 			case WEEK -> {
 				startDate = startDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 1);
 				endDate = endDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 7);
-				break;
 			}
 			case MONTH -> {
 				startDate = startDate.withDayOfMonth(1);
 				endDate = endDate.with(TemporalAdjusters.lastDayOfMonth());
-				break;
 			}
-			default -> throw new CalendarException(CalendarErrorCode.NOT_APPROPRIATE_TYPE);
 		}
 
 		List<Schedule> schedules = new ArrayList<>();
@@ -98,19 +92,15 @@ public class CalendarService {
 		LocalDate endDate = startDate;
 		switch (calendarType) {
 			case DAY -> {
-				break;
 			}
 			case WEEK -> {
 				startDate = startDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 1);
 				endDate = endDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 7);
-				break;
 			}
 			case MONTH -> {
 				startDate = startDate.withDayOfMonth(1);
 				endDate = endDate.with(TemporalAdjusters.lastDayOfMonth());
-				break;
 			}
-			default -> throw new CalendarException(CalendarErrorCode.NOT_APPROPRIATE_TYPE);
 		}
 
 		List<Schedule> schedules = scheduleRepository.findAllByGroupIdAndStartDateBetween(groupId,
