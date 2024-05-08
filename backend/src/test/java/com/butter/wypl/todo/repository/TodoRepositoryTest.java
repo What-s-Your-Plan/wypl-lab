@@ -89,10 +89,9 @@ class TodoRepositoryTest {
 		saveTodos();
 
 		//when
-		List<Todo> result = todoRepository.findByMember(member);
+		List<Todo> result = todoRepository.findByMemberAndDeletedAtIsNull(member);
 
 		//then
-		result.forEach(todo -> System.out.println(todo.getContent()));
 		assertThat(result).isNotNull();
 		assertThat(result.size()).isEqualTo(5);
 	}
@@ -119,7 +118,7 @@ class TodoRepositoryTest {
 	void doneTodo() throws Exception {
 		//given
 		saveTodos();
-		List<Todo> todos = todoRepository.findByMember(member);
+		List<Todo> todos = todoRepository.findByMemberAndDeletedAtIsNull(member);
 
 		//when
 		boolean completed = todos.get(0).isCompleted();
