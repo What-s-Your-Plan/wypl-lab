@@ -14,15 +14,10 @@ const Button = styled.button`
       h-[60px]
 
       rounded-full
-    `}
 
-  &:hover {
-    ${tw`
-      bg-default-warmgray
-
-      duration-100
+      hover:bg-default-warmgray
+      hover:duration-100
     `}
-  }
 `;
 
 const Image = styled.img`

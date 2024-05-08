@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 import NavButton, { NavButtonProps } from '../common/NavButton';
 
-import * as S from './ArticleBar.styled';
+import * as S from './NavEventBar.styled';
 
 import CalendarSvg from '@/assets/icons/calendar.svg';
 import GroupSvg from '@/assets/icons/users.svg';

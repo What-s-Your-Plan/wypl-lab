@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-import NavEventBar from './ArticleBar/ArticleBar';
+import NavEventBar from './NavEventBar/NavEventBar';
 
 import * as S from './Navbar.styled';
 
