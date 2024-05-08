@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import MonthlyDay from './MonthlyDay';
 import { isCurrentMonth, getDateDiff, dateToString } from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
-import GetCalendars from '@/services/calendar/GetCalendars';
+import GetCalendars from '@/services/calendar/getCalendars';
 
 export type DateSchedule = Array<Array<CalendarSchedule>>;
 

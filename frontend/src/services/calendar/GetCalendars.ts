@@ -8,7 +8,7 @@ type Params = {
 async function GetCalendars(type: 'DAY' | 'WEEK' | 'MONTH', params?: Params) {
   console.log(type, params);
   // try {
-  //   const response = await axiosWithAccessToken(type, {params: params});
+  //   const response = await axiosWithAccessToken(`/calendar/v1/calendars/${type}`, {params: params});
   //   if (response.status === 200) {
   //     return response.data.body as Promise<CalendarsResponse>;
   //   } else if (response.status === 401) {
