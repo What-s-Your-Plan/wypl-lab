@@ -1,7 +1,34 @@
 package com.butter.wypl.calendar.service;
 
+import static java.time.temporal.TemporalAdjusters.*;
+
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.butter.wypl.calendar.data.CalendarType;
+import com.butter.wypl.calendar.data.response.BlockListResponse;
+import com.butter.wypl.calendar.data.response.BlockResponse;
+import com.butter.wypl.calendar.data.response.CalendarListResponse;
+import com.butter.wypl.calendar.data.response.CalendarResponse;
+import com.butter.wypl.calendar.data.response.GroupCalendarListResponse;
+import com.butter.wypl.calendar.data.response.GroupCalendarResponse;
+import com.butter.wypl.label.domain.Label;
+import com.butter.wypl.label.repository.LabelRepository;
+import com.butter.wypl.label.utils.LabelServiceUtils;
+import com.butter.wypl.schedule.domain.Schedule;
+import com.butter.wypl.schedule.respository.MemberScheduleRepository;
+import com.butter.wypl.schedule.respository.ScheduleRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -10,4 +37,140 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class CalendarService {
 
+	private MemberScheduleRepository memberScheduleRepository;
+	private LabelRepository labelRepository;
+
+	private ScheduleRepository scheduleRepository;
+
+	public CalendarListResponse getCalendarSchedules(int memberId, CalendarType calendarType, Integer labelId,
+		LocalDate startDate) {
+		if (startDate == null) {
+			startDate = LocalDate.now();
+		}
+
+		LocalDate endDate = startDate;
+		switch (calendarType) {
+			case DAY -> {
+			}
+			case WEEK -> {
+				startDate = startDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 1);
+				endDate = endDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 7);
+			}
+			case MONTH -> {
+				startDate = startDate.withDayOfMonth(1);
+				endDate = endDate.with(TemporalAdjusters.lastDayOfMonth());
+			}
+		}
+
+		List<Schedule> schedules = new ArrayList<>();
+		if (labelId == null) {
+			schedules = memberScheduleRepository.getCalendarSchedules(memberId,
+				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
+				LocalDateTime.of(endDate, LocalTime.of(0, 0)));
+		} else {
+			Label label = LabelServiceUtils.getLabelByLabelId(labelRepository, labelId);
+
+			schedules = memberScheduleRepository.getCalendarSchedulesWithLabel(memberId,
+				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
+				LocalDateTime.of(endDate, LocalTime.of(0, 0)),
+				label.getLabelId());
+		}
+
+		return CalendarListResponse.from(
+			schedules.stream().map(CalendarResponse::from).toList()
+		);
+	}
+
+	public GroupCalendarListResponse getGroupCalendarSchedule(int memberId, CalendarType calendarType,
+		LocalDate startDate, int groupId) {
+		//TODO : 그룹에 속한 멤버인지 확인
+		//TODO : 그룹의 존재 여부 확인
+		if (startDate == null) {
+			startDate = LocalDate.now();
+		}
+
+		LocalDate endDate = startDate;
+		switch (calendarType) {
+			case DAY -> {
+			}
+			case WEEK -> {
+				startDate = startDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 1);
+				endDate = endDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 7);
+			}
+			case MONTH -> {
+				startDate = startDate.withDayOfMonth(1);
+				endDate = endDate.with(TemporalAdjusters.lastDayOfMonth());
+			}
+		}
+
+		List<Schedule> schedules = scheduleRepository.findAllByGroupIdAndStartDateBetween(groupId,
+			LocalDateTime.of(startDate, LocalTime.of(0, 0)),
+			LocalDateTime.of(endDate, LocalTime.of(0, 0)));
+
+		return GroupCalendarListResponse.from(
+			schedules.stream()
+				.map(schedule -> GroupCalendarResponse.of(schedule,
+					memberScheduleRepository.getMemberWithSchedule(schedule.getScheduleId())))
+				.toList()
+		);
+	}
+
+	public BlockListResponse getVisualization(int memberId, LocalDate startDate) {
+		if (startDate == null) {
+			startDate = LocalDate.now();
+		}
+
+		startDate = startDate.with(firstDayOfYear());
+		LocalDate endDate = startDate.with(lastDayOfYear());
+
+		HashMap<LocalDate, Long> yearBlocks = new HashMap<>();
+
+		List<Schedule> schedules = memberScheduleRepository.getCalendarSchedules(memberId,
+			LocalDateTime.of(startDate, LocalTime.of(0, 0)),
+			LocalDateTime.of(endDate, LocalTime.of(0, 0)));
+
+		for (Schedule schedule : schedules) {
+			LocalDate scheduleStartDate = schedule.getStartDate().toLocalDate();
+			LocalDate scheduleEndDate = schedule.getEndDate().toLocalDate();
+
+			for (LocalDate date = scheduleStartDate;
+				 date.isBefore(scheduleEndDate) || date.isEqual(scheduleEndDate); date = date.plusDays(1)) {
+
+				long diffTime = 0L;
+
+				if (date.isEqual(scheduleStartDate) && date.isEqual(scheduleEndDate)) {
+					diffTime = Duration.between(schedule.getStartDate(), schedule.getEndDate()).toMinutes();
+				} else if (date.isEqual(scheduleStartDate)) {
+					diffTime = Duration.between(schedule.getStartDate(),
+						LocalDateTime.of(scheduleStartDate, LocalTime.of(23, 59))).toMinutes();
+				} else if (date.isEqual(scheduleEndDate)) {
+					diffTime = Duration.between(
+						LocalDateTime.of(scheduleEndDate, LocalTime.of(0, 0)), schedule.getEndDate()).toMinutes();
+				} else {
+					diffTime = 24 * 60;
+				}
+
+				if (yearBlocks.containsKey(date)) {
+					Long totalTime = yearBlocks.get(date);
+
+					yearBlocks.put(date, totalTime + diffTime);
+				} else {
+					yearBlocks.put(date, diffTime);
+				}
+			}
+		}
+
+		List<BlockResponse> blockResponses = new ArrayList<>();
+		for (LocalDate date = startDate; date.isEqual(endDate) || date.isBefore(endDate); date = date.plusDays(1)) {
+			if (yearBlocks.containsKey(date)) {
+				blockResponses.add(new BlockResponse(date, yearBlocks.get(date)));
+
+				continue;
+			}
+
+			blockResponses.add(new BlockResponse(date, 0));
+		}
+
+		return BlockListResponse.from(blockResponses);
+	}
 }
