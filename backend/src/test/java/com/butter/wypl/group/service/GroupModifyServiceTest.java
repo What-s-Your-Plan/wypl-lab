@@ -31,7 +31,7 @@ import com.butter.wypl.member.repository.MemberRepository;
 class GroupModifyServiceTest {
 
 	@InjectMocks
-	private GroupServiceImpl groupModifyService;
+	private GroupModifyServiceImpl groupModifyService;
 
 	@Mock
 	private GroupRepository groupRepository;
