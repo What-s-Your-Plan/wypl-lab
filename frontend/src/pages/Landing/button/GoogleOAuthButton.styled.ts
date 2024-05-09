@@ -1,4 +1,15 @@
 import styled from 'styled-components';
+import tw from 'twin.macro';
+
+const Container = styled.div`
+  ${tw`
+    flex
+    justify-center
+    items-center
+
+    flex-col
+  `}
+`;
 
 const GoogleButton = styled.a`
   transition:
@@ -43,4 +54,4 @@ const GoogleButton = styled.a`
   }
 `;
 
-export { GoogleButton };
+export { Container, GoogleButton };

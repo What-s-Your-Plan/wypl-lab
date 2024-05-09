@@ -1,4 +1,5 @@
-import GoogleOAuthButton from './GoogleOAuthButton';
+import GoogleOAuthButton from './button/GoogleOAuthButton';
+
 import * as S from './LandingPage.styled';
 
 function LandingPage() {

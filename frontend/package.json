@@ -3,9 +3,27 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "contributors": [
+    {
+      "name": "Jo Damin",
+      "email": "jdm080620@gmail.com"
+    },
+    {
+      "name": "Lee Jiwon",
+      "email": "leeji7031@gmail.com"
+    },
+    {
+      "name": "Kim Jeonguk",
+      "email": "workju1124@gmail.com"
+    }
+  ],
   "scripts": {
     "dev": "vite",
+    "dev:dev": "vite --mode dev",
+    "dev:prod": "vite --mode prod",
     "build": "tsc && vite build",
+    "build:dev": "tsc && vite build --mode dev",
+    "build:prod": "tsc && vite build --mode prod",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
