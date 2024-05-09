@@ -3,6 +3,7 @@ package com.butter.wypl.group.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Message;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.service.GroupLoadService;
@@ -41,4 +43,12 @@ public class GroupController {
 		return ResponseEntity.ok(
 			Message.withBody("그룹 조회에 성공했습니다.", groupLoadService.getDetailById(authMember.getId(), groupId)));
 	}
+
+	@PatchMapping("/v1/groups/{groupId}")
+	public ResponseEntity<Message<Void>> updateGroup(@Authenticated AuthMember authMember, @PathVariable int groupId,
+		@RequestBody GroupUpdateRequest updateRequest) {
+		groupModifyService.updateGroup(authMember.getId(), groupId, updateRequest);
+		return ResponseEntity.ok(Message.onlyMessage("그룹 수정에 성공했습니다."));
+	}
+
 }

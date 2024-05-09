@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.repository.GroupRepository;
@@ -164,5 +165,44 @@ class GroupControllerTest extends ControllerTest {
 			))
 			.andExpect(status().isOk());
 
+	}
+
+	@Test
+	@DisplayName("그룹을 수정한다.")
+	void updateGroup() throws Exception {
+
+		/* Given */
+		GroupUpdateRequest updateRequest = new GroupUpdateRequest("업데이트 할 그룹명", "다시 시작 해 보자구 ~");
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.patch("/group/v1/groups/{groupId}", 1)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(updateRequest))
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/update-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				requestFields(
+					fieldWithPath("name").type(JsonFieldType.STRING)
+						.description("수정할 그룹 이름"),
+					fieldWithPath("description").type(JsonFieldType.STRING)
+						.description("수정할 그룹 설명")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 }
