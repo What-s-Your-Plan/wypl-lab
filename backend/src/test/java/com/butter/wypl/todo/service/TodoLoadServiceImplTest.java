@@ -49,12 +49,12 @@ class TodoLoadServiceImplTest {
 			.willReturn(list);
 
 	    //when
-		List<TodoResponse> result = todoService.getTodos(member.getId());
+		TodoResponse result = todoService.getTodos(member.getId());
 
 		//then
-		assertThat(result.size()).isEqualTo(list.size());
-		assertThat(result.get(0).memberId()).isEqualTo(member.getId());
-		assertThat(result).allMatch(r -> r.content().startsWith("운동가기"));
+		assertThat(result.todoCount()).isEqualTo(list.size());
+		assertThat(result.memberId()).isEqualTo(member.getId());
+		assertThat(result.todos()).allMatch(todo -> todo.content().startsWith("운동가기"));
 	}
 
 	List<Todo> dummyData() {
