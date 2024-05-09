@@ -45,7 +45,7 @@ class MemberGroupRepositoryTest {
 		Group savedGroup = groupRepository.save(GROUP_STUDY.toGroup(savedOwner));
 		assertThat(savedGroup.getId()).isNotNull();
 
-		MemberGroup memberGroup = MemberGroup.of(member, savedGroup);
+		MemberGroup memberGroup = MemberGroup.of(member, savedGroup, labelPink);
 
 		/* When, Then */
 		assertThatCode(() -> {

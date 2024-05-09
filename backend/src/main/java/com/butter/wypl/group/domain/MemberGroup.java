@@ -52,12 +52,4 @@ public class MemberGroup extends BaseEntity {
 			.color(color)
 			.build();
 	}
-
-	public static MemberGroup of(Member member, Group group) {
-		return MemberGroup.builder()
-			.member(member)
-			.group(group)
-			.build();
-	}
-
 }
