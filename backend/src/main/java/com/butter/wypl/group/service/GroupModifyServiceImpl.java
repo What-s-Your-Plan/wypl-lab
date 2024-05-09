@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
-public class GroupServiceImpl implements GroupModifyService, GroupLoadService {
+public class GroupModifyServiceImpl implements GroupModifyService {
 
 	private final GroupRepository groupRepository;
 	private final MemberRepository memberRepository;

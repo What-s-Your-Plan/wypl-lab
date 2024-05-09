@@ -1,14 +1,18 @@
 package com.butter.wypl.group.controller;
 
+import static com.butter.wypl.group.fixture.GroupFixture.*;
+import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
 import org.junit.jupiter.api.DisplayName;
@@ -23,6 +27,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
@@ -56,42 +61,108 @@ class GroupControllerTest extends ControllerTest {
 
 		/* Given */
 		GroupCreateRequest createRequest = new GroupCreateRequest("group1", "group1 description",
-				new HashSet<>(Arrays.asList(2, 3)));
+			new HashSet<>(Arrays.asList(2, 3)));
 
 		GroupIdResponse createResponse = new GroupIdResponse(1);
 		given(groupModifyService.createGroup(anyInt(), any(GroupCreateRequest.class)))
-				.willReturn(createResponse);
+			.willReturn(createResponse);
 
 		givenMockLoginMember();
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/group/v1/groups")
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(convertToJson(createRequest))
+			RestDocumentationRequestBuilders.post("/group/v1/groups")
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(createRequest))
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/create-group",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						requestFields(
-								fieldWithPath("name").type(JsonFieldType.STRING)
-										.description("그룹 이름"),
-								fieldWithPath("description").type(JsonFieldType.STRING)
-										.description("그룹 설명"),
-								fieldWithPath("member_id_list[]").type(JsonFieldType.ARRAY)
-										.description("그룹 멤버 식별자 리스트")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지"),
-								fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
-										.description("그룹 식별자")
-						)
-				))
-				.andExpect(status().isCreated());
+			.andDo(document("group/create-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("name").type(JsonFieldType.STRING)
+						.description("그룹 이름"),
+					fieldWithPath("description").type(JsonFieldType.STRING)
+						.description("그룹 설명"),
+					fieldWithPath("member_id_list[]").type(JsonFieldType.ARRAY)
+						.description("그룹 멤버 식별자 리스트")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
+						.description("그룹 식별자")
+				)
+			))
+			.andExpect(status().isCreated());
+	}
+
+	@Test
+	@DisplayName("그룹 상세 정보를 조회한다.")
+	void getDetailById() throws Exception {
+
+		/* Given */
+		int groupId = 1;
+
+		given(groupLoadService.getDetailById(anyInt(), anyInt()))
+			.willReturn(GroupDetailResponse.from(GROUP_STUDY.toGroup(HAN_JI_WON.toMember()),
+				Collections.singletonList(HAN_JI_WON.toMember())));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.get("/group/v1/groups/{groupId}", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/get-detail-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
+						.description("그룹 식별자"),
+					fieldWithPath("body.name").type(JsonFieldType.STRING)
+						.description("그룹 이름"),
+					fieldWithPath("body.description").type(JsonFieldType.STRING)
+						.description("그룹 설명"),
+					fieldWithPath("body.owner").type(JsonFieldType.OBJECT)
+						.description("그룹 소유자 정보"),
+					fieldWithPath("body.owner.member_id").type(JsonFieldType.NUMBER)
+						.description("그룹 소유자 식별자"),
+					fieldWithPath("body.owner.email").type(JsonFieldType.STRING)
+						.description("그룹 소유자 이메일"),
+					fieldWithPath("body.owner.nickname").type(JsonFieldType.STRING)
+						.description("그룹 소유자 닉네임"),
+					fieldWithPath("body.owner.profile_image").type(JsonFieldType.STRING).optional()
+						.description("그룹 소유자 프로필 이미지"),
+					fieldWithPath("body.member_count").type(JsonFieldType.NUMBER)
+						.description("그룹 멤버 수"),
+					fieldWithPath("body.members").type(JsonFieldType.ARRAY)
+						.description("그룹 멤버 리스트"),
+					fieldWithPath("body.members[].member_id").type(JsonFieldType.NUMBER)
+						.description("그룹 멤버 식별자"),
+					fieldWithPath("body.members[].email").type(JsonFieldType.STRING)
+						.description("그룹 멤버 이메일"),
+					fieldWithPath("body.members[].nickname").type(JsonFieldType.STRING)
+						.description("그룹 멤버 닉네임"),
+					fieldWithPath("body.members[].profile_image").type(JsonFieldType.STRING).optional()
+						.description("그룹 멤버 프로필 이미지")
+				)
+			))
+			.andExpect(status().isOk());
+
 	}
 }
