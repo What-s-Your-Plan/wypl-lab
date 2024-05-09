@@ -36,6 +36,8 @@ import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.repository.MemberRepository;
 
+import jakarta.persistence.EntityManager;
+
 @MockServiceTest
 class GroupModifyServiceTest {
 
@@ -167,6 +169,9 @@ class GroupModifyServiceTest {
 		@Autowired
 		private MemberGroupRepository memberGroupRepository;
 
+		@Autowired
+		private EntityManager em;
+
 		@Test
 		@DisplayName("그룹 수정 성공")
 		void whenSuccess() {
@@ -175,9 +180,11 @@ class GroupModifyServiceTest {
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
 			Group group = groupRepository.save(
 				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getDescription(), member));
-			MemberGroup memberGroup = memberGroupRepository.save(MemberGroup.of(member, group, labelYellow));
-			assertEquals(1, group.getId());
-			assertEquals(1, member.getId());
+			memberGroupRepository.save(MemberGroup.of(member, group, labelYellow));
+
+			em.flush();
+			em.clear();
+
 			String modifyGroupName = "변경된 그룹명";
 			String modifyGroupDescription = "변경된 그룹 설명";
 
@@ -196,27 +203,27 @@ class GroupModifyServiceTest {
 
 		@Test
 		@DisplayName("그룹 수정 실패 : 그룹 맴버의 요청이 아닌 경우")
-		void whenFailOf() {
+		void whenFail() {
 
 			/* Given */
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
 			Group group = groupRepository.save(
 				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getDescription(), member));
-			assertEquals(1, group.getId());
-			assertEquals(1, member.getId());
+
+			em.flush();
+			em.clear();
+
 			String modifyGroupName = "변경된 그룹명";
 			String modifyGroupDescription = "변경된 그룹 설명";
 
 			GroupUpdateRequest updateRequest = new GroupUpdateRequest(modifyGroupName,
 				modifyGroupDescription);
 
-			/* When */
-			groupModifyService.updateGroup(member.getId(), group.getId(), updateRequest);
-			Group updatedGroup = GroupServiceUtils.findById(groupRepository, group.getId());
-
-			/* Then */
-			assertEquals(modifyGroupName, updatedGroup.getName());
-			assertEquals(modifyGroupDescription, updatedGroup.getDescription());
+			/* When, Then */
+			Assertions.assertThatThrownBy(() -> {
+					groupModifyService.updateGroup(member.getId() + 1, group.getId(), updateRequest);
+				}).isInstanceOf(GroupException.class)
+				.hasMessageContaining(GroupErrorCode.IS_NOT_GROUP_MEMBER.getMessage());
 
 		}
 
