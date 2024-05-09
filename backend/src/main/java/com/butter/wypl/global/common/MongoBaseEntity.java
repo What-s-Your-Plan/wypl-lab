@@ -17,4 +17,5 @@ public abstract class MongoBaseEntity {
 
 	@LastModifiedDate
 	private LocalDateTime modifiedAt;
+
 }

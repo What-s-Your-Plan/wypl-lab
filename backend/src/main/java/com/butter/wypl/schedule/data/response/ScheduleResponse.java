@@ -27,7 +27,7 @@ public record ScheduleResponse(
 	Integer groupId,
 
 	@JsonProperty("label")
-	LabelResponse labelId,
+	LabelResponse label,
 
 	@JsonProperty("member_count")
 	int member_count,

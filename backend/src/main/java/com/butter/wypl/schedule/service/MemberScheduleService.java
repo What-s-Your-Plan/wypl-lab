@@ -100,4 +100,11 @@ public class MemberScheduleService {
 
 		return members;
 	}
+
+	public MemberSchedule getMemberScheduleByMemberAndSchedule(int memberId, Schedule schedule) {
+		Member member = MemberServiceUtils.findById(memberRepository, memberId);
+
+		return memberScheduleRepository.findByScheduleAndMember(schedule, member)
+			.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL));
+	}
 }
