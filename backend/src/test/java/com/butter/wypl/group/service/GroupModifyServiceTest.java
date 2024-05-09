@@ -1,6 +1,10 @@
 package com.butter.wypl.group.service;
 
+import static com.butter.wypl.global.common.Color.*;
+import static com.butter.wypl.group.fixture.GroupFixture.*;
 import static com.butter.wypl.member.exception.MemberErrorCode.*;
+import static com.butter.wypl.member.fixture.MemberFixture.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
@@ -10,21 +14,26 @@ import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.butter.wypl.global.annotation.MockServiceTest;
+import com.butter.wypl.global.annotation.ServiceTest;
 import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.domain.Group;
+import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.exception.GroupErrorCode;
 import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
+import com.butter.wypl.group.utils.GroupServiceUtils;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberException;
-import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.member.repository.MemberRepository;
 
 @MockServiceTest
@@ -53,7 +62,7 @@ class GroupModifyServiceTest {
 			new HashSet<>(Arrays.asList(2, 3)));
 
 		// Mocking
-		Member owner = MemberFixture.HAN_JI_WON.toMember();
+		Member owner = HAN_JI_WON.toMember();
 		given(memberRepository.findById(anyInt()))
 			.willReturn(Optional.of(owner));
 
@@ -124,7 +133,7 @@ class GroupModifyServiceTest {
 			new HashSet<>(Arrays.asList(2, 3)));
 
 		// Mocking
-		Member owner = MemberFixture.HAN_JI_WON.toMember();
+		Member owner = HAN_JI_WON.toMember();
 		given(memberRepository.findById(anyInt()))
 			.willReturn(Optional.of(owner));
 
@@ -139,6 +148,78 @@ class GroupModifyServiceTest {
 				groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
 			}).isInstanceOf(CustomException.class)
 			.hasMessageContaining("해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다.");
+	}
+
+	@ServiceTest
+	@Nested
+	@DisplayName("그룹 수정 테스트")
+	class updateGroupTest {
+
+		@Autowired
+		private GroupModifyService groupModifyService;
+
+		@Autowired
+		private MemberRepository memberRepository;
+
+		@Autowired
+		private GroupRepository groupRepository;
+
+		@Autowired
+		private MemberGroupRepository memberGroupRepository;
+
+		@Test
+		@DisplayName("그룹 수정 성공")
+		void whenSuccess() {
+
+			/* Given */
+			Member member = memberRepository.save(HAN_JI_WON.toMember());
+			Group group = groupRepository.save(
+				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getDescription(), member));
+			MemberGroup memberGroup = memberGroupRepository.save(MemberGroup.of(member, group, labelYellow));
+			assertEquals(1, group.getId());
+			assertEquals(1, member.getId());
+			String modifyGroupName = "변경된 그룹명";
+			String modifyGroupDescription = "변경된 그룹 설명";
+
+			GroupUpdateRequest updateRequest = new GroupUpdateRequest(modifyGroupName,
+				modifyGroupDescription);
+
+			/* When */
+			groupModifyService.updateGroup(member.getId(), group.getId(), updateRequest);
+			Group updatedGroup = GroupServiceUtils.findById(groupRepository, group.getId());
+
+			/* Then */
+			assertEquals(modifyGroupName, updatedGroup.getName());
+			assertEquals(modifyGroupDescription, updatedGroup.getDescription());
+
+		}
+
+		@Test
+		@DisplayName("그룹 수정 실패 : 그룹 맴버의 요청이 아닌 경우")
+		void whenFailOf() {
+
+			/* Given */
+			Member member = memberRepository.save(HAN_JI_WON.toMember());
+			Group group = groupRepository.save(
+				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getDescription(), member));
+			assertEquals(1, group.getId());
+			assertEquals(1, member.getId());
+			String modifyGroupName = "변경된 그룹명";
+			String modifyGroupDescription = "변경된 그룹 설명";
+
+			GroupUpdateRequest updateRequest = new GroupUpdateRequest(modifyGroupName,
+				modifyGroupDescription);
+
+			/* When */
+			groupModifyService.updateGroup(member.getId(), group.getId(), updateRequest);
+			Group updatedGroup = GroupServiceUtils.findById(groupRepository, group.getId());
+
+			/* Then */
+			assertEquals(modifyGroupName, updatedGroup.getName());
+			assertEquals(modifyGroupDescription, updatedGroup.getDescription());
+
+		}
+
 	}
 
 }
