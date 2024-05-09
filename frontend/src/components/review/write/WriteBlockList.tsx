@@ -38,15 +38,9 @@ function WriteBlockList() {
     }
   };
 
-  const handleCancleClick = useConfirm(
-    '정말 이동하시겠습니까?',
-    () => {
-      navigator(-1), () => {};
-    },
-    () => {
-      return;
-    },
-  );
+  const handleCancleClick = () => {
+    navigator(-1);
+  };
 
   const handleSaveClick = () => {
     const body = {
@@ -62,10 +56,9 @@ function WriteBlockList() {
     e.preventDefault();
     e.returnValue = '';
   };
+
   useEffect(() => {
-    (() => {
-      window.addEventListener('beforeunload', preventClose);
-    })();
+    window.addEventListener('beforeunload', preventClose);
     return () => {
       window.removeEventListener('beforeunload', preventClose);
     };
