@@ -36,7 +36,7 @@ const getReviewDetail = async (reviewId: string) => {
     contents: [
       {
         blockType: 'text',
-        text: '오늘도 재미있는 하루였다!',
+        text: '오늘도 재미있는 하루였다!\n 흠\n 줄바꿈',
       },
       {
         blockType: 'picture',
