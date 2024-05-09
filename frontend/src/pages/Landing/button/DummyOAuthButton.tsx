@@ -35,6 +35,7 @@ function DummyOAuthButton() {
       return;
     }
     updateStores(body);
+    navigate(BROWSER_PATH.CALENDAR);
   };
 
   const updateStores = ({
