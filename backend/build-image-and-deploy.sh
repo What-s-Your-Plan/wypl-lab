@@ -20,5 +20,5 @@ if [ $(docker ps -aq -f name=$NAME) ]; then
     docker stop $NAME
     docker rm $NAME
 fi
-echo "Depoly Spring Boot!!"
-docker run -d --name $NAME -e PROFILE=$PROFILE -p $PORT:8080 $NAME:$TAG
+echo "Deploy Spring Boot!!"
+docker run -d --name $NAME -e PROFILE=$PROFILE -p $PORT:8080 -v /home/ubuntu/wypl/logs:/logs $NAME:$TAG
