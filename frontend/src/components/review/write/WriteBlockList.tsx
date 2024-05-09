@@ -1,4 +1,7 @@
+import { useNavigate } from 'react-router-dom';
 import useReviewStore from '@/stores/ReviewStore';
+
+import postReview from '@/services/review/postReview';
 
 import RTitle from './RTitle';
 import RSchedule from './RSchedule';
@@ -7,11 +10,13 @@ import Button from '@/components/common/Button';
 import { Divider, DividerLabel } from '@/components/common/Divider';
 
 import * as S from '@/components/common/Container';
-import Cancle from '@/assets/icons/x.svg';
+import Cancel from '@/assets/icons/x.svg';
 import Save from '@/assets/icons/save.svg';
+import { useEffect } from 'react';
 
 function WriteBlockList() {
   const reviewStore = useReviewStore();
+  const navigator = useNavigate();
 
   const renderBlockList = () => {
     const blockList = reviewStore.contents;
@@ -32,6 +37,32 @@ function WriteBlockList() {
     }
   };
 
+  const handleCancelClick = () => {
+    navigator(-1);
+  };
+
+  const handleSaveClick = () => {
+    const body = {
+      title: reviewStore.title,
+      scheduleId: reviewStore.scheduleId,
+      contents: reviewStore.contents,
+    };
+    const response = postReview(body);
+    navigator(`/review/${response.body.review_id}`);
+  };
+
+  const preventClose = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = '';
+  };
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', preventClose);
+    return () => {
+      window.removeEventListener('beforeunload', preventClose);
+    };
+  }, []);
+
   return (
     <S.Container $width="800" className="scrollBar flex flex-col gap-4">
       <div>
@@ -41,11 +72,12 @@ function WriteBlockList() {
             $width="90px"
             $bgColor="labelCharcoal"
             $textColor="white"
+            onClick={handleCancelClick}
           >
-            <img src={Cancle} alt="취소" className="w-5 mr-2 whiteImg" />
+            <img src={Cancel} alt="취소" className="w-5 mr-2 whiteImg" />
             취소
           </Button>
-          <Button $size="lg" $width="90px">
+          <Button $size="lg" $width="90px" onClick={handleSaveClick}>
             <img src={Save} alt="저장" className="w-5 mr-2" />
             저장
           </Button>
