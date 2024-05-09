@@ -2,11 +2,12 @@ package com.butter.wypl.group.controller;
 
 import static com.butter.wypl.group.fixture.GroupFixture.*;
 import static com.butter.wypl.member.fixture.MemberFixture.*;
+import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -106,7 +107,7 @@ class GroupControllerTest extends ControllerTest {
 		/* Given */
 		int groupId = 1;
 
-		given(groupLoadService.getDetailById(anyInt()))
+		given(groupLoadService.getDetailById(anyInt(), anyInt()))
 			.willReturn(GroupDetailResponse.from(GROUP_STUDY.toGroup(HAN_JI_WON.toMember()),
 				Collections.singletonList(HAN_JI_WON.toMember())));
 
@@ -117,6 +118,7 @@ class GroupControllerTest extends ControllerTest {
 			RestDocumentationRequestBuilders.get("/group/v1/groups/{groupId}", groupId)
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
+
 		);
 
 		/* Then */
@@ -124,6 +126,9 @@ class GroupControllerTest extends ControllerTest {
 			.andDo(document("group/get-detail-group",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING)
 						.description("응답 메시지"),

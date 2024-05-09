@@ -3,10 +3,10 @@ package com.butter.wypl.group.service;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import com.butter.wypl.global.annotation.ServiceTest;
+import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 
-@ServiceTest
+@MockServiceTest
 class MemberGroupServiceTest {
 
 	@InjectMocks

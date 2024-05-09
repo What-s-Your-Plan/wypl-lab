@@ -38,6 +38,7 @@ public class GroupController {
 	@GetMapping("/v1/groups/{groupId}")
 	public ResponseEntity<Message<GroupDetailResponse>> getGroupDetail(@Authenticated AuthMember authMember,
 		@PathVariable int groupId) {
-		return ResponseEntity.ok(Message.withBody("그룹 조회에 성공했습니다.", groupLoadService.getDetailById(groupId)));
+		return ResponseEntity.ok(
+			Message.withBody("그룹 조회에 성공했습니다.", groupLoadService.getDetailById(authMember.getId(), groupId)));
 	}
 }

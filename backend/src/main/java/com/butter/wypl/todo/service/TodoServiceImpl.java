@@ -1,7 +1,5 @@
 package com.butter.wypl.todo.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,34 +44,32 @@ public class TodoServiceImpl implements TodoModifyService, TodoLoadService {
 
 	@Override
 	@Transactional
-	public void updateTodo(TodoUpdateRequest request, int todoId, int memberId) {
+	public void updateTodo(final TodoUpdateRequest request, final int todoId, final int memberId) {
 		validationTodo(todoId, memberId)
 			.updateContent(request.content());
 	}
 
 	@Override
 	@Transactional
-	public void deleteTodo(int todoId, int memberId) {
+	public void deleteTodo(final int todoId, final int memberId) {
 		validationTodo(todoId, memberId)
 			.delete();
 	}
 
 	@Override
 	@Transactional
-	public void toggleTodo(int todoId, int memberId) {
+	public void toggleTodo(final int todoId, final int memberId) {
 		validationTodo(todoId, memberId)
 			.toggleTodo();
 	}
 
 	@Override
-	public List<TodoResponse> getTodos(int memberId) {
+	public TodoResponse getTodos(final int memberId) {
 		Member member = getMember(memberId);
-		return todoRepository.findByMemberAndDeletedAtIsNull(member).stream()
-			.map(todo -> TodoResponse.of(todo, member))
-			.toList();
+		return TodoResponse.of(todoRepository.findByMemberAndDeletedAtIsNull(member), member);
 	}
 
-	private Todo validationTodo(int todoId, int memberId) {
+	private Todo validationTodo(final int todoId, final int memberId) {
 		Member member = getMember(memberId);
 		Todo todo = TodoServiceUtils.findById(todoRepository, todoId);
 
@@ -83,7 +79,7 @@ public class TodoServiceImpl implements TodoModifyService, TodoLoadService {
 		return todo;
 	}
 
-	private Member getMember(int memberId) {
+	private Member getMember(final int memberId) {
 		return MemberServiceUtils.findById(memberRepository, memberId);
 	}
 
