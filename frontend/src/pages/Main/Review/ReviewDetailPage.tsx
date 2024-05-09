@@ -12,7 +12,6 @@ import Button from '@/components/common/Button';
 import ArrowLeft from '@/assets/icons/arrowLeft.svg';
 import MoreVertical from '@/assets/icons/moreVertical.svg';
 import PopOver from '@/components/common/PopOver';
-import { Divider } from '@/components/common/Divider';
 
 function ReviewDetailPage() {
   const { reviewId } = useParams();
