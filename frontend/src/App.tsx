@@ -1,30 +1,33 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import LandingPage from '@/pages/Landing/LandingPage';
-import LoginPage from '@/pages/Login/LoginPage';
-import SingupPage from '@/pages/Singup/SingupPage';
-import CalendarPage from '@/pages/Main/Calendar/CalendarPage';
-import GroupPage from '@/pages/Main/Group/GroupPage';
-import ReviewIndexPage from '@/pages/Main/Review/ReviewIndexPage';
-import ReviewWritePage from '@/pages/Main/Review/ReviewWritePage';
-import ReviewDetailPage from '@/pages/Main/Review/ReviewDetailPage';
-import NotFoundPage from '@/pages/NotFoundPage';
-import MainLayout from './pages/Main/MainLayout';
+
+import {
+  Landing,
+  GoogleOAuth,
+  MainLayout,
+  Calendar,
+  Group,
+  ReviewIndex,
+  ReviewWrite,
+  ReviewDetail,
+  NotFound,
+} from '@/pages/Pages';
+
+import { BROWSER_PATH } from './constants/Path';
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SingupPage />} />
-        <Route path="/" element={<MainLayout />}>
-          <Route path="calendar" element={<CalendarPage />} />
-          <Route path="group/:groupId?" element={<GroupPage />} />
-          <Route path="review" element={<ReviewIndexPage />} />
-          <Route path="review/write" element={<ReviewWritePage />} />
-          <Route path="review/:reviewId" element={<ReviewDetailPage />} />
+        <Route path={BROWSER_PATH.LANDING} element={<Landing />} />
+        <Route path={BROWSER_PATH.OAUTH.GOOGLE} element={<GoogleOAuth />} />
+        <Route path={BROWSER_PATH.LANDING} element={<MainLayout />}>
+          <Route path={BROWSER_PATH.CALENDAR} element={<Calendar />} />
+          <Route path={BROWSER_PATH.GROUP} element={<Group />} />
+          <Route path={BROWSER_PATH.REVIEW.BASE} element={<ReviewIndex />} />
+          <Route path={BROWSER_PATH.REVIEW.WRITE} element={<ReviewWrite />} />
+          <Route path={BROWSER_PATH.REVIEW.DETAIL} element={<ReviewDetail />} />
         </Route>
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path={BROWSER_PATH.NOT_FOUND} element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
