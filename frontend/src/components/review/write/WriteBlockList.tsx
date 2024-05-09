@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import useReviewStore from '@/stores/ReviewStore';
 
-import useConfirm from '@/hooks/useConfirm';
 import postReview from '@/services/review/postReview';
 
 import RTitle from './RTitle';
@@ -11,7 +10,7 @@ import Button from '@/components/common/Button';
 import { Divider, DividerLabel } from '@/components/common/Divider';
 
 import * as S from '@/components/common/Container';
-import Cancle from '@/assets/icons/x.svg';
+import Cancel from '@/assets/icons/x.svg';
 import Save from '@/assets/icons/save.svg';
 import { useEffect } from 'react';
 
@@ -38,7 +37,7 @@ function WriteBlockList() {
     }
   };
 
-  const handleCancleClick = () => {
+  const handleCancelClick = () => {
     navigator(-1);
   };
 
@@ -73,9 +72,9 @@ function WriteBlockList() {
             $width="90px"
             $bgColor="labelCharcoal"
             $textColor="white"
-            onClick={handleCancleClick}
+            onClick={handleCancelClick}
           >
-            <img src={Cancle} alt="취소" className="w-5 mr-2 whiteImg" />
+            <img src={Cancel} alt="취소" className="w-5 mr-2 whiteImg" />
             취소
           </Button>
           <Button $size="lg" $width="90px" onClick={handleSaveClick}>
