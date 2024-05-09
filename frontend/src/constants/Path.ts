@@ -3,9 +3,12 @@ const BROWSER_PATH = {
     GOOGLE: '/login/oauth2/code/google',
   },
   LANDING: '/',
-  CALENDAR: '/calendar',
+  CALENDAR: 'calendar',
   NOT_FOUND: '*',
-  GROUP: 'group/:groupId?',
+  GROUP: {
+    BASE: 'group',
+    DETAIL: 'group/:groupId?',
+  },
   REVIEW: {
     BASE: 'review',
     WRITE: 'review/write',
