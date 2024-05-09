@@ -17,7 +17,7 @@ function WGoal() {
   return (
     <div>
       <div className="flex justify-between">
-        <div>Goal</div>
+        <div className="font-bold">Goal</div>
         {isModifyingGoal ? (
           <Button $size="none" onClick={handleModify}>
             <img src={Save} alt="저장" className="w-5" />

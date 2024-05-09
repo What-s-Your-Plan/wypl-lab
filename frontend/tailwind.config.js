@@ -40,6 +40,7 @@ export default {
         default: {
           white: '#FAFAF9',
           black: '#2A2E34',
+          coolgray: '#DFDFDF',
           warmgray: '#F3EEEA',
         },
         main: '#CA965C',

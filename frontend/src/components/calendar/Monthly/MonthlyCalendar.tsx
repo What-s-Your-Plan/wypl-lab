@@ -1,6 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import MonthlyDay from './MonthlyDay';
-import { isCurrentMonth, getDateDiff, dateToString } from '@/utils/DateUtils';
+import {
+  isSameDay,
+  isCurrentMonth,
+  getDateDiff,
+  dateToString,
+} from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
 import getCalendars from '@/services/calendar/getCalendars';
 
@@ -8,8 +13,6 @@ export type DateSchedule = Array<Array<CalendarSchedule>>;
 
 function MonthlyCalender() {
   const { selectedDate } = useDateStore();
-  const [currentYear, setCurrentYear] = useState<number | null>(null);
-  const [currentMonth, setCurrentMonth] = useState<number | null>(null);
   const [dateInfo, setDateInfo] = useState<Array<DateSchedule>>([]); // 임시
   const [firstDay, setFirstDay] = useState<Date | null>(null);
 
@@ -53,18 +56,13 @@ function MonthlyCalender() {
   }, []);
 
   useEffect(() => {
-    if (
-      currentYear !== selectedDate.getFullYear() ||
-      currentMonth !== selectedDate.getDate()
-    ) {
-      setCurrentMonth(selectedDate.getMonth());
-      setCurrentYear(selectedDate.getFullYear());
-      const newFirst = new Date(
-        selectedDate.getFullYear(),
-        selectedDate.getMonth(),
-        1,
-      );
-      newFirst.setDate(newFirst.getDate() - newFirst.getDay());
+    const newFirst = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      1,
+    );
+    newFirst.setDate(newFirst.getDate() - newFirst.getDay());
+    if (firstDay === null || !isSameDay(firstDay, newFirst)) {
       setFirstDay(newFirst);
 
       updateInfo(newFirst);
@@ -74,7 +72,7 @@ function MonthlyCalender() {
   const renderMonthly = () => {
     const calendar: Array<JSX.Element> = [];
 
-    if (firstDay && currentMonth) {
+    if (firstDay) {
       for (let i = 0; i < 42; i++) {
         const date = new Date(
           firstDay.getFullYear(),
@@ -87,7 +85,7 @@ function MonthlyCalender() {
             key={i}
             date={date}
             schedules={dateInfo[i]}
-            isCurrentMonth={isCurrentMonth(date, currentMonth)}
+            isCurrentMonth={isCurrentMonth(date, selectedDate.getMonth())}
           />,
         );
       }
@@ -98,7 +96,7 @@ function MonthlyCalender() {
   return (
     <div className="lg:flex lg:h-full lg:flex-col">
       <h1>
-        {currentYear ? currentYear : ''}.{currentMonth ? currentMonth + 1 : ''}
+        {selectedDate.getFullYear()}.{selectedDate.getMonth() + 1}
       </h1>
       <div className="lg:flex lg:flex-auto lg:flex-col">
         <div className="grid grid-cols-7 gap-px text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">

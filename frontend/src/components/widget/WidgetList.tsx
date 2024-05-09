@@ -3,6 +3,7 @@ import { Responsive, WidthProvider } from 'react-grid-layout';
 
 import * as S from '@/components/common/Container';
 import Button from '../common/Button';
+import WFilter from './WFilter';
 import WGoal from './WGoal';
 import WDDay from './WDDay';
 import WWeather from './WWeather';
@@ -14,10 +15,11 @@ function WidgetList() {
   const [isModifying, setIsModifying] = useState<boolean>(false);
   const [layouts, setLayouts] = useState<ReactGridLayout.Layouts>();
   const [widgetArray, setWidgetArray] = useState<Widget[]>([
-    { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 1 } },
-    { widgetType: 'dday', layout: { i: 'widget1', x: 0, y: 0, w: 1, h: 1 } },
-    { widgetType: 'weather', layout: { i: 'widget1', x: 1, y: 1, w: 1, h: 1 } },
-    { widgetType: 'memo', layout: { i: 'widget1', x: 0, y: 2, w: 2, h: 2 } },
+    { widgetType: 'filter', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 3 } },
+    { widgetType: 'goal', layout: { i: 'widget1', x: 0, y: 0, w: 2, h: 2 } },
+    { widgetType: 'dday', layout: { i: 'widget1', x: 0, y: 0, w: 1, h: 2 } },
+    { widgetType: 'weather', layout: { i: 'widget1', x: 1, y: 1, w: 1, h: 2 } },
+    { widgetType: 'memo', layout: { i: 'widget1', x: 0, y: 2, w: 2, h: 3 } },
   ]);
 
   const handleModify = (
@@ -52,6 +54,8 @@ function WidgetList() {
 
   const renderWidget = (widgetType: string) => {
     switch (widgetType) {
+      case 'filter':
+        return <WFilter />;
       case 'goal':
         return <WGoal />;
       case 'dday':
@@ -72,10 +76,11 @@ function WidgetList() {
   }, [isModifying]);
 
   return (
-    <S.Container $width="300">
-      <div className="flex justify-end">
+    <S.Container $width="300" className="!p-2">
+      <div className="flex justify-end z-50 sticky float-right">
         {isModifying && (
           <Button
+            className="float-end"
             $size="sm"
             $width="50px"
             onClick={() => setIsModifying(false)}
@@ -88,7 +93,7 @@ function WidgetList() {
         onLayoutChange={handleModify}
         verticalCompact={true}
         layouts={layouts}
-        rowHeight={110}
+        rowHeight={50}
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         preventCollision={false}
         isDraggable={isModifying}
@@ -116,9 +121,9 @@ function WidgetList() {
                 h: widget.layout.h,
                 i: widget.layout.i,
                 minW: 1,
-                maxW: 2,
+                maxW: 4,
                 minH: 1,
-                maxH: 2,
+                maxH: 4,
                 isDraggable: { isModifying },
                 isResizable: { isModifying },
               }}
