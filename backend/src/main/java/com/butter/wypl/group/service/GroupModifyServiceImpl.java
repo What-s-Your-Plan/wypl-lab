@@ -13,12 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.butter.wypl.global.exception.CustomErrorCode;
 import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
+import com.butter.wypl.group.utils.GroupServiceUtils;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.repository.MemberRepository;
@@ -56,6 +58,13 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 			memberGroupRepository.save(MemberGroup.of(foundMember, savedGroup));
 		}
 		return new GroupIdResponse(savedGroup.getId());
+	}
+
+	@Transactional
+	@Override
+	public void updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest) {
+		Group group = GroupServiceUtils.findById(groupRepository, groupId);
+		group.updateGroupInfo(updateRequest.name(), updateRequest.description());
 	}
 
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {

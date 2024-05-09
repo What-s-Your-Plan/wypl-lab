@@ -77,4 +77,11 @@ public class Group extends BaseEntity {
 		}
 	}
 
+	public void updateGroupInfo(String name, String description) {
+		validateName(name);
+		validateDescription(description);
+		this.name = name;
+		this.description = description;
+	}
+
 }
