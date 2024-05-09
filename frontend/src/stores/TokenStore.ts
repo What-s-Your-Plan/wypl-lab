@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface JsonWebTokensState {
+type JsonWebTokensState = {
   accessToken: string | null;
   refreshToken: string | null;
   setAccessToken: (newAccessToken: string) => void;
   setRefreshToken: (newRefreshToken: string) => void;
-}
+};
 
 const useJsonWebTokensStore = create<JsonWebTokensState>()(
   persist(

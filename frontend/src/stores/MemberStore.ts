@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface MemberState {
+type MemberState = {
   memberId: number | undefined;
   setMemberId: (newMemberId: number) => void;
-}
+};
 
 const useMemberStore = create<MemberState>()(
   persist(
