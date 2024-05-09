@@ -24,7 +24,6 @@ type LabelResponse = {
 type Member = {
   member_id: number;
   nickname: string;
-  oauth_id: string;
   profile_image: string;
 };
 
@@ -66,4 +65,31 @@ type CalendarSchedule = {
 type CalendarsResponse = {
   schedule_count: number; // 개인 일정의 총 개수
   schedules: Array<CalendarSchedule>;
+};
+
+//이거 그대로 쓰지 마세요 Repititon 정의 안되어 있습니다..
+//위에 있는 Repeat이랑 노션 다르길래 일단 이렇게 둘게..!
+type ScheduleResponse = {
+  schedule_id: number;
+  title: string;
+  start_date: string; //ex) "2024-04-16T15:00:00"
+  end_date: string; //ex) "2024-04-16T17:00:00",
+  category: string;
+  group_id: number | null;
+  repetition: Repetition | null;
+  label: LabelResponse | null;
+  member_count: number;
+  members: Member[]; //개인 일정일 경우 1명의 정보만 들어
+};
+
+type ScheduleSimpleResponse = {
+  schedule_id: number;
+  title: string;
+  start_date: string; //ex) "2024-04-16T15:00:00"
+  end_date: string; //ex) "2024-04-16T17:00:00",
+  category: string; //ex) "group"이거나 "member"
+  group_id: number | null;
+  label: Label | null;
+  member_count: number;
+  members: Member[]; //개인 일정일 경우 1명의 정보만 들어
 };
