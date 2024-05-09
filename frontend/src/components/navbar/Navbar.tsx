@@ -2,7 +2,11 @@ import { useNavigate } from 'react-router-dom';
 
 import NavEventBar from './NavEventBar/NavEventBar';
 
+import { BROWSER_PATH } from '@/constants/Path';
+
 import * as S from './Navbar.styled';
+
+import logo from '@/assets/images/logo.png';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -10,8 +14,8 @@ function Navbar() {
   return (
     <S.Container>
       <S.Logo
-        onClick={() => navigate('./calendar')}
-        src={'./logo-ci.png'}
+        onClick={() => navigate(BROWSER_PATH.CALENDAR)}
+        src={logo}
       ></S.Logo>
       <NavEventBar />
     </S.Container>

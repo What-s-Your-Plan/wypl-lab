@@ -1,7 +1,12 @@
+import GoogleOAuthButton from './GoogleOAuthButton';
+import * as S from './LandingPage.styled';
+
 function LandingPage() {
   return (
-    <div>LandingPage</div>
-  )
+    <S.Container>
+      <GoogleOAuthButton />
+    </S.Container>
+  );
 }
 
-export default LandingPage
+export default LandingPage;
