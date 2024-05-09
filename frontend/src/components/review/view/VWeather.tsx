@@ -5,7 +5,7 @@ type VWeatherProps = {
   content: WeatherContent;
 };
 
-function VEmotion({ content }: VWeatherProps) {
+function VWeather({ content }: VWeatherProps) {
   return (
     <WhiteContainer $width="900">
       <img src={content.weather} alt="기분" className="w-10" />
@@ -14,4 +14,4 @@ function VEmotion({ content }: VWeatherProps) {
   );
 }
 
-export default VEmotion;
+export default VWeather;

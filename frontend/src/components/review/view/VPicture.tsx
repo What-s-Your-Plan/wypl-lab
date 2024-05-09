@@ -1,11 +1,11 @@
 import { WhiteContainer } from '@/components/common/Container';
 import { PictureContent } from '@/objects/Content';
 
-type VTextProps = {
+type VPictureProps = {
   content: PictureContent;
 };
 
-function VText({ content }: VTextProps) {
+function VPicture({ content }: VPictureProps) {
   return (
     <WhiteContainer $width="900">
       <img src={content.path} alt="사진" />
@@ -13,4 +13,4 @@ function VText({ content }: VTextProps) {
   );
 }
 
-export default VText;
+export default VPicture;
