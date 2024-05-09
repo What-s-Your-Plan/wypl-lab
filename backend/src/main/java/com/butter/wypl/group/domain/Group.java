@@ -2,6 +2,7 @@ package com.butter.wypl.group.domain;
 
 import static com.butter.wypl.group.exception.GroupErrorCode.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.butter.wypl.global.common.BaseEntity;
@@ -45,7 +46,7 @@ public class Group extends BaseEntity {
 	private Member owner;
 
 	@OneToMany(mappedBy = "group")
-	private List<MemberGroup> memberGroupList;
+	private List<MemberGroup> memberGroups = new ArrayList<>();
 
 	@Builder
 	private Group(String name, String description, Member owner) {
