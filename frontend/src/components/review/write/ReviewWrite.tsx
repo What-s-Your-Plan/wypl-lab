@@ -46,9 +46,13 @@ function ReviewWrite({ index, content }: ReviewWriteProps) {
 
         const dropDirection =
           dropY < targetRect.top + targetRect.height / 2 ? 0 : 1;
-        console.log(dropY, targetRect, targetRect.top + targetRect.height / 2);
+
+        const toIndex =
+          index + dropDirection >= reviewStore.contents.length
+            ? index
+            : index + dropDirection;
         // Move the item in the reviewStore
-        reviewStore.moveContent(Number(itemIndex), index + dropDirection);
+        reviewStore.moveContent(Number(itemIndex), toIndex);
       }
     }
   };
@@ -113,10 +117,6 @@ function ReviewWrite({ index, content }: ReviewWriteProps) {
         return null;
     }
   };
-
-  // useEffect(() => {
-  //   console.log(reviewStore.focusIndex);
-  // }, [reviewStore.focusIndex]);
 
   return (
     <div
