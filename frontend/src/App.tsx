@@ -5,7 +5,6 @@ import Routes from './routes/Routes';
 import GoogleLoadingAnimation from './components/animation/GoogleLoading';
 
 function App() {
-  console.log(import.meta.env.MODE);
   return (
     <Router>
       <Suspense fallback={<GoogleLoadingAnimation />}>

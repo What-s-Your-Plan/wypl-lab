@@ -3,6 +3,20 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "contributors": [
+    {
+      "name": "Jo Damin",
+      "email": "jdm080620@gmail.com"
+    },
+    {
+      "name": "Lee Jiwon",
+      "email": "leeji7031@gmail.com"
+    },
+    {
+      "name": "Kim Jeonguk",
+      "email": "workju1124@gmail.com"
+    }
+  ],
   "scripts": {
     "dev": "vite",
     "dev:dev": "vite --mode dev",
