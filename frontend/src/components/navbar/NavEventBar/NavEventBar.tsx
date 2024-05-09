@@ -8,6 +8,7 @@ import CalendarSvg from '@/assets/icons/calendar.svg';
 import GroupSvg from '@/assets/icons/users.svg';
 import NotepadSvg from '@/assets/icons/notePad.svg';
 import NotificationSvg from '@/assets/icons/bell.svg';
+import { BROWSER_PATH } from '@/constants/Path';
 
 function NavEventBar() {
   const navigate = useNavigate();
@@ -20,17 +21,17 @@ function NavEventBar() {
     {
       imageUrl: CalendarSvg,
       alt: '캘린더',
-      event: () => gotoPages('./calendar'),
+      event: () => gotoPages(BROWSER_PATH.CALENDAR),
     },
     {
       imageUrl: GroupSvg,
       alt: '그룹',
-      event: () => gotoPages('./group'),
+      event: () => gotoPages(BROWSER_PATH.GROUP),
     },
     {
       imageUrl: NotepadSvg,
       alt: '리뷰',
-      event: () => gotoPages('./review'),
+      event: () => gotoPages(BROWSER_PATH.REVIEW.BASE),
     },
   ];
 
