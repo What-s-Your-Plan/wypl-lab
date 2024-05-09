@@ -11,6 +11,8 @@ import { Container } from '@/components/common/Container';
 import Button from '@/components/common/Button';
 import ArrowLeft from '@/assets/icons/arrowLeft.svg';
 import MoreVertical from '@/assets/icons/moreVertical.svg';
+import PopOver from '@/components/common/PopOver';
+import { Divider } from '@/components/common/Divider';
 
 function ReviewDetailPage() {
   const { reviewId } = useParams();
@@ -45,10 +47,21 @@ function ReviewDetailPage() {
             </span>
             <div className="flex gap-2">
               <span className="text-sm">{splitTTime(detail.created_at)}</span>
-              <span>
-                <Button $size="none" className="!bg-transparent">
-                  <img src={MoreVertical} alt="더보기" />
-                </Button>
+              <span className="relative">
+                <PopOver
+                  button={
+                    <Button $size="none" className="!bg-transparent">
+                      <img src={MoreVertical} alt="더보기" />
+                    </Button>
+                  }
+                  panel={
+                    <div className="flex flex-col gap-0.5 w-16 px-3 py-2 bg-default-white/95 rounded-lg shadow-lg">
+                      <div>수정</div>
+                      <div className="text-label-red">삭제</div>
+                    </div>
+                  }
+                  panelPosition="right-0 top-7"
+                />
               </span>
             </div>
           </div>
