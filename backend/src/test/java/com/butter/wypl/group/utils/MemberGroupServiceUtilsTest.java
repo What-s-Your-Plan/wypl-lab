@@ -41,7 +41,7 @@ class MemberGroupServiceUtilsTest {
 		int groupId = 1;
 
 		/* When */
-		List<Member> members = MemberGroupServiceUtils.getMemberResponsesByGroupId(memberGroupRepository, 1);
+		List<Member> members = MemberGroupServiceUtils.getMembersByGroupId(memberGroupRepository, 1);
 
 		/* Then */
 		members.forEach(

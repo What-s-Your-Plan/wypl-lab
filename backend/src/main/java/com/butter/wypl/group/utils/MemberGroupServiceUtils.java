@@ -15,7 +15,7 @@ public class MemberGroupServiceUtils {
 		throw new CallConstructorException();
 	}
 
-	public static List<Member> getMemberResponsesByGroupId(MemberGroupRepository memberGroupRepository,
+	public static List<Member> getMembersByGroupId(MemberGroupRepository memberGroupRepository,
 		int groupId) {
 		List<MemberGroup> memberGroups = memberGroupRepository.findMemberGroupsByGroupId(groupId);
 		return memberGroups.stream()
