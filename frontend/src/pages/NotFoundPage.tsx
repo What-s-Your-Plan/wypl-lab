@@ -1,7 +1,13 @@
+import NotFoundAnimation from '@/components/animation/NotFound';
+
+import * as S from './NotFoundPage.styled';
+
 function NotFoundPage() {
   return (
-    <div>NotFoundPage</div>
-  )
+    <S.Container>
+      <NotFoundAnimation />
+    </S.Container>
+  );
 }
 
-export default NotFoundPage
+export default NotFoundPage;
