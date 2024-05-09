@@ -16,4 +16,6 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Member
 	@Query("SELECT mg FROM MemberGroup mg JOIN FETCH mg.member m JOIN FETCH mg.group g WHERE mg.group.id = :groupId")
 	List<MemberGroup> findMemberGroupsByGroupId(int groupId);
 
+	MemberGroup findMemberGroupByMemberIdAndGroupId(int memberId, int groupId);
+
 }

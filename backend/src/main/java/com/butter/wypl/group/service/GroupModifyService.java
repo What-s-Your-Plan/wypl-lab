@@ -10,4 +10,6 @@ public interface GroupModifyService {
 
 	void updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest);
 
+	void deleteGroup(int memberId, int groupId);
+
 }

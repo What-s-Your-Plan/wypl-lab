@@ -24,6 +24,7 @@ import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.group.utils.GroupServiceUtils;
+import com.butter.wypl.group.utils.MemberGroupServiceUtils;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.repository.MemberRepository;
@@ -38,6 +39,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	private final GroupRepository groupRepository;
 	private final MemberRepository memberRepository;
 	private final MemberGroupRepository memberGroupRepository;
+	private final MemberGroupService memberGroupService;
 
 	@Transactional
 	@Override
@@ -69,6 +71,21 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		validateGroupMember(memberId, getMembersByGroupId(memberGroupRepository, groupId));
 		Group group = GroupServiceUtils.findById(groupRepository, groupId);
 		group.updateGroupInfo(updateRequest.name(), updateRequest.description());
+	}
+
+	@Transactional
+	@Override
+	public void deleteGroup(int memberId, int groupId) {
+		if (!GroupServiceUtils.isGroupOwner(groupRepository, memberId, groupId)) {
+			throw new GroupException(IS_NOT_GROUP_OWNER);
+		}
+		// 그룹에 속한 맴버들을 삭제
+		MemberGroupServiceUtils.getMembersByGroupId(memberGroupRepository, groupId)
+			.forEach(member -> {
+				memberGroupService.deleteMemberGroup(memberId, groupId);
+			});
+		// 그룹 삭제
+		groupRepository.deleteById(groupId);
 	}
 
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {
