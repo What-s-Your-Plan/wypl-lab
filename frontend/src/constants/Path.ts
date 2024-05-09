@@ -19,6 +19,7 @@ const BROWSER_PATH = {
 const API_PATH = {
   AUTH: {
     ISSUE_TOKENS: '/auth/v1/sign-in',
+    MOCK_ISSUE_TOKENS: '/auth/v1/sign-in/mock',
   },
 };
 
