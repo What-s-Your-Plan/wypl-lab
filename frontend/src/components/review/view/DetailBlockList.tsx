@@ -1,7 +1,3 @@
-import { useEffect, useState } from 'react';
-
-import getReviewDetail from '@/services/review/getReviewDetail';
-import { ReviewResponse } from '@/@types/ReviewResponse';
 import {
   TextContent,
   PictureContent,
@@ -10,6 +6,8 @@ import {
   KPTContent,
   FourFContent,
 } from '@/objects/Content';
+import { ReviewResponse } from '@/@types/ReviewResponse';
+
 import VTitle from './VTitle';
 import VEmotion from './VEmotion';
 import VText from './VText';
@@ -19,15 +17,12 @@ import VKpt from './VKpt';
 import V4F from './V4F';
 import VSchedule from './VSchedule';
 import { Divider } from '@/components/common/Divider';
-import { Container } from '@/components/common/Container';
 
 type DetailBlockListProps = {
-  reviewId: string;
+  detail: ReviewResponse;
 };
 
-function DetailBlockList({ reviewId }: DetailBlockListProps) {
-  const [detail, setDetail] = useState<ReviewResponse>();
-
+function DetailBlockList({ detail }: DetailBlockListProps) {
   const renderDetailBlock = () => {
     return detail?.contents.map((content, index) => {
       switch (content.blockType) {
@@ -49,38 +44,16 @@ function DetailBlockList({ reviewId }: DetailBlockListProps) {
     });
   };
 
-  useEffect(() => {
-    const fetchReviewDetail = async () => {
-      if (reviewId) {
-        const response = await getReviewDetail(reviewId);
-        const mappedResponse = {
-          ...response,
-          contents: response.contents.map((content) => ({
-            ...content,
-            blockType: content.blockType as ReviewType,
-          })),
-        };
-        setDetail(mappedResponse);
-      }
-    };
-    fetchReviewDetail();
-  }, []);
-
   return (
-    <div className="w-1300">
-      {detail && (
-        <Container
-          $width="1200"
-          className="scrollBar flex flex-col items-center gap-4 h-[90vh] "
-        >
-          <VTitle title={detail.title} />
-          <VSchedule schedule={detail.schedule} />
-          <div className="w-900">
-            <Divider />
-          </div>
-          {renderDetailBlock()}
-        </Container>
-      )}
+    <div className="w-1300 -mt-2">
+      <div className="scrollBar flex flex-col items-center  h-[85vh]">
+        <VTitle title={detail.title} />
+        <VSchedule schedule={detail.schedule} />
+        <div className="w-900 mb-4">
+          <Divider />
+        </div>
+        {renderDetailBlock()}
+      </div>
     </div>
   );
 }

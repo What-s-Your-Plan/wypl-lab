@@ -38,6 +38,11 @@ function getDateDiff(d1: Date | string, d2: Date | string) {
   return Math.abs((d1.getTime() - d2.getTime()) / (1000 * 60 * 60 * 24));
 }
 
+function splitTTime(date: string) {
+  const result = date.split('T');
+  return result[0] + ' ' + result[1].slice(0, result[1].length - 3);
+}
+
 export {
   isCurrentMonth,
   isSameDay,
@@ -45,4 +50,5 @@ export {
   stringToDate,
   padding0,
   getDateDiff,
+  splitTTime,
 };

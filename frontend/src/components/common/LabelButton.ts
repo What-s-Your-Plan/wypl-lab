@@ -12,6 +12,7 @@ const LabelButton = styled.button<LabelProps>`
     justify-center
     items-center
     w-fit
+    min-w-14
     px-3
     py-1
     text-default-white
