@@ -1,6 +1,9 @@
 package com.butter.wypl.group.service;
 
+import static com.butter.wypl.global.common.Color.*;
 import static com.butter.wypl.group.exception.GroupErrorCode.*;
+import static com.butter.wypl.group.utils.GroupValidation.*;
+import static com.butter.wypl.group.utils.MemberGroupServiceUtils.*;
 import static com.butter.wypl.member.exception.MemberErrorCode.*;
 import static com.butter.wypl.member.utils.MemberServiceUtils.*;
 
@@ -55,7 +58,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 		for (Integer memberIdInGroup : createRequest.memberIdList()) {
 			Member foundMember = findById(memberRepository, memberIdInGroup);
-			memberGroupRepository.save(MemberGroup.of(foundMember, savedGroup));
+			memberGroupRepository.save(MemberGroup.of(foundMember, savedGroup, labelYellow));
 		}
 		return new GroupIdResponse(savedGroup.getId());
 	}
@@ -63,6 +66,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Transactional
 	@Override
 	public void updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest) {
+		validateGroupMember(memberId, getMembersByGroupId(memberGroupRepository, groupId));
 		Group group = GroupServiceUtils.findById(groupRepository, groupId);
 		group.updateGroupInfo(updateRequest.name(), updateRequest.description());
 	}
