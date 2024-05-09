@@ -26,7 +26,7 @@ function NavEventBar() {
     {
       imageUrl: GroupSvg,
       alt: '그룹',
-      event: () => gotoPages(BROWSER_PATH.GROUP),
+      event: () => gotoPages(BROWSER_PATH.GROUP.BASE),
     },
     {
       imageUrl: NotepadSvg,
