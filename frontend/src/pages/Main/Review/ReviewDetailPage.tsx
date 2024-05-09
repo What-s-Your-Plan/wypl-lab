@@ -1,16 +1,13 @@
 import { useParams } from 'react-router-dom';
 import DetailBlockList from '@/components/review/view/DetailBlockList';
+import { Container } from '@/components/common/Container';
 
 function ReviewDetailPage() {
   const { reviewId } = useParams();
 
   return (
-    <div>
-      {reviewId && (
-        <div>
-          <DetailBlockList reviewId={reviewId} />
-        </div>
-      )}
+    <div className="container flex items-center   justify-center ss:max-sm:block h-dvh ">
+      {reviewId && <DetailBlockList reviewId={reviewId} />}
     </div>
   );
 }

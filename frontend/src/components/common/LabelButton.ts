@@ -15,6 +15,7 @@ const LabelButton = styled.button<LabelProps>`
     px-3
     py-1
     text-default-white
+    font-semibold
   `}
   ${(props) => BgTheme[props.$bgColor]}
 `;

@@ -24,7 +24,7 @@ function WFilter() {
       const labelBgColor =
         isSelected && !isAllSelected ? label.color : 'coolGray';
       const labelClassName =
-        isSelected && !isAllSelected ? 'font-semibold' : '!text-default-black';
+        isSelected && !isAllSelected ? '' : '!text-default-black !font-medium';
       return (
         <LabelButton
           $bgColor={labelBgColor as LabelColorsType}
