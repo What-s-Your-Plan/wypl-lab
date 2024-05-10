@@ -18,7 +18,7 @@ function SchedulePanel({
 }: SchedulePanelProps) {
   return (
     <form
-      className="w-[580px] flex flex-col justify-center border-2"
+      className="w-[580px] flex flex-col justify-center"
       onSubmit={(e) => {
         e.preventDefault();
       }}

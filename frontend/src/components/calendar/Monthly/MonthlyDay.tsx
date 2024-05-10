@@ -15,7 +15,7 @@ function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
 
   const renderSchedule = () => {
     return schedules.map((schedule, idx) => {
-      if (idx < 3) {
+      if (idx < 2) {
         if (schedule.length > 0) {
           const start = stringToDate(schedule[0].start_date);
           const end = stringToDate(schedule[0].end_date);
@@ -25,14 +25,12 @@ function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
               7 - date.getDay(),
               getDateDiff(date, end) + 1,
             );
-            const color = schedule[0].label
-              ? (schedule[0].label!.color as LabelColorsType)
-              : 'labelBrown';
+            const color = schedule[0].label?.color || schedule[0].group?.color || 'labelBrown'
 
             return (
               <S.ScheduleSpan
                 key={idx}
-                $color={color}
+                $color={color as LabelColorsType}
                 $top={idx}
                 $width={width}
               >
@@ -56,7 +54,7 @@ function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
           );
         } else if (schedule.length > 0) {
           return (
-            <span key={idx} className="truncate h-4 absolute top-12">
+            <span key={idx} className="truncate h-4 absolute top-8 pl-1">
               + {schedule.length}
             </span>
           );
