@@ -9,7 +9,7 @@ const style = {
 function LoadingAnimation() {
   return (
     <div className="flex justify-center items-center h-[100vh] w-full">
-      <Lottie animationData={loading} style={style}></Lottie>;
+      <Lottie animationData={loading} style={style}></Lottie>
     </div>
   );
 }
