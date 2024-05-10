@@ -9,10 +9,7 @@ import lombok.Builder;
 
 @Builder
 public record ReviewUpdateRequest(
-
-	@JsonProperty("review_id")
-	int reviewId,
-
+	
 	String title,
 
 	@JsonProperty("schedule_id")
