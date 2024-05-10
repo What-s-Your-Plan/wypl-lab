@@ -13,7 +13,7 @@ export type DateSchedule = Array<Array<CalendarSchedule>>;
 
 function MonthlyCalender() {
   const { selectedDate } = useDateStore();
-  const [dateInfo, setDateInfo] = useState<Array<DateSchedule>>([]); // 임시
+  const [monthSchedules, setMonthSchedules] = useState<Array<DateSchedule>>([]); // 임시
   const [firstDay, setFirstDay] = useState<Date | null>(null);
 
   const createInit = () => {
@@ -30,7 +30,6 @@ function MonthlyCalender() {
     const response = await getCalendars('MONTH', {
       date: dateToString(selectedDate),
     });
-
     const init: Array<DateSchedule> = createInit();
 
     if (response) {
@@ -39,7 +38,7 @@ function MonthlyCalender() {
         const period = getDateDiff(res.start_date, res.end_date);
         let row: number | null = null;
         for (let p = 0; p <= period; p++) {
-          if (!row) {
+          if (row === null) {
             for (let i = 0; i < 3; i++) {
               if (init[idx + p][i].length === 0 || i === 2) {
                 row = i;
@@ -51,8 +50,8 @@ function MonthlyCalender() {
         }
       }
     }
-
-    setDateInfo(init);
+    
+    setMonthSchedules(init);
   }, []);
 
   useEffect(() => {
@@ -84,7 +83,7 @@ function MonthlyCalender() {
           <MonthlyDay
             key={i}
             date={date}
-            schedules={dateInfo[i]}
+            schedules={monthSchedules[i]}
             isCurrentMonth={isCurrentMonth(date, selectedDate.getMonth())}
           />,
         );
@@ -95,9 +94,11 @@ function MonthlyCalender() {
 
   return (
     <div className="lg:flex lg:h-full lg:flex-col">
-      <h1>
-        {selectedDate.getFullYear()}.{selectedDate.getMonth() + 1}
-      </h1>
+      <header className="flex flex-none items-center justify-between px-6 py-2">
+        <h1 className="text-lg font-semibold leading-6 text-default-black">
+          {selectedDate.getFullYear()}.{selectedDate.getMonth() + 1}
+        </h1>
+      </header>
       <div className="lg:flex lg:flex-auto lg:flex-col">
         <div className="grid grid-cols-7 gap-px text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">
           <div className="bg-transparent text-label-red">
