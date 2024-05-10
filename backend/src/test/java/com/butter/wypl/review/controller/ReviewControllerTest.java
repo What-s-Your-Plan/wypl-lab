@@ -341,7 +341,7 @@ public class ReviewControllerTest extends ControllerTest {
 				preprocessResponse(prettyPrint()),
 				pathParameters(
 					parameterWithName("type").description("최신순 or 오래된 순"),
-					parameterWithName("scheduleId").description("검색하고 싶은 스케줄 id")
+					parameterWithName("scheduleId").description("검색하고 싶은 스케줄 인덱스")
 				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),

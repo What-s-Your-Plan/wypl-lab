@@ -38,11 +38,4 @@ public enum ReviewFixture {
 			.memberSchedule(memberSchedule)
 			.build();
 	}
-
-	public Review toReviewWithMemberScheduleAndCreatedAt(MemberSchedule memberSchedule) {
-		return Review.builder()
-			.title(title)
-			.memberSchedule(memberSchedule)
-			.build();
-	}
 }
