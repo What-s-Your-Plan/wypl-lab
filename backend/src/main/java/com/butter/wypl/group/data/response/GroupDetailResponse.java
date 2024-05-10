@@ -22,7 +22,7 @@ public record GroupDetailResponse(
 	List<MemberResponse> members
 
 ) {
-	public static GroupDetailResponse from(Group group, List<Member> members) {
+	public static GroupDetailResponse of(Group group, List<Member> members) {
 		return new GroupDetailResponse(
 			group.getId(),
 			group.getName(),
