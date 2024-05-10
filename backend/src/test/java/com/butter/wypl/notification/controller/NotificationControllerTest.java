@@ -117,4 +117,30 @@ class NotificationControllerTest extends ControllerTest {
 			))
 			.andExpect(status().isOk());
 	}
+
+	@Test
+	@DisplayName("회원 알림 전체 삭제")
+	void deleteNotifications() throws Exception {
+		//given
+		willDoNothing()
+			.given(notificationModifyService).deleteNotification(anyInt());
+
+		//when
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.delete(URI_PATH)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+		);
+
+		//then
+		actions.andDo(print())
+			.andDo(document("notification/delete",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
+	}
 }

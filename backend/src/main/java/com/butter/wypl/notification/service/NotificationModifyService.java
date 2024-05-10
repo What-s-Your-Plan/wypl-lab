@@ -9,4 +9,5 @@ public interface NotificationModifyService {
 	void createNotification(final NotificationCreateRequest notificationCreateRequest);
 
 	SseEmitter subscribeNotification(final int memberId);
+	void deleteNotification(final int memberId);
 }

@@ -4,8 +4,9 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ class NotificationRepositoryTest {
 
 	@Autowired
 	private NotificationRepository notificationRepository;
+
+	@AfterEach
+	void deleteAllNotification() {
+		notificationRepository.deleteAll();
+	}
 
 	/*
 	 * 1. 알림 생성 종류
@@ -82,7 +88,7 @@ class NotificationRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("알림 최초 조회")
+	@DisplayName("알림 최초 조회, 페이지 사이즈에 맞게 반환")
 	void findNotificationByMemberId() {
 		//given
 		int memberId = 99;
@@ -91,13 +97,13 @@ class NotificationRepositoryTest {
 
 		//then
 		assertThatCode(() -> {
-			Page<Notification> result = notificationRepository.findAllByMemberId(memberId, pageReq);
+			Page<Notification> result = notificationRepository.findByMemberIdWithPage(memberId, pageReq);
 			assertThat(result).isNotNull();
 		}).doesNotThrowAnyException();
 	}
 
 	@Test
-	@DisplayName("이후 알림 조회")
+	@DisplayName("이후 알림 조회, 페이지 사이즈에 맞게 반환")
 	void findNotificationByMemberIdAndId() {
 		//given
 		int memberId = 99;
@@ -109,5 +115,69 @@ class NotificationRepositoryTest {
 			Page<Notification> result = notificationRepository.findAllByLastId(memberId, lastId, pageReq);
 			assertThat(result).isNotNull();
 		}).doesNotThrowAnyException();
+	}
+
+	@Test
+	@DisplayName("회원ID에 맞는 알림 전체를 삭제한다.")
+	void deleteNotificationByMemberId () {
+	    //given
+		// 저장
+		int memberId = 1;
+		saveDummyNotification(memberId);
+
+	    //when
+		Page<Notification> pageOfNotifications = notificationRepository.findByMemberIdWithPage(memberId, PageRequest.of(0, 50));
+		List<Notification> content = pageOfNotifications.getContent();
+		assertThat(content.size()).isEqualTo(5);
+
+		notificationRepository.deleteByMemberId(memberId);
+		Page<Notification> deletedResult = notificationRepository.findByMemberIdWithPage(memberId, PageRequest.of(0, 50));
+		List<Notification> content1 = deletedResult.getContent();
+		//then
+		assertThat(content1.size()).isEqualTo(0);
+	}
+
+	// List<Notification> makeNotificationList() {
+	void saveDummyNotification(final int memberId) {
+		List<NotificationButton> buttons = new ArrayList<>();
+		buttons.add(
+			NotificationButton.builder()
+				.text("삭제버튼")
+				.actionUrl("delete")
+				.color("#000000")
+				.build()
+		);
+		buttons.add(
+			NotificationButton.builder()
+				.text("취소버튼")
+				.actionUrl("cancel")
+				.color("#000000")
+				.build()
+		);
+
+		Stream.iterate(0, i -> i < 5, i -> i + 1)
+			.forEach(i -> notificationRepository.save(
+				Notification.builder()
+					.memberId(memberId)
+					.message("삭제 테스트용" + i)
+					.buttons(buttons)
+					.isRead(false)
+					.typeCode(NotificationTypeCode.GROUP)
+					.build()
+			));
+	}
+
+	@Test
+	@DisplayName("회원 ID로 알림 전체조회")
+	void findAllByMemberIdTest () {
+	    //given
+		int memberId = 1;
+		saveDummyNotification(memberId);
+
+	    //when
+		List<Notification> list = notificationRepository.findAllByMemberId(memberId);
+
+		//then
+		assertThat(list.size()).isEqualTo(5);
 	}
 }

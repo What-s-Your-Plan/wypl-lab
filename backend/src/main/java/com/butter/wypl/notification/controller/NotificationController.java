@@ -3,6 +3,7 @@ package com.butter.wypl.notification.controller;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -65,6 +66,12 @@ public class NotificationController {
 	) {
 		return ResponseEntity.ok()
 			.body(Message.withBody("알림 조회 성공", notificationLoadService.getNotifications(authMember.getId(), lastId)));
+	}
+
+	@DeleteMapping
+	public ResponseEntity<Message<Void>> deleteNotification(@Authenticated AuthMember authMember) {
+		notificationModifyService.deleteNotification(authMember.getId());
+		return ResponseEntity.ok(Message.onlyMessage("회원 알림 전체 삭제 성공"));
 	}
 
 }
