@@ -2,9 +2,11 @@ package com.butter.wypl.member.domain;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.global.common.Color;
+import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.infrastructure.weather.WeatherRegion;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
@@ -16,6 +18,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,14 +56,18 @@ public class Member extends BaseEntity {
 	@Column(name = "timezone", length = 10, nullable = false)
 	private CalendarTimeZone timeZone;
 
+	/** 확인 필요 */
+	@OneToMany(mappedBy = "member")
+	private List<MemberGroup> memberGroups;
+
 	public WeatherRegion getWeatherRegion() {
 		return Arrays.stream(CalendarTimeZone.values())
-				.flatMap(calendarTimeZone -> Arrays.stream(WeatherRegion.values())
-						.filter(weatherRegion -> calendarTimeZone.getTimeZone()
-								.getDisplayName()
-								.equals(weatherRegion.getTimeZone()))
-				).findFirst()
-				.orElse(WeatherRegion.KOREA);
+			.flatMap(calendarTimeZone -> Arrays.stream(WeatherRegion.values())
+				.filter(weatherRegion -> calendarTimeZone.getTimeZone()
+					.getDisplayName()
+					.equals(weatherRegion.getTimeZone()))
+			).findFirst()
+			.orElse(WeatherRegion.KOREA);
 	}
 
 	public void changeBirthday(final LocalDate newBirthday) {

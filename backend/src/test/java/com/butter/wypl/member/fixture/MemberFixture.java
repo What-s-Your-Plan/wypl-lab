@@ -1,6 +1,7 @@
 package com.butter.wypl.member.fixture;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import com.butter.wypl.global.common.Color;
 import com.butter.wypl.member.domain.CalendarTimeZone;
@@ -33,22 +34,23 @@ public enum MemberFixture {
 
 	public Member toMember() {
 		return Member.builder()
-				.email(email)
-				.nickname(nickname)
-				.profileImage(image)
-				.color(color)
-				.timeZone(CalendarTimeZone.KOREA)
-				.build();
+			.email(email)
+			.nickname(nickname)
+			.profileImage(image)
+			.color(color)
+			.timeZone(CalendarTimeZone.KOREA)
+			.memberGroups(new ArrayList<>())
+			.build();
 	}
 
 	public Member toMemberWithId(int id) {
 		return Member.builder()
-				.id(id)
-				.email(email)
-				.nickname(nickname)
-				.profileImage(image)
-				.color(color)
-				.timeZone(CalendarTimeZone.KOREA)
-				.build();
+			.id(id)
+			.email(email)
+			.nickname(nickname)
+			.profileImage(image)
+			.color(color)
+			.timeZone(CalendarTimeZone.KOREA)
+			.build();
 	}
 }

@@ -30,6 +30,7 @@ import com.butter.wypl.group.data.request.GroupCreateRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
+import com.butter.wypl.group.data.response.GroupListByMemberIdResponse;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.group.service.GroupLoadService;
@@ -58,7 +59,7 @@ class GroupControllerTest extends ControllerTest {
 
 	@Test
 	@DisplayName("그룹을 생성")
-	void createGroup() throws Exception {
+	void createGroupTest() throws Exception {
 
 		/* Given */
 		GroupCreateRequest createRequest = new GroupCreateRequest("group1", "group1 description",
@@ -103,7 +104,7 @@ class GroupControllerTest extends ControllerTest {
 
 	@Test
 	@DisplayName("그룹 상세 정보를 조회")
-	void getDetailById() throws Exception {
+	void getDetailByIdTest() throws Exception {
 
 		/* Given */
 		int groupId = 1;
@@ -164,12 +165,11 @@ class GroupControllerTest extends ControllerTest {
 				)
 			))
 			.andExpect(status().isOk());
-
 	}
 
 	@Test
 	@DisplayName("그룹 수정")
-	void updateGroup() throws Exception {
+	void updateGroupTest() throws Exception {
 
 		/* Given */
 		GroupUpdateRequest updateRequest = new GroupUpdateRequest("업데이트 할 그룹명", "다시 시작 해 보자구 ~");
@@ -208,7 +208,7 @@ class GroupControllerTest extends ControllerTest {
 
 	@Test
 	@DisplayName("그룹 삭제")
-	void deleteGroup() throws Exception {
+	void deleteGroupTest() throws Exception {
 
 		/* Given */
 		givenMockLoginMember();
@@ -234,5 +234,78 @@ class GroupControllerTest extends ControllerTest {
 				)
 			))
 			.andExpect(status().isOk());
+	}
+
+	@Test
+	@DisplayName("회원의 모든 그룹 목록을 조회")
+	void getGroupListByMemberIdTest() throws Exception {
+
+		/* Given */
+		int memberId = 1;
+
+		given(groupLoadService.getGroupListByMemberId(anyInt()))
+			.willReturn(GroupListByMemberIdResponse.from(HAN_JI_WON.toMember()));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.get("/group/v1/groups/members/{memberId}", memberId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/get-groups-by-member-id",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("memberId").description("회원 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.member_id").type(JsonFieldType.NUMBER)
+						.description("회원 식별자"),
+					fieldWithPath("body.nickname").type(JsonFieldType.STRING)
+						.description("회원 닉네임"),
+					fieldWithPath("body.email").type(JsonFieldType.STRING)
+						.description("회원 이메일"),
+					fieldWithPath("body.group_count").type(JsonFieldType.NUMBER)
+						.description("그룹 수"),
+					fieldWithPath("body.groups[]").type(JsonFieldType.ARRAY)
+						.description("그룹 목록"),
+					fieldWithPath("body.groups[].group_id").type(JsonFieldType.NUMBER).optional()
+						.description("그룹 식별자"),
+					fieldWithPath("body.groups[].name").type(JsonFieldType.STRING).optional()
+						.description("그룹 이름"),
+					fieldWithPath("body.groups[].description").type(JsonFieldType.STRING).optional()
+						.description("그룹 설명"),
+					fieldWithPath("body.groups[].owner").type(JsonFieldType.OBJECT).optional()
+						.description("그룹 소유자 정보"),
+					fieldWithPath("body.groups[].owner.member_id").type(JsonFieldType.NUMBER).optional()
+						.description("그룹 소유자 식별자"),
+					fieldWithPath("body.groups[].owner.email").type(JsonFieldType.STRING).optional()
+						.description("그룹 소유자 이메일"),
+					fieldWithPath("body.groups[].owner.profile_image").type(JsonFieldType.STRING).optional()
+						.description("그룹 소유자 프로필 이미지"),
+					fieldWithPath("body.groups[].member_count").type(JsonFieldType.NUMBER).optional()
+						.description("그룹 멤버 수"),
+					fieldWithPath("body.groups[].members[]").type(JsonFieldType.ARRAY).optional()
+						.description("그룹 멤버 리스트"),
+					fieldWithPath("body.groups[].members[].member_id").type(JsonFieldType.NUMBER).optional()
+						.description("그룹 멤버 식별자"),
+					fieldWithPath("body.groups[].members[].email").type(JsonFieldType.STRING).optional()
+						.description("그룹 멤버 이메일"),
+					fieldWithPath("body.groups[].members[].nickname").type(JsonFieldType.STRING).optional()
+						.description("그룹 멤버 닉네임"),
+					fieldWithPath("body.groups[].members[].profile_image").type(JsonFieldType.STRING).optional()
+						.description("그룹 멤버 프로필 이미지")
+				)
+			))
+			.andExpect(status().isOk());
+
 	}
 }
