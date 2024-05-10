@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -38,16 +39,15 @@ class GroupModifyServiceTest {
 
 	@InjectMocks
 	private GroupModifyServiceImpl groupModifyService;
+
 	@Mock
 	private GroupRepository groupRepository;
+
 	@Mock
 	private MemberRepository memberRepository;
+
 	@Mock
 	private MemberGroupRepository memberGroupRepository;
-
-	// public GroupModifyServiceTest() {
-	// 	MockitoAnnotations.openMocks(this);
-	// }
 
 	@Nested
 	@DisplayName("그룹 생성 테스트")
@@ -60,25 +60,25 @@ class GroupModifyServiceTest {
 			int givenMemberId = 1;
 
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
-					new HashSet<>(Arrays.asList(2, 3)));
+				new HashSet<>(Arrays.asList(2, 3)));
 
 			// Mocking
 			Member owner = HAN_JI_WON.toMember();
 			given(memberRepository.findById(anyInt()))
-					.willReturn(Optional.of(owner));
+				.willReturn(Optional.of(owner));
 
 			given(memberRepository.existsById(anyInt()))
-					.willReturn(true);
+				.willReturn(true);
 
 			given(memberGroupRepository.countByMemberId(anyInt()))
-					.willReturn(49);
+				.willReturn(49);
 
 			Group group = Group.of(givenGroupCreateRequest.name(), givenGroupCreateRequest.description(), owner);
 			given(groupRepository.save(any(Group.class)))
-					.willReturn(group);
+				.willReturn(group);
 
 			/* When, Then */
-			assertThatCode(() -> {
+			Assertions.assertThatCode(() -> {
 				groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
 			}).doesNotThrowAnyException();
 		}
@@ -97,10 +97,10 @@ class GroupModifyServiceTest {
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description", memberIdList);
 
 			/* When, Then */
-			assertThatThrownBy(() -> {
-				groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
-			}).isInstanceOf(GroupException.class)
-					.hasMessageContaining(GroupErrorCode.EXCEED_MAX_MEMBER_COUNT.getMessage());
+			Assertions.assertThatThrownBy(() -> {
+					groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
+				}).isInstanceOf(GroupException.class)
+				.hasMessageContaining(GroupErrorCode.EXCEED_MAX_MEMBER_COUNT.getMessage());
 		}
 
 		@Test
@@ -110,17 +110,17 @@ class GroupModifyServiceTest {
 			int givenMemberId = 1;
 
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
-					new HashSet<>(Arrays.asList(2, 3)));
+				new HashSet<>(Arrays.asList(2, 3)));
 
 			// Mocking
 			given(memberRepository.existsById(anyInt()))
-					.willReturn(false);
+				.willReturn(false);
 
 			/* When, Then */
-			assertThatThrownBy(() -> {
-				groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
-			}).isInstanceOf(MemberException.class)
-					.hasMessageContaining(NOT_EXIST_MEMBER.getMessage());
+			Assertions.assertThatThrownBy(() -> {
+					groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
+				}).isInstanceOf(MemberException.class)
+				.hasMessageContaining(NOT_EXIST_MEMBER.getMessage());
 		}
 
 		@Test
@@ -131,24 +131,24 @@ class GroupModifyServiceTest {
 			int givenMemberId = 1;
 
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
-					new HashSet<>(Arrays.asList(2, 3)));
+				new HashSet<>(Arrays.asList(2, 3)));
 
 			// Mocking
 			Member owner = HAN_JI_WON.toMember();
 			given(memberRepository.findById(anyInt()))
-					.willReturn(Optional.of(owner));
+				.willReturn(Optional.of(owner));
 
 			given(memberRepository.existsById(anyInt()))
-					.willReturn(true);
+				.willReturn(true);
 
 			given(memberGroupRepository.countByMemberId(anyInt()))
-					.willReturn(50);
+				.willReturn(50);
 
 			/* When, Then */
-			assertThatThrownBy(() -> {
-				groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
-			}).isInstanceOf(CustomException.class)
-					.hasMessageContaining("해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다.");
+			Assertions.assertThatThrownBy(() -> {
+					groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
+				}).isInstanceOf(CustomException.class)
+				.hasMessageContaining("해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다.");
 		}
 
 	}
@@ -166,20 +166,20 @@ class GroupModifyServiceTest {
 			Member member = HAN_JI_WON.toMemberWithId(memberId);
 			Group group = GROUP_STUDY.toGroup(HAN_JI_WON.toMemberWithId(memberId));
 			given(groupRepository.findById(anyInt()))
-					.willReturn(Optional.of(group));
+				.willReturn(Optional.of(group));
 
 			MemberGroup memberGroup = MemberGroup.of(member, group, Color.labelBrown);
 			List<MemberGroup> memberGroups = List.of(memberGroup);
 			given(memberGroupRepository.findMemberGroupsByGroupId(groupId))
-					.willReturn(memberGroups);
+				.willReturn(memberGroups);
 
 			/* When */
 			groupModifyService.deleteGroup(memberId, groupId);
 
 			/* Then */
 			assertAll(
-					() -> assertThat(group.isDeleted()).isTrue(),
-					() -> memberGroups.forEach(mg -> assertThat(mg.isDeleted()).isTrue())
+				() -> assertThat(group.isDeleted()).isTrue(),
+				() -> memberGroups.forEach(mg -> assertThat(mg.isDeleted()).isTrue())
 			);
 		}
 	}
