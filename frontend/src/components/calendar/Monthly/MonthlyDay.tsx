@@ -30,14 +30,14 @@ function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
               : 'labelBrown';
 
             return (
-              <S.ScheduleSpan $color={color} $top={idx} $width={width}>
+              <S.ScheduleSpan key={idx} $color={color} $top={idx} $width={width}>
                 <span className="w-full truncate">{schedule[0].title}</span>
               </S.ScheduleSpan>
             );
           }
         } else {
           return (
-            <S.NoSchedule $top={idx} aria-hidden="true">
+            <S.NoSchedule key={idx} $top={idx} aria-hidden="true">
               no schedule
             </S.NoSchedule>
           );
@@ -45,13 +45,13 @@ function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
       } else if (idx === 2) {
         if (schedule.length === 0) {
           return (
-            <S.NoSchedule $top={idx} aria-hidden="true">
+            <S.NoSchedule key={idx} $top={idx} aria-hidden="true">
               no schedule
             </S.NoSchedule>
           );
         } else if (schedule.length > 0) {
           return (
-            <span className="truncate h-4 absolute top-12">
+            <span key={idx} className="truncate h-4 absolute top-12">
               + {schedule.length}
             </span>
           );

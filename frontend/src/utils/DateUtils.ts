@@ -14,9 +14,12 @@ function dateToString(date: Date): string {
   return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
 
+function dateTimeToString(date: Date): string {
+  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}T${padding0(date.getHours())}:${padding0(date.getMinutes())}`;
+}
+
 function stringToDate(str: string): Date {
-  const [year, month, day] = str.split(' ')[0].split('-');
-  return new Date(Number(year), Number(month) - 1, Number(day));
+  return new Date(str);
 }
 
 function padding0(num: number) {
@@ -25,13 +28,15 @@ function padding0(num: number) {
 
 function getDateDiff(d1: Date | string, d2: Date | string) {
   if (typeof d1 === 'string') {
-    d1 = stringToDate(d1);
+    const sToD1 = stringToDate(d1);
+    d1 = new Date(sToD1.getFullYear(), sToD1.getMonth(), sToD1.getDate());
   } else {
     d1 = new Date(d1.getFullYear(), d1.getMonth(), d1.getDate());
   }
 
   if (typeof d2 === 'string') {
-    d2 = stringToDate(d2);
+    const sToD2 = stringToDate(d2);
+    d2 = new Date(sToD2.getFullYear(), sToD2.getMonth(), sToD2.getDate());
   } else {
     d2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
   }
@@ -43,12 +48,23 @@ function splitTTime(date: string) {
   return result[0] + ' ' + result[1].slice(0, result[1].length - 3);
 }
 
+function isAllday(start: Date, end: Date): boolean {
+  return (
+    start.getHours() === 0 &&
+    start.getMinutes() === 0 &&
+    end.getHours() === 23 &&
+    end.getMinutes() === 59
+  );
+}
+
 export {
   isCurrentMonth,
   isSameDay,
   dateToString,
+  dateTimeToString,
   stringToDate,
   padding0,
   getDateDiff,
   splitTTime,
+  isAllday,
 };
