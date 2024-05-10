@@ -86,7 +86,6 @@ const ScheduleButton = styled.button<{ $bgColor: LabelColorsType }>`
 
 const LScheduleContainer = styled.div<{ $height: number }>`
   ${tw`
-  isolate
     row-end-1 
     min-h-8
     border-b 
