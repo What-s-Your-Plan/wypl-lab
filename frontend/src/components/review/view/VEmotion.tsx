@@ -22,25 +22,25 @@ function VEmotion({ content }: VEmotionProps) {
   const renderEmoji = (emoji: string) => {
     switch (emoji) {
       case 'Funny':
-        return <img src={Funny} alt="기분" className="w-10" />;
+        return <img src={Funny} alt="즐거움" className="w-10" />;
       case 'Smile':
-        return <img src={Smile} alt="기분" className="w-10" />;
+        return <img src={Smile} alt="좋음" className="w-10" />;
       case 'Bad':
-        return <img src={Bad} alt="기분" className="w-10" />;
+        return <img src={Bad} alt="나쁨" className="w-10" />;
       case 'Tired':
-        return <img src={Tired} alt="기분" className="w-10" />;
+        return <img src={Tired} alt="피곤함" className="w-10" />;
       case 'Cry':
-        return <img src={Cry} alt="기분" className="w-10" />;
+        return <img src={Cry} alt="울음" className="w-10" />;
       case 'Stareyes':
-        return <img src={Stareyes} alt="기분" className="w-10" />;
+        return <img src={Stareyes} alt="신세계" className="w-10" />;
       case 'Nyah':
-        return <img src={Nyah} alt="기분" className="w-10" />;
+        return <img src={Nyah} alt="신남" className="w-10" />;
       case 'Congrats':
-        return <img src={Congrats} alt="기분" className="w-10" />;
+        return <img src={Congrats} alt="축하" className="w-10" />;
       case 'Sick':
-        return <img src={Sick} alt="기분" className="w-10" />;
+        return <img src={Sick} alt="아픔" className="w-10" />;
       case 'Noone':
-        return <img src={Noone} alt="기분" className="w-10" />;
+        return <img src={Noone} alt="혼자 있고 싶음" className="w-10" />;
       default:
         return <img src={Question} alt="기분" className="w-10" />;
     }
