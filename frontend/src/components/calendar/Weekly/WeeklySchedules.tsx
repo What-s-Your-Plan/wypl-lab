@@ -23,7 +23,7 @@ function WeeklySchedules({ schedules }: WSchedulesProps) {
         }
         return hour ? hour : 12;
       };
-      
+
       const startAmPm = startDate.getHours() / 12 < 1 ? 'AM' : 'PM';
       const endAmPm = endDate.getHours() / 12 < 1 ? 'AM' : 'PM';
 
@@ -41,7 +41,9 @@ function WeeklySchedules({ schedules }: WSchedulesProps) {
                 : 'labelBrown'
             }
           >
-            <p className="order-1 font-semibold text-default-white">{schedule.title}</p>
+            <p className="order-1 font-semibold text-default-white">
+              {schedule.title}
+            </p>
             <p className="text-default-coolgray text-left">
               <time dateTime={schedule.start_date}>
                 {hour12(startDate)}:{startDate.getMinutes()} {startAmPm} ~{' '}

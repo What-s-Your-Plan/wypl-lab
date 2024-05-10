@@ -30,7 +30,12 @@ function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
               : 'labelBrown';
 
             return (
-              <S.ScheduleSpan key={idx} $color={color} $top={idx} $width={width}>
+              <S.ScheduleSpan
+                key={idx}
+                $color={color}
+                $top={idx}
+                $width={width}
+              >
                 <span className="w-full truncate">{schedule[0].title}</span>
               </S.ScheduleSpan>
             );

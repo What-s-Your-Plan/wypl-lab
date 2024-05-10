@@ -55,7 +55,7 @@ async function postSchedule(schedule: Schedule & Repeat) {
       case '매일':
         body.repetition.repetitionCycle = 'week';
         body.week = 1;
-        body.dayOfWeek = 2 ** 7 -1;
+        body.dayOfWeek = 2 ** 7 - 1;
         break;
       case '매 주':
         body.repetition.repetitionCycle = 'week';
