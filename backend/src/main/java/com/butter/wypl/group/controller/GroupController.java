@@ -2,6 +2,7 @@ package com.butter.wypl.group.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -49,6 +50,12 @@ public class GroupController {
 		@RequestBody GroupUpdateRequest updateRequest) {
 		groupModifyService.updateGroup(authMember.getId(), groupId, updateRequest);
 		return ResponseEntity.ok(Message.onlyMessage("그룹 수정에 성공했습니다."));
+	}
+
+	@DeleteMapping("/v1/groups/{groupId}")
+	public ResponseEntity<Message<Void>> deleteGroup(@Authenticated AuthMember authMember, @PathVariable int groupId) {
+		groupModifyService.deleteGroup(authMember.getId(), groupId);
+		return ResponseEntity.ok(Message.onlyMessage("그룹 삭제에 성공했습니다."));
 	}
 
 }
