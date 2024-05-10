@@ -44,7 +44,7 @@ const getReviewDetail = async (reviewId: string) => {
       },
       {
         blockType: 'emotion',
-        emoji: '/src/assets/icons/emoji/nyah.svg',
+        emoji: 'Nyah',
         description: '아이 신나',
       },
       {
