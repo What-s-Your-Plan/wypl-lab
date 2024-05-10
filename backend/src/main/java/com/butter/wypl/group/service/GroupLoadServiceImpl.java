@@ -1,6 +1,6 @@
 package com.butter.wypl.group.service;
 
-import static com.butter.wypl.group.utils.GroupValidation.*;
+import static com.butter.wypl.group.utils.GroupServiceUtils.*;
 import static com.butter.wypl.group.utils.MemberGroupServiceUtils.*;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class GroupLoadServiceImpl implements GroupLoadService {
 
 		List<Member> groupMembers = getMembersByGroupId(memberGroupRepository, groupId);
 
-		validateGroupMember(userId, groupMembers);
+		isGroupMember(userId, groupMembers);
 
 		Group foundGroup = groupRepository.findDetailById(groupId)
 			.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_GROUP));

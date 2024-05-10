@@ -17,17 +17,15 @@ public class GroupServiceUtils {
 		throw new CallConstructorException();
 	}
 
-	public static Group findById(
-		final GroupRepository groupRepository,
-		final int id
-	) {
-		return groupRepository.findById(id)
+	public static Group findById(final GroupRepository groupRepository, final int groupId) {
+		return groupRepository.findById(groupId)
 			.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_GROUP));
 	}
 
-	public static boolean isGroupMember(final int userId, final List<Member> groupMembers) {
-		return groupMembers.stream()
-			.anyMatch(member -> member.getId() == userId);
+	public static void isGroupMember(final int userId, final List<Member> groupMembers) {
+		if (groupMembers.stream().noneMatch(member -> member.getId() == userId)) {
+			throw new GroupException(GroupErrorCode.IS_NOT_GROUP_MEMBER);
+		}
 	}
 
 	public static boolean isGroupOwner(
