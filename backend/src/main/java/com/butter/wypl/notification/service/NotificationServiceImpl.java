@@ -202,18 +202,31 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 	}
 
 	@Override
-	public NotificationPageResponse getNotifications(int memberId, String lastId) {
+	public NotificationPageResponse getNotifications(final int memberId, final String lastId) {
 		PageRequest pageRequest = PageRequest.of(0, PAGE_SIZE);
 		/*
 		 * 1. 최초 조회시 (알림버튼 클릭) 회원 ID로 조회
 		 * 2. 그 이후 조회시 no-offset 조회 마지막 행 알림 lastID 이용
 		 * */
+		Page<Notification> result;
 		if (StringUtils.hasText(lastId)) {
-			Page<Notification> result = notificationRepository.findAllByMemberId(memberId, pageRequest);
-			return NotificationPageResponse.from(result);
+			result = notificationRepository.findByMemberIdWithPage(memberId, pageRequest);
 		} else {
-			Page<Notification> result = notificationRepository.findAllByLastId(memberId, lastId, pageRequest);
-			return NotificationPageResponse.from(result);
+			result = notificationRepository.findAllByLastId(memberId, lastId, pageRequest);
 		}
+
+		readNotification(memberId);
+		return NotificationPageResponse.from(result);
+	}
+
+	/**
+	 * 회원 알림 읽음 처리
+	 * @param memberId 회원 ID
+	 */
+	@Transactional
+	public void readNotification(final int memberId) {
+		List<Notification> list = notificationRepository.findAllByMemberId(memberId);
+		list.forEach(Notification::updateIsReadToTrue);
+		notificationRepository.saveAll(list);
 	}
 }

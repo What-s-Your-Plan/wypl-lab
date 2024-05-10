@@ -37,4 +37,8 @@ public class Notification extends MongoBaseEntity {
 		return isRead;
 	}
 
+	public void updateIsReadToTrue() {
+		isRead = true;
+	}
+
 }

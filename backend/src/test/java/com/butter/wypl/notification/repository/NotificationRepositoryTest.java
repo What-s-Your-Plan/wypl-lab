@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ class NotificationRepositoryTest {
 
 	@Autowired
 	private NotificationRepository notificationRepository;
+
+	@AfterEach
+	void deleteAllNotification() {
+		notificationRepository.deleteAll();
+	}
 
 	/*
 	 * 1. 알림 생성 종류
@@ -82,7 +88,7 @@ class NotificationRepositoryTest {
 	}
 
 	@Test
-	@DisplayName("알림 최초 조회")
+	@DisplayName("알림 최초 조회, 페이지 사이즈에 맞게 반환")
 	void findNotificationByMemberId() {
 		//given
 		int memberId = 99;
@@ -91,13 +97,13 @@ class NotificationRepositoryTest {
 
 		//then
 		assertThatCode(() -> {
-			Page<Notification> result = notificationRepository.findAllByMemberId(memberId, pageReq);
+			Page<Notification> result = notificationRepository.findByMemberIdWithPage(memberId, pageReq);
 			assertThat(result).isNotNull();
 		}).doesNotThrowAnyException();
 	}
 
 	@Test
-	@DisplayName("이후 알림 조회")
+	@DisplayName("이후 알림 조회, 페이지 사이즈에 맞게 반환")
 	void findNotificationByMemberIdAndId() {
 		//given
 		int memberId = 99;
@@ -117,22 +123,22 @@ class NotificationRepositoryTest {
 	    //given
 		// 저장
 		int memberId = 1;
-		makeNotificationList(memberId);
+		saveDummyNotification(memberId);
 
 	    //when
-		Page<Notification> pageOfNotifications = notificationRepository.findAllByMemberId(memberId, PageRequest.of(0, 50));
+		Page<Notification> pageOfNotifications = notificationRepository.findByMemberIdWithPage(memberId, PageRequest.of(0, 50));
 		List<Notification> content = pageOfNotifications.getContent();
 		assertThat(content.size()).isEqualTo(5);
 
 		notificationRepository.deleteByMemberId(memberId);
-		Page<Notification> deletedResult = notificationRepository.findAllByMemberId(memberId, PageRequest.of(0, 50));
+		Page<Notification> deletedResult = notificationRepository.findByMemberIdWithPage(memberId, PageRequest.of(0, 50));
 		List<Notification> content1 = deletedResult.getContent();
 		//then
 		assertThat(content1.size()).isEqualTo(0);
 	}
 
 	// List<Notification> makeNotificationList() {
-	void makeNotificationList(final int memberId) {
+	void saveDummyNotification(final int memberId) {
 		List<NotificationButton> buttons = new ArrayList<>();
 		buttons.add(
 			NotificationButton.builder()
@@ -159,5 +165,19 @@ class NotificationRepositoryTest {
 					.typeCode(NotificationTypeCode.GROUP)
 					.build()
 			));
+	}
+
+	@Test
+	@DisplayName("회원 ID로 알림 전체조회")
+	void findAllByMemberIdTest () {
+	    //given
+		int memberId = 1;
+		saveDummyNotification(memberId);
+
+	    //when
+		List<Notification> list = notificationRepository.findAllByMemberId(memberId);
+
+		//then
+		assertThat(list.size()).isEqualTo(5);
 	}
 }
