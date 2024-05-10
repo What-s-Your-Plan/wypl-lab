@@ -17,7 +17,8 @@ public enum GroupErrorCode implements ErrorCode {
 	EXCEED_MAX_LENGTH_OF_GROUP_DESCRIPTION(HttpStatus.BAD_REQUEST, "GROUP_004", "그룹 설명은 최대 50자까지 가능합니다."),
 	NOT_EXIST_GROUP(HttpStatus.BAD_REQUEST, "GROUP_005", "존재하지 않는 그룹입니다."),
 	IS_NOT_GROUP_MEMBER(HttpStatus.BAD_REQUEST, "GROUP_006", "그룹 멤버가 아닙니다."),
-	;
+	IS_NOT_GROUP_OWNER(HttpStatus.BAD_REQUEST, "GROUP_007", "그룹의 소유자가 아닙니다."),
+	NOT_EXIST_MEMBER_GROUP(HttpStatus.BAD_REQUEST, "GROUP_008", "존재하지 않는 멤버 그룹입니다.");
 	private final HttpStatus httpStatus;
 	private final String errorCode;
 	private final String message;

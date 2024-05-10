@@ -26,6 +26,7 @@ import com.butter.wypl.notification.data.response.NotificationPageResponse;
 import com.butter.wypl.notification.data.response.NotificationResponse;
 import com.butter.wypl.notification.domain.Notification;
 import com.butter.wypl.notification.fixture.NotificationFixture;
+import com.butter.wypl.notification.service.EmitterModifyService;
 import com.butter.wypl.notification.service.NotificationLoadService;
 import com.butter.wypl.notification.service.NotificationModifyService;
 
@@ -41,11 +42,13 @@ class NotificationControllerTest extends ControllerTest {
 	@MockBean
 	private NotificationLoadService notificationLoadService;
 
+	@MockBean
+	private EmitterModifyService emitterModifyService;
+
 	@Test
 	@DisplayName("SSE 연결")
 	void subscribe() throws Exception {
-		//given
-		given(notificationModifyService.subscribeNotification(anyInt()))
+		given(emitterModifyService.subscribeNotification(anyInt(), anyString()))
 			.willReturn(new SseEmitter());
 
 		//when
@@ -101,14 +104,9 @@ class NotificationControllerTest extends ControllerTest {
 					fieldWithPath("body.notifications[].member_id").type(JsonFieldType.NUMBER).description("회원ID"),
 					fieldWithPath("body.notifications[].message").type(JsonFieldType.STRING).description("메시지"),
 					fieldWithPath("body.notifications[].is_read").type(JsonFieldType.BOOLEAN).description("알림읽음 여부"),
+					fieldWithPath("body.notifications[].is_acted").type(JsonFieldType.BOOLEAN).description("회원 action 처리여부"),
 					fieldWithPath("body.notifications[].type_code").type(JsonFieldType.STRING).description("알림 타입 코드"),
-					fieldWithPath("body.notifications[].buttons[].text").type(JsonFieldType.STRING).description("버튼내용"),
-					fieldWithPath("body.notifications[].buttons[].action_url").type(JsonFieldType.STRING)
-						.description("버튼URL"),
-					fieldWithPath("body.notifications[].buttons[].color").type(JsonFieldType.STRING)
-						.description("버튼 색상"),
-					fieldWithPath("body.notifications[].buttons[].logo").type(JsonFieldType.STRING)
-						.description("버튼 로고"),
+					fieldWithPath("body.notifications[].target_id").type(JsonFieldType.NUMBER).description("알림 대상 ID"),
 					fieldWithPath("body.total_notification_count").type(JsonFieldType.NUMBER).description("총 알림개수"),
 					fieldWithPath("body.total_page_count").type(JsonFieldType.NUMBER).description("총 페이지 수"),
 					fieldWithPath("body.has_next").type(JsonFieldType.BOOLEAN).description("다음 페이지 여부"),

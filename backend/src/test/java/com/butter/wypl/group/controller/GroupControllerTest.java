@@ -57,7 +57,7 @@ class GroupControllerTest extends ControllerTest {
 	private MemberGroupRepository memberGroupRepository;
 
 	@Test
-	@DisplayName("그룹을 생성한다.")
+	@DisplayName("그룹을 생성")
 	void createGroup() throws Exception {
 
 		/* Given */
@@ -102,14 +102,14 @@ class GroupControllerTest extends ControllerTest {
 	}
 
 	@Test
-	@DisplayName("그룹 상세 정보를 조회한다.")
+	@DisplayName("그룹 상세 정보를 조회")
 	void getDetailById() throws Exception {
 
 		/* Given */
 		int groupId = 1;
 
 		given(groupLoadService.getDetailById(anyInt(), anyInt()))
-			.willReturn(GroupDetailResponse.from(GROUP_STUDY.toGroup(HAN_JI_WON.toMember()),
+			.willReturn(GroupDetailResponse.of(GROUP_STUDY.toGroup(HAN_JI_WON.toMember()),
 				Collections.singletonList(HAN_JI_WON.toMember())));
 
 		givenMockLoginMember();
@@ -168,7 +168,7 @@ class GroupControllerTest extends ControllerTest {
 	}
 
 	@Test
-	@DisplayName("그룹을 수정한다.")
+	@DisplayName("그룹 수정")
 	void updateGroup() throws Exception {
 
 		/* Given */
@@ -197,6 +197,36 @@ class GroupControllerTest extends ControllerTest {
 						.description("수정할 그룹 이름"),
 					fieldWithPath("description").type(JsonFieldType.STRING)
 						.description("수정할 그룹 설명")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	@DisplayName("그룹 삭제")
+	void deleteGroup() throws Exception {
+
+		/* Given */
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}", 1)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/delete-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
 				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING)

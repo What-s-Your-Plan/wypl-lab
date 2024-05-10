@@ -2,7 +2,6 @@ package com.butter.wypl.notification.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -16,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import com.butter.wypl.global.annotation.MongoRepositoryTest;
 import com.butter.wypl.notification.data.NotificationTypeCode;
 import com.butter.wypl.notification.domain.Notification;
-import com.butter.wypl.notification.domain.NotificationButton;
 
 @MongoRepositoryTest
 class NotificationRepositoryTest {
@@ -53,31 +51,15 @@ class NotificationRepositoryTest {
 	void createNotificationTest() {
 		// given
 		String message = "";
-		List<NotificationButton> buttons = new ArrayList<>();
-		buttons.add(
-				NotificationButton.builder()
-						.text("수락")
-						.actionUrl("ok")
-						.color("#000000")
-						.logo("수락이지롱")
-						.build()
-		);
-		buttons.add(
-				NotificationButton.builder()
-						.text("취소")
-						.actionUrl("cancel")
-						.color("#000000")
-						.logo("취소지롱")
-						.build()
-		);
 
 		Notification notification = Notification.builder()
-				.memberId(1)
-				.message(message)
-				.buttons(buttons)
-				.isRead(false)
-				.typeCode(NotificationTypeCode.GROUP)
-				.build();
+			.memberId(1)
+			.message(message)
+			.isRead(false)
+			.isActed(false)
+			.typeCode(NotificationTypeCode.GROUP)
+			.targetId(1)
+			.build();
 
 		// when
 		Notification savedNotification = notificationRepository.save(notification);
@@ -119,19 +101,21 @@ class NotificationRepositoryTest {
 
 	@Test
 	@DisplayName("회원ID에 맞는 알림 전체를 삭제한다.")
-	void deleteNotificationByMemberId () {
-	    //given
+	void deleteNotificationByMemberId() {
+		//given
 		// 저장
 		int memberId = 1;
 		saveDummyNotification(memberId);
 
-	    //when
-		Page<Notification> pageOfNotifications = notificationRepository.findByMemberIdWithPage(memberId, PageRequest.of(0, 50));
+		//when
+		Page<Notification> pageOfNotifications = notificationRepository.findByMemberIdWithPage(memberId,
+			PageRequest.of(0, 50));
 		List<Notification> content = pageOfNotifications.getContent();
 		assertThat(content.size()).isEqualTo(5);
 
 		notificationRepository.deleteByMemberId(memberId);
-		Page<Notification> deletedResult = notificationRepository.findByMemberIdWithPage(memberId, PageRequest.of(0, 50));
+		Page<Notification> deletedResult = notificationRepository.findByMemberIdWithPage(memberId,
+			PageRequest.of(0, 50));
 		List<Notification> content1 = deletedResult.getContent();
 		//then
 		assertThat(content1.size()).isEqualTo(0);
@@ -139,42 +123,27 @@ class NotificationRepositoryTest {
 
 	// List<Notification> makeNotificationList() {
 	void saveDummyNotification(final int memberId) {
-		List<NotificationButton> buttons = new ArrayList<>();
-		buttons.add(
-			NotificationButton.builder()
-				.text("삭제버튼")
-				.actionUrl("delete")
-				.color("#000000")
-				.build()
-		);
-		buttons.add(
-			NotificationButton.builder()
-				.text("취소버튼")
-				.actionUrl("cancel")
-				.color("#000000")
-				.build()
-		);
-
 		Stream.iterate(0, i -> i < 5, i -> i + 1)
 			.forEach(i -> notificationRepository.save(
 				Notification.builder()
 					.memberId(memberId)
 					.message("삭제 테스트용" + i)
-					.buttons(buttons)
 					.isRead(false)
+					.isActed(false)
 					.typeCode(NotificationTypeCode.GROUP)
+					.targetId(i)
 					.build()
 			));
 	}
 
 	@Test
 	@DisplayName("회원 ID로 알림 전체조회")
-	void findAllByMemberIdTest () {
-	    //given
+	void findAllByMemberIdTest() {
+		//given
 		int memberId = 1;
 		saveDummyNotification(memberId);
 
-	    //when
+		//when
 		List<Notification> list = notificationRepository.findAllByMemberId(memberId);
 
 		//then

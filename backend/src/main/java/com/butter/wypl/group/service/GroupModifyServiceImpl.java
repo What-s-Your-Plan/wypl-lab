@@ -2,17 +2,20 @@ package com.butter.wypl.group.service;
 
 import static com.butter.wypl.global.common.Color.*;
 import static com.butter.wypl.group.exception.GroupErrorCode.*;
-import static com.butter.wypl.group.utils.GroupValidation.*;
+import static com.butter.wypl.group.utils.GroupServiceUtils.findById;
+import static com.butter.wypl.group.utils.GroupServiceUtils.*;
 import static com.butter.wypl.group.utils.MemberGroupServiceUtils.*;
 import static com.butter.wypl.member.exception.MemberErrorCode.*;
-import static com.butter.wypl.member.utils.MemberServiceUtils.*;
+import static com.butter.wypl.member.utils.MemberServiceUtils.findById;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.global.exception.CustomErrorCode;
 import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
@@ -23,7 +26,6 @@ import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
-import com.butter.wypl.group.utils.GroupServiceUtils;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.repository.MemberRepository;
@@ -66,9 +68,26 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Transactional
 	@Override
 	public void updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest) {
-		validateGroupMember(memberId, getMembersByGroupId(memberGroupRepository, groupId));
-		Group group = GroupServiceUtils.findById(groupRepository, groupId);
+		isGroupMember(memberId, getMembersByGroupId(memberGroupRepository, groupId));
+		Group group = findById(groupRepository, groupId);
 		group.updateGroupInfo(updateRequest.name(), updateRequest.description());
+	}
+
+	@Transactional
+	@Override
+	public void deleteGroup(int memberId, int groupId) {
+
+		if (!isGroupOwner(groupRepository, memberId, groupId)) {
+			throw new GroupException(IS_NOT_GROUP_OWNER);
+		}
+
+		// 그룹에 속한 맴버들을 삭제
+		List<MemberGroup> findMemberGroups = getMemberGroupsByGroupId(memberGroupRepository, groupId);
+		findMemberGroups.forEach(BaseEntity::delete);
+
+		// 그룹 삭제
+		Group findGroup = findById(groupRepository, groupId);
+		findGroup.delete();
 	}
 
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {

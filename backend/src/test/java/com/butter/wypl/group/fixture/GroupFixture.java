@@ -8,7 +8,8 @@ import lombok.Getter;
 @Getter
 public enum GroupFixture {
 
-	GROUP_STUDY("study group", "신나는 스터디 모임");
+	GROUP_STUDY("study group", "신나는 스터디 모임"),
+	GROUP_WORK("work group", "일하기 위한 모임");
 
 	private final String name;
 	private final String description;
