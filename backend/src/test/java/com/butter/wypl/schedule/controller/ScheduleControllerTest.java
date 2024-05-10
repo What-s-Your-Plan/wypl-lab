@@ -108,7 +108,9 @@ public class ScheduleControllerTest extends ControllerTest {
 					fieldWithPath("body.members[].member_id").type(JsonFieldType.NUMBER)
 						.description("조회한 일정에 속한 멤버의 인덱스"),
 					fieldWithPath("body.members[].nickname").type(JsonFieldType.STRING)
-						.description("조회한 일정에 속한 멤버의 닉네임")
+						.description("조회한 일정에 속한 멤버의 닉네임"),
+					fieldWithPath("body.members[].profile_image").type(JsonFieldType.STRING).optional()
+						.description("조회한 일정에 속한 멤버의 프로필 이미지")
 				)
 			))
 			.andExpect(status().isOk());
@@ -172,6 +174,8 @@ public class ScheduleControllerTest extends ControllerTest {
 						.description("조회한 일정에 속한 멤버의 인덱스"),
 					fieldWithPath("body.members[].nickname").type(JsonFieldType.STRING)
 						.description("조회한 일정에 속한 멤버의 닉네임"),
+					fieldWithPath("body.members[].profile_image").type(JsonFieldType.STRING).optional()
+						.description("조회한 일정에 속한 멤버의 프로필 이미지"),
 					fieldWithPath("body.repetition").optional().description("조회된 일정의 반복 정보"),
 					fieldWithPath("body.repetition.repetition_id").type(JsonFieldType.NUMBER)
 						.optional()
@@ -251,6 +255,8 @@ public class ScheduleControllerTest extends ControllerTest {
 						.description("일정의 라벨의 라벨 id"),
 					fieldWithPath("members[].member_id").type(JsonFieldType.NUMBER)
 						.description("일정에 속한 멤버의 인덱스"),
+					fieldWithPath("body.members[].profile_image").type(JsonFieldType.STRING).optional()
+						.description("조회한 일정에 속한 멤버의 프로필 이미지"),
 					fieldWithPath("repetition").optional().description("일정의 반복 정보"),
 					fieldWithPath("repetition.repetition_cycle").type(JsonFieldType.STRING)
 						.optional()
@@ -286,6 +292,8 @@ public class ScheduleControllerTest extends ControllerTest {
 					fieldWithPath("body.label.member_id").type(JsonFieldType.NUMBER)
 						.optional()
 						.description("생성된 일정의 라벨의 주인 id"),
+					fieldWithPath("body.members[].profile_image").type(JsonFieldType.STRING).optional()
+						.description("조회한 일정에 속한 멤버의 프로필 이미지"),
 					fieldWithPath("body.label.title").type(JsonFieldType.STRING)
 						.optional()
 						.description("생성된 일정의 라벨의 재목"),
@@ -317,7 +325,7 @@ public class ScheduleControllerTest extends ControllerTest {
 						.optional()
 						.description("생성된 일정의 주 반복시 몇주만의 반복인지")
 				)))
-			.andExpect(status().isOk());
+			.andExpect(status().isCreated());
 	}
 
 	@Test
@@ -425,6 +433,8 @@ public class ScheduleControllerTest extends ControllerTest {
 						.description("생성된 일정에 속한 멤버의 인덱스"),
 					fieldWithPath("body.members[].nickname").type(JsonFieldType.STRING)
 						.description("생성된 일정에 속한 멤버의 닉네임"),
+					fieldWithPath("body.members[].profile_image").type(JsonFieldType.STRING).optional()
+						.description("조회한 일정에 속한 멤버의 프로필 이미지"),
 					fieldWithPath("body.repetition").optional().description("생성된 일정의 반복 정보"),
 					fieldWithPath("body.repetition.repetition_id").type(JsonFieldType.NUMBER)
 						.optional()
