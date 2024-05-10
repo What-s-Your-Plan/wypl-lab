@@ -8,6 +8,7 @@ import static com.butter.wypl.group.utils.MemberGroupServiceUtils.*;
 import static com.butter.wypl.member.exception.MemberErrorCode.*;
 import static com.butter.wypl.member.utils.MemberServiceUtils.findById;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,6 @@ import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
-import com.butter.wypl.group.utils.MemberGroupServiceUtils;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.repository.MemberRepository;
@@ -80,11 +80,14 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		if (!isGroupOwner(groupRepository, memberId, groupId)) {
 			throw new GroupException(IS_NOT_GROUP_OWNER);
 		}
+
 		// 그룹에 속한 맴버들을 삭제
-		MemberGroupServiceUtils.getMemberGroupsByGroupId(memberGroupRepository, groupId)
-			.forEach(BaseEntity::delete);
+		List<MemberGroup> findMemberGroups = getMemberGroupsByGroupId(memberGroupRepository, groupId);
+		findMemberGroups.forEach(BaseEntity::delete);
+
 		// 그룹 삭제
-		findById(groupRepository, groupId).delete();
+		Group findGroup = findById(groupRepository, groupId);
+		findGroup.delete();
 	}
 
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {
@@ -97,7 +100,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		createRequest.memberIdList().forEach(memberId -> {
 			if (memberGroupRepository.countByMemberId(memberId) >= 50) {
 				throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
-					memberRepository.findById(memberId).get().getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
+						memberRepository.findById(memberId).get().getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
 			}
 		});
 	}
