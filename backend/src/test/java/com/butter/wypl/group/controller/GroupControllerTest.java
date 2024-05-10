@@ -250,7 +250,7 @@ class GroupControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.get("/group/v1/groups/members/{memberId}", memberId)
+			RestDocumentationRequestBuilders.get("/group/v1/groups/members")
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
 
@@ -261,9 +261,6 @@ class GroupControllerTest extends ControllerTest {
 			.andDo(document("group/get-groups-by-member-id",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
-				pathParameters(
-					parameterWithName("memberId").description("회원 식별자")
-				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING)
 						.description("응답 메시지"),

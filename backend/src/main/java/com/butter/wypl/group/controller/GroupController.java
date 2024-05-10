@@ -59,7 +59,7 @@ public class GroupController {
 		return ResponseEntity.ok(Message.onlyMessage("그룹 삭제에 성공했습니다."));
 	}
 
-	@GetMapping("/v1/groups/members/{memberId}")
+	@GetMapping("/v1/groups/members")
 	public ResponseEntity<Message<GroupListByMemberIdResponse>> getGroupListByMemberId(
 		@Authenticated AuthMember authMember) {
 		return ResponseEntity.ok(
