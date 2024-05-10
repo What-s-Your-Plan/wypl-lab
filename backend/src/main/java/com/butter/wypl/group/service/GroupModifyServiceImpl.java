@@ -108,7 +108,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		Member foundMember = findById(memberRepository, memberId);
 		Group foundGroup = findById(groupRepository, groupId);
 
-		MemberGroup memberGroup = memberGroupRepository.findPendingMemberGroupsByGroupId(foundMember.getId(),
+		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
 				foundGroup.getId())
 			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
 
@@ -122,7 +122,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		Member foundMember = findById(memberRepository, memberId);
 		Group foundGroup = findById(groupRepository, groupId);
 
-		MemberGroup memberGroup = memberGroupRepository.findPendingMemberGroupsByGroupId(foundMember.getId(),
+		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
 				foundGroup.getId())
 			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
 
