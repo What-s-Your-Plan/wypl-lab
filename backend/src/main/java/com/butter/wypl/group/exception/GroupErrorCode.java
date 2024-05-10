@@ -18,7 +18,8 @@ public enum GroupErrorCode implements ErrorCode {
 	NOT_EXIST_GROUP(HttpStatus.BAD_REQUEST, "GROUP_005", "존재하지 않는 그룹입니다."),
 	IS_NOT_GROUP_MEMBER(HttpStatus.BAD_REQUEST, "GROUP_006", "그룹 멤버가 아닙니다."),
 	IS_NOT_GROUP_OWNER(HttpStatus.BAD_REQUEST, "GROUP_007", "그룹의 소유자가 아닙니다."),
-	NOT_EXIST_MEMBER_GROUP(HttpStatus.BAD_REQUEST, "GROUP_008", "존재하지 않는 멤버 그룹입니다.");
+	NOT_EXIST_MEMBER_GROUP(HttpStatus.BAD_REQUEST, "GROUP_008", "해당 정보와 일치하는 그룹 맴버 정보가 없습니다."),
+	NOT_EXIST_PENDING_MEMBER_GROUP(HttpStatus.BAD_REQUEST, "GROUP_009", "그룹 초대 대기 목록에 존재하지 않습니다.");
 	private final HttpStatus httpStatus;
 	private final String errorCode;
 	private final String message;

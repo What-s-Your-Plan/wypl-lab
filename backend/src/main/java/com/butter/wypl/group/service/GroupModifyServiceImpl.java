@@ -90,6 +90,15 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		findGroup.delete();
 	}
 
+	@Transactional
+	@Override
+	public void acceptGroupInvitation(int memberId, int groupId) {
+		MemberGroup memberGroup = memberGroupRepository.findPendingMemberGroupsByGroupId(memberId, groupId)
+			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
+
+		memberGroup.acceptGroupInvitation();
+	}
+
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {
 		if (isExceedMaxMember(createRequest.memberIdList())) {
 			throw new GroupException(EXCEED_MAX_MEMBER_COUNT);

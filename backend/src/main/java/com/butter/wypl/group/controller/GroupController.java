@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,6 +65,13 @@ public class GroupController {
 		@Authenticated AuthMember authMember) {
 		return ResponseEntity.ok(
 			Message.withBody("그룹 조회에 성공했습니다.", groupLoadService.getGroupListByMemberId(authMember.getId())));
+	}
+
+	@PutMapping("/v1/groups/{groupId}/members")
+	public ResponseEntity<Message<Void>> acceptGroupInvitation(@Authenticated AuthMember authMember,
+		@PathVariable int groupId) {
+		groupModifyService.acceptGroupInvitation(authMember.getId(), groupId);
+		return ResponseEntity.ok(Message.onlyMessage("그룹 멤버로 등록됐습니다."));
 	}
 
 }

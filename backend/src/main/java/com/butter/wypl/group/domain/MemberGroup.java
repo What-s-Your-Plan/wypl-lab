@@ -57,4 +57,8 @@ public class MemberGroup extends BaseEntity {
 			.color(color)
 			.build();
 	}
+
+	public void acceptGroupInvitation() {
+		this.groupInviteState = GroupInviteState.ACCEPTED;
+	}
 }

@@ -303,6 +303,36 @@ class GroupControllerTest extends ControllerTest {
 				)
 			))
 			.andExpect(status().isOk());
+	}
 
+	@Test
+	@DisplayName("그룹 회원 초대 수락")
+	void acceptGroupInvitationTest() throws Exception {
+		/* Given */
+		int groupId = 1;
+		doNothing().when(groupModifyService).acceptGroupInvitation(anyInt(), anyInt());
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.put("/group/v1/groups/{groupId}/members", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/accept-group-invitation",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 }

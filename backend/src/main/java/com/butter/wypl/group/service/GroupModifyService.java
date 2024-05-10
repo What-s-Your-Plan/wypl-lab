@@ -12,4 +12,5 @@ public interface GroupModifyService {
 
 	void deleteGroup(int memberId, int groupId);
 
+	void acceptGroupInvitation(int memberId, int groupId);
 }
