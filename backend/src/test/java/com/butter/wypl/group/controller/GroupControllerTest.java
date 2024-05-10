@@ -109,7 +109,7 @@ class GroupControllerTest extends ControllerTest {
 		int groupId = 1;
 
 		given(groupLoadService.getDetailById(anyInt(), anyInt()))
-			.willReturn(GroupDetailResponse.from(GROUP_STUDY.toGroup(HAN_JI_WON.toMember()),
+			.willReturn(GroupDetailResponse.of(GROUP_STUDY.toGroup(HAN_JI_WON.toMember()),
 				Collections.singletonList(HAN_JI_WON.toMember())));
 
 		givenMockLoginMember();

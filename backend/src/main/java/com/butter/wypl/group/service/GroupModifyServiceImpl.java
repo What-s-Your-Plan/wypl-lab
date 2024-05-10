@@ -100,7 +100,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		createRequest.memberIdList().forEach(memberId -> {
 			if (memberGroupRepository.countByMemberId(memberId) >= 50) {
 				throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
-						memberRepository.findById(memberId).get().getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
+					memberRepository.findById(memberId).get().getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
 			}
 		});
 	}
