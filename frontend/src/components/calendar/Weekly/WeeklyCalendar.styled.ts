@@ -10,20 +10,20 @@ type DateSpanProps = {
   $isHoliday?: boolean;
   $isSat?: boolean;
   $isSelected: boolean;
-}
+};
 
 type ScheduleListProps = {
   $day: number;
   $start: number;
   $length: number;
-}
+};
 
 type LScheduleSpanProps = {
   $bgColor: LabelColorsType;
   $startDay: number;
   $row: number;
   $period: number;
-}
+};
 
 const DaySticky = styled.div`
   ${tw`sticky top-0 z-30 flex-none bg-default-white shadow ring-1 ring-black ring-opacity-5`}
@@ -56,7 +56,7 @@ const ScheduleOl = styled.ol`
     grid-cols-7
   `}
   grid-template-rows: repeat(288, minmax(0, 1fr)) auto;
-`
+`;
 
 const ScheduleList = styled.li<ScheduleListProps>`
   ${tw`
@@ -95,13 +95,16 @@ const LScheduleContainer = styled.div<{ $height: number }>`
   height: ${(props) => `${props.$height}rem`};
 `;
 
-const LScheduleGrid = styled.div<{$row: number}>`
+const LScheduleGrid = styled.div<{ $row: number }>`
   ${tw`
     grid
     grid-cols-7
+    bg-none
+    absolute
+    w-full
   `}
   grid-template-rows: repeat(${(props) => `${props.$row}`}, 1rem);
-`
+`;
 
 const LScheduleSpan = styled.span<LScheduleSpanProps>`
   ${tw`
@@ -114,10 +117,10 @@ const LScheduleSpan = styled.span<LScheduleSpanProps>`
     z-[5]
   `}
   ${(props) => BgTheme[props.$bgColor]}
-  grid-column: ${(props) => `${props.$startDay + 1} / span ${props.$period + 1}`};
-  grid-row-start : ${(props) => `${props.$row + 1}`};
-`
-
+  grid-column: ${(props) =>
+    `${props.$startDay + 1} / span ${props.$period + 1}`};
+  grid-row-start: ${(props) => `${props.$row + 1}`};
+`;
 
 export {
   DaySticky,
@@ -129,5 +132,5 @@ export {
   ScheduleButton,
   LScheduleContainer,
   LScheduleGrid,
-  LScheduleSpan
+  LScheduleSpan,
 };
