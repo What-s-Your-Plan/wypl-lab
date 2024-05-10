@@ -94,7 +94,7 @@ public class LabelControllerTest extends ControllerTest {
 
 		// When
 		ResultActions resultActions = mockMvc.perform(
-			RestDocumentationRequestBuilders.patch("/label/v1/labels/{labelId}", 1)
+			RestDocumentationRequestBuilders.patch("/label/v1/labels/{label}", 1)
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(json)
@@ -106,7 +106,7 @@ public class LabelControllerTest extends ControllerTest {
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
 				pathParameters(
-					parameterWithName("labelId").description("라벨 id")
+					parameterWithName("label").description("라벨 id")
 				),
 				requestFields(
 					fieldWithPath("title").type(JsonFieldType.STRING).description("라벨 제목"),
@@ -133,7 +133,7 @@ public class LabelControllerTest extends ControllerTest {
 
 		// When
 		ResultActions resultActions = mockMvc.perform(
-			RestDocumentationRequestBuilders.get("/label/v1/labels/{labelId}", 1)
+			RestDocumentationRequestBuilders.get("/label/v1/labels/{label}", 1)
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
@@ -144,7 +144,7 @@ public class LabelControllerTest extends ControllerTest {
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
 				pathParameters(
-					parameterWithName("labelId").description("라벨 id")
+					parameterWithName("label").description("라벨 id")
 				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
