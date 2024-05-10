@@ -325,7 +325,7 @@ public class ScheduleControllerTest extends ControllerTest {
 						.optional()
 						.description("생성된 일정의 주 반복시 몇주만의 반복인지")
 				)))
-			.andExpect(status().isOk());
+			.andExpect(status().isCreated());
 	}
 
 	@Test
