@@ -1,4 +1,4 @@
-import Button from '../../../common/Button';
+import Button from '@/components/common/Button';
 
 import Check from '@/assets/icons/check.svg';
 import X from '@/assets/icons/x.svg';
@@ -11,6 +11,7 @@ function GroupNotification({ notification }: GroupNotificationProps) {
   const handleReject = () => {
     console.log('reject');
   };
+
   const handleAccept = () => {
     console.log('accept');
   };

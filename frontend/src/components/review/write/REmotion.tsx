@@ -36,6 +36,33 @@ function REmotion({ index, content }: REmotionProps) {
     setContent(index, newContent);
   };
 
+  const renderEmoji = (emoji: string) => {
+    switch (emoji) {
+      case 'Funny':
+        return <img src={Funny} alt="기분" className="w-10" />;
+      case 'Smile':
+        return <img src={Smile} alt="기분" className="w-10" />;
+      case 'Bad':
+        return <img src={Bad} alt="기분" className="w-10" />;
+      case 'Tired':
+        return <img src={Tired} alt="기분" className="w-10" />;
+      case 'Cry':
+        return <img src={Cry} alt="기분" className="w-10" />;
+      case 'Stareyes':
+        return <img src={Stareyes} alt="기분" className="w-10" />;
+      case 'Nyah':
+        return <img src={Nyah} alt="기분" className="w-10" />;
+      case 'Congrats':
+        return <img src={Congrats} alt="기분" className="w-10" />;
+      case 'Sick':
+        return <img src={Sick} alt="기분" className="w-10" />;
+      case 'Noone':
+        return <img src={Noone} alt="기분" className="w-10" />;
+      default:
+        return <img src={Question} alt="기분" className="w-10" />;
+    }
+  };
+
   return (
     <WhiteContainer $width="900">
       <div className="flex flex-row">
@@ -45,46 +72,42 @@ function REmotion({ index, content }: REmotionProps) {
       <div className="flex flex-row flex-wrap items-center">
         <div>
           <div className="mx-10 mt-5 mb-1 flex gap-3">
-            <button onClick={() => handleEmoji(Funny)}>
+            <button onClick={() => handleEmoji('Funny')}>
               <img src={Funny} alt="즐거움" className="w-8" />
             </button>
-            <button onClick={() => handleEmoji(Smile)}>
+            <button onClick={() => handleEmoji('Smile')}>
               <img src={Smile} alt="좋음" className="w-8" />
             </button>
-            <button onClick={() => handleEmoji(Bad)}>
+            <button onClick={() => handleEmoji('Bad')}>
               <img src={Bad} alt="나쁨" className="w-8" />
             </button>
-            <button onClick={() => handleEmoji(Tired)}>
+            <button onClick={() => handleEmoji('Tired')}>
               <img src={Tired} alt="피곤함" className="w-8" />
             </button>
-            <button onClick={() => handleEmoji(Cry)}>
+            <button onClick={() => handleEmoji('Cry')}>
               <img src={Cry} alt="울음" className="w-8" />
             </button>
           </div>
           <div className="mx-10 mb-5 flex gap-3">
-            <button onClick={() => handleEmoji(Stareyes)}>
+            <button onClick={() => handleEmoji('Stareyes')}>
               <img src={Stareyes} alt="신세계" className="w-8" />
             </button>
-            <button onClick={() => handleEmoji(Nyah)}>
+            <button onClick={() => handleEmoji('Nyah')}>
               <img src={Nyah} alt="신남" className="w-8" />
             </button>
-            <button onClick={() => handleEmoji(Congrats)}>
+            <button onClick={() => handleEmoji('Congrats')}>
               <img src={Congrats} alt="축하" className="w-8" />
             </button>
-            <button onClick={() => handleEmoji(Sick)}>
+            <button onClick={() => handleEmoji('Sick')}>
               <img src={Sick} alt="아픔" className="w-8" />
             </button>
-            <button onClick={() => handleEmoji(Noone)}>
+            <button onClick={() => handleEmoji('Noone')}>
               <img src={Noone} alt="혼자 있고 싶음" className="w-8" />
             </button>
           </div>
         </div>
         <div className="flex gap-4">
-          <img
-            src={content.emoji === '' ? Question : content.emoji}
-            alt="기분"
-            className="w-10"
-          />
+          {renderEmoji(content.emoji)}
           <InputDefault
             placeholder="오늘의 기분을 입력해주세요"
             className="!h-10"
