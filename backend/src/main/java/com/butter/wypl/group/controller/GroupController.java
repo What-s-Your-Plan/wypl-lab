@@ -18,6 +18,7 @@ import com.butter.wypl.group.data.request.GroupCreateRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
+import com.butter.wypl.group.data.response.GroupListByMemberIdResponse;
 import com.butter.wypl.group.service.GroupLoadService;
 import com.butter.wypl.group.service.GroupModifyService;
 
@@ -56,6 +57,13 @@ public class GroupController {
 	public ResponseEntity<Message<Void>> deleteGroup(@Authenticated AuthMember authMember, @PathVariable int groupId) {
 		groupModifyService.deleteGroup(authMember.getId(), groupId);
 		return ResponseEntity.ok(Message.onlyMessage("그룹 삭제에 성공했습니다."));
+	}
+
+	@GetMapping("/v1/groups/members/{memberId}")
+	public ResponseEntity<Message<GroupListByMemberIdResponse>> getGroupListByMemberId(
+		@Authenticated AuthMember authMember) {
+		return ResponseEntity.ok(
+			Message.withBody("그룹 조회에 성공했습니다.", groupLoadService.getGroupListByMemberId(authMember.getId())));
 	}
 
 }

@@ -32,4 +32,20 @@ public record GroupDetailResponse(
 			MemberResponse.from(members)
 		);
 	}
+
+	// 테스트 필요
+	public static GroupDetailResponse from(Group group) {
+		return new GroupDetailResponse(
+			group.getId(),
+			group.getName(),
+			group.getDescription(),
+			MemberResponse.from(group.getOwner()),
+			group.getMemberGroups().size(),
+			MemberResponse.from(
+				group.getMemberGroups().stream()
+					.map(memberGroup -> memberGroup.getMember())
+					.toList()
+			)
+		);
+	}
 }
