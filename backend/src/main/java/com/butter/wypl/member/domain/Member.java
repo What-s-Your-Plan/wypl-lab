@@ -55,8 +55,7 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "timezone", length = 10, nullable = false)
 	private CalendarTimeZone timeZone;
-
-	/** 확인 필요 */
+	
 	@OneToMany(mappedBy = "member")
 	private List<MemberGroup> memberGroups;
 

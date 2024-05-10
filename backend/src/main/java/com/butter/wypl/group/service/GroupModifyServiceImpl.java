@@ -45,6 +45,8 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Override
 	public GroupIdResponse createGroup(int memberId, GroupCreateRequest createRequest) {
 
+		Member groupOwner = findById(memberRepository, memberId);
+
 		createRequest.memberIdList().add(memberId);
 
 		validateMaxMemberCount(createRequest);
@@ -53,7 +55,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 		validateEachMemberGroupCountLimit(createRequest);
 
-		Member groupOwner = findById(memberRepository, memberId);
 		Group group = Group.of(createRequest.name(), createRequest.description(), groupOwner);
 
 		Group savedGroup = groupRepository.save(group);
@@ -62,7 +63,17 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 			Member foundMember = findById(memberRepository, memberIdInGroup);
 			memberGroupRepository.save(MemberGroup.of(foundMember, savedGroup, labelYellow));
 		}
+
+		updateGroupInvitationStateOfOwner(memberId, savedGroup);
+
 		return new GroupIdResponse(savedGroup.getId());
+	}
+
+	private void updateGroupInvitationStateOfOwner(int memberId, Group savedGroup) {
+		MemberGroup ownerMemberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(memberId,
+				savedGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
+		ownerMemberGroup.setGroupInviteStateAccepted();
 	}
 
 	@Transactional
@@ -96,7 +107,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		MemberGroup memberGroup = memberGroupRepository.findPendingMemberGroupsByGroupId(memberId, groupId)
 			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
 
-		memberGroup.acceptGroupInvitation();
+		memberGroup.setGroupInviteStateAccepted();
 	}
 
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {

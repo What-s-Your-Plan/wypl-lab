@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.butter.wypl.global.annotation.JpaRepositoryTest;
 import com.butter.wypl.group.domain.Group;
+import com.butter.wypl.group.domain.GroupInviteState;
 import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.exception.GroupErrorCode;
 import com.butter.wypl.group.exception.GroupException;
@@ -46,7 +47,7 @@ class GroupServiceUtilsTest {
 			/* Given */
 			Member savedMember = memberRepository.save(HAN_JI_WON.toMember());
 			Group savedGroup = groupRepository.save(GROUP_STUDY.toGroup(savedMember));
-			memberGroupRepository.save(MemberGroup.of(savedMember, savedGroup, labelYellow));
+			memberGroupRepository.save(MemberGroup.of(savedMember, savedGroup, labelYellow, GroupInviteState.ACCEPTED));
 			List<Member> memberList = MemberGroupServiceUtils.getMembersByGroupId(memberGroupRepository,
 				savedGroup.getId());
 

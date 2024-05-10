@@ -43,11 +43,11 @@ public class MemberGroup extends BaseEntity {
 	private GroupInviteState groupInviteState;
 
 	@Builder
-	private MemberGroup(Member member, Group group, Color color) {
+	private MemberGroup(Member member, Group group, Color color, GroupInviteState groupInviteState) {
 		this.member = member;
 		this.group = group;
 		this.color = color;
-		this.groupInviteState = GroupInviteState.PENDING;
+		this.groupInviteState = groupInviteState;
 	}
 
 	public static MemberGroup of(Member member, Group group, Color color) {
@@ -55,10 +55,20 @@ public class MemberGroup extends BaseEntity {
 			.member(member)
 			.group(group)
 			.color(color)
+			.groupInviteState(GroupInviteState.PENDING)
 			.build();
 	}
 
-	public void acceptGroupInvitation() {
+	public static MemberGroup of(Member member, Group group, Color color, GroupInviteState groupInviteState) {
+		return MemberGroup.builder()
+			.member(member)
+			.group(group)
+			.color(color)
+			.groupInviteState(groupInviteState)
+			.build();
+	}
+
+	public void setGroupInviteStateAccepted() {
 		this.groupInviteState = GroupInviteState.ACCEPTED;
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.butter.wypl.global.annotation.ServiceTest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.domain.Group;
+import com.butter.wypl.group.domain.GroupInviteState;
 import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.exception.GroupErrorCode;
 import com.butter.wypl.group.exception.GroupException;
@@ -55,7 +56,7 @@ class GroupModifyServiceJpaTest {
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
 			Group group = groupRepository.save(
 				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getDescription(), member));
-			memberGroupRepository.save(MemberGroup.of(member, group, labelYellow));
+			memberGroupRepository.save(MemberGroup.of(member, group, labelYellow, GroupInviteState.ACCEPTED));
 
 			em.flush();
 			em.clear();
