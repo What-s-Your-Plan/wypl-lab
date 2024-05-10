@@ -1,6 +1,5 @@
 package com.butter.wypl.notification.service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -11,12 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-import com.butter.wypl.notification.data.ButtonInfo;
 import com.butter.wypl.notification.data.NotificationTypeCode;
 import com.butter.wypl.notification.data.request.NotificationCreateRequest;
 import com.butter.wypl.notification.data.response.NotificationPageResponse;
 import com.butter.wypl.notification.domain.Notification;
-import com.butter.wypl.notification.domain.NotificationButton;
 import com.butter.wypl.notification.exception.NotificationErrorCode;
 import com.butter.wypl.notification.exception.NotificationException;
 import com.butter.wypl.notification.repository.EmitterRepository;
@@ -35,11 +32,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 
 	private final NotificationRepository notificationRepository;
 	private final EmitterModifyService emitterModifyService;
-
 	private final EmitterRepository emitterRepository;
-
-	private final static ButtonInfo[] acceptButtons = {ButtonInfo.ACCEPT, ButtonInfo.CANCEL};
-	private final static ButtonInfo[] reviewButton = {ButtonInfo.REVIEW};
 
 	@Override
 	@Transactional
@@ -87,49 +80,29 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 	}
 
 	private Notification createGroupNotification(final NotificationCreateRequest request) {
-		List<NotificationButton> buttons = getButtons(acceptButtons);
-
 		Notification notification = Notification.builder()
 			.memberId(request.memberId())
 			.message(makeMessage(request.typeCode(), null, request.nickName(), null))
-			.buttons(buttons)
 			.isRead(false)
+			.isActed(false)
 			.typeCode(request.typeCode())
+			.targetId(request.targetId())
 			.build();
 
 		return notificationRepository.save(notification);
 	}
 
 	private Notification createReviewNotification(final NotificationCreateRequest request) {
-		List<NotificationButton> buttons = getButtons(reviewButton);
-
 		Notification notification = Notification.builder()
 			.memberId(request.memberId())
 			.message(makeMessage(request.typeCode(), request.teamName(), request.nickName(), request.scheduleTitle()))
-			.buttons(buttons)
 			.isRead(false)
+			.isActed(false)
 			.typeCode(request.typeCode())
+			.targetId(request.targetId())
 			.build();
 
 		return notificationRepository.save(notification);
-	}
-
-	private List<NotificationButton> getButtons(final ButtonInfo[] buttonInfos) {
-		return Arrays.stream(buttonInfos)
-			.map(info -> {
-				switch (info) {
-					case ACCEPT -> {
-						return NotificationButton.of(info, "accept url");
-					}
-					case CANCEL -> {
-						return NotificationButton.of(info, "cancel url");
-					}
-					case REVIEW -> {
-						return NotificationButton.of(info, "review url");
-					}
-					default -> throw new NotificationException(NotificationErrorCode.NOTIFICATION_BUTTON_TYPE_ERROR);
-				}
-			}).toList();
 	}
 
 	/**
@@ -148,16 +121,15 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 	) {
 		/*
 		 * message template
-		 * 1. GROUP 초대: "[팀명]" 팀 그룹 초대가 왔어요.
-		 * 2. 회고록 작성: [회원명]님, [일정명] 일정은 잘 마치셨나요?
+		 * 1. GROUP 초대: '싸피' 그룹 초대가 왔어요.
+		 * 2. 회고록 작성: 도구리님, '운동' 일정은 잘 마치셨나요?
 		 * */
 		switch (typeCode) {
 			case GROUP -> {
-				return String.format("[%s] 그룹 초대가 왔어요.", teamName);
+				return String.format("'[%s]' 그룹 초대가 왔어요.", teamName);
 			}
 			case REVIEW -> {
-				// TODO 포맷 ->  "nickName"       , "일정"
-				return String.format("%s님, [%s] 일정은 잘 마치셨나요?", nickname, scheduleTitle);
+				return String.format("%s님, '[%s]' 일정은 잘 마치셨나요?", nickname, scheduleTitle);
 			}
 			default -> throw new NotificationException(NotificationErrorCode.NOTIFICATION_TYPE_ERROR);
 		}

@@ -7,6 +7,7 @@ public record NotificationCreateRequest(
 	String nickName,
 	String scheduleTitle,
 	String teamName,
-	NotificationTypeCode typeCode
+	NotificationTypeCode typeCode,
+	int targetId
 ) {
 }

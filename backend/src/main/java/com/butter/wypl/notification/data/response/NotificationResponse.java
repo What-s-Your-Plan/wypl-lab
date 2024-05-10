@@ -15,37 +15,24 @@ public record NotificationResponse(
 	String message,
 	@JsonProperty("is_read")
 	boolean isRead,
-	@JsonProperty("buttons")
-	List<ButtonResponse> buttons,
+	@JsonProperty("is_acted")
+	boolean isActed,
 	@JsonProperty("type_code")
-	NotificationTypeCode typeCode
+	NotificationTypeCode typeCode,
+	@JsonProperty("target_id")
+	int targetId
 ) {
 
-	record ButtonResponse(
-		@JsonProperty("text")
-		String text,
-		@JsonProperty("action_url")
-		String actionUrl,
-		@JsonProperty("color")
-		String color,
-		@JsonProperty("logo")
-		String logo
-	) {
-
-	}
-
 	public static NotificationResponse from(Notification notification) {
-		List<ButtonResponse> btnList = notification.getButtons().stream()
-			.map(btn -> new ButtonResponse(btn.getText(), btn.getActionUrl(), btn.getColor(), btn.getLogo()))
-			.toList();
 
 		return new NotificationResponse(
 			notification.getId(),
 			notification.getMemberId(),
 			notification.getMessage(),
 			notification.getIsRead(),
-			btnList,
-			notification.getTypeCode()
+			notification.getIsActed(),
+			notification.getTypeCode(),
+			notification.getTargetId()
 		);
 	}
 

@@ -71,14 +71,6 @@ public class NotificationController {
 			.body(Message.withBody("알림 조회 성공", notificationLoadService.getNotifications(authMember.getId(), lastId)));
 	}
 
-	@GetMapping("/send-data/{memberId}/{text}")
-	public void testSendData(@PathVariable("memberId") int memberId, @PathVariable("text") String text) {
-		NotificationCreateRequest request = new NotificationCreateRequest(memberId, text, "테스트", null,
-			NotificationTypeCode.REVIEW);
-
-		notificationModifyService.createNotification(request);
-	}
-
 	@DeleteMapping
 	public ResponseEntity<Message<Void>> deleteNotification(@Authenticated AuthMember authMember) {
 		notificationModifyService.deleteNotification(authMember.getId());

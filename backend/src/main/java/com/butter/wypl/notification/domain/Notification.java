@@ -1,7 +1,5 @@
 package com.butter.wypl.notification.domain;
 
-import java.util.List;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -23,9 +21,10 @@ public class Notification extends MongoBaseEntity {
 
 	private int memberId; // 알림 받는 회원
 	private String message; // 알림 메시지 => ex) "자율 A602"팀 그룹 초대가 왔어요.
-	private List<NotificationButton> buttons;
 	private boolean isRead; // 읽음 여부,
+	private boolean isActed; // 회원 이벤트 처리여부
 	private NotificationTypeCode typeCode;
+	private int targetId; // NotificationTypeCode 에 따른 target Id => Group, Review
 
 	/*
 	* lombok 으로 getter 생성시 필드명에 is가 있으면 is를 포함시켜서 메소드를 생성
@@ -36,9 +35,16 @@ public class Notification extends MongoBaseEntity {
 	public boolean getIsRead() {
 		return isRead;
 	}
+	public boolean getIsActed() {
+		return isActed;
+	}
 
 	public void updateIsReadToTrue() {
 		isRead = true;
+	}
+
+	public void updateIsActedToTrue() {
+		isActed = true;
 	}
 
 }
