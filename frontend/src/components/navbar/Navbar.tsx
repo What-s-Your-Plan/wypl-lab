@@ -74,7 +74,7 @@ function Navbar() {
         <S.Logo
           onClick={() => navigate(BROWSER_PATH.CALENDAR)}
           src={logo}
-        ></S.Logo>
+        />
         <NavEventBar changeSheetEvent={changeSheet} />
       </S.Wrapper>
       {sheetComponents.map(

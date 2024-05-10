@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 
 function useForm<S>(
   initialState: S | (() => S), // Object
@@ -15,12 +15,16 @@ function useForm<S>(
   handleSubmit: () => Promise<void>;
   setForm: Dispatch<SetStateAction<S>>;
 } {
-  const [form, setForm] = useState<S>({ ...(initialState as S) });
+  const [form, setForm] = useState({ ...initialState } as S);
   const [errors, setErrors] = useState<Array<boolean>>(
     Object.keys(initialState as object).map(() => {
       return true;
     }),
   );
+
+  useEffect(() => {
+    setForm({...initialState} as S)
+  }, [initialState])
 
   const handleChange = (
     event:

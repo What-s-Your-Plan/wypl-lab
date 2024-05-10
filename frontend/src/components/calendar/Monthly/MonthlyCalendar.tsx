@@ -50,7 +50,7 @@ function MonthlyCalender() {
     const init = [];
 
     for (let i = 0; i < 42; i++) {
-      init.push([[], [], [], []]);
+      init.push([[], [], []]);
     }
 
     return init;

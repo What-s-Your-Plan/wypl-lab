@@ -11,11 +11,11 @@ function isSameDay(date1: Date, date2: Date): boolean {
 }
 
 function dateToString(date: Date): string {
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  return `${date.getFullYear()}-${padding0(date.getMonth() + 1)}-${padding0(date.getDate())}`;
 }
 
 function dateTimeToString(date: Date): string {
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}T${padding0(date.getHours())}:${padding0(date.getMinutes())}`;
+  return `${date.getFullYear()}-${padding0(date.getMonth() + 1)}-${padding0(date.getDate())}T${padding0(date.getHours())}:${padding0(date.getMinutes())}`;
 }
 
 function stringToDate(str: string): Date {
