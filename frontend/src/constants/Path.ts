@@ -11,7 +11,7 @@ const BROWSER_PATH = {
   },
   REVIEW: {
     BASE: '/review',
-    WRITE: '/review/write',
+    WRITE: '/review/write/:scheduleId',
     DETAIL: '/review/:reviewId',
   },
 };
