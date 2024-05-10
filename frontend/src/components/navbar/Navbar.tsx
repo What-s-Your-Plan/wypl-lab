@@ -13,7 +13,7 @@ import Sheet from './sheet/Sheet';
 function Navbar() {
   const navigate = useNavigate();
 
-  const [sheet, setSheet] = useState<SheetType>('MEMBER');
+  const [sheet, setSheet] = useState<SheetType>('NONE');
 
   const changeSheet = (newSheet: SheetType) => {
     if (sheet === newSheet) {
