@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
@@ -9,7 +8,6 @@ import MemberSheet from '@/components/navbar/sheet/member/MemberSheet';
 import NavEventBar from '@/components/navbar/NavEventBar/NavEventBar';
 import NotificationSheet from '@/components/navbar/sheet/notification/NotificationSheet';
 import Sheet from '@/components/navbar/sheet/Sheet';
-
 
 import useJsonWebTokensStore from '@/stores/TokenStore';
 
