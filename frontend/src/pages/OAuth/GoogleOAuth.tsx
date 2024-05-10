@@ -17,7 +17,7 @@ function GoogleOAuth() {
   const navigate = useNavigate();
 
   const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
-  const { setMemberId } = useMemberStore();
+  const { setId: setMemberId } = useMemberStore();
 
   const fetchJsonWebTokens = async () => {
     const param: IssueTokenParams = { code };

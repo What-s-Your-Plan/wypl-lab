@@ -68,6 +68,10 @@ function Navbar() {
     },
   ];
 
+  useEffect(() => {
+    resetSheet();
+  }, [window.location.href]);
+
   return (
     <S.Container>
       <S.Wrapper>

@@ -18,7 +18,7 @@ function DummyOAuthButton() {
   };
 
   const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
-  const { setMemberId } = useMemberStore();
+  const { setId: setMemberId } = useMemberStore();
 
   const fetchMockJsonWebTokens = async () => {
     if (email.length < 8 || email.length > 16) {
