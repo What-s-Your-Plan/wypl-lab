@@ -19,7 +19,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
 			final HttpServletResponse response,
 			final Object handler
 	) throws Exception {
-		log.info("\n요청 URL => [{}]", request.getRequestURL());
+		log.info("\n요청 URI => [{}] \n 요청 METHOD => [{}]" , request.getRequestURI(), request.getMethod());
 		startTime.set(System.currentTimeMillis());
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}

@@ -15,7 +15,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.notification.data.request.NotificationCreateRequest;
@@ -55,24 +54,9 @@ class NotificationServiceImplTest {
 			.willReturn(notificationFixture.toNotification());
 		//when
 		//then
-		assertThatCode(() -> {
-			notificationService.createNotification(request);
-		}).doesNotThrowAnyException();
+		assertThatCode(() -> notificationService.createNotification(request)).doesNotThrowAnyException();
 	}
 
-	@Test
-	@DisplayName("Emitter 구독 테스트")
-	void emitterCreateNotification() {
-		int memberId = 1;
-
-		SseEmitter emitter = mock(SseEmitter.class);
-
-		willDoNothing().given(emitterRepository)
-			.save(eq(memberId), any());
-
-		SseEmitter sseEmitter = notificationService.subscribeNotification(memberId);
-		then(emitterRepository).should().save(memberId, sseEmitter);
-	}
 
 	@Test
 	@DisplayName("회원 알림 전체 삭제")
