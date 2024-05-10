@@ -10,4 +10,7 @@ public record NotificationCreateRequest(
 	NotificationTypeCode typeCode,
 	int targetId
 ) {
+	public boolean typeCodeEquals(NotificationTypeCode notificationTypeCode) {
+		return typeCode.name().equals(notificationTypeCode.name());
+	}
 }

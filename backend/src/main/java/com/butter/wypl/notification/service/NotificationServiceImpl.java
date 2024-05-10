@@ -43,11 +43,12 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		 * 2. 리뷰 작성 알림
 		 * */
 		int memberId = notificationCreateRequest.memberId();
+
 		String eventId = memberId + "_" + System.currentTimeMillis();
 		Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(
 			String.valueOf(memberId));
 
-		if (notificationCreateRequest.typeCode().equals(NotificationTypeCode.GROUP)) {
+		if (notificationCreateRequest.typeCodeEquals(NotificationTypeCode.GROUP)) {
 			log.info("GROUP 생성");
 			Notification groupNotification = createGroupNotification(notificationCreateRequest);
 			emitters.forEach(
@@ -58,7 +59,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 			);
 			return;
 
-		} else if (notificationCreateRequest.typeCode().equals(NotificationTypeCode.REVIEW)) {
+		} else if (notificationCreateRequest.typeCodeEquals(NotificationTypeCode.REVIEW)) {
 			log.info("REVIEW 생성");
 			Notification reviewNotification = createReviewNotification(notificationCreateRequest);
 			emitters.forEach(
