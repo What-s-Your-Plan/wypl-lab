@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import tw from 'twin.macro';
 
-const Container = styled.div`
+const Container = styled.div``;
+
+const Wrapper = styled.div`
   ${tw`
     absolute
 
@@ -42,4 +44,4 @@ const ContentWrapper = styled.div`
   `}
 `;
 
-export { Container, Logo, ContentWrapper };
+export { Container, Wrapper, Logo, ContentWrapper };
