@@ -74,4 +74,11 @@ public class GroupController {
 		return ResponseEntity.ok(Message.onlyMessage("그룹 멤버로 등록됐습니다."));
 	}
 
+	@DeleteMapping("/v1/groups/{groupId}/members")
+	public ResponseEntity<Message<Void>> rejectGroupInvitation(@Authenticated AuthMember authMember,
+		@PathVariable int groupId) {
+		groupModifyService.rejectGroupInvitation(authMember.getId(), groupId);
+		return ResponseEntity.ok(Message.onlyMessage("그룹 멤버 초대를 거절했습니다."));
+	}
+
 }

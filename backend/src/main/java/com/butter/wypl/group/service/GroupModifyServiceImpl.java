@@ -104,10 +104,29 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Transactional
 	@Override
 	public void acceptGroupInvitation(int memberId, int groupId) {
-		MemberGroup memberGroup = memberGroupRepository.findPendingMemberGroupsByGroupId(memberId, groupId)
+
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+
+		MemberGroup memberGroup = memberGroupRepository.findPendingMemberGroupsByGroupId(foundMember.getId(),
+				foundGroup.getId())
 			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
 
 		memberGroup.setGroupInviteStateAccepted();
+	}
+
+	@Transactional
+	@Override
+	public void rejectGroupInvitation(int memberId, int groupId) {
+
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+
+		MemberGroup memberGroup = memberGroupRepository.findPendingMemberGroupsByGroupId(foundMember.getId(),
+				foundGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
+
+		memberGroupRepository.delete(memberGroup);
 	}
 
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {
