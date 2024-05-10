@@ -32,13 +32,21 @@ function Navbar() {
           Authorization: `Bearer ${accessToken}`,
         },
         heartbeatTimeout: 30000,
-        withCredentials: true,
       },
     );
+
+    source.onopen = function (event) {
+      console.log(event);
+    };
 
     source.onmessage = function (event) {
       console.log(event.data);
     };
+
+    // source.onerror = function (event) {
+    //   console.error(event);
+    //   source.close();
+    // };
 
     return () => {
       source.close();
