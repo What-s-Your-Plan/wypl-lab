@@ -1,5 +1,6 @@
 package com.butter.wypl.schedule.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -63,7 +64,7 @@ public class ScheduleController {
 		@RequestBody ScheduleCreateRequest scheduleCreateRequest
 	) {
 		return ResponseEntity
-			.ok().body(
+			.status(HttpStatus.CREATED).body(
 				Message.withBody("일정 생성 성공",
 					scheduleModifyService.createSchedule(authMember.getId(), scheduleCreateRequest))
 			);

@@ -74,7 +74,7 @@ public class ReviewServiceTest {
 			.willReturn(Optional.of(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule()));
 
 		// When
-		ReviewIdResponse response = reviewService.createReview(1, 1,
+		ReviewIdResponse response = reviewService.createReview(1,
 			ReviewCreateRequest.builder()
 				.title(review.getTitle())
 				.scheduleId(1)
@@ -105,9 +105,8 @@ public class ReviewServiceTest {
 			.willReturn(review);
 
 		// When
-		ReviewIdResponse response = reviewService.updateReview(1,
+		ReviewIdResponse response = reviewService.updateReview(1, 1,
 			ReviewUpdateRequest.builder()
-				.reviewId(1)
 				.title("바뀐제목")
 				.scheduleId(1)
 				.contents(reviewContents.getContents())
