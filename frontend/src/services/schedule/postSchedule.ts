@@ -29,8 +29,8 @@ async function postSchedule(schedule: Schedule & Repeat) {
     body.startDate.setHour(0);
     body.startDate.setMinutes(0);
     body.endDate = new Date(schedule.endDate);
-    body.endDate.setHour(24);
-    body.endDate.setMinutes(0);
+    body.endDate.setHour(23);
+    body.endDate.setMinutes(59);
   } else if (schedule.isAllday === false) {
     let startHour = schedule.startHour === 12 ? 0 : schedule.startHour;
     let startMinute = schedule.startMinute;
@@ -55,7 +55,7 @@ async function postSchedule(schedule: Schedule & Repeat) {
       case '매일':
         body.repetition.repetitionCycle = 'week';
         body.week = 1;
-        body.dayOfWeek = 1111111;
+        body.dayOfWeek = 2 ** 7 - 1;
         break;
       case '매 주':
         body.repetition.repetitionCycle = 'week';
