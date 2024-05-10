@@ -81,6 +81,12 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		return emitter;
 	}
 
+	@Override
+	@Transactional
+	public void deleteNotification(final int memberId) {
+		notificationRepository.deleteByMemberId(memberId);
+	}
+
 	private String makeSseEmitterId(final int memberId) {
 		return memberId + "_" + System.currentTimeMillis();
 	}

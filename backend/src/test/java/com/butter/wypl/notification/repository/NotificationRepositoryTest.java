@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,5 +109,55 @@ class NotificationRepositoryTest {
 			Page<Notification> result = notificationRepository.findAllByLastId(memberId, lastId, pageReq);
 			assertThat(result).isNotNull();
 		}).doesNotThrowAnyException();
+	}
+
+	@Test
+	@DisplayName("회원ID에 맞는 알림 전체를 삭제한다.")
+	void deleteNotificationByMemberId () {
+	    //given
+		// 저장
+		int memberId = 1;
+		makeNotificationList(memberId);
+
+	    //when
+		Page<Notification> pageOfNotifications = notificationRepository.findAllByMemberId(memberId, PageRequest.of(0, 50));
+		List<Notification> content = pageOfNotifications.getContent();
+		assertThat(content.size()).isEqualTo(5);
+
+		notificationRepository.deleteByMemberId(memberId);
+		Page<Notification> deletedResult = notificationRepository.findAllByMemberId(memberId, PageRequest.of(0, 50));
+		List<Notification> content1 = deletedResult.getContent();
+		//then
+		assertThat(content1.size()).isEqualTo(0);
+	}
+
+	// List<Notification> makeNotificationList() {
+	void makeNotificationList(final int memberId) {
+		List<NotificationButton> buttons = new ArrayList<>();
+		buttons.add(
+			NotificationButton.builder()
+				.text("삭제버튼")
+				.actionUrl("delete")
+				.color("#000000")
+				.build()
+		);
+		buttons.add(
+			NotificationButton.builder()
+				.text("취소버튼")
+				.actionUrl("cancel")
+				.color("#000000")
+				.build()
+		);
+
+		Stream.iterate(0, i -> i < 5, i -> i + 1)
+			.forEach(i -> notificationRepository.save(
+				Notification.builder()
+					.memberId(memberId)
+					.message("삭제 테스트용" + i)
+					.buttons(buttons)
+					.isRead(false)
+					.typeCode(NotificationTypeCode.GROUP)
+					.build()
+			));
 	}
 }

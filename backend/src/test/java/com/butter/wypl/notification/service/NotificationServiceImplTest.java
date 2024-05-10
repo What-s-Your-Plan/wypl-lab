@@ -71,4 +71,17 @@ class NotificationServiceImplTest {
 		SseEmitter sseEmitter = notificationService.subscribeNotification(memberId);
 		then(emitterRepository).should().save(memberId, sseEmitter);
 	}
+
+	@Test
+	@DisplayName("회원 알림 전체 삭제")
+	void deleteNotification () {
+	    //given
+		int memberId = 1;
+	    //when
+		willDoNothing().given(notificationRepository)
+			.deleteByMemberId(anyInt());
+
+	    //then
+		assertThatCode(() -> notificationService.deleteNotification(memberId)).doesNotThrowAnyException();
+	}
 }

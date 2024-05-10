@@ -15,4 +15,6 @@ public interface NotificationRepository extends MongoRepository<Notification, St
 	// 마지막행 ID 있는 경우
 	@Query(value = "{memberId: ?0, _id: {$lt: {$oid: ?1} }}", sort = "{_id: -1}")
 	Page<Notification> findAllByLastId(int memberId, String lastId, Pageable pageable);
+
+	void deleteByMemberId(int memberId);
 }
