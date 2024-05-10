@@ -23,6 +23,11 @@ import com.butter.wypl.calendar.data.response.CalendarListResponse;
 import com.butter.wypl.calendar.data.response.CalendarResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarListResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarResponse;
+import com.butter.wypl.group.domain.MemberGroup;
+import com.butter.wypl.group.repository.GroupRepository;
+import com.butter.wypl.group.repository.MemberGroupRepository;
+import com.butter.wypl.group.utils.GroupServiceUtils;
+import com.butter.wypl.group.utils.MemberGroupServiceUtils;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.repository.LabelRepository;
 import com.butter.wypl.label.utils.LabelServiceUtils;
@@ -41,6 +46,10 @@ public class CalendarService {
 	private LabelRepository labelRepository;
 
 	private ScheduleRepository scheduleRepository;
+
+	private MemberGroupRepository memberGroupRepository;
+
+	private GroupRepository groupRepository;
 
 	public CalendarListResponse getCalendarSchedules(int memberId, CalendarType calendarType, Integer labelId,
 		LocalDate startDate) {
@@ -83,8 +92,11 @@ public class CalendarService {
 
 	public GroupCalendarListResponse getGroupCalendarSchedule(int memberId, CalendarType calendarType,
 		LocalDate startDate, int groupId) {
-		//TODO : 그룹에 속한 멤버인지 확인
-		//TODO : 그룹의 존재 여부 확인
+		//그룹에 속한 멤버인지 확인
+		//그룹의 존재 여부 확인
+		MemberGroup memberGroup = MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId,
+			GroupServiceUtils.findById(groupRepository, groupId).getId());
+
 		if (startDate == null) {
 			startDate = LocalDate.now();
 		}
@@ -107,11 +119,12 @@ public class CalendarService {
 			LocalDateTime.of(startDate, LocalTime.of(0, 0)),
 			LocalDateTime.of(endDate, LocalTime.of(0, 0)));
 
-		return GroupCalendarListResponse.from(
+		return GroupCalendarListResponse.of(
 			schedules.stream()
 				.map(schedule -> GroupCalendarResponse.of(schedule,
 					memberScheduleRepository.getMemberWithSchedule(schedule.getScheduleId())))
-				.toList()
+				.toList(),
+			memberGroup
 		);
 	}
 

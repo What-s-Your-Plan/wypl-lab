@@ -30,7 +30,10 @@ import com.butter.wypl.calendar.data.response.CalendarResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarListResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarResponse;
 import com.butter.wypl.calendar.service.CalendarService;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.global.common.ControllerTest;
+import com.butter.wypl.group.domain.MemberGroup;
+import com.butter.wypl.group.fixture.GroupFixture;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.schedule.domain.Schedule;
@@ -315,13 +318,17 @@ public class CalendarControllerTest extends ControllerTest {
 			Member member1 = MemberFixture.JWA_SO_YEON.toMember();
 			Member member2 = MemberFixture.JO_DA_MIN.toMember();
 
+			MemberGroup memberGroup = MemberGroup.of(member1, GroupFixture.GROUP_STUDY.toGroup(member1),
+				Color.labelBlue);
+
 			given(
 				calendarService.getGroupCalendarSchedule(anyInt(), any(CalendarType.class), any(),
 					anyInt()))
 				.willReturn(
-					GroupCalendarListResponse.from(
+					GroupCalendarListResponse.of(
 						List.of(GroupCalendarResponse.of(schedule1, List.of(member1)),
-							GroupCalendarResponse.of(schedule2, List.of(member1, member2)))
+							GroupCalendarResponse.of(schedule2, List.of(member1, member2))),
+						memberGroup
 					)
 				);
 
@@ -358,8 +365,10 @@ public class CalendarControllerTest extends ControllerTest {
 						fieldWithPath("body.schedules[].members[].nickname").type(JsonFieldType.STRING)
 							.description("일정의 속한 멤버의 닉네임"),
 						fieldWithPath("body.schedules[].members[].color").type(JsonFieldType.STRING)
-							.description("일정의 속한 멤버의 기본 색상")
-
+							.description("일정의 속한 멤버의 기본 색상"),
+						fieldWithPath("body.group.group_id").type(JsonFieldType.NUMBER).description("그룹의 그룹 id"),
+						fieldWithPath("body.group.title").type(JsonFieldType.STRING).description("그룹의 그룹 이름"),
+						fieldWithPath("body.group.color").type(JsonFieldType.STRING).description("그룹의 그룹 색상")
 					)
 				))
 				.andExpect(status().isOk());
@@ -376,13 +385,17 @@ public class CalendarControllerTest extends ControllerTest {
 			Member member1 = MemberFixture.JWA_SO_YEON.toMember();
 			Member member2 = MemberFixture.JO_DA_MIN.toMember();
 
+			MemberGroup memberGroup = MemberGroup.of(member1, GroupFixture.GROUP_STUDY.toGroup(member1),
+				Color.labelBlue);
+
 			given(
 				calendarService.getGroupCalendarSchedule(anyInt(), any(CalendarType.class), any(),
 					anyInt()))
 				.willReturn(
-					GroupCalendarListResponse.from(
+					GroupCalendarListResponse.of(
 						List.of(GroupCalendarResponse.of(schedule1, List.of(member1)),
-							GroupCalendarResponse.of(schedule2, List.of(member1, member2)))
+							GroupCalendarResponse.of(schedule2, List.of(member1, member2))),
+						memberGroup
 					)
 				);
 
@@ -423,8 +436,10 @@ public class CalendarControllerTest extends ControllerTest {
 						fieldWithPath("body.schedules[].members[].nickname").type(JsonFieldType.STRING)
 							.description("일정의 속한 멤버의 닉네임"),
 						fieldWithPath("body.schedules[].members[].color").type(JsonFieldType.STRING)
-							.description("일정의 속한 멤버의 기본 색상")
-
+							.description("일정의 속한 멤버의 기본 색상"),
+						fieldWithPath("body.group.group_id").type(JsonFieldType.NUMBER).description("그룹의 그룹 id"),
+						fieldWithPath("body.group.title").type(JsonFieldType.STRING).description("그룹의 그룹 이름"),
+						fieldWithPath("body.group.color").type(JsonFieldType.STRING).description("그룹의 그룹 색상")
 					)
 				))
 				.andExpect(status().isOk());
