@@ -22,7 +22,6 @@ function Navbar() {
           Authorization: `Bearer ${accessToken}`,
         },
         heartbeatTimeout: 30000,
-        withCredentials: true,
       },
     );
 
