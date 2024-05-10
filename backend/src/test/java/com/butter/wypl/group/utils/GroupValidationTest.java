@@ -36,7 +36,7 @@ class GroupValidationTest {
 			int userId = groupMembers.size() - 1;
 
 			/* When, Then */
-			assertThatCode(() -> GroupValidation.validateGroupMember(userId, groupMembers)).doesNotThrowAnyException();
+			assertThatCode(() -> GroupServiceUtils.isGroupMember(userId, groupMembers)).doesNotThrowAnyException();
 
 		}
 
@@ -47,7 +47,7 @@ class GroupValidationTest {
 			int userId = groupMembers.size();
 
 			/* When, Then */
-			assertThatCode(() -> GroupValidation.validateGroupMember(userId, groupMembers)).doesNotThrowAnyException();
+			assertThatCode(() -> GroupServiceUtils.isGroupMember(userId, groupMembers)).doesNotThrowAnyException();
 
 		}
 
