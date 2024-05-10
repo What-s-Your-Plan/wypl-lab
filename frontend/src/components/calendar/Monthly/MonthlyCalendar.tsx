@@ -8,13 +8,43 @@ import {
 } from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
 import getCalendars from '@/services/calendar/getCalendars';
+import { Chevrons } from '../DatePicker.styled';
+
+import ChevronRight from '@/assets/icons/chevronRight.svg';
+import ChevronLeft from '@/assets/icons/chevronLeft.svg';
 
 export type DateSchedule = Array<Array<CalendarSchedule>>;
 
 function MonthlyCalender() {
-  const { selectedDate } = useDateStore();
-  const [dateInfo, setDateInfo] = useState<Array<DateSchedule>>([]); // 임시
+  const { selectedDate, setSelectedDate } = useDateStore();
+  const [monthSchedules, setMonthSchedules] = useState<Array<DateSchedule>>([]); // 임시
   const [firstDay, setFirstDay] = useState<Date | null>(null);
+
+  const handleNextMonth = () => {
+    const nextMonth = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth() + 2,
+      0,
+    );
+    if (nextMonth.getDate() >= selectedDate.getDate()) {
+      nextMonth.setDate(selectedDate.getDate());
+    }
+
+    setSelectedDate(nextMonth);
+  };
+
+  const handlePrevMonth = () => {
+    const prevMonth = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      0,
+    );
+    if (prevMonth.getDate() >= selectedDate.getDate()) {
+      prevMonth.setDate(selectedDate.getDate());
+    }
+
+    setSelectedDate(prevMonth);
+  };
 
   const createInit = () => {
     const init = [];
@@ -30,7 +60,6 @@ function MonthlyCalender() {
     const response = await getCalendars('MONTH', {
       date: dateToString(selectedDate),
     });
-
     const init: Array<DateSchedule> = createInit();
 
     if (response) {
@@ -39,7 +68,7 @@ function MonthlyCalender() {
         const period = getDateDiff(res.start_date, res.end_date);
         let row: number | null = null;
         for (let p = 0; p <= period; p++) {
-          if (!row) {
+          if (row === null) {
             for (let i = 0; i < 3; i++) {
               if (init[idx + p][i].length === 0 || i === 2) {
                 row = i;
@@ -52,7 +81,7 @@ function MonthlyCalender() {
       }
     }
 
-    setDateInfo(init);
+    setMonthSchedules(init);
   }, []);
 
   useEffect(() => {
@@ -84,7 +113,7 @@ function MonthlyCalender() {
           <MonthlyDay
             key={i}
             date={date}
-            schedules={dateInfo[i]}
+            schedules={monthSchedules[i]}
             isCurrentMonth={isCurrentMonth(date, selectedDate.getMonth())}
           />,
         );
@@ -94,10 +123,30 @@ function MonthlyCalender() {
   };
 
   return (
-    <div className="lg:flex lg:h-full lg:flex-col">
-      <h1>
-        {selectedDate.getFullYear()}.{selectedDate.getMonth() + 1}
-      </h1>
+    <div className="flex h-full flex-col">
+      <header className="flex flex-none items-center justify-between px-6 py-2">
+        <h1 className="text-lg font-bold leading-6 text-default-black">
+          {selectedDate.getFullYear()}.{selectedDate.getMonth() + 1}
+        </h1>
+        <div className="flex gap-4">
+          <button
+            onClick={() => {
+              handlePrevMonth();
+            }}
+          >
+            <span className="sr-only">Prev month</span>
+            <Chevrons src={ChevronLeft} alt="prev-month" aria-hidden="true" />
+          </button>
+          <button
+            onClick={() => {
+              handleNextMonth();
+            }}
+          >
+            <span className="sr-only">Next month</span>
+            <Chevrons src={ChevronRight} alt="next-month" aria-hidden="true" />
+          </button>
+        </div>
+      </header>
       <div className="lg:flex lg:flex-auto lg:flex-col">
         <div className="grid grid-cols-7 gap-px text-center text-xs font-semibold leading-6 text-gray-700 lg:flex-none">
           <div className="bg-transparent text-label-red">

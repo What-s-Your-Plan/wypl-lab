@@ -1,5 +1,7 @@
-import { useState } from 'react';
+
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 
 import logo from '@/assets/images/logo.png';
 
@@ -7,6 +9,9 @@ import MemberSheet from '@/components/navbar/sheet/member/MemberSheet';
 import NavEventBar from '@/components/navbar/NavEventBar/NavEventBar';
 import NotificationSheet from '@/components/navbar/sheet/notification/NotificationSheet';
 import Sheet from '@/components/navbar/sheet/Sheet';
+
+
+import useJsonWebTokensStore from '@/stores/TokenStore';
 
 import { BROWSER_PATH } from '@/constants/Path';
 
@@ -19,6 +24,28 @@ type SheetComponent = {
 
 function Navbar() {
   const navigate = useNavigate();
+  const { accessToken } = useJsonWebTokensStore();
+  useEffect(() => {
+    const EventSource = EventSourcePolyfill || NativeEventSource;
+    const source = new EventSource(
+      `${import.meta.env.VITE_BASE_URL}/notification/v1/notifications/subscribe`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        heartbeatTimeout: 30000,
+        withCredentials: true,
+      },
+    );
+
+    source.onmessage = function (event) {
+      console.log(event.data);
+    };
+
+    return () => {
+      source.close();
+    };
+  }, []);
 
   const [sheet, setSheet] = useState<SheetType>('NONE');
   const changeSheet = (newSheet: SheetType) => {
