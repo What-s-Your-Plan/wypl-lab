@@ -38,11 +38,16 @@ public class MemberGroup extends BaseEntity {
 	@Column(name = "color", length = 20, nullable = false)
 	private Color color;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name = "state", length = 20, nullable = false)
+	private GroupInviteState groupInviteState;
+
 	@Builder
 	private MemberGroup(Member member, Group group, Color color) {
 		this.member = member;
 		this.group = group;
 		this.color = color;
+		this.groupInviteState = GroupInviteState.PENDING;
 	}
 
 	public static MemberGroup of(Member member, Group group, Color color) {

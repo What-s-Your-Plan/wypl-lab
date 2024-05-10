@@ -14,7 +14,7 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Member
 	@Query("SELECT COUNT(mg) FROM MemberGroup mg WHERE mg.member.id = :memberId")
 	int countByMemberId(int memberId);
 
-	@Query("SELECT mg FROM MemberGroup mg JOIN FETCH mg.member m JOIN FETCH mg.group g WHERE mg.group.id = :groupId")
+	@Query("SELECT mg FROM MemberGroup mg JOIN FETCH mg.member m JOIN FETCH mg.group g WHERE mg.group.id = :groupId and mg.groupInviteState = 'ACCEPTED'")
 	List<MemberGroup> findMemberGroupsByGroupId(int groupId);
 
 	Optional<MemberGroup> findMemberGroupByMemberIdAndGroupId(int memberId, int groupId);
