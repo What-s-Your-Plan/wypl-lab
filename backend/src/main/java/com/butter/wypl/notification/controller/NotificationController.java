@@ -14,7 +14,10 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Message;
+import com.butter.wypl.notification.data.NotificationTypeCode;
+import com.butter.wypl.notification.data.request.NotificationCreateRequest;
 import com.butter.wypl.notification.data.response.NotificationPageResponse;
+import com.butter.wypl.notification.service.EmitterModifyService;
 import com.butter.wypl.notification.service.NotificationLoadService;
 import com.butter.wypl.notification.service.NotificationModifyService;
 
@@ -29,6 +32,7 @@ public class NotificationController {
 
 	private final NotificationLoadService notificationLoadService;
 	private final NotificationModifyService notificationModifyService;
+	private final EmitterModifyService emitterModifyService;
 
 	/**
 	 * 최초 서버 연결시 회원 <-> 알림 Emitter 구독
@@ -50,9 +54,8 @@ public class NotificationController {
 		 * */
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("text/event-stream;charset=UTF-8"));
-		log.info("받은 값 : {}", authMember.getId());
 
-		SseEmitter emitter = notificationModifyService.subscribeNotification(authMember.getId());
+		SseEmitter emitter = emitterModifyService.subscribeNotification(authMember.getId(), lastEventId);
 
 		return ResponseEntity.ok()
 			.headers(headers)
@@ -66,6 +69,14 @@ public class NotificationController {
 	) {
 		return ResponseEntity.ok()
 			.body(Message.withBody("알림 조회 성공", notificationLoadService.getNotifications(authMember.getId(), lastId)));
+	}
+
+	@GetMapping("/send-data/{memberId}/{text}")
+	public void testSendData(@PathVariable("memberId") int memberId, @PathVariable("text") String text) {
+		NotificationCreateRequest request = new NotificationCreateRequest(memberId, text, "테스트", null,
+			NotificationTypeCode.REVIEW);
+
+		notificationModifyService.createNotification(request);
 	}
 
 	@DeleteMapping

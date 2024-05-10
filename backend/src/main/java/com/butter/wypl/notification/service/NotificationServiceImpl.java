@@ -1,8 +1,8 @@
 package com.butter.wypl.notification.service;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,7 +15,6 @@ import com.butter.wypl.notification.data.ButtonInfo;
 import com.butter.wypl.notification.data.NotificationTypeCode;
 import com.butter.wypl.notification.data.request.NotificationCreateRequest;
 import com.butter.wypl.notification.data.response.NotificationPageResponse;
-import com.butter.wypl.notification.data.response.NotificationResponse;
 import com.butter.wypl.notification.domain.Notification;
 import com.butter.wypl.notification.domain.NotificationButton;
 import com.butter.wypl.notification.exception.NotificationErrorCode;
@@ -32,10 +31,11 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationModifyService, NotificationLoadService {
 
-	private final static Long EMITTER_TIMEOUT = 30L * 1000 * 60;
 	public static final int PAGE_SIZE = 10;
 
 	private final NotificationRepository notificationRepository;
+	private final EmitterModifyService emitterModifyService;
+
 	private final EmitterRepository emitterRepository;
 
 	private final static ButtonInfo[] acceptButtons = {ButtonInfo.ACCEPT, ButtonInfo.CANCEL};
@@ -49,19 +49,31 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		 * 1. 그룹 초대 알림
 		 * 2. 리뷰 작성 알림
 		 * */
-		// if (notificationCreateRequest.typeCode() == NotificationTypeCode.GROUP) {
-		// System.out.println("받은값 : " + notificationCreateRequest);
-		log.info("받은값 : {}", notificationCreateRequest);
+		int memberId = notificationCreateRequest.memberId();
+		String eventId = memberId + "_" + System.currentTimeMillis();
+		Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(
+			String.valueOf(memberId));
+
 		if (notificationCreateRequest.typeCode().equals(NotificationTypeCode.GROUP)) {
 			log.info("GROUP 생성");
 			Notification groupNotification = createGroupNotification(notificationCreateRequest);
-			sendEmitter(groupNotification);
+			emitters.forEach(
+				(key, emitter) -> {
+					emitterRepository.saveEventCache(eventId, groupNotification);
+					emitterModifyService.sendEmitter(emitter, eventId, key, groupNotification);
+				}
+			);
 			return;
-			// } else if (notificationCreateRequest.typeCode() == NotificationTypeCode.REVIEW) {
+
 		} else if (notificationCreateRequest.typeCode().equals(NotificationTypeCode.REVIEW)) {
 			log.info("REVIEW 생성");
 			Notification reviewNotification = createReviewNotification(notificationCreateRequest);
-			sendEmitter(reviewNotification);
+			emitters.forEach(
+				(key, emitter) -> {
+					emitterRepository.saveEventCache(eventId, reviewNotification);
+					emitterModifyService.sendEmitter(emitter, eventId, key, reviewNotification);
+				}
+			);
 			return;
 		}
 
@@ -69,60 +81,9 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 	}
 
 	@Override
-	public SseEmitter subscribeNotification(final int memberId) {
-		SseEmitter emitter = new SseEmitter(EMITTER_TIMEOUT);
-		emitterRepository.save(memberId, emitter);
-
-		sendEmitterInit(memberId, emitter);
-
-		emitter.onCompletion(() -> emitterRepository.deleteByMemberId(memberId));
-		emitter.onTimeout(() -> emitterRepository.deleteByMemberId(memberId));
-
-		return emitter;
-	}
-
-	@Override
 	@Transactional
 	public void deleteNotification(final int memberId) {
 		notificationRepository.deleteByMemberId(memberId);
-	}
-
-	private String makeSseEmitterId(final int memberId) {
-		return memberId + "_" + System.currentTimeMillis();
-	}
-
-	private void sendEmitterInit(final int memberId, final SseEmitter emitter) {
-		log.info("sendEmitterInit");
-		try {
-			emitter.send(
-				SseEmitter.event()
-					.id(makeSseEmitterId(memberId))
-					.name("init")
-					.data("최초 연결")
-			);
-		} catch (IOException e) {
-			emitterRepository.deleteByMemberId(memberId);
-			emitter.completeWithError(e);
-		}
-	}
-
-	private void sendEmitter(final Notification notification) {
-		NotificationResponse response = NotificationResponse.from(notification);
-
-		emitterRepository.getByMemberId(response.memberId())
-			.ifPresent(emitter -> {
-				try {
-					emitter.send(
-						SseEmitter.event()
-							.id(makeSseEmitterId(response.memberId()))
-							.name("notification")
-							.data(response)
-					);
-				} catch (IOException e) {
-					emitterRepository.deleteByMemberId(response.memberId());
-					emitter.completeWithError(e);
-				}
-			});
 	}
 
 	private Notification createGroupNotification(final NotificationCreateRequest request) {
@@ -192,9 +153,10 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		 * */
 		switch (typeCode) {
 			case GROUP -> {
-				return String.format("[%s] 팀 그룹 초대가 왔어요.", teamName);
+				return String.format("[%s] 그룹 초대가 왔어요.", teamName);
 			}
 			case REVIEW -> {
+				// TODO 포맷 ->  "nickName"       , "일정"
 				return String.format("%s님, [%s] 일정은 잘 마치셨나요?", nickname, scheduleTitle);
 			}
 			default -> throw new NotificationException(NotificationErrorCode.NOTIFICATION_TYPE_ERROR);
@@ -221,6 +183,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 
 	/**
 	 * 회원 알림 읽음 처리
+	 *
 	 * @param memberId 회원 ID
 	 */
 	@Transactional

@@ -26,6 +26,7 @@ import com.butter.wypl.notification.data.response.NotificationPageResponse;
 import com.butter.wypl.notification.data.response.NotificationResponse;
 import com.butter.wypl.notification.domain.Notification;
 import com.butter.wypl.notification.fixture.NotificationFixture;
+import com.butter.wypl.notification.service.EmitterModifyService;
 import com.butter.wypl.notification.service.NotificationLoadService;
 import com.butter.wypl.notification.service.NotificationModifyService;
 
@@ -41,11 +42,13 @@ class NotificationControllerTest extends ControllerTest {
 	@MockBean
 	private NotificationLoadService notificationLoadService;
 
+	@MockBean
+	private EmitterModifyService emitterModifyService;
+
 	@Test
 	@DisplayName("SSE 연결")
 	void subscribe() throws Exception {
-		//given
-		given(notificationModifyService.subscribeNotification(anyInt()))
+		given(emitterModifyService.subscribeNotification(anyInt(), anyString()))
 			.willReturn(new SseEmitter());
 
 		//when
