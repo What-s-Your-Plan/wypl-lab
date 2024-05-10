@@ -68,9 +68,7 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		Review review = reviewRepository.getByReviewId(reviewUpdateRequest.reviewId());
 
 		//유효성 검사
-		if (review.getMemberSchedule().getMember().getId() != memberId) {
-			throw new ReviewException(ReviewErrorCode.NOT_PERMISSION_TO_REVIEW);
-		}
+		review.validationOwnerByMemberId(memberId);
 
 		review.updateTitle(reviewUpdateRequest.title());
 
@@ -89,9 +87,7 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		Review review = reviewRepository.getByReviewId(reviewId);
 
 		//유효성 검사
-		if (review.getMemberSchedule().getMember().getId() != memberId) {
-			throw new ReviewException(ReviewErrorCode.NOT_PERMISSION_TO_REVIEW);
-		}
+		review.validationOwnerByMemberId(memberId);
 
 		ReviewContents reviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
 			review.getReviewId());
@@ -109,9 +105,7 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		Review review = reviewRepository.getByReviewId(reviewId);
 
 		//유효성 검사
-		if (review.getMemberSchedule().getMember().getId() != memberId) {
-			throw new ReviewException(ReviewErrorCode.NOT_PERMISSION_TO_REVIEW);
-		}
+		review.validationOwnerByMemberId(memberId);
 
 		ReviewContents reviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
 			review.getReviewId());

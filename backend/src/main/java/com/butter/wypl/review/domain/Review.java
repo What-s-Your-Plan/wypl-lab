@@ -4,6 +4,8 @@ import org.hibernate.annotations.SQLRestriction;
 
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.review.data.request.ReviewCreateRequest;
+import com.butter.wypl.review.exception.ReviewErrorCode;
+import com.butter.wypl.review.exception.ReviewException;
 import com.butter.wypl.schedule.domain.MemberSchedule;
 
 import jakarta.persistence.Column;
@@ -53,5 +55,15 @@ public class Review extends BaseEntity {
 
 	public void updateTitle(String title) {
 		this.title = title;
+	}
+
+	public int getMemberId() {
+		return memberSchedule.getMember().getId();
+	}
+
+	public void validationOwnerByMemberId(int memberId) {
+		if (getMemberId() != memberId) {
+			throw new ReviewException(ReviewErrorCode.NOT_PERMISSION_TO_REVIEW);
+		}
 	}
 }
