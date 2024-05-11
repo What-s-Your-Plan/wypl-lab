@@ -56,7 +56,7 @@ function WGoal() {
           disabled={!isModifyingGoal}
           onChange={(e) => setUserGoal(e.target.value)}
           maxLength={60}
-          placeholder="목표(60자 이내)를 입력해주세요"
+          placeholder="목표를 입력해주세요(60자 이내)"
         />
       </div>
     </div>
