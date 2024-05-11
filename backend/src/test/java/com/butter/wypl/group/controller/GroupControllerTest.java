@@ -250,7 +250,7 @@ class GroupControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.get("/group/v1/groups/members/{memberId}", memberId)
+			RestDocumentationRequestBuilders.get("/group/v1/groups/members")
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
 
@@ -261,9 +261,6 @@ class GroupControllerTest extends ControllerTest {
 			.andDo(document("group/get-groups-by-member-id",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
-				pathParameters(
-					parameterWithName("memberId").description("회원 식별자")
-				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING)
 						.description("응답 메시지"),
@@ -306,6 +303,98 @@ class GroupControllerTest extends ControllerTest {
 				)
 			))
 			.andExpect(status().isOk());
+	}
 
+	@Test
+	@DisplayName("그룹 회원 초대 수락")
+	void acceptGroupInvitationTest() throws Exception {
+		/* Given */
+		int groupId = 1;
+		doNothing().when(groupModifyService).acceptGroupInvitation(anyInt(), anyInt());
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.put("/group/v1/groups/{groupId}/members/invitation", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/accept-group-invitation",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	@DisplayName("그룹 회원 초대 거절")
+	void rejectGroupInvitationTest() throws Exception {
+		/* Given */
+		int groupId = 1;
+		doNothing().when(groupModifyService).rejectGroupInvitation(anyInt(), anyInt());
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}/members/invitation", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/accept-group-invitation",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	@DisplayName("그룹 나가기")
+	void leaveGroupTest() throws Exception {
+		/* Given */
+		int groupId = 1;
+		doNothing().when(groupModifyService).leaveGroup(anyInt(), anyInt());
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}/members", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/leave-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 }

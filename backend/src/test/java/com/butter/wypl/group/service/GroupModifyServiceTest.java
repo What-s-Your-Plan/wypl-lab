@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -52,20 +53,24 @@ class GroupModifyServiceTest {
 	@Nested
 	@DisplayName("그룹 생성 테스트")
 	class createGroupTest {
+
+		private final Member owner = HAN_JI_WON.toMember();
+
+		@BeforeEach
+		void setUp() {
+			given(memberRepository.findById(anyInt()))
+				.willReturn(Optional.of(owner));
+		}
+
 		@Test
 		@DisplayName("그룹 생성 성공")
 		void createGroupSuccess() {
 
 			/* Given */
-			int givenMemberId = 1;
+			int memberId = 1;
 
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
 				new HashSet<>(Arrays.asList(2, 3)));
-
-			// Mocking
-			Member owner = HAN_JI_WON.toMember();
-			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
 
 			given(memberRepository.existsById(anyInt()))
 				.willReturn(true);
@@ -77,9 +82,13 @@ class GroupModifyServiceTest {
 			given(groupRepository.save(any(Group.class)))
 				.willReturn(group);
 
+			MemberGroup memberGroup = MemberGroup.of(owner, group, Color.labelBrown);
+			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(),
+				anyInt())).willReturn(Optional.ofNullable(memberGroup));
+
 			/* When, Then */
 			Assertions.assertThatCode(() -> {
-				groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
+				groupModifyService.createGroup(memberId, givenGroupCreateRequest);
 			}).doesNotThrowAnyException();
 		}
 
@@ -132,11 +141,6 @@ class GroupModifyServiceTest {
 
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
 				new HashSet<>(Arrays.asList(2, 3)));
-
-			// Mocking
-			Member owner = HAN_JI_WON.toMember();
-			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
 
 			given(memberRepository.existsById(anyInt()))
 				.willReturn(true);

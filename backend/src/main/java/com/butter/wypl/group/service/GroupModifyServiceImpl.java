@@ -45,6 +45,8 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Override
 	public GroupIdResponse createGroup(int memberId, GroupCreateRequest createRequest) {
 
+		Member groupOwner = findById(memberRepository, memberId);
+
 		createRequest.memberIdList().add(memberId);
 
 		validateMaxMemberCount(createRequest);
@@ -53,7 +55,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 		validateEachMemberGroupCountLimit(createRequest);
 
-		Member groupOwner = findById(memberRepository, memberId);
 		Group group = Group.of(createRequest.name(), createRequest.description(), groupOwner);
 
 		Group savedGroup = groupRepository.save(group);
@@ -62,7 +63,17 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 			Member foundMember = findById(memberRepository, memberIdInGroup);
 			memberGroupRepository.save(MemberGroup.of(foundMember, savedGroup, labelYellow));
 		}
+
+		updateGroupInvitationStateOfOwner(memberId, savedGroup);
+
 		return new GroupIdResponse(savedGroup.getId());
+	}
+
+	private void updateGroupInvitationStateOfOwner(int memberId, Group savedGroup) {
+		MemberGroup ownerMemberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(memberId,
+				savedGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
+		ownerMemberGroup.setGroupInviteStateAccepted();
 	}
 
 	@Transactional
@@ -88,6 +99,52 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		// 그룹 삭제
 		Group findGroup = findById(groupRepository, groupId);
 		findGroup.delete();
+	}
+
+	@Transactional
+	@Override
+	public void acceptGroupInvitation(int memberId, int groupId) {
+
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+
+		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
+				foundGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
+
+		memberGroup.setGroupInviteStateAccepted();
+	}
+
+	@Transactional
+	@Override
+	public void rejectGroupInvitation(int memberId, int groupId) {
+
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+
+		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
+				foundGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
+
+		memberGroupRepository.delete(memberGroup);
+	}
+
+	@Override
+	public void leaveGroup(int memberId, int groupId) {
+
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+
+		if (isGroupOwner(groupRepository, memberId, groupId) &&
+			getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
+			throw new GroupException(NOT_ACCEPTED_LEAVE_GROUP);
+		}
+
+		MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(foundMember.getId(),
+				foundGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
+
+		memberGroupRepository.delete(memberGroup);
 	}
 
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {
