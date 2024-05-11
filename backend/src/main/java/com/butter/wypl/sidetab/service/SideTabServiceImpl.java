@@ -180,6 +180,7 @@ public class SideTabServiceImpl implements
 		return MemoWidgetResponse.from(findSideTab.getMemo());
 	}
 
+	@Transactional
 	@Override
 	public MemoWidgetResponse updateMemo(
 			final AuthMember authMember,
