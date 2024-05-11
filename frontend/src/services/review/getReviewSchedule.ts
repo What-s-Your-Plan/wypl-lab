@@ -1,10 +1,10 @@
 import { axiosWithAccessToken } from '../axios';
 
-const getReviewDetail = async (reviewId: string) => {
+async function getReviewSchedule(scheduleId: number) {
   const response = await axiosWithAccessToken.get(
-    `/review/v1/reviews/detail/${reviewId}`,
+    `/schedule/v1/schedules/${scheduleId}`,
   );
   return response.data.body;
-};
+}
 
-export default getReviewDetail;
+export default getReviewSchedule;

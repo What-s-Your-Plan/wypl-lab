@@ -5,6 +5,8 @@ import LabelButton from '@/components/common/LabelButton';
 import Calendar from '@/assets/icons/calendar.svg';
 import Tag from '@/assets/icons/tag.svg';
 import Users from '@/assets/icons/users.svg';
+import Logo from '/logo.png';
+
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 
 type VScheduleProps = {
@@ -17,7 +19,7 @@ function VSchedule({ schedule }: VScheduleProps) {
       <img
         key={member.member_id}
         className="inline-block h-8 w-8 rounded-full"
-        src={member.profile_image}
+        src={member.profile_image ? member.profile_image : Logo}
         alt={member.nickname}
       />
     ));
@@ -29,9 +31,12 @@ function VSchedule({ schedule }: VScheduleProps) {
         <img src={Calendar} alt="일정명" className="w-5" />
         <div>
           <div className="font-semibold">{schedule.title}</div>
-          <div>
-            {splitTTime(schedule.start_date)} ~ {splitTTime(schedule.end_date)}
-          </div>
+          {schedule.start_date && schedule.end_date && (
+            <div>
+              {splitTTime(schedule.start_date as string)} ~{' '}
+              {splitTTime(schedule.end_date as string)}
+            </div>
+          )}
         </div>
       </div>
       <div className="flex gap-4 items-center text-sm">

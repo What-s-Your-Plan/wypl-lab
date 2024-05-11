@@ -1,43 +1,71 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import getReviewSchedule from '@/services/review/getReviewSchedule';
+
+import { splitTTime } from '@/utils/DateUtils';
+
+import LabelButton from '@/components/common/LabelButton';
 import { WhiteContainer } from '@/components/common/Container';
 import Calendar from '@/assets/icons/calendar.svg';
 import Tag from '@/assets/icons/tag.svg';
 import Users from '@/assets/icons/users.svg';
+import Logo from '/logo.png';
+import { LabelColorsType } from '@/assets/styles/colorThemes';
 
 type RScheduleProps = {
-  $scheduleId: number;
+  scheduleId: number;
 };
 
-function RSchedule({ $scheduleId }: RScheduleProps) {
+function RSchedule({ scheduleId }: RScheduleProps) {
+  const [schedule, setSchedule] = useState<ScheduleSimpleResponse>();
+
+  const renderMemberProfile = () => {
+    return schedule?.members.map((member) => {
+      return (
+        <img
+          className="inline-block h-8 w-8 rounded-full"
+          key={member.member_id}
+          src={member.profile_image ? member.profile_image : Logo}
+          alt={member.nickname}
+        />
+      );
+    });
+  };
+
+  const fetchSchedule = async () => {
+    if (scheduleId != -1) {
+      const response = await getReviewSchedule(scheduleId);
+      setSchedule(response);
+    }
+  };
+
   useEffect(() => {
-    console.log($scheduleId);
-  }, []);
+    fetchSchedule();
+  }, [scheduleId]);
+
   return (
     <WhiteContainer $width="900" className="flex flex-wrap gap-4">
       <div className="flex gap-4 text-sm">
         <img src={Calendar} alt="일정명" className="w-5" />
         <div>
-          <div className="font-semibold">코테스터디 3회차</div>
-          <div>2024.04.17 16:00 ~ 20214.04.17 17:00</div>
+          <div className="font-semibold">{schedule?.title}</div>
+          {schedule && (
+            <div>
+              {splitTTime(schedule.start_date as string)} ~{' '}
+              {splitTTime(schedule.end_date as string)}
+            </div>
+          )}
         </div>
       </div>
-      <div className="flex gap-4 text-sm">
+      <div className="flex gap-4 items-center text-sm">
         <img src={Tag} alt="라벨" className="w-5" />
-        <div className="bg-label-red rounded-full w-20"></div>
+        <LabelButton $bgColor={schedule?.label?.color as LabelColorsType}>
+          {schedule?.label?.title}
+        </LabelButton>
       </div>
-      <div className="flex gap-4 text-sm">
+      <div className="flex gap-4 items-center text-sm">
         <img src={Users} alt="참가자" className="w-5" />
-        <img
-          className="inline-block h-8 w-8 rounded-full"
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          alt=""
-        />
-        <img
-          className="inline-block h-8 w-8 rounded-full"
-          src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          alt=""
-        />
+        {renderMemberProfile()}
       </div>
     </WhiteContainer>
   );

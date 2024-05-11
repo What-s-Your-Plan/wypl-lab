@@ -26,14 +26,19 @@ type ReviewAction = {
   addContent: (index: number, type: ReviewType) => void;
   moveContent: (fromIndex: number, toIndex: number) => void;
   deleteContent: (targetIndex: number) => void;
+  resetReview: () => void;
+};
+
+const initialState: ReviewState = {
+  title: '',
+  scheduleId: -1,
+  contents: [],
+  focusIndex: -1,
 };
 
 const useReviewStore = create<ReviewState & ReviewAction>()(
   devtools((set, get) => ({
-    title: '',
-    scheduleId: -1,
-    contents: [],
-    focusIndex: -1,
+    ...initialState,
     setTitle(newTitle: string) {
       set({ title: newTitle });
     },
@@ -102,6 +107,9 @@ const useReviewStore = create<ReviewState & ReviewAction>()(
         contents: state.contents.filter((_, i) => i !== targetIndex),
         focusIndex: -1,
       }));
+    },
+    resetReview() {
+      set(initialState);
     },
   })),
 );

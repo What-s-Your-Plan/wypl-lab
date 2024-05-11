@@ -44,8 +44,10 @@ function getDateDiff(d1: Date | string, d2: Date | string) {
 }
 
 function splitTTime(date: string) {
-  const result = date.split('T');
-  return result[0] + ' ' + result[1].slice(0, result[1].length - 3);
+  if (date) {
+    const result = date.split('T');
+    return result[0] + ' ' + result[1].slice(0, result[1].length - 3);
+  }
 }
 
 function isAllday(start: Date, end: Date): boolean {
