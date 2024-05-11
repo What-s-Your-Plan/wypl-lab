@@ -159,6 +159,7 @@ jacocoTestCoverageVerification {
 openapi3 {
     servers = [
             { url = 'http://127.0.0.1:8080' },
+            { url = 'https://dev-api.wypl.site/' }
     ]
     title = 'What\'s Your Plan API Docs'
     description = 'What\'s Your Plan API Description'
