@@ -21,6 +21,9 @@ const API_PATH = {
     ISSUE_TOKENS: '/auth/v1/sign-in',
     MOCK_ISSUE_TOKENS: '/auth/v1/sign-in/mock',
   },
+  MEMBER: {
+    PROFILE_IMAGE: '/member/v1/members/profile-iamge',
+  },
 };
 
 export { API_PATH, BROWSER_PATH };

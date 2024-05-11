@@ -29,8 +29,10 @@ const Wrapper = styled.div`
 
 const ProfileImage = styled.img`
   ${tw`
-        w-16
-        h-16
+        w-24
+        h-24
+
+        rounded-full
     `}
 `;
 
@@ -51,7 +53,21 @@ const IconWrapper = styled.div`
       bottom-[250px]
 
       shadow-md
+      cursor-pointer
   `}
 `;
 
-export { Container, Wrapper, ProfileImage, IconWrapper };
+const InputImage = styled.input`
+  ${tw`
+    fixed
+
+    h-8
+    w-8
+    
+    rounded-full
+    opacity-0
+    cursor-pointer
+  `};
+`;
+
+export { Container, Wrapper, ProfileImage, IconWrapper, InputImage };

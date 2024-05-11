@@ -9,9 +9,9 @@ const Button = styled.button`
       items-center
       justify-center
 
-      mt-[5px]
-      w-[60px]
-      h-[60px]
+      mt-5
+      w-12
+      h-12
 
       rounded-full
 
@@ -22,8 +22,10 @@ const Button = styled.button`
 
 const Image = styled.img`
   ${tw`
-    h-[24px]
-    w-[24px]
+    h-7
+    w-7
+
+    rounded-full
 `}
 `;
 
