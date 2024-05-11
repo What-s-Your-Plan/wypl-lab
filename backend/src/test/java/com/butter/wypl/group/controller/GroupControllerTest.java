@@ -173,7 +173,9 @@ class GroupControllerTest extends ControllerTest {
 
 		/* Given */
 		GroupUpdateRequest updateRequest = new GroupUpdateRequest("업데이트 할 그룹명", "다시 시작 해 보자구 ~");
-
+		GroupIdResponse groupIdResponse = new GroupIdResponse(1);
+		given(groupModifyService.updateGroup(anyInt(), anyInt(), any(GroupUpdateRequest.class)))
+			.willReturn(groupIdResponse);
 		givenMockLoginMember();
 
 		/* When */
@@ -200,7 +202,9 @@ class GroupControllerTest extends ControllerTest {
 				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING)
-						.description("응답 메시지")
+						.description("응답 메시지"),
+					fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
+						.description("그룹 식별자")
 				)
 			))
 			.andExpect(status().isOk());

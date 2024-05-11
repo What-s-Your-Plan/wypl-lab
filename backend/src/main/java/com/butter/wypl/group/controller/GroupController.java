@@ -48,10 +48,11 @@ public class GroupController {
 	}
 
 	@PatchMapping("/v1/groups/{groupId}")
-	public ResponseEntity<Message<Void>> updateGroup(@Authenticated AuthMember authMember, @PathVariable int groupId,
+	public ResponseEntity<Message<GroupIdResponse>> updateGroup(@Authenticated AuthMember authMember,
+		@PathVariable int groupId,
 		@RequestBody GroupUpdateRequest updateRequest) {
-		groupModifyService.updateGroup(authMember.getId(), groupId, updateRequest);
-		return ResponseEntity.ok(Message.onlyMessage("그룹 수정에 성공했습니다."));
+		return ResponseEntity.ok(Message.withBody("그룹 수정에 성공했습니다.",
+			groupModifyService.updateGroup(authMember.getId(), groupId, updateRequest)));
 	}
 
 	@DeleteMapping("/v1/groups/{groupId}")

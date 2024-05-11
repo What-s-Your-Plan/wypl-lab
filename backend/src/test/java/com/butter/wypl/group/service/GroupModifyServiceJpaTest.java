@@ -83,6 +83,7 @@ class GroupModifyServiceJpaTest {
 
 			/* Given */
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
+			Member otherMember = memberRepository.save(KIM_JEONG_UK.toMember());
 			Group group = groupRepository.save(
 				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getDescription(), member));
 
@@ -97,7 +98,7 @@ class GroupModifyServiceJpaTest {
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.updateGroup(member.getId() + 1, group.getId(), updateRequest);
+					groupModifyService.updateGroup(otherMember.getId(), group.getId(), updateRequest);
 				}).isInstanceOf(GroupException.class)
 				.hasMessageContaining(GroupErrorCode.IS_NOT_GROUP_MEMBER.getMessage());
 
