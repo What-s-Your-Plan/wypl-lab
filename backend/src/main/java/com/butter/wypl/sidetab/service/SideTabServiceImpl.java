@@ -151,7 +151,7 @@ public class SideTabServiceImpl implements
 	private String getUpdateTime(final WeatherRegion weatherRegion) {
 		Instant instant = Instant.ofEpochMilli(System.currentTimeMillis());
 		ZonedDateTime datetime = ZonedDateTime.ofInstant(instant, ZoneId.of(weatherRegion.getTimeZone()));
-		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm 갱신");
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 		return datetime.format(dateTimeFormatter);
 	}
 
