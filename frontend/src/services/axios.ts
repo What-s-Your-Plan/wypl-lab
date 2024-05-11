@@ -26,15 +26,17 @@ const axiosWithMultiPart = Axios.create({
 });
 
 axiosWithAccessToken.interceptors.request.use((config) => {
-  if (config.headers && useJsonWebTokensStore().accessToken) {
-    config.headers.Authorization = `Bearer ${useJsonWebTokensStore().accessToken}`;
+  const { accessToken } = useJsonWebTokensStore.getState();
+  if (config.headers && accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });
 
 axiosWithMultiPart.interceptors.request.use((config) => {
-  if (config.headers && useJsonWebTokensStore().accessToken) {
-    config.headers.Authorization = `Bearer ${useJsonWebTokensStore().accessToken}`;
+  const { accessToken } = useJsonWebTokensStore.getState();
+  if (config.headers && accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
   return config;
 });

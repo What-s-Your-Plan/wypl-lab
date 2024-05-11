@@ -43,10 +43,10 @@ function Navbar() {
       console.log(event.data);
     };
 
-    // source.onerror = function (event) {
-    //   console.error(event);
-    //   source.close();
-    // };
+    source.onerror = function (event) {
+      console.error(event);
+      source.close();
+    };
 
     return () => {
       source.close();
@@ -79,10 +79,7 @@ function Navbar() {
   return (
     <S.Container>
       <S.Wrapper>
-        <S.Logo
-          onClick={() => navigate(BROWSER_PATH.CALENDAR)}
-          src={logo}
-        />
+        <S.Logo onClick={() => navigate(BROWSER_PATH.CALENDAR)} src={logo} />
         <NavEventBar changeSheetEvent={changeSheet} />
       </S.Wrapper>
       {sheetComponents.map(
