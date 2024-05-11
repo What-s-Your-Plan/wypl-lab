@@ -1,4 +1,8 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+import useMemberStore from '@/stores/MemberStore';
+import getUserMemo from '@/services/widget/getUserMemo';
+import patchUserMemo from '@/services/widget/patchUserMemo';
 
 import Button from '../common/Button';
 import { InputTextArea } from '../common/InputText';
@@ -7,11 +11,17 @@ import Edit from '@/assets/icons/edit.svg';
 import Save from '@/assets/icons/save.svg';
 
 function WMemo() {
+  const { memberId } = useMemberStore();
+
   const [userMemo, setUserMemo] = useState<string>('');
   const [isModifyingMemo, setIsModifyingMemo] = useState<boolean>(false);
 
-  const handleModify = () => {
+  const handleModify = async () => {
     setIsModifyingMemo(!isModifyingMemo);
+    if (memberId !== undefined) {
+      const memo = await patchUserMemo(memberId, userMemo);
+      setUserMemo(memo);
+    }
   };
 
   const textarea = useRef<HTMLTextAreaElement>(null);
@@ -28,6 +38,16 @@ function WMemo() {
       textarea.current.style.height = newHeight + 'px';
     }
   };
+
+  useEffect(() => {
+    const fetchUserMemo = async () => {
+      if (memberId) {
+        const goal = await getUserMemo(memberId);
+        setUserMemo(goal);
+      }
+    };
+    fetchUserMemo();
+  }, []);
 
   return (
     <div>
@@ -53,6 +73,7 @@ function WMemo() {
           value={userMemo}
           disabled={!isModifyingMemo}
           onChange={handleTextInput}
+          maxLength={1000}
           placeholder="메모를 입력해주세요"
         />
       </div>
