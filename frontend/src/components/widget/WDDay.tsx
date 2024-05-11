@@ -1,20 +1,44 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import useMemberStore from '@/stores/MemberStore';
 
 import Button from '../common/Button';
 
 import Edit from '@/assets/icons/edit.svg';
 import Save from '@/assets/icons/save.svg';
 import { InputDefault } from '../common/InputText';
+import getUserDDay from '@/services/widget/getUserDDay';
+import patchUserDDay from '@/services/widget/patchUserDDay';
 
 function WDDay() {
-  const [title, setTitle] = useState<string>('자율 발표');
-  const userDDay = 'D-13';
-  const [targetDate, setTargetDate] = useState<string>('2024-05-20');
+  const { memberId } = useMemberStore();
+
+  const [userTitle, setUserTitle] = useState<string>('');
+  const [userDDay, setUserDDay] = useState<string>('');
+  const [targetDate, setTargetDate] = useState<string>('');
   const [isModifyingDDay, setIsModifyingDDay] = useState<boolean>(false);
 
-  const handleModify = () => {
+  const handleModify = async () => {
     setIsModifyingDDay(!isModifyingDDay);
+    if (memberId) {
+      const dday = await patchUserDDay(memberId, userTitle, targetDate);
+      setUserTitle(dday.title);
+      setUserDDay(dday.d_day);
+      setTargetDate(dday.local_date);
+    }
   };
+
+  useEffect(() => {
+    const fetchUserDDay = async () => {
+      if (memberId) {
+        const dday = await getUserDDay(memberId);
+        setUserDDay(dday.d_day);
+        setUserTitle(dday.title);
+        setTargetDate(dday.local_date);
+      }
+    };
+    fetchUserDDay();
+  }, []);
 
   return (
     <div>
@@ -27,13 +51,16 @@ function WDDay() {
               $void={true}
               id="ddayTitle"
               type="string"
-              value={title}
+              value={userTitle}
               disabled={!isModifyingDDay}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="디데이 제목 입력"
+              onChange={(e) => setUserTitle(e.target.value)}
+              maxLength={10}
+              placeholder="디데이 제목(10자 이내)"
             />
           ) : (
-            <span className="w-[60%] break-keep font-bold">{title}</span>
+            <span className="w-[60%] break-keep font-semibold">
+              {userTitle}
+            </span>
           )}
 
           {isModifyingDDay ? (
@@ -58,10 +85,11 @@ function WDDay() {
             value={targetDate}
             disabled={!isModifyingDDay}
             onChange={(e) => setTargetDate(e.target.value)}
+            min={'1970-01-01'}
             placeholder="디데이 날짜 선택"
           />
         ) : (
-          <div className="text-4xl text-center mt-1 font-semibold">
+          <div className="text-3xl text-center mt-1 font-semibold">
             {userDDay}
           </div>
         )}

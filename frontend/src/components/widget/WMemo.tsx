@@ -68,6 +68,7 @@ function WMemo() {
           className="disabled:bg-transparent scrollBar"
           $width="100%"
           $void={true}
+          $resize={false}
           ref={textarea}
           rows={5}
           value={userMemo}
