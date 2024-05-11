@@ -20,7 +20,7 @@ public enum GroupFixture {
 		this.description = description;
 	}
 
-	public Group toGroup(Member member) {
-		return Group.of(name, description, member);
+	public Group toGroup(Member owner) {
+		return Group.of(name, description, owner);
 	}
 }

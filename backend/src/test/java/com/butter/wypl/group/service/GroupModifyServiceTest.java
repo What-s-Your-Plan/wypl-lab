@@ -12,9 +12,9 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -33,6 +33,7 @@ import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberException;
+import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.member.repository.MemberRepository;
 
 @MockServiceTest
@@ -54,41 +55,27 @@ class GroupModifyServiceTest {
 	@DisplayName("그룹 생성 테스트")
 	class createGroupTest {
 
-		private final Member owner = HAN_JI_WON.toMember();
-
-		@BeforeEach
-		void setUp() {
-			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
-		}
+		private final Member owner = HAN_JI_WON.toMemberWithId(1);
+		private final Member member1 = KIM_JEONG_UK.toMemberWithId(2);
+		private final Member member2 = LEE_JI_WON.toMemberWithId(3);
 
 		@Test
 		@DisplayName("그룹 생성 성공")
 		void createGroupSuccess() {
 
 			/* Given */
-			int memberId = 1;
+			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description", Set.of(2, 3));
+			List<Member> members = List.of(owner, member1, member2);
 
-			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
-				new HashSet<>(Arrays.asList(2, 3)));
+			given(memberRepository.findById(anyInt()))
+				.willReturn(Optional.of(owner));
 
-			given(memberRepository.existsById(anyInt()))
-				.willReturn(true);
+			given(memberRepository.findAllById(anyList()))
+				.willReturn(members);
 
-			given(memberGroupRepository.countByMemberId(anyInt()))
-				.willReturn(49);
-
-			Group group = Group.of(givenGroupCreateRequest.name(), givenGroupCreateRequest.description(), owner);
-			given(groupRepository.save(any(Group.class)))
-				.willReturn(group);
-
-			MemberGroup memberGroup = MemberGroup.of(owner, group, Color.labelBrown);
-			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(),
-				anyInt())).willReturn(Optional.ofNullable(memberGroup));
-
-			/* When, Then */
-			Assertions.assertThatCode(() -> {
-				groupModifyService.createGroup(memberId, givenGroupCreateRequest);
+			/* When */
+			assertThatCode(() -> {
+				groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
 			}).doesNotThrowAnyException();
 		}
 
@@ -97,8 +84,6 @@ class GroupModifyServiceTest {
 		void createGroupFailOfExceedMaxNumberCount() {
 
 			/* Given */
-			int givenMemberId = 1;
-
 			HashSet<Integer> memberIdList = new HashSet<>();
 			for (int i = 1; i <= 51; i++) {
 				memberIdList.add(i);
@@ -107,7 +92,7 @@ class GroupModifyServiceTest {
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
+					groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
 				}).isInstanceOf(GroupException.class)
 				.hasMessageContaining(GroupErrorCode.EXCEED_MAX_MEMBER_COUNT.getMessage());
 		}
@@ -117,13 +102,8 @@ class GroupModifyServiceTest {
 		void createGroupFailOfExistsNotInvalidMemberId() {
 			/* Given */
 			int givenMemberId = 1;
-
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
 				new HashSet<>(Arrays.asList(2, 3)));
-
-			// Mocking
-			given(memberRepository.existsById(anyInt()))
-				.willReturn(false);
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
@@ -137,20 +117,26 @@ class GroupModifyServiceTest {
 		void createGroupFailOfExistsMemberExceedingGroupCountLimit() {
 
 			/* Given */
-			int givenMemberId = 1;
+			Member member3 = MemberFixture.JWA_SO_YEON.toMemberWithId(4);
+			for (int i = 1; i <= 50; i++) {
+				member3.getMemberGroups().add(mock(MemberGroup.class));
+			}
+			List<Member> members = List.of(owner, member1, member2, member3);
 
+			Set<Integer> memberIdList = new HashSet<>(
+				Arrays.asList(member1.getId(), member2.getId(), member3.getId()));
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
-				new HashSet<>(Arrays.asList(2, 3)));
+				memberIdList);
 
-			given(memberRepository.existsById(anyInt()))
-				.willReturn(true);
+			given(memberRepository.findById(anyInt()))
+				.willReturn(Optional.of(owner));
 
-			given(memberGroupRepository.countByMemberId(anyInt()))
-				.willReturn(50);
+			given(memberRepository.findAllById(anyList()))
+				.willReturn(members);
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
+					groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
 				}).isInstanceOf(CustomException.class)
 				.hasMessageContaining("해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다.");
 		}
