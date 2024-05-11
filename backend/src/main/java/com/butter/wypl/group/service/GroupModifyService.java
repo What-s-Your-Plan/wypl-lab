@@ -8,7 +8,7 @@ public interface GroupModifyService {
 
 	GroupIdResponse createGroup(int memberId, GroupCreateRequest createRequest);
 
-	void updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest);
+	GroupIdResponse updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest);
 
 	void deleteGroup(int memberId, int groupId);
 

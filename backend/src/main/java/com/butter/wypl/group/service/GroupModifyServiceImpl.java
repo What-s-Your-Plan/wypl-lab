@@ -78,10 +78,13 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	@Transactional
 	@Override
-	public void updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest) {
-		isGroupMember(memberId, getMembersByGroupId(memberGroupRepository, groupId));
-		Group group = findById(groupRepository, groupId);
-		group.updateGroupInfo(updateRequest.name(), updateRequest.description());
+	public GroupIdResponse updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest) {
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+		isGroupMember(foundMember.getId(), getMembersByGroupId(memberGroupRepository, foundGroup.getId()));
+
+		foundGroup.updateGroupInfo(updateRequest.name(), updateRequest.description());
+		return new GroupIdResponse(foundGroup.getId());
 	}
 
 	@Transactional
@@ -135,13 +138,13 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		Member foundMember = findById(memberRepository, memberId);
 		Group foundGroup = findById(groupRepository, groupId);
 
-		if (isGroupOwner(groupRepository, memberId, groupId) &&
-			getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
+		if (isGroupOwner(groupRepository, memberId, groupId)
+			&& getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
 			throw new GroupException(NOT_ACCEPTED_LEAVE_GROUP);
 		}
 
-		MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(foundMember.getId(),
-				foundGroup.getId())
+		MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(
+				foundMember.getId(), foundGroup.getId())
 			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
 
 		memberGroupRepository.delete(memberGroup);
