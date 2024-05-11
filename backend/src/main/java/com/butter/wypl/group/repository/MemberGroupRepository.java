@@ -17,8 +17,8 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Member
 	@Query("SELECT mg FROM MemberGroup mg JOIN FETCH mg.member m JOIN FETCH mg.group g WHERE mg.group.id = :groupId and mg.groupInviteState = 'ACCEPTED'")
 	List<MemberGroup> findMemberGroupsByGroupId(int groupId);
 
-	@Query("SELECT mg FROM MemberGroup mg JOIN FETCH mg.member m JOIN FETCH mg.group g WHERE mg.group.id = :groupId and mg.member.id = :memberId and mg.groupInviteState = 'PENDING' limit 1")
-	Optional<MemberGroup> findPendingMemberGroupsByGroupId(int memberId, int groupId);
+	@Query("SELECT mg FROM MemberGroup mg JOIN FETCH mg.member m JOIN FETCH mg.group g WHERE mg.group.id = :groupId and mg.member.id = :memberId and mg.groupInviteState = 'PENDING'")
+	Optional<MemberGroup> findFirstPendingMemberGroupsByGroupId(int memberId, int groupId);
 
 	Optional<MemberGroup> findMemberGroupByMemberIdAndGroupId(int memberId, int groupId);
 

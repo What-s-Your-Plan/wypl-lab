@@ -104,10 +104,47 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Transactional
 	@Override
 	public void acceptGroupInvitation(int memberId, int groupId) {
-		MemberGroup memberGroup = memberGroupRepository.findPendingMemberGroupsByGroupId(memberId, groupId)
+
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+
+		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
+				foundGroup.getId())
 			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
 
 		memberGroup.setGroupInviteStateAccepted();
+	}
+
+	@Transactional
+	@Override
+	public void rejectGroupInvitation(int memberId, int groupId) {
+
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+
+		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
+				foundGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
+
+		memberGroupRepository.delete(memberGroup);
+	}
+
+	@Override
+	public void leaveGroup(int memberId, int groupId) {
+
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+
+		if (isGroupOwner(groupRepository, memberId, groupId) &&
+			getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
+			throw new GroupException(NOT_ACCEPTED_LEAVE_GROUP);
+		}
+
+		MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(foundMember.getId(),
+				foundGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
+
+		memberGroupRepository.delete(memberGroup);
 	}
 
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {
