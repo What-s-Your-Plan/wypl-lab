@@ -50,10 +50,10 @@ public class DDayWidget {
 	public String getDDay() {
 		long between = ChronoUnit.DAYS.between(LocalDate.now(), value);
 		if (between < 0) {
-			return "D +" + Math.abs(between);
+			return "D+" + Math.abs(between);
 		}
 		if (between > 0) {
-			return "D -" + Math.abs(between);
+			return "D-" + Math.abs(between);
 		}
 		return "D-DAY";
 	}
