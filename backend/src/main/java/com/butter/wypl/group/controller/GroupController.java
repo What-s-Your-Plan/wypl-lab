@@ -67,18 +67,25 @@ public class GroupController {
 			Message.withBody("그룹 조회에 성공했습니다.", groupLoadService.getGroupListByMemberId(authMember.getId())));
 	}
 
-	@PutMapping("/v1/groups/{groupId}/members")
+	@PutMapping("/v1/groups/{groupId}/members/invitation")
 	public ResponseEntity<Message<Void>> acceptGroupInvitation(@Authenticated AuthMember authMember,
 		@PathVariable int groupId) {
 		groupModifyService.acceptGroupInvitation(authMember.getId(), groupId);
 		return ResponseEntity.ok(Message.onlyMessage("그룹 멤버로 등록됐습니다."));
 	}
 
-	@DeleteMapping("/v1/groups/{groupId}/members")
+	@DeleteMapping("/v1/groups/{groupId}/members/invitation")
 	public ResponseEntity<Message<Void>> rejectGroupInvitation(@Authenticated AuthMember authMember,
 		@PathVariable int groupId) {
 		groupModifyService.rejectGroupInvitation(authMember.getId(), groupId);
 		return ResponseEntity.ok(Message.onlyMessage("그룹 멤버 초대를 거절했습니다."));
+	}
+
+	@DeleteMapping("/v1/groups/{groupId}/members")
+	public ResponseEntity<Message<Void>> leaveGroup(@Authenticated AuthMember authMember,
+		@PathVariable int groupId) {
+		groupModifyService.leaveGroup(authMember.getId(), groupId);
+		return ResponseEntity.ok(Message.onlyMessage("그룹을 탈퇴했습니다."));
 	}
 
 }

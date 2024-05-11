@@ -129,6 +129,24 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		memberGroupRepository.delete(memberGroup);
 	}
 
+	@Override
+	public void leaveGroup(int memberId, int groupId) {
+
+		Member foundMember = findById(memberRepository, memberId);
+		Group foundGroup = findById(groupRepository, groupId);
+
+		if (isGroupOwner(groupRepository, memberId, groupId) &&
+			getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
+			throw new GroupException(NOT_ACCEPTED_LEAVE_GROUP);
+		}
+
+		MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(foundMember.getId(),
+				foundGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
+
+		memberGroupRepository.delete(memberGroup);
+	}
+
 	private void validateMaxMemberCount(GroupCreateRequest createRequest) {
 		if (isExceedMaxMember(createRequest.memberIdList())) {
 			throw new GroupException(EXCEED_MAX_MEMBER_COUNT);

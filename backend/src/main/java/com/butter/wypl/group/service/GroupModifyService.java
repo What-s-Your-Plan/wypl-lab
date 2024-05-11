@@ -15,4 +15,6 @@ public interface GroupModifyService {
 	void acceptGroupInvitation(int memberId, int groupId);
 
 	void rejectGroupInvitation(int memberId, int groupId);
+
+	void leaveGroup(int memberId, int groupId);
 }
