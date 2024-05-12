@@ -11,11 +11,11 @@ import NotificationSvg from '@/assets/icons/bell.svg';
 import { BROWSER_PATH } from '@/constants/Path';
 import useMemberStore from '@/stores/MemberStore';
 
-type Props = {
+type NavEventBarProps = {
   changeSheetEvent: (sheet: SheetType) => void;
 };
 
-function NavEventBar({ changeSheetEvent }: Props) {
+function NavEventBar({ changeSheetEvent }: NavEventBarProps) {
   const { profileImage } = useMemberStore();
 
   const navigate = useNavigate();

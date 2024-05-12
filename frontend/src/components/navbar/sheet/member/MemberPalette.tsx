@@ -2,14 +2,18 @@ import {
   UpdateLabelColorResponse,
   UpdateLabelColorRequest,
 } from '@/@types/Member';
+
 import {
   BgColors,
   LabelColors,
   LabelColorsType,
 } from '@/assets/styles/colorThemes';
+
 import ColorCircle from '@/components/common/ColorCircle';
 import Text from '@/components/common/Text';
+
 import useLoading from '@/hooks/useLoading';
+
 import patchMemberLabelColor from '@/services/member/patchMemberLabelColor';
 import useMemberStore from '@/stores/MemberStore';
 
