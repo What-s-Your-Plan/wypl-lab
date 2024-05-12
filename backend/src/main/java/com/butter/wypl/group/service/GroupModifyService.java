@@ -13,7 +13,7 @@ public interface GroupModifyService {
 
 	void deleteGroup(int memberId, int groupId);
 
-	GroupIdResponse inviteMember(int memberId, int groupId, GroupMemberInviteRequest inviteRequest);
+	GroupIdResponse inviteGroupMember(int memberId, int groupId, GroupMemberInviteRequest inviteRequest);
 
 	void acceptGroupInvitation(int memberId, int groupId);
 

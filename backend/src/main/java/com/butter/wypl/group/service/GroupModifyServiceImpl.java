@@ -88,7 +88,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	}
 
 	@Override
-	public GroupIdResponse inviteMember(int ownerId, int groupId, GroupMemberInviteRequest inviteRequest) {
+	public GroupIdResponse inviteGroupMember(int ownerId, int groupId, GroupMemberInviteRequest inviteRequest) {
 
 		Member owner = getMember(ownerId);
 		Group group = getGroup(groupId);
