@@ -23,8 +23,10 @@ const API_PATH = {
     MOCK_ISSUE_TOKENS: '/auth/v1/sign-in/mock',
   },
   MEMBER: {
+    BASE: '/member/v1/members',
+    COLOR: '/member/v1/members/colors',
     NICKNAME: '/member/v1/members/nickname',
-    PROFILE_IMAGE: '/member/v1/members/profile-iamge',
+    PROFILE_IMAGE: '/member/v1/members/profile-image',
   },
 };
 

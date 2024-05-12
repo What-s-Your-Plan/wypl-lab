@@ -23,6 +23,7 @@ type SheetComponent = {
 function Navbar() {
   const navigate = useNavigate();
   const { accessToken } = useJsonWebTokensStore();
+
   useEffect(() => {
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const source = new EventSource(
