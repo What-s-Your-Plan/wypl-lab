@@ -167,20 +167,22 @@ function WeeklyCalendar() {
           style={{ width: '165%' }}
           className="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full"
         >
-          <WeeklyDays firstDay={firstDay} />
+          <div className="sticky top-0 z-30">
+            <WeeklyDays firstDay={firstDay} />
+            <LScheduleContainer $height={height + 1}>
+              <WeeklyVertical />
+              <WeeklyLSchedules lSchedules={longSchedules} />
+            </LScheduleContainer>
+          </div>
           <div className="flex flex-auto">
-            <div className="sticky left-0 z-10 w-14 flex-none bg-white ring-1 ring-gray-100" />
+            <div className="sticky left-0 z-10 w-14 flex-none bg-white border-r border-gray-100" />
             <div className="grid flex-auto grid-cols-1 grid-rows-1">
-              <LScheduleContainer $height={height + 1}>
-                <WeeklyVertical />
-                <WeeklyLSchedules lSchedules={longSchedules} />
-              </LScheduleContainer>
+              {/* Vertical lines */}
+              <WeeklyVertical />
 
               {/* Horizontal lines */}
               <WeeklyHorizontal />
 
-              {/* Vertical lines */}
-              <WeeklyVertical />
 
               {/* Schedules */}
               <WeeklySchedules schedules={schedules} />

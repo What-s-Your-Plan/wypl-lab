@@ -25,12 +25,8 @@ type LScheduleSpanProps = {
   $period: number;
 };
 
-const DaySticky = styled.div`
-  ${tw`sticky top-0 z-30 flex-none bg-default-white shadow ring-1 ring-black ring-opacity-5`}
-`;
-
 const DayContainer = styled.div`
-  ${tw`-mr-px w-full grid-cols-7 divide-x divide-gray-100 border-r border-gray-100 text-sm leading-6 text-gray-500 grid`}
+  ${tw`w-full grid-cols-7 divide-x bg-default-white divide-gray-100 border-r border-gray-100 text-sm leading-6 text-gray-500 grid`}
 `;
 
 const DayWrapper = styled.div`
@@ -88,9 +84,12 @@ const LScheduleContainer = styled.div<{ $height: number }>`
   ${tw`
     row-end-1 
     min-h-8
-    border-b 
-    grid border-gray-100 
+    outline
+    outline-1
+    outline-gray-100
+    grid 
     relative
+    ml-14
     `}
   height: ${(props) => `${props.$height}rem`};
 `;
@@ -123,7 +122,6 @@ const LScheduleSpan = styled.span<LScheduleSpanProps>`
 `;
 
 export {
-  DaySticky,
   DayContainer,
   DayWrapper,
   DateSpan,
