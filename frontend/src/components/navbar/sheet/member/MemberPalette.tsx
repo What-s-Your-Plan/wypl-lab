@@ -13,7 +13,7 @@ import useLoading from '@/hooks/useLoading';
 import patchMemberLabelColor from '@/services/member/patchMemberLabelColor';
 import useMemberStore from '@/stores/MemberStore';
 
-import * as S from './MemberPallet.styled';
+import * as S from './MemberPalette.styled';
 
 function MemberPalette() {
   const { mainColor, setLabelColor } = useMemberStore();

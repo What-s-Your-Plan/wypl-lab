@@ -1,7 +1,7 @@
 import MemberEmail from './MemberEmail';
 import MemberProfileImage from './MemberProfileImage';
 import MemberNickname from './MemberNickname';
-import MemberPalette from './MemberPallet';
+import MemberPalette from './MemberPalette';
 
 import * as S from './MemberSheet.styled';
 
