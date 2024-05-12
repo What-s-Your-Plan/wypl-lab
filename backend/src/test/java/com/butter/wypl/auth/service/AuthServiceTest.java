@@ -110,6 +110,35 @@ class AuthServiceTest {
 		);
 	}
 
+	@DisplayName("토큰 재발급에 성공한다.")
+	@Test
+	void reissueTokensTest() {
+		/* Given */
+		int memberId = 1;
+		Member member = KIM_JEONG_UK.toMember();
+
+		given(jwtProvider.getPayloadByRefreshToken(anyString()))
+				.willReturn(memberId);
+
+		given(memberRepository.findById(memberId))
+				.willReturn(Optional.of(member));
+
+		given(refreshTokenRepository.findById(memberId))
+				.willReturn(Optional.of(RefreshToken.of(memberId, "rt")));
+
+		given(jwtProvider.generateJsonWebTokens(any(Integer.class)))
+				.willReturn(new JsonWebTokens("at", "rt"));
+
+		/* When */
+		AuthTokensResponse response = authService.reissueTokens("rt");
+
+		/* Then */
+		assertAll(
+				() -> assertThat(response.accessToken()).isNotNull(),
+				() -> assertThat(response.refreshToken()).isNotNull()
+		);
+	}
+
 	@DisplayName("로그아웃 테스트")
 	@Nested
 	class LogoutTest {
