@@ -164,7 +164,7 @@ public class ReviewControllerTest extends ControllerTest {
 		ResultActions resultActions = mockMvc.perform(
 			RestDocumentationRequestBuilders.delete("/review/v1/reviews")
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-				.header("review_id", 1)
+				.header("Review_id", 1)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 

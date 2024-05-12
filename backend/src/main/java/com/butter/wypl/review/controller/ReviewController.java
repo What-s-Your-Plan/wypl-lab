@@ -65,10 +65,10 @@ public class ReviewController {
 	@DeleteMapping
 	public ResponseEntity<Message<ReviewIdResponse>> deleteReview(
 		@Authenticated AuthMember authMember,
-		@RequestHeader("review_id") int reviewId
+		@RequestHeader("Review_id") int reviewId
 	) {
 		return ResponseEntity.ok(
-			Message.withBody("리뷰 삭제에 성공했습니다.", reviewModifyService.deleteReview(authMember.getId(), reviewId))
+			Message.withBody("리뷰 삭제에 성공 했습니다.", reviewModifyService.deleteReview(authMember.getId(), reviewId))
 		);
 	}
 
