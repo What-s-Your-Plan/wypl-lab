@@ -1,3 +1,4 @@
+import { UpdateNicknameRequest, UpdateNicknameResponse } from '@/@types/Member';
 import { axiosWithAccessToken } from '@/services/axios';
 
 import { API_PATH } from '@/constants/Path';

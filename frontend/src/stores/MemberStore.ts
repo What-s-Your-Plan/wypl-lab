@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 import { getMemberProfileImageOrDefault } from '@/utils/ImageUtils';
-import { get } from 'node_modules/axios/index.d.cts';
 
 type MemberState = {
   memberId: number | undefined;

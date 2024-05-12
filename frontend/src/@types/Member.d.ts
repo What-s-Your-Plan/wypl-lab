@@ -1,3 +1,5 @@
+import { BgColors } from '@/assets/styles/colorThemes';
+
 type UpdateProfileImageResponse = {
   profile_image_url: string;
 };
@@ -22,4 +24,12 @@ type FindMemberProfileResponse = {
   nickname: string;
   profile_image_url: string?;
   main_color: string;
+};
+
+type UpdateLabelColorRequest = {
+  color: BgColors;
+};
+
+type UpdateLabelColorResponse = {
+  color: BgColors;
 };

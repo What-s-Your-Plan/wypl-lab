@@ -36,7 +36,7 @@ const NicknameUpdateBox = styled.span`
 const NicknameInput = styled.input`
   ${tw`
     block 
-    w-32
+    w-40
     rounded-md 
     border-0 
     py-1.5 

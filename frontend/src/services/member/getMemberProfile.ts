@@ -1,6 +1,6 @@
-import { axiosWithAccessToken } from '@/services/axios';
-
+import { FindMemberProfileResponse } from '@/@types/Member';
 import { API_PATH } from '@/constants/Path';
+import { axiosWithAccessToken } from '@/services/axios';
 
 const getMemberProfile = (memberId: number) => {
   return axiosWithAccessToken

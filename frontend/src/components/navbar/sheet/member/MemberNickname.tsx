@@ -6,6 +6,7 @@ import patchNickname from '@/services/member/patchNickname';
 import useMemberStore from '@/stores/MemberStore';
 
 import * as S from './MemberNickname.styled';
+import { UpdateNicknameRequest, UpdateNicknameResponse } from '@/@types/Member';
 
 function MemberNickname() {
   const { nickname, setNickname } = useMemberStore();
@@ -29,7 +30,7 @@ function MemberNickname() {
   };
 
   const requestUpdateNickname = async () => {
-    if (nickname === name || name.length > 20 || name.length === 0) {
+    if (nickname === name || name.length > 12 || name.length === 0) {
       setName(nickname!);
       setEdit(false);
       return;
@@ -49,7 +50,7 @@ function MemberNickname() {
           <S.NicknameInput
             value={name}
             onChange={handleNickname}
-            maxLength={20}
+            maxLength={12}
             ref={inputRef}
           />
           <S.IconBox>

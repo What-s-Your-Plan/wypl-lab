@@ -4,8 +4,9 @@ import tw from 'twin.macro';
 const Container = styled.div`
   ${tw`
     flex
-    justify-center
-    items-start
+    flex-col
+
+    items-center
 
     w-[80%]
     h-[120px]
@@ -24,7 +25,8 @@ const SelectLabelColorWrapper = styled.div`
         flex-row
         
         items-center
-        w-[120px]
+        justify-center
+        w-[100px]
     `}
 `;
 
@@ -36,4 +38,34 @@ const LabelColor = styled.div`
     `}
 `;
 
-export { Container, SelectLabelColorWrapper, LabelColor };
+const SelectLabelColorsWrapper = styled.div`
+  ${tw`
+    flex
+    flex-col
+    justify-center
+    
+    w-full
+    h-full
+  `}
+`;
+
+const SelectLabelColorsBox = styled.div`
+  ${tw`
+    flex
+    flex-row
+    
+    justify-around
+    w-full
+    h-full
+    
+    mt-1
+  `}
+`;
+
+export {
+  Container,
+  SelectLabelColorWrapper,
+  LabelColor,
+  SelectLabelColorsWrapper,
+  SelectLabelColorsBox,
+};

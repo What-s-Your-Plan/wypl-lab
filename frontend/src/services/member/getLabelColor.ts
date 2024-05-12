@@ -1,5 +1,5 @@
+import { FindMemberColorResponse } from '@/@types/Member';
 import { axiosWithAccessToken } from '@/services/axios';
-
 import { API_PATH } from '@/constants/Path';
 
 const getMemberColor = () => {
