@@ -15,7 +15,12 @@ import ChevronLeft from '@/assets/icons/chevronLeft.svg';
 
 export type DateSchedule = Array<Array<CalendarSchedule>>;
 
-function MonthlyCalender() {
+type MonthlyProps = {
+  needUpdate: boolean;
+  setUpdateFalse: () => void;
+};
+
+function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
   const { selectedDate, setSelectedDate } = useDateStore();
   const [monthSchedules, setMonthSchedules] = useState<Array<DateSchedule>>([]); // 임시
   const [firstDay, setFirstDay] = useState<Date | null>(null);
@@ -93,8 +98,15 @@ function MonthlyCalender() {
       setFirstDay(newFirst);
 
       updateInfo(newFirst);
+      setUpdateFalse();
     }
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (needUpdate && firstDay) {
+      updateInfo(firstDay);
+    }
+  }, [needUpdate]);
 
   const renderMonthly = () => {
     const calendar: Array<JSX.Element> = [];
