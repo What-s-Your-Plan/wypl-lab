@@ -4,12 +4,12 @@ type TPictureProps = {
   thumbnailContent: PictureContent;
 };
 
-function VPicture({ thumbnailContent }: TPictureProps) {
+function TPicture({ thumbnailContent }: TPictureProps) {
   return (
     <div className="flex justify-center">
-      <img src={thumbnailContent.path} alt="사진" className="" />
+      <img src={thumbnailContent.path} alt="사진" />
     </div>
   );
 }
 
-export default VPicture;
+export default TPicture;

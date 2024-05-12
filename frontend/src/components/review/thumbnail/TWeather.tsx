@@ -12,7 +12,7 @@ type TWeatherProps = {
   thumbnailContent: WeatherContent;
 };
 
-function VWeather({ thumbnailContent }: TWeatherProps) {
+function TWeather({ thumbnailContent }: TWeatherProps) {
   const renderWeather = (emoji: string) => {
     switch (emoji) {
       case 'Sun':
@@ -41,4 +41,4 @@ function VWeather({ thumbnailContent }: TWeatherProps) {
   );
 }
 
-export default VWeather;
+export default TWeather;
