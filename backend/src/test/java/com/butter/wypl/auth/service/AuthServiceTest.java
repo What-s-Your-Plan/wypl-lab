@@ -110,33 +110,81 @@ class AuthServiceTest {
 		);
 	}
 
-	@DisplayName("토큰 재발급에 성공한다.")
-	@Test
-	void reissueTokensTest() {
-		/* Given */
-		int memberId = 1;
-		Member member = KIM_JEONG_UK.toMember();
+	@DisplayName("reissueTokensTest")
+	@Nested
+	class ReissueTokensTest {
+		@DisplayName("토큰 재발급에 성공한다.")
+		@Test
+		void reissueTokensTest() {
+			/* Given */
+			int memberId = 1;
+			Member member = KIM_JEONG_UK.toMember();
 
-		given(jwtProvider.getPayloadByRefreshToken(anyString()))
-				.willReturn(memberId);
+			given(jwtProvider.getPayloadByRefreshToken(anyString()))
+					.willReturn(memberId);
 
-		given(memberRepository.findById(memberId))
-				.willReturn(Optional.of(member));
+			given(memberRepository.findById(memberId))
+					.willReturn(Optional.of(member));
 
-		given(refreshTokenRepository.findById(memberId))
-				.willReturn(Optional.of(RefreshToken.of(memberId, "rt")));
+			given(refreshTokenRepository.findById(memberId))
+					.willReturn(Optional.of(RefreshToken.of(memberId, "rt")));
 
-		given(jwtProvider.generateJsonWebTokens(any(Integer.class)))
-				.willReturn(new JsonWebTokens("at", "rt"));
+			given(jwtProvider.generateJsonWebTokens(any(Integer.class)))
+					.willReturn(new JsonWebTokens("at", "rt"));
 
-		/* When */
-		AuthTokensResponse response = authService.reissueTokens("rt");
+			/* When */
+			AuthTokensResponse response = authService.reissueTokens("rt");
 
-		/* Then */
-		assertAll(
-				() -> assertThat(response.accessToken()).isNotNull(),
-				() -> assertThat(response.refreshToken()).isNotNull()
-		);
+			/* Then */
+			assertAll(
+					() -> assertThat(response.accessToken()).isNotNull(),
+					() -> assertThat(response.refreshToken()).isNotNull()
+			);
+		}
+
+		@DisplayName("Redis에 토큰이 없으면 예외를 던진다.")
+		@Test
+		void tokenIsNotExisted() {
+			/* Given */
+			int memberId = 1;
+			Member member = KIM_JEONG_UK.toMember();
+
+			given(jwtProvider.getPayloadByRefreshToken(anyString()))
+					.willReturn(memberId);
+
+			given(memberRepository.findById(memberId))
+					.willReturn(Optional.of(member));
+
+			given(refreshTokenRepository.findById(memberId))
+					.willReturn(Optional.of(RefreshToken.of(memberId, "rt")));
+
+			/* When & Then */
+			assertThatThrownBy(() -> authService.reissueTokens("at"))
+					.isInstanceOf(AuthException.class)
+					.hasMessageContaining(AuthErrorCode.INVALID_JWT.getMessage());
+		}
+
+		@DisplayName("Redis에 토큰과 동일하지 않은 토큰이면 예외를 던진다.")
+		@Test
+		void tokenIsNotEquals() {
+			/* Given */
+			int memberId = 1;
+			Member member = KIM_JEONG_UK.toMember();
+
+			given(jwtProvider.getPayloadByRefreshToken(anyString()))
+					.willReturn(memberId);
+
+			given(memberRepository.findById(memberId))
+					.willReturn(Optional.of(member));
+
+			given(refreshTokenRepository.findById(memberId))
+					.willReturn(Optional.empty());
+
+			/* When & Then */
+			assertThatThrownBy(() -> authService.reissueTokens("rt"))
+					.isInstanceOf(AuthException.class)
+					.hasMessageContaining(AuthErrorCode.NON_EXISTED_TOKEN.getMessage());
+		}
 	}
 
 	@DisplayName("로그아웃 테스트")
