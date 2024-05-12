@@ -1,11 +1,9 @@
 package com.butter.wypl.group.service;
 
-import static com.butter.wypl.global.common.Color.*;
 import static com.butter.wypl.group.exception.GroupErrorCode.*;
 import static com.butter.wypl.group.utils.GroupServiceUtils.findById;
 import static com.butter.wypl.group.utils.GroupServiceUtils.*;
 import static com.butter.wypl.group.utils.MemberGroupServiceUtils.*;
-import static com.butter.wypl.member.exception.MemberErrorCode.*;
 import static com.butter.wypl.member.utils.MemberServiceUtils.findById;
 
 import java.util.ArrayList;
@@ -31,7 +29,6 @@ import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.member.domain.Member;
-import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.repository.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -48,9 +45,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Transactional
 	@Override
 	public GroupIdResponse createGroup(int ownerId, GroupCreateRequest createRequest) {
-		List<Integer> memberIdList = new ArrayList<>(createRequest.memberIdList());
-		memberIdList.add(ownerId);
-		validateMaxMemberCount(memberIdList);
 
 		Set<Integer> memberIds = new HashSet<>(createRequest.memberIdList());
 		memberIds.add(ownerId);
@@ -66,38 +60,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		return new GroupIdResponse(savedGroup.getId());
 	}
 
-	private void saveGroupAndMembers(int ownerId, List<Member> members, Group group) {
-		List<MemberGroup> memberGroups = getMemberGroups(ownerId, members, group);
-		groupRepository.save(group);
-		memberGroupRepository.saveAll(memberGroups);
-	}
-
-	private Member getMember(int ownerId) {
-		return findById(memberRepository, ownerId);
-	}
-
-	private static void validateMembers(List<Member> members, List<Integer> memberIdList) {
-		if (members.size() != memberIdList.size()) {
-			throw new MemberException(NOT_EXIST_MEMBER);
-		}
-	}
-
-	private static List<MemberGroup> getMemberGroups(int ownerId, List<Member> members, Group group) {
-		List<MemberGroup> memberGroups = new ArrayList<>();
-		members.forEach(member -> {
-				if (member.getMemberGroups().size() >= 50) {
-					throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
-						member.getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
-				}
-				MemberGroup memberGroup = MemberGroup.of(member, group, labelYellow);
-				if (member.getId() == ownerId) {
-					memberGroup.setGroupInviteStateAccepted();
-				}
-			}
-		);
-		return memberGroups;
-	}
-
 	@Transactional
 	@Override
 	public GroupIdResponse updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest) {
@@ -110,10 +72,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		return new GroupIdResponse(foundGroup.getId());
 	}
 
-	private Group getGroup(int groupId) {
-		return findById(groupRepository, groupId);
-	}
-
 	@Transactional
 	@Override
 	public void deleteGroup(int memberId, int groupId) {
@@ -122,13 +80,32 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 			throw new GroupException(IS_NOT_GROUP_OWNER);
 		}
 
-		// 그룹에 속한 맴버들을 삭제
 		List<MemberGroup> findMemberGroups = getMemberGroupsByGroupId(memberGroupRepository, groupId);
 		findMemberGroups.forEach(BaseEntity::delete);
 
-		// 그룹 삭제
 		Group findGroup = getGroup(groupId);
 		findGroup.delete();
+	}
+
+	@Override
+	public GroupIdResponse inviteMember(int ownerId, int groupId, GroupMemberInviteRequest inviteRequest) {
+
+		Member owner = getMember(ownerId);
+		Group group = getGroup(groupId);
+		Set<Integer> memberIdList = inviteRequest.memberIdList();
+
+		validateOwnerPermission(owner, group);
+		validateMaxMemberCount(memberIdList);
+
+		List<Member> members = memberRepository.findAllById(memberIdList);
+		validateAllMembersExist(members, memberIdList);
+
+		saveAllMemberGroup(members, group);
+		members.forEach(member -> {
+			/* 그룹 초대 알림 전송 */
+		});
+
+		return new GroupIdResponse(group.getId());
 	}
 
 	@Transactional
