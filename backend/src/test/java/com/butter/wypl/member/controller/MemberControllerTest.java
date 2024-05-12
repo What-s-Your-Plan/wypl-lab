@@ -40,6 +40,7 @@ import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
 import com.butter.wypl.member.domain.CalendarTimeZone;
+import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.service.MemberLoadService;
 import com.butter.wypl.member.service.MemberModifyService;
 
@@ -171,8 +172,10 @@ class MemberControllerTest extends ControllerTest {
 	@Test
 	void findProfile() throws Exception {
 		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+		member.changeProfileImage("profile_url");
 		given(memberLoadService.findProfileInfo(any(AuthMember.class), anyInt()))
-				.willReturn(FindMemberProfileInfoResponse.from(KIM_JEONG_UK.toMember()));
+				.willReturn(FindMemberProfileInfoResponse.from(member));
 
 		givenMockLoginMember();
 
