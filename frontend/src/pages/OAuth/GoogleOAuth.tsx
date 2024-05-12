@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import useJsonWebTokensStore from '@/stores/TokenStore';
 import useMemberStore from '@/stores/MemberStore';
 
+import { FindMemberProfileResponse } from '@/@types/Member';
 import OAUTH_PROVIDER from '@/constants/OAuth';
 import { BROWSER_PATH } from '@/constants/Path';
 import useQueryParams from '@/hooks/useSearchParams';

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { FindMemberProfileResponse } from '@/@types/Member';
 import mockIssueTokens from '@/services/auth/mockSignIn';
 import getMemberProfile from '@/services/member/getMemberProfile';
 import useJsonWebTokensStore from '@/stores/TokenStore';
