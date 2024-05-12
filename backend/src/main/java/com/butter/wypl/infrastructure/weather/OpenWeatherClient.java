@@ -48,7 +48,7 @@ public class OpenWeatherClient {
 	}
 
 	private void addParamByCity(StringBuilder url, WeatherRegion region) {
-		url.append("&q=").append(region.getCityKr());
+		url.append("&q=").append(region.getCityEn());
 	}
 
 	private void addParamByLang(StringBuilder url, boolean isLangKr) {
