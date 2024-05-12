@@ -10,13 +10,16 @@ import CalendarAddIcon from '@/assets/icons/calendarAdd.svg';
 import initialSchedule from '@/constants/ScheduleFormInit';
 import { dateToString } from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
+import useMemberStore from '@/stores/MemberStore';
 
 function CalendarContent() {
   const { selectedDate } = useDateStore();
+  const {memberId} = useMemberStore();
   const [calendarType, setCalendarType] = useState<CalenderType>('MONTH');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [skedInit, setSkedInit] = useState<Schedule & Repeat>({
     ...initialSchedule,
+    members: [{member_id: memberId as number}]
   });
 
   const closeModal = () => {
@@ -56,7 +59,7 @@ function CalendarContent() {
                 $size="lg"
                 onClick={() => {
                   setSkedInit({
-                    ...initialSchedule,
+                    ...skedInit,
                     startDate: dateToString(selectedDate),
                     endDate: dateToString(selectedDate),
                   });
@@ -71,7 +74,7 @@ function CalendarContent() {
         </Containers.WhiteContainer>
         <IndexGroup calendarType={calendarType} setCType={setCalendarType} />
       </Containers.Container>
-      <ScheduleModal isOpen={isModalOpen} init={skedInit} handleClose={closeModal} handleConfirm={() => {}}/>
+      <ScheduleModal isOpen={isModalOpen} init={skedInit} handleClose={closeModal}/>
     </>
   );
 }

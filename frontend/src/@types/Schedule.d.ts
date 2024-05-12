@@ -45,10 +45,10 @@ interface Schedule {
   endHour: number;
   startMinute: number;
   endMinute: number;
-  category: 'Member' | 'Group'; // 개인: Member, 그룹: Group, 필수
+  category: 'MEMBER' | 'GROUP'; // 개인: Member, 그룹: Group, 필수
   groupId: number;
   label: Label | null;
-  members: Array<Member>; // 개인 일정은 한명만
+  members: Array<{member_id: number}>; // 개인 일정은 한명만
   isRepetition: boolean; // 선택
 }
 

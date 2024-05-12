@@ -31,7 +31,7 @@ function SchedulePanel({
       />
       <Items.Description states={states} handleChange={handleChange} />
       <Items.Label states={states} setStates={setStates} />
-      {states.category === 'Member' ? null : (
+      {states.category === 'MEMBER' ? null : (
         <Items.Users states={states} setStates={setStates} />
       )}
       <Items.Repeat
