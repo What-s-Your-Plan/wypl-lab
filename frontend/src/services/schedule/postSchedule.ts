@@ -89,7 +89,9 @@ async function postSchedule(schedule: Schedule & Repeat) {
     } else {
       console.log(response);
     }
-  } catch (err) {}
+  } catch (err) {
+    throw err;
+  }
 }
 
 export default postSchedule;

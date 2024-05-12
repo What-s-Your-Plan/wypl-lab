@@ -18,8 +18,6 @@ function ScheduleModal({
     init,
     postSchedule,
   );
-  // console.log('init')
-  // console.log(init)
 
   return (
     <Modal
