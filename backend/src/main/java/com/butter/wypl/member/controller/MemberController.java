@@ -25,7 +25,9 @@ import com.butter.wypl.member.data.response.MemberColorUpdateResponse;
 import com.butter.wypl.member.data.response.MemberColorsResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
+import com.butter.wypl.member.data.response.MemberSearchResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
+import com.butter.wypl.member.repository.query.data.MemberSearchCond;
 import com.butter.wypl.member.service.MemberLoadService;
 import com.butter.wypl.member.service.MemberModifyService;
 
@@ -37,6 +39,15 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberLoadService memberLoadService;
 	private final MemberModifyService memberModifyService;
+
+	@GetMapping("/v1/members")
+	public ResponseEntity<Message<MemberSearchResponse>> memberSearch(
+			@Authenticated AuthMember authMember,
+			MemberSearchCond cond
+	) {
+		MemberSearchResponse response = memberLoadService.searchMembers(authMember, cond);
+		return ResponseEntity.ok(Message.withBody("사용자들을 조회했습니다", response));
+	}
 
 	@GetMapping("/v1/members/{member_id}")
 	public ResponseEntity<Message<FindMemberProfileInfoResponse>> findProfileInfo(
