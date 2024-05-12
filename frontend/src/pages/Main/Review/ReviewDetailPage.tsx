@@ -50,9 +50,11 @@ function ReviewDetailPage() {
               <span className="relative">
                 <PopOver
                   button={
-                    <Button $size="none" className="!bg-transparent">
-                      <img src={MoreVertical} alt="더보기" />
-                    </Button>
+                    <div>
+                      <Button $size="none" className="!bg-transparent">
+                        <img src={MoreVertical} alt="더보기" />
+                      </Button>
+                    </div>
                   }
                   panel={
                     <div className="flex flex-col gap-0.5 w-16 px-3 py-2 bg-default-white/95 rounded-lg shadow-lg">
