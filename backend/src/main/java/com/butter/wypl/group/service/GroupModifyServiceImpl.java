@@ -9,7 +9,10 @@ import static com.butter.wypl.member.exception.MemberErrorCode.*;
 import static com.butter.wypl.member.utils.MemberServiceUtils.findById;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.global.exception.CustomErrorCode;
 import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.domain.Group;
@@ -48,13 +52,18 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		memberIdList.add(ownerId);
 		validateMaxMemberCount(memberIdList);
 
-		List<Member> members = memberRepository.findAllById(memberIdList);
-		validateMembers(members, memberIdList);
+		Set<Integer> memberIds = new HashSet<>(createRequest.memberIdList());
+		memberIds.add(ownerId);
+		validateMaxMemberCount(memberIds);
 
-		Group group = Group.of(createRequest.name(), createRequest.description(), getMember(ownerId));
-		saveGroupAndMembers(ownerId, members, group);
+		List<Member> members = memberRepository.findAllById(memberIds);
+		validateAllMembersExist(members, memberIds);
 
-		return new GroupIdResponse(group.getId());
+		Group savedGroup = groupRepository.save(
+			Group.of(createRequest.name(), createRequest.description(), getMember(ownerId)));
+		saveAllMemberGroup(members, savedGroup);
+
+		return new GroupIdResponse(savedGroup.getId());
 	}
 
 	private void saveGroupAndMembers(int ownerId, List<Member> members, Group group) {
@@ -92,6 +101,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Transactional
 	@Override
 	public GroupIdResponse updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest) {
+
 		Member foundMember = getMember(memberId);
 		Group foundGroup = getGroup(groupId);
 		isGroupMember(foundMember.getId(), getMembersByGroupId(memberGroupRepository, foundGroup.getId()));
@@ -169,8 +179,42 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	private void validateMaxMemberCount(List<Integer> memberIdList) {
 		if (memberIdList.size() >= 50) {
+	private void saveAllMemberGroup(List<Member> members, Group group) {
+		List<MemberGroup> memberGroups = new ArrayList<>();
+		members.forEach(member -> {
+				if (member.getMemberGroups().size() >= 50) {
+					throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
+						member.getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
+				}
+				memberGroups.add(MemberGroup.of(member, group));
+			}
+		);
+		memberGroupRepository.saveAll(memberGroups);
+	}
+
+	private void validateAllMembersExist(Collection<Member> members, Collection<Integer> memberIdList) {
+		if (members.size() != memberIdList.size()) {
+			throw new GroupException(EXISTS_INVALID_MEMBER);
+		}
+	}
+
+	private void validateMaxMemberCount(Collection<?> members) {
+		if (members.size() > 50) {
 			throw new GroupException(EXCEED_MAX_MEMBER_COUNT);
 		}
 	}
 
+	private static void validateOwnerPermission(Member owner, Group group) {
+		if (!isGroupOwner(owner, group)) {
+			throw new GroupException(HAS_NOT_INVITE_PERMISSION);
+		}
+	}
+
+	private Member getMember(int ownerId) {
+		return findById(memberRepository, ownerId);
+	}
+
+	private Group getGroup(int groupId) {
+		return findById(groupRepository, groupId);
+	}
 }

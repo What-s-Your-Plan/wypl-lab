@@ -1,7 +1,7 @@
 package com.butter.wypl.group.service;
 
+import static com.butter.wypl.group.exception.GroupErrorCode.*;
 import static com.butter.wypl.group.fixture.GroupFixture.*;
-import static com.butter.wypl.member.exception.MemberErrorCode.*;
 import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +32,6 @@ import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.member.domain.Member;
-import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.member.repository.MemberRepository;
 
@@ -64,16 +63,21 @@ class GroupModifyServiceTest {
 		void createGroupSuccess() {
 
 			/* Given */
-			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description", Set.of(2, 3));
+			Group newGroup = GROUP_STUDY.toGroup(owner);
+			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest(newGroup.getName(),
+				newGroup.getDescription(), Set.of(member1.getId(), member2.getId()));
 			List<Member> members = List.of(owner, member1, member2);
+
+			given(memberRepository.findAllById(anySet()))
+				.willReturn(members);
+
+			given(groupRepository.save(any(Group.class)))
+				.willReturn(newGroup);
 
 			given(memberRepository.findById(anyInt()))
 				.willReturn(Optional.of(owner));
 
-			given(memberRepository.findAllById(anyList()))
-				.willReturn(members);
-
-			/* When */
+			/* When, Then */
 			assertThatCode(() -> {
 				groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
 			}).doesNotThrowAnyException();
@@ -108,8 +112,8 @@ class GroupModifyServiceTest {
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
 					groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
-				}).isInstanceOf(MemberException.class)
-				.hasMessageContaining(NOT_EXIST_MEMBER.getMessage());
+				}).isInstanceOf(GroupException.class)
+				.hasMessageContaining(EXISTS_INVALID_MEMBER.getMessage());
 		}
 
 		@Test
@@ -131,7 +135,7 @@ class GroupModifyServiceTest {
 			given(memberRepository.findById(anyInt()))
 				.willReturn(Optional.of(owner));
 
-			given(memberRepository.findAllById(anyList()))
+			given(memberRepository.findAllById(anySet()))
 				.willReturn(members);
 
 			/* When, Then */
