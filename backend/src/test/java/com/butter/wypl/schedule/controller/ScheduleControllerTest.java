@@ -477,8 +477,8 @@ public class ScheduleControllerTest extends ControllerTest {
 			RestDocumentationRequestBuilders.delete("/schedule/v1/schedules")
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
-				.header("schedule_id", 1)
-				.header("modification_type", ModificationType.ALL)
+				.header("Schedule_id", 1)
+				.header("Modification_type", ModificationType.ALL)
 		);
 
 		//then

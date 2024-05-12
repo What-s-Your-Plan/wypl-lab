@@ -86,8 +86,8 @@ public class ScheduleController {
 	@DeleteMapping
 	public ResponseEntity<Message<ScheduleIdListResponse>> deleteSchedules(
 		@Authenticated AuthMember authMember,
-		@RequestHeader("schedule_id") int scheduleId,
-		@RequestHeader("modification_type") ModificationType modificationType
+		@RequestHeader("Schedule_id") int scheduleId,
+		@RequestHeader("Modification_type") ModificationType modificationType
 	) {
 		return ResponseEntity
 			.ok().body(
