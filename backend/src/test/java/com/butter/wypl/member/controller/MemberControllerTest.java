@@ -12,6 +12,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Color;
 import com.butter.wypl.global.common.ControllerTest;
+import com.butter.wypl.member.data.MemberSearchInfo;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberColorUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
@@ -38,9 +41,12 @@ import com.butter.wypl.member.data.response.MemberColorUpdateResponse;
 import com.butter.wypl.member.data.response.MemberColorsResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
+import com.butter.wypl.member.data.response.MemberSearchResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
 import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.domain.Member;
+import com.butter.wypl.member.fixture.MemberFixture;
+import com.butter.wypl.member.repository.query.data.MemberSearchCond;
 import com.butter.wypl.member.service.MemberLoadService;
 import com.butter.wypl.member.service.MemberModifyService;
 
@@ -53,6 +59,63 @@ class MemberControllerTest extends ControllerTest {
 	private MemberModifyService memberModifyService;
 	@MockBean
 	private MemberLoadService memberLoadService;
+
+	@DisplayName("회원의 이메일을 가지고 조회한다.")
+	@Test
+	void memberSearchTest() throws Exception {
+		/* Given */
+		MemberFixture[] values = MemberFixture.values();
+		List<MemberSearchInfo> memberSearchInfos = IntStream.rangeClosed(1, values.length)
+				.mapToObj(i -> {
+					Member member = values[i - 1].toMemberWithId(i);
+					member.changeProfileImage("image_url_" + i);
+					return member;
+				})
+				.map(MemberSearchInfo::from)
+				.toList();
+		given(memberLoadService.searchMembers(any(AuthMember.class), any(MemberSearchCond.class)))
+				.willReturn(MemberSearchResponse.from(memberSearchInfos));
+
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.get("/member/v1/members?q={q}&size={size}",
+								"work",
+								"10")
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("member/search-members",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						queryParameters(
+								parameterWithName("q")
+										.description("검색 대상의 이메일"),
+								parameterWithName("size").optional()
+										.description("검색 요청의 데이터 건수")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.members[]").type(JsonFieldType.ARRAY)
+										.description("조회된 사용자들의 목록"),
+								fieldWithPath("body.member_count").type(JsonFieldType.NUMBER)
+										.description("조회된 사용자들의 수"),
+								fieldWithPath("body.members[].id").type(JsonFieldType.NUMBER)
+										.description("조회한 사용자의 식별자"),
+								fieldWithPath("body.members[].email").type(JsonFieldType.STRING)
+										.description("조회한 사용자의 이메일"),
+								fieldWithPath("body.members[].nickname").type(JsonFieldType.STRING)
+										.description("조회한 사용자의 닉네임"),
+								fieldWithPath("body.members[].profile_image_url").type(JsonFieldType.STRING).optional()
+										.description("조회한 사용자의 프로필 이미지")
+						)
+				))
+				.andExpect(status().isOk());
+	}
 
 	@DisplayName("회원의 메인 컬러와 서버의 색상을 조회한다.")
 	@Test
