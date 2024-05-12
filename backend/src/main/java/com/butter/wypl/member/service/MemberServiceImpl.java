@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.file.S3ImageProvider;
 import com.butter.wypl.global.common.Color;
+import com.butter.wypl.global.validator.RequestValidator;
 import com.butter.wypl.member.data.MemberSearchInfo;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberColorUpdateRequest;
@@ -150,9 +151,10 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 			final AuthMember authMember,
 			final MemberSearchCond cond
 	) {
-		List<Member> findMembers = memberRepository.findBySearchCond(cond);
+		RequestValidator.validateRequestSize(cond.size());
 
-		List<MemberSearchInfo> memberSearchInfos = findMembers.stream()
+		List<MemberSearchInfo> memberSearchInfos = memberRepository.findBySearchCond(cond)
+				.stream()
 				.map(MemberSearchInfo::from)
 				.toList();
 
