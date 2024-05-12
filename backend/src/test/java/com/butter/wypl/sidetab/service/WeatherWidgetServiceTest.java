@@ -17,6 +17,7 @@ import org.mockito.Mock;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.infrastructure.weather.OpenWeatherClient;
+import com.butter.wypl.infrastructure.weather.WeatherRegion;
 import com.butter.wypl.infrastructure.weather.data.OpenWeatherCond;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.sidetab.exception.SideTabErrorCode;
@@ -53,8 +54,8 @@ class WeatherWidgetServiceTest {
 		given(memberRepository.findById(anyInt()))
 				.willReturn(Optional.of(KIM_JEONG_UK.toMember()));
 
-		given(openWeatherClient.fetchWeather(any(OpenWeatherCond.class)))
-				.willReturn(weatherFixture.toOpenWeatherResponse());
+		given(weatherWidgetRepository.findById(any(WeatherRegion.class)))
+				.willReturn(Optional.of(weatherFixture.toWeatherWidget()));
 
 		/* When & Then */
 		assertThatCode(() -> sideTabService.findCurrentWeather(
