@@ -32,8 +32,8 @@ public record WeatherWidgetResponse(
 			final boolean isSunrise
 	) {
 		return WeatherWidgetResponse.builder()
-				.city(isLangKr ? weatherWidget.getWeatherRegion().getCityEn()
-						: weatherWidget.getWeatherRegion().getCityKr())
+				.city(isLangKr ? weatherWidget.getWeatherRegion().getCityKr()
+						: weatherWidget.getWeatherRegion().getCityEn())
 				.weatherId(weatherWidget.getWeatherId())
 				.temp(weatherWidget.getTemp())
 				.minTemp(weatherWidget.getMinTemp())
