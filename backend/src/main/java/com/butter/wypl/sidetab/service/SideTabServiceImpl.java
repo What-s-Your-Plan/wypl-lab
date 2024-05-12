@@ -38,9 +38,7 @@ import com.butter.wypl.sidetab.repository.WeatherWidgetRepository;
 import com.butter.wypl.sidetab.utils.SideTabServiceUtils;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -120,15 +118,15 @@ public class SideTabServiceImpl implements
 		return WeatherWidgetResponse.of(
 				weatherWidget,
 				isLangKr,
-				sunrise);
+				sunrise
+		);
 	}
 
 	private WeatherWidget saveWeatherWidget(final OpenWeatherCond cond) {
 		OpenWeatherResponse response = weatherClient.fetchWeather(cond);
 
 		String updateTime = getUpdateTime(cond.city());
-
-		return new WeatherWidget(cond.city(),
+		WeatherWidget weatherWidget = new WeatherWidget(cond.city(),
 				getWeatherId(response.getWeatherId()),
 				Math.round(response.getTemperature()),
 				Math.round(response.getMinTemperature()),
@@ -138,6 +136,8 @@ public class SideTabServiceImpl implements
 				response.getWeatherDescription(),
 				response.getSunrise(),
 				response.getSunset());
+
+		return weatherWidgetRepository.save(weatherWidget);
 	}
 
 	private int getWeatherId(final int id) {

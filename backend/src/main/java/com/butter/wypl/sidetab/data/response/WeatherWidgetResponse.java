@@ -3,6 +3,9 @@ package com.butter.wypl.sidetab.data.response;
 import com.butter.wypl.sidetab.domain.cache.WeatherWidget;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Builder;
+
+@Builder
 public record WeatherWidgetResponse(
 		@JsonProperty("city")
 		String city,
@@ -28,17 +31,17 @@ public record WeatherWidgetResponse(
 			final boolean isLangKr,
 			final boolean isSunrise
 	) {
-		return new WeatherWidgetResponse(
-				isLangKr ? weatherWidget.getWeatherRegion().getCityEn()
-						: weatherWidget.getWeatherRegion().getCityKr(),
-				weatherWidget.getWeatherId(),
-				weatherWidget.getTemp(),
-				weatherWidget.getTemp(),
-				weatherWidget.getTemp(),
-				weatherWidget.getUpdateTime(),
-				weatherWidget.getMain(),
-				weatherWidget.getDesc(),
-				isSunrise
-		);
+		return WeatherWidgetResponse.builder()
+				.city(isLangKr ? weatherWidget.getWeatherRegion().getCityKr()
+						: weatherWidget.getWeatherRegion().getCityEn())
+				.weatherId(weatherWidget.getWeatherId())
+				.temp(weatherWidget.getTemp())
+				.minTemp(weatherWidget.getMinTemp())
+				.maxTemp(weatherWidget.getMaxTemp())
+				.updateTime(weatherWidget.getUpdateTime())
+				.main(weatherWidget.getMain())
+				.desc(weatherWidget.getDesc())
+				.isSunrise(isSunrise)
+				.build();
 	}
 }

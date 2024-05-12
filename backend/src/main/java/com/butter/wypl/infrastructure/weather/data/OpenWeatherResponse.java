@@ -66,7 +66,7 @@ public record OpenWeatherResponse(
 		return sys.sunset();
 	}
 
-	private record WeatherResponse(
+	public record WeatherResponse(
 			@JsonProperty("id")
 			int id,
 			@JsonProperty("main")
@@ -76,7 +76,7 @@ public record OpenWeatherResponse(
 	) {
 	}
 
-	private record MainResponse(
+	public record MainResponse(
 			@JsonProperty("temp")
 			float temp,
 			@JsonProperty("temp_min")
@@ -86,7 +86,7 @@ public record OpenWeatherResponse(
 	) {
 	}
 
-	private record SysResponse(
+	public record SysResponse(
 			@JsonProperty("sunrise")
 			long sunrise,
 			@JsonProperty("sunset")
