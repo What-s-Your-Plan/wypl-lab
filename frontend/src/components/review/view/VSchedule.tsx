@@ -39,15 +39,17 @@ function VSchedule({ schedule }: VScheduleProps) {
           )}
         </div>
       </div>
-      <div className="flex gap-4 items-center text-sm">
-        <img src={Tag} alt="라벨" className="w-5" />
-        <LabelButton
-          className="text-base"
-          $bgColor={schedule.label?.color as LabelColorsType}
-        >
-          {schedule.label?.title}
-        </LabelButton>
-      </div>
+      {schedule.label && (
+        <div className="flex gap-4 items-center text-sm">
+          <img src={Tag} alt="라벨" className="w-5" />
+          <LabelButton
+            className="text-base"
+            $bgColor={schedule.label?.color as LabelColorsType}
+          >
+            {schedule.label?.title}
+          </LabelButton>
+        </div>
+      )}
       <div className="flex gap-4 items-center text-sm">
         <img src={Users} alt="참가자" className="w-5" />
         {renderMembers()}
