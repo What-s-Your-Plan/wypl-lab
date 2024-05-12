@@ -162,6 +162,9 @@ class GroupModifyServiceTest {
 			given(groupRepository.findById(anyInt()))
 				.willReturn(Optional.of(group));
 
+			given(memberRepository.findById(anyInt()))
+				.willReturn(Optional.of(member));
+
 			MemberGroup memberGroup = MemberGroup.of(member, group, Color.labelBrown);
 			List<MemberGroup> memberGroups = List.of(memberGroup);
 			given(memberGroupRepository.findMemberGroupsByGroupId(groupId))

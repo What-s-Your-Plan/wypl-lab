@@ -28,12 +28,7 @@ public class GroupServiceUtils {
 		}
 	}
 
-	public static boolean isGroupOwner(
-		final GroupRepository groupRepository,
-		final int userId,
-		final int groupId
-	) {
-		Group group = findById(groupRepository, groupId);
-		return group.getOwner().getId() == userId;
+	public static boolean isGroupOwner(Member member, Group group) {
+		return group.getOwner().getId() == member.getId();
 	}
 }

@@ -25,6 +25,7 @@ import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.MemberGroup;
+import com.butter.wypl.group.exception.GroupErrorCode;
 import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
@@ -76,15 +77,13 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Override
 	public void deleteGroup(int memberId, int groupId) {
 
-		if (!isGroupOwner(groupRepository, memberId, groupId)) {
-			throw new GroupException(IS_NOT_GROUP_OWNER);
-		}
+		Group foundGroup = getGroup(groupId);
+		Member foundMember = getMember(memberId);
+		validateOwnerPermission(foundMember, foundGroup, HAS_NOT_DELETE_PERMISSION);
 
 		List<MemberGroup> findMemberGroups = getMemberGroupsByGroupId(memberGroupRepository, groupId);
 		findMemberGroups.forEach(BaseEntity::delete);
-
-		Group findGroup = getGroup(groupId);
-		findGroup.delete();
+		foundGroup.delete();
 	}
 
 	@Override
@@ -94,7 +93,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		Group group = getGroup(groupId);
 		Set<Integer> memberIdList = inviteRequest.memberIdList();
 
-		validateOwnerPermission(owner, group);
+		validateOwnerPermission(owner, group, HAS_NOT_INVITE_PERMISSION);
 		validateMaxMemberCount(memberIdList);
 
 		List<Member> members = memberRepository.findAllById(memberIdList);
@@ -142,7 +141,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		Member foundMember = getMember(memberId);
 		Group foundGroup = getGroup(groupId);
 
-		if (isGroupOwner(groupRepository, memberId, groupId)
+		if (isGroupOwner(foundMember, foundGroup)
 			&& getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
 			throw new GroupException(NOT_ACCEPTED_LEAVE_GROUP);
 		}
@@ -179,9 +178,9 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		}
 	}
 
-	private static void validateOwnerPermission(Member owner, Group group) {
+	private static void validateOwnerPermission(Member owner, Group group, GroupErrorCode errorCode) {
 		if (!isGroupOwner(owner, group)) {
-			throw new GroupException(HAS_NOT_INVITE_PERMISSION);
+			throw new GroupException(errorCode);
 		}
 	}
 
