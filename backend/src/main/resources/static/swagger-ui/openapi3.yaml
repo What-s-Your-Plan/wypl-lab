@@ -19,7 +19,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-590174129'
+                $ref: '#/components/schemas/auth-v1-logout-590174129'
               examples:
                 auth/logout:
                   value: |-
@@ -353,6 +353,27 @@ paths:
                         } ]
                       }
                     }
+  /file/v1/images:
+    post:
+      tags:
+      - file
+      operationId: file/upload-image
+      responses:
+        "201":
+          description: "201"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/file-v1-images-843780732'
+              examples:
+                file/upload-image:
+                  value: |-
+                    {
+                      "message" : "사진 저장에 성공하였습니다.",
+                      "body" : {
+                        "image_url" : "aws.image.url"
+                      }
+                    }
   /group/v1/groups:
     post:
       tags:
@@ -470,7 +491,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-590174129'
+                $ref: '#/components/schemas/auth-v1-logout-590174129'
               examples:
                 group/delete-group:
                   value: |-
@@ -534,7 +555,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-590174129'
+                $ref: '#/components/schemas/auth-v1-logout-590174129'
               examples:
                 group/leave-group:
                   value: |-
@@ -559,7 +580,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-590174129'
+                $ref: '#/components/schemas/auth-v1-logout-590174129'
               examples:
                 group/accept-group-invitation:
                   value: |-
@@ -943,7 +964,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-590174129'
+                $ref: '#/components/schemas/auth-v1-logout-590174129'
               examples:
                 notification/delete:
                   value: |-
@@ -1025,18 +1046,18 @@ paths:
                     "title" : "공부하기 싫다",
                     "contents" : [ {
                       "emoji" : "/src/assets/icons/emoji/tired.svg",
-                      "blockType" : "emotion",
-                      "description" : "피곤해요"
+                      "description" : "피곤해요",
+                      "blockType" : "emotion"
                     }, {
                       "weather" : "/src/assets/icons/weather/sun.svg",
-                      "blockType" : "4f",
-                      "description" : "날씨 너무 좋음"
+                      "description" : "날씨 너무 좋음",
+                      "blockType" : "4f"
                     }, {
-                      "facts" : "팩트",
                       "feelings" : "느낌",
-                      "blockType" : "4f",
+                      "facts" : "팩트",
+                      "future" : "향후 헹동",
                       "finding" : "교훈",
-                      "future" : "향후 헹동"
+                      "blockType" : "4f"
                     } ]
                   }
       responses:
@@ -1100,18 +1121,18 @@ paths:
                     "title" : "공부하기 싫다",
                     "contents" : [ {
                       "emoji" : "/src/assets/icons/emoji/tired.svg",
-                      "blockType" : "emotion",
-                      "description" : "피곤해요"
+                      "description" : "피곤해요",
+                      "blockType" : "emotion"
                     }, {
                       "weather" : "/src/assets/icons/weather/sun.svg",
-                      "blockType" : "4f",
-                      "description" : "날씨 너무 좋음"
+                      "description" : "날씨 너무 좋음",
+                      "blockType" : "4f"
                     }, {
-                      "facts" : "팩트",
                       "feelings" : "느낌",
-                      "blockType" : "4f",
+                      "facts" : "팩트",
+                      "future" : "향후 헹동",
                       "finding" : "교훈",
-                      "future" : "향후 헹동"
+                      "blockType" : "4f"
                     } ]
                   }
       responses:
@@ -1182,20 +1203,20 @@ paths:
                         "review_count" : 2,
                         "reviews" : [ {
                           "review_id" : 0,
-                          "created_at" : "2024-05-11T16:09:38.967579",
+                          "created_at" : "2024-05-12T10:51:41.672191",
                           "thumbnail_content" : {
                             "emoji" : "/src/assets/icons/emoji/tired.svg",
-                            "blockType" : "emotion",
-                            "description" : "피곤해요"
+                            "description" : "피곤해요",
+                            "blockType" : "emotion"
                           },
                           "title" : "공부하기 싫다"
                         }, {
                           "review_id" : 0,
-                          "created_at" : "2024-05-11T16:09:38.967592",
+                          "created_at" : "2024-05-12T10:51:41.672232",
                           "thumbnail_content" : {
                             "weather" : "/src/assets/icons/weather/sun.svg",
-                            "blockType" : "4f",
-                            "description" : "날씨 너무 좋음"
+                            "description" : "날씨 너무 좋음",
+                            "blockType" : "4f"
                           },
                           "title" : "오늘도 공부하기 싫다"
                         } ]
@@ -1246,18 +1267,18 @@ paths:
                         },
                         "contents" : [ {
                           "emoji" : "/src/assets/icons/emoji/tired.svg",
-                          "blockType" : "emotion",
-                          "description" : "피곤해요"
+                          "description" : "피곤해요",
+                          "blockType" : "emotion"
                         }, {
                           "weather" : "/src/assets/icons/weather/sun.svg",
-                          "blockType" : "4f",
-                          "description" : "날씨 너무 좋음"
+                          "description" : "날씨 너무 좋음",
+                          "blockType" : "4f"
                         }, {
-                          "facts" : "팩트",
                           "feelings" : "느낌",
-                          "blockType" : "4f",
+                          "facts" : "팩트",
+                          "future" : "향후 헹동",
                           "finding" : "교훈",
-                          "future" : "향후 헹동"
+                          "blockType" : "4f"
                         } ]
                       }
                     }
@@ -1600,8 +1621,8 @@ paths:
                       "body" : {
                         "title" : "디데이의 제목",
                         "d_day" : "D-DAY",
-                        "date" : "2024년 5월 11일",
-                        "local_date" : "2024-05-11"
+                        "date" : "2024년 5월 12일",
+                        "local_date" : "2024-05-12"
                       }
                     }
     patch:
@@ -1625,7 +1646,7 @@ paths:
                 value: |-
                   {
                     "title" : "디데이의 제목",
-                    "date" : "2024-05-11"
+                    "date" : "2024-05-12"
                   }
       responses:
         "200":
@@ -1642,8 +1663,8 @@ paths:
                       "body" : {
                         "title" : "디데이의 제목",
                         "d_day" : "D-DAY",
-                        "date" : "2024년 5월 11일",
-                        "local_date" : "2024-05-11"
+                        "date" : "2024년 5월 12일",
+                        "local_date" : "2024-05-12"
                       }
                     }
   /side/v1/goals/{goal_id}:
@@ -1715,6 +1736,33 @@ paths:
                       }
                     }
   /side/v1/memo/{memo_id}:
+    get:
+      tags:
+      - side
+      operationId: side-tab/find-memo
+      parameters:
+      - name: memo_id
+        in: path
+        description: 메모 식별자
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/side-v1-memo-memo_id1285412632'
+              examples:
+                side-tab/find-memo:
+                  value: |-
+                    {
+                      "message" : "메모를 조회했습니다",
+                      "body" : {
+                        "memo" : "메모의 내용"
+                      }
+                    }
     patch:
       tags:
       - side
@@ -1793,7 +1841,7 @@ paths:
         content:
           application/json;charset=UTF-8:
             schema:
-              $ref: '#/components/schemas/todo-v1-todos-2014849968'
+              $ref: '#/components/schemas/todo-v1-todos-todoId-2014849968'
             examples:
               todo/createTodo:
                 value: |-
@@ -1806,7 +1854,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-590174129'
+                $ref: '#/components/schemas/auth-v1-logout-590174129'
               examples:
                 todo/createTodo:
                   value: |-
@@ -1831,7 +1879,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/todo-v1-todos-check-todoId486549215'
+                $ref: '#/components/schemas/todo-v1-todos-todoId486549215'
               examples:
                 todo/deleteTodo:
                   value: |-
@@ -1853,7 +1901,7 @@ paths:
         content:
           application/json;charset=UTF-8:
             schema:
-              $ref: '#/components/schemas/todo-v1-todos-2014849968'
+              $ref: '#/components/schemas/todo-v1-todos-todoId-2014849968'
             examples:
               todo/updateTodo:
                 value: |-
@@ -1866,7 +1914,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/todo-v1-todos-check-todoId486549215'
+                $ref: '#/components/schemas/todo-v1-todos-todoId486549215'
               examples:
                 todo/updateTodo:
                   value: |-
@@ -1891,7 +1939,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/todo-v1-todos-check-todoId486549215'
+                $ref: '#/components/schemas/todo-v1-todos-todoId486549215'
               examples:
                 todo/checkTodo:
                   value: |-
@@ -1993,6 +2041,22 @@ components:
                   content:
                     type: string
                     description: Todo 내용
+        message:
+          type: string
+          description: 응답 메시지
+    side-v1-memo-memo_id1285412632:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - memo
+          type: object
+          properties:
+            memo:
+              type: string
+              description: 조회한 메모
         message:
           type: string
           description: 응답 메시지
@@ -2522,7 +2586,7 @@ components:
         message:
           type: string
           description: 응답 메시지
-    group-v1-groups-groupId-590174129:
+    auth-v1-logout-590174129:
       required:
       - message
       type: object
@@ -2908,6 +2972,18 @@ components:
         message:
           type: string
           description: 응답 메세지
+    side-v1-d-day-d_day_id-529626301:
+      required:
+      - date
+      - title
+      type: object
+      properties:
+        date:
+          type: string
+          description: 수정 요청한 디데이 날짜
+        title:
+          type: string
+          description: 수정 요청한 디데이 제목
     member-v1-members-timezones-926334236:
       required:
       - message
@@ -2998,18 +3074,22 @@ components:
         message:
           type: string
           description: 응답 메시지
-    side-v1-d-day-d_day_id-529626301:
+    file-v1-images-843780732:
       required:
-      - date
-      - title
+      - message
       type: object
       properties:
-        date:
+        body:
+          required:
+          - image_url
+          type: object
+          properties:
+            image_url:
+              type: string
+              description: 업로드한 이미지 URL
+        message:
           type: string
-          description: 수정 요청한 디데이 날짜
-        title:
-          type: string
-          description: 수정 요청한 디데이 제목
+          description: 응답 메시지
     auth-v1-sign-in-provider-723021484:
       required:
       - message
@@ -3034,7 +3114,7 @@ components:
         message:
           type: string
           description: 응답 메시지
-    todo-v1-todos-2014849968:
+    todo-v1-todos-todoId-2014849968:
       required:
       - content
       type: object
@@ -3423,7 +3503,7 @@ components:
         message:
           type: string
           description: 응답 메시지
-    todo-v1-todos-check-todoId486549215:
+    todo-v1-todos-todoId486549215:
       type: object
     review-v1-reviews-reviewId-1576008846:
       required:

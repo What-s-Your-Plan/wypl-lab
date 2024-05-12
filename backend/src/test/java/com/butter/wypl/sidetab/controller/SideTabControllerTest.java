@@ -244,7 +244,7 @@ class SideTabControllerTest extends ControllerTest {
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("side-tab/update-memo",
+				.andDo(document("side-tab/find-memo",
 						preprocessRequest(prettyPrint()),
 						preprocessResponse(prettyPrint()),
 						pathParameters(
@@ -254,7 +254,7 @@ class SideTabControllerTest extends ControllerTest {
 								fieldWithPath("message").type(JsonFieldType.STRING)
 										.description("응답 메시지"),
 								fieldWithPath("body.memo").type(JsonFieldType.STRING)
-										.description("수정한 메모")
+										.description("조회한 메모")
 						)
 				))
 				.andExpect(status().isOk());

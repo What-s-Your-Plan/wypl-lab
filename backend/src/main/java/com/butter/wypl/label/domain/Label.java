@@ -12,6 +12,8 @@ import com.butter.wypl.schedule.domain.Schedule;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -35,6 +37,8 @@ public class Label extends BaseEntity {
 	@Column(nullable = false, length = 15)
 	private String title;
 
+	@Column(length = 20, nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Color color;
 
 	@Column(name = "member_id", nullable = false)
@@ -66,5 +70,4 @@ public class Label extends BaseEntity {
 			throw new LabelException(LabelErrorCode.NOT_APPROPRIATE_TITLE);
 		}
 	}
-
 }
