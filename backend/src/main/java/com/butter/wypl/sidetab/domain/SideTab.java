@@ -47,9 +47,9 @@ public class SideTab {
 
 	private SideTab(Member member) {
 		this.member = member;
-		memo = MemoWidget.from(null);
-		dDay = DDayWidget.of(null, null);
-		goal = GoalWidget.from(null);
+		memo = MemoWidget.from("");
+		dDay = DDayWidget.of("디데이", LocalDate.now());
+		goal = GoalWidget.from("");
 	}
 
 	public static SideTab from(Member member) {
