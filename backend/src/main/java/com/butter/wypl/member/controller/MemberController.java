@@ -93,7 +93,7 @@ public class MemberController {
 		return ResponseEntity.ok(Message.withBody("타임존을 수정하였습니다.", response));
 	}
 
-	@PostMapping("/v1/members/profile-iamge")
+	@PostMapping("/v1/members/profile-image")
 	public ResponseEntity<Message<MemberProfileImageUpdateResponse>> changeProfileImage(
 			@Authenticated AuthMember authMember,
 			@RequestParam("image") MultipartFile image
