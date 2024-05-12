@@ -1167,7 +1167,7 @@ paths:
         content:
           application/json;charset=UTF-8:
             schema:
-              $ref: '#/components/schemas/review-v1-reviews-reviewId-1576008846'
+              $ref: '#/components/schemas/review-v1-reviews-1576008846'
             examples:
               review/create:
                 value: |-
@@ -1175,19 +1175,19 @@ paths:
                     "schedule_id" : 0,
                     "title" : "공부하기 싫다",
                     "contents" : [ {
-                      "blockType" : "emotion",
                       "description" : "피곤해요",
+                      "blockType" : "emotion",
                       "emoji" : "/src/assets/icons/emoji/tired.svg"
                     }, {
-                      "blockType" : "4f",
                       "description" : "날씨 너무 좋음",
+                      "blockType" : "4f",
                       "weather" : "/src/assets/icons/weather/sun.svg"
                     }, {
                       "future" : "향후 헹동",
-                      "facts" : "팩트",
-                      "feelings" : "느낌",
+                      "finding" : "교훈",
                       "blockType" : "4f",
-                      "finding" : "교훈"
+                      "feelings" : "느낌",
+                      "facts" : "팩트"
                     } ]
                   }
       responses:
@@ -1242,7 +1242,7 @@ paths:
         content:
           application/json;charset=UTF-8:
             schema:
-              $ref: '#/components/schemas/review-v1-reviews-reviewId-1576008846'
+              $ref: '#/components/schemas/review-v1-reviews-1576008846'
             examples:
               review/update:
                 value: |-
@@ -1250,19 +1250,19 @@ paths:
                     "schedule_id" : 0,
                     "title" : "공부하기 싫다",
                     "contents" : [ {
-                      "blockType" : "emotion",
                       "description" : "피곤해요",
+                      "blockType" : "emotion",
                       "emoji" : "/src/assets/icons/emoji/tired.svg"
                     }, {
-                      "blockType" : "4f",
                       "description" : "날씨 너무 좋음",
+                      "blockType" : "4f",
                       "weather" : "/src/assets/icons/weather/sun.svg"
                     }, {
                       "future" : "향후 헹동",
-                      "facts" : "팩트",
-                      "feelings" : "느낌",
+                      "finding" : "교훈",
                       "blockType" : "4f",
-                      "finding" : "교훈"
+                      "feelings" : "느낌",
+                      "facts" : "팩트"
                     } ]
                   }
       responses:
@@ -1333,19 +1333,19 @@ paths:
                         "review_count" : 2,
                         "reviews" : [ {
                           "review_id" : 0,
-                          "created_at" : "2024-05-12T15:42:21.10022",
+                          "created_at" : "2024-05-12T17:19:52.917611",
                           "thumbnail_content" : {
-                            "blockType" : "emotion",
                             "description" : "피곤해요",
+                            "blockType" : "emotion",
                             "emoji" : "/src/assets/icons/emoji/tired.svg"
                           },
                           "title" : "공부하기 싫다"
                         }, {
                           "review_id" : 0,
-                          "created_at" : "2024-05-12T15:42:21.100231",
+                          "created_at" : "2024-05-12T17:19:52.91762",
                           "thumbnail_content" : {
-                            "blockType" : "4f",
                             "description" : "날씨 너무 좋음",
+                            "blockType" : "4f",
                             "weather" : "/src/assets/icons/weather/sun.svg"
                           },
                           "title" : "오늘도 공부하기 싫다"
@@ -1396,19 +1396,19 @@ paths:
                           } ]
                         },
                         "contents" : [ {
-                          "blockType" : "emotion",
                           "description" : "피곤해요",
+                          "blockType" : "emotion",
                           "emoji" : "/src/assets/icons/emoji/tired.svg"
                         }, {
-                          "blockType" : "4f",
                           "description" : "날씨 너무 좋음",
+                          "blockType" : "4f",
                           "weather" : "/src/assets/icons/weather/sun.svg"
                         }, {
                           "future" : "향후 헹동",
-                          "facts" : "팩트",
-                          "feelings" : "느낌",
+                          "finding" : "교훈",
                           "blockType" : "4f",
-                          "finding" : "교훈"
+                          "feelings" : "느낌",
+                          "facts" : "팩트"
                         } ]
                       }
                     }
@@ -2078,18 +2078,6 @@ paths:
                     }
 components:
   schemas:
-    label-v1-labels-label526348895:
-      required:
-      - color
-      - title
-      type: object
-      properties:
-        color:
-          type: string
-          description: 라벨 색상
-        title:
-          type: string
-          description: 라벨 제목
     review-v1-reviews-type-1001641780:
       required:
       - message
@@ -2132,6 +2120,18 @@ components:
         message:
           type: string
           description: 응답 메세지
+    label-v1-labels-label526348895:
+      required:
+      - color
+      - title
+      type: object
+      properties:
+        color:
+          type: string
+          description: 라벨 색상
+        title:
+          type: string
+          description: 라벨 제목
     todo-v1-todos852877396:
       required:
       - message
@@ -2174,6 +2174,22 @@ components:
         message:
           type: string
           description: 응답 메시지
+    review-v1-reviews-1465059799:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - review_id
+          type: object
+          properties:
+            review_id:
+              type: number
+              description: 생성한 리뷰의 엔덱스
+        message:
+          type: string
+          description: 응답 메세지
     side-v1-memo-memo_id1285412632:
       required:
       - message
@@ -2206,22 +2222,6 @@ components:
         message:
           type: string
           description: 응답 메시지
-    review-v1-reviews-1465059799:
-      required:
-      - message
-      type: object
-      properties:
-        body:
-          required:
-          - review_id
-          type: object
-          properties:
-            review_id:
-              type: number
-              description: 생성한 리뷰의 엔덱스
-        message:
-          type: string
-          description: 응답 메세지
     schedule-v1-schedules-scheduleId1157950338:
       required:
       - message
@@ -3667,7 +3667,7 @@ components:
           description: 응답 메시지
     todo-v1-todos-todoId486549215:
       type: object
-    review-v1-reviews-reviewId-1576008846:
+    review-v1-reviews-1576008846:
       required:
       - contents
       - schedule_id
