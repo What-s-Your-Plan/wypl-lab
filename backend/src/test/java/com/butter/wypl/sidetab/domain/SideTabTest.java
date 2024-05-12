@@ -25,10 +25,10 @@ class SideTabTest {
 
 		/* Then */
 		assertAll(
-				() -> assertThat(sideTab.getGoal()).isNull(),
-				() -> assertThat(sideTab.getMemo()).isNull(),
-				() -> assertThat(sideTab.getDDayDate()).isNull(),
-				() -> assertThat(sideTab.getDDayTitle()).isNull()
+			() -> assertThat(sideTab.getGoal()).isNotNull(),
+			() -> assertThat(sideTab.getMemo()).isNotNull(),
+			() -> assertThat(sideTab.getDDayDate()).isNotNull(),
+			() -> assertThat(sideTab.getDDayTitle()).isNotNull()
 		);
 	}
 

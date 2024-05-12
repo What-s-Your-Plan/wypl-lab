@@ -1,5 +1,7 @@
 package com.butter.wypl.group.domain;
 
+import static com.butter.wypl.global.common.Color.*;
+
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.global.common.Color;
 import com.butter.wypl.member.domain.Member;
@@ -48,6 +50,15 @@ public class MemberGroup extends BaseEntity {
 		this.group = group;
 		this.color = color;
 		this.groupInviteState = groupInviteState;
+	}
+
+	public static MemberGroup of(Member member, Group group) {
+		return MemberGroup.builder()
+			.member(member)
+			.group(group)
+			.color(labelYellow)
+			.groupInviteState(GroupInviteState.PENDING)
+			.build();
 	}
 
 	public static MemberGroup of(Member member, Group group, Color color) {

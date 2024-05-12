@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +15,7 @@ import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Message;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
@@ -68,7 +68,15 @@ public class GroupController {
 			Message.withBody("회원의 그룹 전체 조회에 성공했습니다.", groupLoadService.getGroupListByMemberId(authMember.getId())));
 	}
 
-	@PutMapping("/v1/groups/{groupId}/members/invitation")
+	@PostMapping("/v1/groups/{groupId}/members/invitation")
+	public ResponseEntity<Message<GroupIdResponse>> inviteGroupMember(@Authenticated AuthMember authMember,
+		@PathVariable int groupId,
+		@RequestBody GroupMemberInviteRequest inviteRequest) {
+		return ResponseEntity.status(HttpStatus.CREATED).body(Message.withBody("그룹 멤버 초대에 성공했습니다.",
+			groupModifyService.inviteGroupMember(authMember.getId(), groupId, inviteRequest)));
+	}
+
+	@PatchMapping("/v1/groups/{groupId}/members/invitation")
 	public ResponseEntity<Message<Void>> acceptGroupInvitation(@Authenticated AuthMember authMember,
 		@PathVariable int groupId) {
 		groupModifyService.acceptGroupInvitation(authMember.getId(), groupId);
