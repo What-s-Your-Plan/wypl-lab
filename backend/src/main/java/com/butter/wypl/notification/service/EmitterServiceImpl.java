@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import com.butter.wypl.notification.data.response.NotificationResponse;
@@ -16,7 +15,6 @@ import lombok.extern.log4j.Log4j2;
 
 @Log4j2
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class EmitterServiceImpl implements EmitterModifyService{
 
