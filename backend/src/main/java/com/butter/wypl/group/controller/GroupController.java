@@ -65,7 +65,7 @@ public class GroupController {
 	public ResponseEntity<Message<GroupListByMemberIdResponse>> getGroupListByMemberId(
 		@Authenticated AuthMember authMember) {
 		return ResponseEntity.ok(
-			Message.withBody("그룹 조회에 성공했습니다.", groupLoadService.getGroupListByMemberId(authMember.getId())));
+			Message.withBody("회원의 그룹 전체 조회에 성공했습니다.", groupLoadService.getGroupListByMemberId(authMember.getId())));
 	}
 
 	@PutMapping("/v1/groups/{groupId}/members/invitation")

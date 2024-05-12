@@ -3,6 +3,7 @@ package com.butter.wypl.group.data.response;
 import java.util.List;
 
 import com.butter.wypl.group.domain.Group;
+import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.member.domain.Member;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,6 +20,7 @@ public record GroupDetailResponse(
 
 	@JsonProperty("member_count")
 	int memberCount,
+
 	List<MemberResponse> members
 
 ) {
@@ -33,7 +35,6 @@ public record GroupDetailResponse(
 		);
 	}
 
-	// 테스트 필요
 	public static GroupDetailResponse from(Group group) {
 		return new GroupDetailResponse(
 			group.getId(),
@@ -43,7 +44,7 @@ public record GroupDetailResponse(
 			group.getMemberGroups().size(),
 			MemberResponse.from(
 				group.getMemberGroups().stream()
-					.map(memberGroup -> memberGroup.getMember())
+					.map(MemberGroup::getMember)
 					.toList()
 			)
 		);

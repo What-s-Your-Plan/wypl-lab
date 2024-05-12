@@ -3,19 +3,25 @@ package com.butter.wypl.group.repository;
 import static com.butter.wypl.global.common.Color.*;
 import static com.butter.wypl.group.fixture.GroupFixture.*;
 import static com.butter.wypl.member.fixture.MemberFixture.*;
-import static org.assertj.core.api.AssertionsForClassTypes.*;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.butter.wypl.global.annotation.JpaRepositoryTest;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.MemberGroup;
+import com.butter.wypl.group.fixture.GroupFixture;
 import com.butter.wypl.member.domain.Member;
+import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.member.repository.MemberRepository;
+
+import jakarta.persistence.EntityManager;
 
 @JpaRepositoryTest
 class MemberGroupRepositoryTest {
@@ -29,28 +35,42 @@ class MemberGroupRepositoryTest {
 	@Autowired
 	private GroupRepository groupRepository;
 
+	@Autowired
+	private EntityManager em;
+
 	@Test
 	void countByMemberId() {
 	}
 
-	@Test
-	@DisplayName("맴버그룹 저장 성공")
-	void save() {
+	@Nested
+	@DisplayName("회원 그룹 생성 테스트")
+	class saveTest {
 
-		/* Given */
-		Member savedOwner = memberRepository.save(KIM_JEONG_UK.toMember());
-		Member member = memberRepository.save(CHOI_MIN_JUN.toMember());
-		assertThat(savedOwner.getId()).isNotNull();
+		@Test
+		@DisplayName("회원 그룹 저장 성공")
+		void whenSuccess() {
 
-		Group savedGroup = groupRepository.save(GROUP_STUDY.toGroup(savedOwner));
-		assertThat(savedGroup.getId()).isNotNull();
+			/* Given */
+			Member owner = memberRepository.save(MemberFixture.HAN_JI_WON.toMember());
+			Group group = groupRepository.save(GroupFixture.GROUP_STUDY.toGroup(owner));
+			MemberGroup memberGroup = MemberGroup.of(owner, group, Color.labelBlue);
 
-		MemberGroup memberGroup = MemberGroup.of(member, savedGroup, labelPink);
+			/* When */
+			assertThatCode(() -> {
+				memberGroupRepository.save(memberGroup);
+			}).doesNotThrowAnyException();
 
-		/* When, Then */
-		assertThatCode(() -> {
-			memberGroupRepository.save(memberGroup);
-		}).doesNotThrowAnyException();
+			/* Then */
+			em.flush();
+			em.clear();
+
+			assertThatCode(() -> {
+				MemberGroup findMemberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(owner.getId(),
+					group.getId()).orElseThrow();
+				assertThat(findMemberGroup.getGroup().getName()).isNotNull().isEqualTo(group.getName());
+				assertThat(findMemberGroup.getMember().getEmail()).isNotNull().isEqualTo(owner.getEmail());
+			}).doesNotThrowAnyException();
+		}
 	}
 
 	@Test
