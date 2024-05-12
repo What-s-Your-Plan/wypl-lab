@@ -12,11 +12,18 @@ function ReviewIndexPage() {
   const [viewType, setViewType] = useState<'NEWEST' | 'OLDEST'>('NEWEST');
 
   const renderReviewIndex = () => {
+    if (reviews.length === 0) {
+      return (
+        <div className="flex justify-center items-center text-center h-full">
+          <div>작성된 회고록이 없습니다</div>
+        </div>
+      );
+    }
     return reviews.map((review, index) => {
       return (
         <WhiteContainer key={index} $width="300" $height="half">
           <ReviewThumbnail
-            blockType={review.thumbnail_content.blockType}
+            blockType={review.thumbnail_content?.blockType}
             thumbnailContent={review.thumbnail_content}
           />
           <div>{review.title}</div>
@@ -25,14 +32,14 @@ function ReviewIndexPage() {
     });
   };
 
-  const fetchLabelList = async () => {
+  const fetchReviewList = async () => {
     const response = await getReviewList(viewType, lastId);
-    setReviews([...reviews, response.reviews]);
+    setReviews([...reviews, ...response.reviews]);
     setLastId(response.lastId);
   };
 
   useEffect(() => {
-    fetchLabelList();
+    fetchReviewList();
     setViewType('NEWEST');
   }, []);
 
