@@ -23,6 +23,11 @@ import com.butter.wypl.calendar.data.response.CalendarListResponse;
 import com.butter.wypl.calendar.data.response.CalendarResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarListResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarResponse;
+import com.butter.wypl.group.domain.MemberGroup;
+import com.butter.wypl.group.repository.GroupRepository;
+import com.butter.wypl.group.repository.MemberGroupRepository;
+import com.butter.wypl.group.utils.GroupServiceUtils;
+import com.butter.wypl.group.utils.MemberGroupServiceUtils;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.repository.LabelRepository;
 import com.butter.wypl.label.utils.LabelServiceUtils;
@@ -37,10 +42,15 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class CalendarService {
 
-	private MemberScheduleRepository memberScheduleRepository;
-	private LabelRepository labelRepository;
+	private final MemberScheduleRepository memberScheduleRepository;
+	
+	private final LabelRepository labelRepository;
 
-	private ScheduleRepository scheduleRepository;
+	private final ScheduleRepository scheduleRepository;
+
+	private final MemberGroupRepository memberGroupRepository;
+
+	private final GroupRepository groupRepository;
 
 	public CalendarListResponse getCalendarSchedules(int memberId, CalendarType calendarType, Integer labelId,
 		LocalDate startDate) {
@@ -62,7 +72,7 @@ public class CalendarService {
 			}
 		}
 
-		List<Schedule> schedules = new ArrayList<>();
+		List<Schedule> schedules;
 		if (labelId == null) {
 			schedules = memberScheduleRepository.getCalendarSchedules(memberId,
 				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
@@ -77,14 +87,20 @@ public class CalendarService {
 		}
 
 		return CalendarListResponse.from(
-			schedules.stream().map(CalendarResponse::from).toList()
+			schedules.stream().map(
+				schedule -> CalendarResponse.of(schedule,
+					MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId, schedule.getScheduleId()))
+			).toList()
 		);
 	}
 
 	public GroupCalendarListResponse getGroupCalendarSchedule(int memberId, CalendarType calendarType,
 		LocalDate startDate, int groupId) {
-		//TODO : 그룹에 속한 멤버인지 확인
-		//TODO : 그룹의 존재 여부 확인
+		//그룹에 속한 멤버인지 확인
+		//그룹의 존재 여부 확인
+		MemberGroup memberGroup = MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId,
+			GroupServiceUtils.findById(groupRepository, groupId).getId());
+
 		if (startDate == null) {
 			startDate = LocalDate.now();
 		}
@@ -107,11 +123,12 @@ public class CalendarService {
 			LocalDateTime.of(startDate, LocalTime.of(0, 0)),
 			LocalDateTime.of(endDate, LocalTime.of(0, 0)));
 
-		return GroupCalendarListResponse.from(
+		return GroupCalendarListResponse.of(
 			schedules.stream()
 				.map(schedule -> GroupCalendarResponse.of(schedule,
 					memberScheduleRepository.getMemberWithSchedule(schedule.getScheduleId())))
-				.toList()
+				.toList(),
+			memberGroup
 		);
 	}
 

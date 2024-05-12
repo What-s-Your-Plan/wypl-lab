@@ -2,6 +2,7 @@ package com.butter.wypl.calendar.data.response;
 
 import java.time.LocalDateTime;
 
+import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.label.data.response.LabelResponse;
 import com.butter.wypl.schedule.domain.Category;
 import com.butter.wypl.schedule.domain.Schedule;
@@ -21,19 +22,20 @@ public record CalendarResponse(
 	@JsonProperty("end_date")
 	LocalDateTime endDate,
 
-	LabelResponse label
+	LabelResponse label,
 
-	//TODO : 그룹 일시 그룹 정보 추가
+	GroupResponse group
 ) {
 
-	public static CalendarResponse from(Schedule schedule) {
+	public static CalendarResponse of(Schedule schedule, MemberGroup memberGroup) {
 		return new CalendarResponse(
 			schedule.getScheduleId(),
 			schedule.getTitle(),
 			schedule.getCategory(),
 			schedule.getStartDate(),
 			schedule.getEndDate(),
-			LabelResponse.from(schedule.getLabel())
+			LabelResponse.from(schedule.getLabel()),
+			memberGroup == null ? null : GroupResponse.from(memberGroup)
 		);
 	}
 }

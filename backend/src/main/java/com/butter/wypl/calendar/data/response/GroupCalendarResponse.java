@@ -9,6 +9,7 @@ import com.butter.wypl.schedule.domain.Schedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GroupCalendarResponse(
+
 	@JsonProperty("schedule_id")
 	int scheduleId,
 

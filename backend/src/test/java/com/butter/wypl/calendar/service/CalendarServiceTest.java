@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -18,9 +19,17 @@ import com.butter.wypl.calendar.data.CalendarType;
 import com.butter.wypl.calendar.data.response.CalendarListResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarListResponse;
 import com.butter.wypl.global.annotation.MockServiceTest;
+import com.butter.wypl.global.common.Color;
+import com.butter.wypl.group.domain.Group;
+import com.butter.wypl.group.domain.MemberGroup;
+import com.butter.wypl.group.fixture.GroupFixture;
+import com.butter.wypl.group.repository.GroupRepository;
+import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.fixture.LabelFixture;
 import com.butter.wypl.label.repository.LabelRepository;
+import com.butter.wypl.member.domain.Member;
+import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.schedule.domain.Schedule;
 import com.butter.wypl.schedule.fixture.ScheduleFixture;
 import com.butter.wypl.schedule.respository.MemberScheduleRepository;
@@ -41,9 +50,24 @@ public class CalendarServiceTest {
 	@Mock
 	private LabelRepository labelRepository;
 
+	@Mock
+	private GroupRepository groupRepository;
+
+	@Mock
+	private MemberGroupRepository memberGroupRepository;
+
 	@Nested
 	@DisplayName("개인 페이지 캘린더 조회")
 	class getPersonalCalendar {
+
+		@BeforeEach
+		void init() {
+			Member member = MemberFixture.JWA_SO_YEON.toMember();
+			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
+
+			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
+		}
 
 		@Test
 		@DisplayName("기준일이 설정안된 calendar 조회 - 하루")
@@ -196,11 +220,20 @@ public class CalendarServiceTest {
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 
+			Member member = MemberFixture.KIM_JEONG_UK.toMember();
+			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
+
 			given(scheduleRepository.findAllByGroupIdAndStartDateBetween(anyInt(), any(LocalDateTime.class),
 				any(LocalDateTime.class)))
 				.willReturn(
 					List.of(schedule1, schedule2)
 				);
+
+			given(groupRepository.findById(anyInt()))
+				.willReturn(Optional.of(group));
+
+			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 
 			// When
 			GroupCalendarListResponse groupCalendarListResponse = calendarService.getGroupCalendarSchedule(1,
@@ -220,11 +253,20 @@ public class CalendarServiceTest {
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 
+			Member member = MemberFixture.KIM_JEONG_UK.toMember();
+			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
+
 			given(scheduleRepository.findAllByGroupIdAndStartDateBetween(anyInt(), any(LocalDateTime.class),
 				any(LocalDateTime.class)))
 				.willReturn(
 					List.of(schedule1, schedule2)
 				);
+
+			given(groupRepository.findById(anyInt()))
+				.willReturn(Optional.of(group));
+
+			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 
 			// When
 			GroupCalendarListResponse groupCalendarListResponse = calendarService.getGroupCalendarSchedule(1,
@@ -244,11 +286,20 @@ public class CalendarServiceTest {
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 
+			Member member = MemberFixture.KIM_JEONG_UK.toMember();
+			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
+
 			given(scheduleRepository.findAllByGroupIdAndStartDateBetween(anyInt(), any(LocalDateTime.class),
 				any(LocalDateTime.class)))
 				.willReturn(
 					List.of(schedule1, schedule2)
 				);
+
+			given(groupRepository.findById(anyInt()))
+				.willReturn(Optional.of(group));
+
+			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 
 			// When
 			GroupCalendarListResponse groupCalendarListResponse = calendarService.getGroupCalendarSchedule(1,
@@ -268,11 +319,20 @@ public class CalendarServiceTest {
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 
+			Member member = MemberFixture.KIM_JEONG_UK.toMember();
+			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
+
 			given(scheduleRepository.findAllByGroupIdAndStartDateBetween(anyInt(), any(LocalDateTime.class),
 				any(LocalDateTime.class)))
 				.willReturn(
 					List.of(schedule1, schedule2)
 				);
+
+			given(groupRepository.findById(anyInt()))
+				.willReturn(Optional.of(group));
+
+			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 
 			// When
 			GroupCalendarListResponse groupCalendarListResponse = calendarService.getGroupCalendarSchedule(1,
