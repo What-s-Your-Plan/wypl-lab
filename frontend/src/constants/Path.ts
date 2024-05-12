@@ -19,9 +19,11 @@ const BROWSER_PATH = {
 const API_PATH = {
   AUTH: {
     ISSUE_TOKENS: '/auth/v1/sign-in',
+    REISSUE: '/auth/v1/reissue',
     MOCK_ISSUE_TOKENS: '/auth/v1/sign-in/mock',
   },
   MEMBER: {
+    NICKNAME: '/member/v1/members/nickname',
     PROFILE_IMAGE: '/member/v1/members/profile-iamge',
   },
 };
