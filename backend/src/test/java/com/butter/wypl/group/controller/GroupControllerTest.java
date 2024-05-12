@@ -15,6 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
@@ -337,6 +339,50 @@ class GroupControllerTest extends ControllerTest {
 	}
 
 	@Test
+	@DisplayName("그룹 회원 초대")
+	void inviteGroupMemberTest() throws Exception {
+		/* Given */
+		Member member1 = KIM_JEONG_UK.toMemberWithId(2);
+		Member member2 = JWA_SO_YEON.toMemberWithId(3);
+
+		GroupMemberInviteRequest inviteRequest = new GroupMemberInviteRequest(Set.of(member1.getId(), member2.getId()));
+		GroupIdResponse createResponse = new GroupIdResponse(1);
+
+		given(groupModifyService.inviteGroupMember(anyInt(), anyInt(), any(GroupMemberInviteRequest.class)))
+			.willReturn(createResponse);
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.post("/group/v1/groups/{groupId}/members/invitation", 1)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(inviteRequest))
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/invite-group-member",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				requestFields(
+					fieldWithPath("member_id_list[]").type(JsonFieldType.ARRAY)
+						.description("초대할 그룹 멤버 식별자 리스트")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
+						.description("그룹 식별자")
+				)
+			))
+			.andExpect(status().isCreated());
+	}
+
+	@Test
 	@DisplayName("그룹 회원 초대 수락")
 	void acceptGroupInvitationTest() throws Exception {
 		/* Given */
@@ -346,7 +392,7 @@ class GroupControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.put("/group/v1/groups/{groupId}/members/invitation", groupId)
+			RestDocumentationRequestBuilders.patch("/group/v1/groups/{groupId}/members/invitation", groupId)
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
