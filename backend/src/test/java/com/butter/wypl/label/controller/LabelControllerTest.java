@@ -203,7 +203,7 @@ public class LabelControllerTest extends ControllerTest {
 		ResultActions resultActions = mockMvc.perform(
 			RestDocumentationRequestBuilders.delete("/label/v1/labels")
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-				.header("label_id", 1)
+				.header("Label_id", 1)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 
