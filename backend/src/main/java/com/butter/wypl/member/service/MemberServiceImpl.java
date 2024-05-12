@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.file.S3ImageProvider;
 import com.butter.wypl.global.common.Color;
+import com.butter.wypl.global.validator.RequestValidator;
+import com.butter.wypl.member.data.MemberSearchInfo;
 import com.butter.wypl.member.data.request.MemberBirthdayUpdateRequest;
 import com.butter.wypl.member.data.request.MemberColorUpdateRequest;
 import com.butter.wypl.member.data.request.MemberNicknameUpdateRequest;
@@ -21,12 +23,14 @@ import com.butter.wypl.member.data.response.MemberColorUpdateResponse;
 import com.butter.wypl.member.data.response.MemberColorsResponse;
 import com.butter.wypl.member.data.response.MemberNicknameUpdateResponse;
 import com.butter.wypl.member.data.response.MemberProfileImageUpdateResponse;
+import com.butter.wypl.member.data.response.MemberSearchResponse;
 import com.butter.wypl.member.data.response.MemberTimezoneUpdateResponse;
 import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.repository.MemberRepository;
+import com.butter.wypl.member.repository.query.data.MemberSearchCond;
 import com.butter.wypl.member.utils.MemberServiceUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -140,5 +144,20 @@ public class MemberServiceImpl implements MemberModifyService, MemberLoadService
 		List<Color> colors = Arrays.stream(Color.values()).toList();
 
 		return MemberColorsResponse.of(findMember.getColor(), colors);
+	}
+
+	@Override
+	public MemberSearchResponse searchMembers(
+			final AuthMember authMember,
+			final MemberSearchCond cond
+	) {
+		RequestValidator.validateRequestSize(cond.size());
+
+		List<MemberSearchInfo> memberSearchInfos = memberRepository.findBySearchCond(cond)
+				.stream()
+				.map(MemberSearchInfo::from)
+				.toList();
+
+		return MemberSearchResponse.from(memberSearchInfos);
 	}
 }

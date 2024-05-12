@@ -6,7 +6,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -21,10 +24,13 @@ import com.butter.wypl.global.common.Color;
 import com.butter.wypl.member.data.response.FindMemberProfileInfoResponse;
 import com.butter.wypl.member.data.response.FindTimezonesResponse;
 import com.butter.wypl.member.data.response.MemberColorsResponse;
+import com.butter.wypl.member.data.response.MemberSearchResponse;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
+import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.member.repository.MemberRepository;
+import com.butter.wypl.member.repository.query.data.MemberSearchCond;
 
 @MockServiceTest
 class MemberLoadServiceTest {
@@ -74,6 +80,27 @@ class MemberLoadServiceTest {
 				() -> assertThat(response.colorCount()).isEqualTo(Color.values().length),
 				() -> assertThat(response.selectColor()).isEqualTo(member.getColor())
 		);
+	}
+
+	@DisplayName("회원 검색 테스트")
+	@Test
+	void searchMemberTest() {
+		/* Given */
+		MemberFixture[] values = MemberFixture.values();
+		List<Member> members = new ArrayList<>();
+		IntStream.range(0, values.length).forEach(i -> {
+			Member member = values[i].toMemberWithId(i);
+			member.changeProfileImage("profile_image_url_" + i);
+			members.add(member);
+		});
+		given(memberRepository.findBySearchCond(any(MemberSearchCond.class)))
+				.willReturn(members);
+
+		/* When & Then */
+		assertThatCode(() -> {
+			MemberSearchResponse res = memberService.searchMembers(authMember, new MemberSearchCond("", 10));
+			assertThat(res.count()).isEqualTo(values.length);
+		}).doesNotThrowAnyException();
 	}
 
 	@DisplayName("회원 프로필 정보 조회 테스트")
