@@ -8,6 +8,7 @@ import org.springframework.web.context.request.WebRequest;
 import com.butter.wypl.global.common.Message;
 import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.global.exception.GlobalErrorCode;
+import com.butter.wypl.global.exception.GlobalException;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -20,21 +21,28 @@ public class CustomExceptionHandler {
 		GlobalErrorCode errorCode = GlobalErrorCode.INTERNAL_SERVER_ERROR;
 		logError(e, request);
 		return ResponseEntity.status(errorCode.getStatusCode())
-			.body(new Message<>(errorCode.getMessage()));
+				.body(new Message<>(errorCode.getMessage()));
 	}
 
 	@ExceptionHandler({CustomException.class})
 	protected ResponseEntity<Message<String>> customExceptionHandler(CustomException e, WebRequest request) {
 		logError(e, request);
 		return ResponseEntity.status(e.getHttpStatus())
-			.body(new Message<>(e.getMessage()));
+				.body(new Message<>(e.getMessage()));
+	}
+
+	@ExceptionHandler({GlobalException.class})
+	protected ResponseEntity<Message<String>> globalExceptionHandler(GlobalException e, WebRequest request) {
+		logError(e, request);
+		return ResponseEntity.status(e.getHttpStatus())
+				.body(new Message<>(e.getMessage()));
 	}
 
 	private void logError(Exception e, WebRequest request) {
 		log.error("에러 발생 정보 => {} \n 에러유형 => {} \n 메시지 => {}"
-			, request.getDescription(false)
-			, e.getClass().getSimpleName()
-			, e.getMessage(), e
+				, request.getDescription(false)
+				, e.getClass().getSimpleName()
+				, e.getMessage(), e
 		);
 	}
 }
