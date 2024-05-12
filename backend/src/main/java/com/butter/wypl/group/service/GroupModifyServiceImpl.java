@@ -8,8 +8,8 @@ import static com.butter.wypl.group.utils.MemberGroupServiceUtils.*;
 import static com.butter.wypl.member.exception.MemberErrorCode.*;
 import static com.butter.wypl.member.utils.MemberServiceUtils.findById;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -43,48 +43,65 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	@Transactional
 	@Override
-	public GroupIdResponse createGroup(int memberId, GroupCreateRequest createRequest) {
+	public GroupIdResponse createGroup(int ownerId, GroupCreateRequest createRequest) {
+		List<Integer> memberIdList = new ArrayList<>(createRequest.memberIdList());
+		memberIdList.add(ownerId);
+		validateMaxMemberCount(memberIdList);
 
-		Member groupOwner = findById(memberRepository, memberId);
+		List<Member> members = memberRepository.findAllById(memberIdList);
+		validateMembers(members, memberIdList);
 
-		createRequest.memberIdList().add(memberId);
+		Group group = Group.of(createRequest.name(), createRequest.description(), getMember(ownerId));
+		saveGroupAndMembers(ownerId, members, group);
 
-		validateMaxMemberCount(createRequest);
-
-		validateMemberIdList(createRequest);
-
-		validateEachMemberGroupCountLimit(createRequest);
-
-		Group group = Group.of(createRequest.name(), createRequest.description(), groupOwner);
-
-		Group savedGroup = groupRepository.save(group);
-
-		for (Integer memberIdInGroup : createRequest.memberIdList()) {
-			Member foundMember = findById(memberRepository, memberIdInGroup);
-			memberGroupRepository.save(MemberGroup.of(foundMember, savedGroup, labelYellow));
-		}
-
-		updateGroupInvitationStateOfOwner(memberId, savedGroup);
-
-		return new GroupIdResponse(savedGroup.getId());
+		return new GroupIdResponse(group.getId());
 	}
 
-	private void updateGroupInvitationStateOfOwner(int memberId, Group savedGroup) {
-		MemberGroup ownerMemberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(memberId,
-				savedGroup.getId())
-			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
-		ownerMemberGroup.setGroupInviteStateAccepted();
+	private void saveGroupAndMembers(int ownerId, List<Member> members, Group group) {
+		List<MemberGroup> memberGroups = getMemberGroups(ownerId, members, group);
+		groupRepository.save(group);
+		memberGroupRepository.saveAll(memberGroups);
+	}
+
+	private Member getMember(int ownerId) {
+		return findById(memberRepository, ownerId);
+	}
+
+	private static void validateMembers(List<Member> members, List<Integer> memberIdList) {
+		if (members.size() != memberIdList.size()) {
+			throw new MemberException(NOT_EXIST_MEMBER);
+		}
+	}
+
+	private static List<MemberGroup> getMemberGroups(int ownerId, List<Member> members, Group group) {
+		List<MemberGroup> memberGroups = new ArrayList<>();
+		members.forEach(member -> {
+				if (member.getMemberGroups().size() >= 50) {
+					throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
+						member.getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
+				}
+				MemberGroup memberGroup = MemberGroup.of(member, group, labelYellow);
+				if (member.getId() == ownerId) {
+					memberGroup.setGroupInviteStateAccepted();
+				}
+			}
+		);
+		return memberGroups;
 	}
 
 	@Transactional
 	@Override
 	public GroupIdResponse updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest) {
-		Member foundMember = findById(memberRepository, memberId);
-		Group foundGroup = findById(groupRepository, groupId);
+		Member foundMember = getMember(memberId);
+		Group foundGroup = getGroup(groupId);
 		isGroupMember(foundMember.getId(), getMembersByGroupId(memberGroupRepository, foundGroup.getId()));
 
 		foundGroup.updateGroupInfo(updateRequest.name(), updateRequest.description());
 		return new GroupIdResponse(foundGroup.getId());
+	}
+
+	private Group getGroup(int groupId) {
+		return findById(groupRepository, groupId);
 	}
 
 	@Transactional
@@ -100,7 +117,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		findMemberGroups.forEach(BaseEntity::delete);
 
 		// 그룹 삭제
-		Group findGroup = findById(groupRepository, groupId);
+		Group findGroup = getGroup(groupId);
 		findGroup.delete();
 	}
 
@@ -108,8 +125,8 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Override
 	public void acceptGroupInvitation(int memberId, int groupId) {
 
-		Member foundMember = findById(memberRepository, memberId);
-		Group foundGroup = findById(groupRepository, groupId);
+		Member foundMember = getMember(memberId);
+		Group foundGroup = getGroup(groupId);
 
 		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
 				foundGroup.getId())
@@ -122,8 +139,8 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Override
 	public void rejectGroupInvitation(int memberId, int groupId) {
 
-		Member foundMember = findById(memberRepository, memberId);
-		Group foundGroup = findById(groupRepository, groupId);
+		Member foundMember = getMember(memberId);
+		Group foundGroup = getGroup(groupId);
 
 		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
 				foundGroup.getId())
@@ -135,8 +152,8 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	@Override
 	public void leaveGroup(int memberId, int groupId) {
 
-		Member foundMember = findById(memberRepository, memberId);
-		Group foundGroup = findById(groupRepository, groupId);
+		Member foundMember = getMember(memberId);
+		Group foundGroup = getGroup(groupId);
 
 		if (isGroupOwner(groupRepository, memberId, groupId)
 			&& getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
@@ -150,31 +167,10 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		memberGroupRepository.delete(memberGroup);
 	}
 
-	private void validateMaxMemberCount(GroupCreateRequest createRequest) {
-		if (isExceedMaxMember(createRequest.memberIdList())) {
+	private void validateMaxMemberCount(List<Integer> memberIdList) {
+		if (memberIdList.size() >= 50) {
 			throw new GroupException(EXCEED_MAX_MEMBER_COUNT);
 		}
-	}
-
-	private void validateEachMemberGroupCountLimit(GroupCreateRequest createRequest) {
-		createRequest.memberIdList().forEach(memberId -> {
-			if (memberGroupRepository.countByMemberId(memberId) >= 50) {
-				throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
-					memberRepository.findById(memberId).get().getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
-			}
-		});
-	}
-
-	private void validateMemberIdList(GroupCreateRequest createRequest) {
-		for (Integer memberId : createRequest.memberIdList()) {
-			if (!memberRepository.existsById(memberId)) {
-				throw new MemberException(NOT_EXIST_MEMBER);
-			}
-		}
-	}
-
-	private boolean isExceedMaxMember(Set<Integer> memberIdList) {
-		return memberIdList.size() > 50;
 	}
 
 }

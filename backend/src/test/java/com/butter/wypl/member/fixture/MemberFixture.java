@@ -50,6 +50,7 @@ public enum MemberFixture {
 			.nickname(nickname)
 			.profileImage(image)
 			.color(color)
+			.memberGroups(new ArrayList<>())
 			.timeZone(CalendarTimeZone.KOREA)
 			.build();
 	}
