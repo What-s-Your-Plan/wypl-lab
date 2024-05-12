@@ -71,7 +71,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 			return;
 		}
 
-		throw new IllegalStateException("알림 타입 코드가 없습니다");
+		throw new NotificationException(NotificationErrorCode.NOTIFICATION_TYPE_ERROR);
 	}
 
 	@Override
@@ -96,7 +96,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 	private Notification createReviewNotification(final NotificationCreateRequest request) {
 		Notification notification = Notification.builder()
 			.memberId(request.memberId())
-			.message(makeMessage(request.typeCode(), request.teamName(), request.nickName(), request.scheduleTitle()))
+			.message(makeMessage(request.typeCode(), request.groupName(), request.nickName(), request.scheduleTitle()))
 			.isRead(false)
 			.isActed(false)
 			.typeCode(request.typeCode())
