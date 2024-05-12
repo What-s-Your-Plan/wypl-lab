@@ -6,7 +6,6 @@ import com.butter.wypl.group.domain.MemberGroup;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GroupCalendarListResponse(
-	//TODO : 그룹 정보 넣기
 	GroupResponse group,
 
 	@JsonProperty("schedule_count")

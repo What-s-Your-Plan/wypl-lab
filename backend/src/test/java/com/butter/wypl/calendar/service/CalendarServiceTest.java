@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -58,6 +59,15 @@ public class CalendarServiceTest {
 	@Nested
 	@DisplayName("개인 페이지 캘린더 조회")
 	class getPersonalCalendar {
+
+		@BeforeEach
+		void init() {
+			Member member = MemberFixture.JWA_SO_YEON.toMember();
+			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
+
+			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
+		}
 
 		@Test
 		@DisplayName("기준일이 설정안된 calendar 조회 - 하루")

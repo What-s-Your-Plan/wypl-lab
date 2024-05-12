@@ -71,7 +71,7 @@ public class CalendarService {
 			}
 		}
 
-		List<Schedule> schedules = new ArrayList<>();
+		List<Schedule> schedules;
 		if (labelId == null) {
 			schedules = memberScheduleRepository.getCalendarSchedules(memberId,
 				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
@@ -86,7 +86,10 @@ public class CalendarService {
 		}
 
 		return CalendarListResponse.from(
-			schedules.stream().map(CalendarResponse::from).toList()
+			schedules.stream().map(
+				schedule -> CalendarResponse.of(schedule,
+					MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId, schedule.getScheduleId()))
+			).toList()
 		);
 	}
 

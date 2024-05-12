@@ -61,11 +61,17 @@ public class CalendarControllerTest extends ControllerTest {
 			Schedule schedule1 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_GROUP_SCHEDUEL.toSchedule();
 
+			Member member = MemberFixture.JO_DA_MIN.toMember();
+
+			MemberGroup memberGroup = MemberGroup.of(member, GroupFixture.GROUP_STUDY.toGroup(member),
+				Color.labelBlue);
+
 			given(
-				calendarService.getCalendarSchedules(anyInt(), any(CalendarType.class), anyInt(), any(LocalDate.class)))
+				calendarService.getCalendarSchedules(anyInt(), any(CalendarType.class), any(), any()))
 				.willReturn(
 					CalendarListResponse.from(
-						List.of(CalendarResponse.from(schedule1), CalendarResponse.from(schedule2))
+						List.of(CalendarResponse.of(schedule1, null),
+							CalendarResponse.of(schedule2, memberGroup))
 					)
 				);
 
@@ -112,7 +118,17 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("일정의 라벨의 제목"),
 						fieldWithPath("body.schedules[].label.color").optional()
 							.type(JsonFieldType.STRING)
-							.description("일정의 라벨의 색상")
+							.description("일정의 라벨의 색상"),
+						fieldWithPath("body.schedules[].group").optional().description("그룹"),
+						fieldWithPath("body.schedules[].group.group_id").optional()
+							.type(JsonFieldType.NUMBER)
+							.description("그룹의 인덱스"),
+						fieldWithPath("body.schedules[].group.color").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 색상"),
+						fieldWithPath("body.schedules[].group.title").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 제목")
 					)
 				))
 				.andExpect(status().isOk());
@@ -126,11 +142,17 @@ public class CalendarControllerTest extends ControllerTest {
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.GROUP_SCHEDUEL.toSchedule();
 
+			Member member = MemberFixture.JO_DA_MIN.toMember();
+
+			MemberGroup memberGroup = MemberGroup.of(member, GroupFixture.GROUP_STUDY.toGroup(member),
+				Color.labelBlue);
+
 			given(
-				calendarService.getCalendarSchedules(anyInt(), any(CalendarType.class), any(), any(LocalDate.class)))
+				calendarService.getCalendarSchedules(anyInt(), any(CalendarType.class), any(), any()))
 				.willReturn(
 					CalendarListResponse.from(
-						List.of(CalendarResponse.from(schedule1), CalendarResponse.from(schedule2))
+						List.of(CalendarResponse.of(schedule1, null),
+							CalendarResponse.of(schedule2, memberGroup))
 					)
 				);
 
@@ -175,7 +197,17 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("일정의 라벨의 제목"),
 						fieldWithPath("body.schedules[].label.color").optional()
 							.type(JsonFieldType.STRING)
-							.description("일정의 라벨의 색상")
+							.description("일정의 라벨의 색상"),
+						fieldWithPath("body.schedules[].group").optional().description("그룹"),
+						fieldWithPath("body.schedules[].group.group_id").optional()
+							.type(JsonFieldType.NUMBER)
+							.description("그룹의 인덱스"),
+						fieldWithPath("body.schedules[].group.color").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 색상"),
+						fieldWithPath("body.schedules[].group.title").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 제목")
 					)
 				))
 				.andExpect(status().isOk());
@@ -188,11 +220,17 @@ public class CalendarControllerTest extends ControllerTest {
 			// Given
 			Schedule schedule1 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_GROUP_SCHEDUEL.toSchedule();
+			Member member = MemberFixture.JO_DA_MIN.toMember();
+
+			MemberGroup memberGroup = MemberGroup.of(member, GroupFixture.GROUP_STUDY.toGroup(member),
+				Color.labelBlue);
+
 			given(
-				calendarService.getCalendarSchedules(anyInt(), any(CalendarType.class), anyInt(), any()))
+				calendarService.getCalendarSchedules(anyInt(), any(CalendarType.class), any(), any()))
 				.willReturn(
 					CalendarListResponse.from(
-						List.of(CalendarResponse.from(schedule1), CalendarResponse.from(schedule2))
+						List.of(CalendarResponse.of(schedule1, null),
+							CalendarResponse.of(schedule2, memberGroup))
 					)
 				);
 
@@ -237,7 +275,17 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("일정의 라벨의 제목"),
 						fieldWithPath("body.schedules[].label.color").optional()
 							.type(JsonFieldType.STRING)
-							.description("일정의 라벨의 색상")
+							.description("일정의 라벨의 색상"),
+						fieldWithPath("body.schedules[].group").optional().description("그룹"),
+						fieldWithPath("body.schedules[].group.group_id").optional()
+							.type(JsonFieldType.NUMBER)
+							.description("그룹의 인덱스"),
+						fieldWithPath("body.schedules[].group.color").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 색상"),
+						fieldWithPath("body.schedules[].group.title").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 제목")
 					)
 				))
 				.andExpect(status().isOk());
@@ -245,20 +293,25 @@ public class CalendarControllerTest extends ControllerTest {
 		}
 
 		@Test
-		@DisplayName("라벨 없고 지정 날짜 없는개인페이지 달력 일정 조회")
+		@DisplayName("라벨 없고 지정 날짜 없는 개인 페이지 달력 일정 조회")
 		void getPersonalCalendarNoLabelNoDate() throws Exception {
 			// Given
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.GROUP_SCHEDUEL.toSchedule();
 
+			Member member = MemberFixture.JO_DA_MIN.toMember();
+
+			MemberGroup memberGroup = MemberGroup.of(member, GroupFixture.GROUP_STUDY.toGroup(member),
+				Color.labelBlue);
+
 			given(
 				calendarService.getCalendarSchedules(anyInt(), any(CalendarType.class), any(), any()))
 				.willReturn(
 					CalendarListResponse.from(
-						List.of(CalendarResponse.from(schedule1), CalendarResponse.from(schedule2))
+						List.of(CalendarResponse.of(schedule1, null),
+							CalendarResponse.of(schedule2, memberGroup))
 					)
 				);
-
 			// When
 			ResultActions resultActions = mockMvc.perform(
 				RestDocumentationRequestBuilders.get("/calendar/v1/calendars/{type}", CalendarType.MONTH)
@@ -296,7 +349,17 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("일정의 라벨의 제목"),
 						fieldWithPath("body.schedules[].label.color").optional()
 							.type(JsonFieldType.STRING)
-							.description("일정의 라벨의 색상")
+							.description("일정의 라벨의 색상"),
+						fieldWithPath("body.schedules[].group").optional().description("그룹"),
+						fieldWithPath("body.schedules[].group.group_id").optional()
+							.type(JsonFieldType.NUMBER)
+							.description("그룹의 인덱스"),
+						fieldWithPath("body.schedules[].group.color").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 색상"),
+						fieldWithPath("body.schedules[].group.title").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 제목")
 					)
 				))
 				.andExpect(status().isOk());
