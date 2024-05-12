@@ -26,6 +26,36 @@ paths:
                     {
                       "message" : "로그아웃에 성공하였습니다."
                     }
+  /auth/v1/reissue:
+    put:
+      tags:
+      - auth
+      operationId: auth/reissue
+      parameters:
+      - name: refresh_token
+        in: query
+        description: Refresh Token
+        required: true
+        schema:
+          type: string
+      responses:
+        "201":
+          description: "201"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/auth-v1-reissue-723021484'
+              examples:
+                auth/reissue:
+                  value: |-
+                    {
+                      "message" : "토큰 재발급에 성공하였습니다.",
+                      "body" : {
+                        "member_id" : 0,
+                        "access_token" : "at",
+                        "refresh_token" : "rt"
+                      }
+                    }
   /auth/v1/sign-in/{provider}:
     post:
       tags:
@@ -50,7 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/auth-v1-sign-in-provider-723021484'
+                $ref: '#/components/schemas/auth-v1-reissue-723021484'
               examples:
                 auth/sign-in:
                   value: |-
@@ -1145,19 +1175,19 @@ paths:
                     "schedule_id" : 0,
                     "title" : "공부하기 싫다",
                     "contents" : [ {
-                      "emoji" : "/src/assets/icons/emoji/tired.svg",
                       "blockType" : "emotion",
-                      "description" : "피곤해요"
+                      "description" : "피곤해요",
+                      "emoji" : "/src/assets/icons/emoji/tired.svg"
                     }, {
-                      "weather" : "/src/assets/icons/weather/sun.svg",
                       "blockType" : "4f",
-                      "description" : "날씨 너무 좋음"
+                      "description" : "날씨 너무 좋음",
+                      "weather" : "/src/assets/icons/weather/sun.svg"
                     }, {
+                      "future" : "향후 헹동",
+                      "facts" : "팩트",
                       "feelings" : "느낌",
                       "blockType" : "4f",
-                      "finding" : "교훈",
-                      "future" : "향후 헹동",
-                      "facts" : "팩트"
+                      "finding" : "교훈"
                     } ]
                   }
       responses:
@@ -1220,19 +1250,19 @@ paths:
                     "schedule_id" : 0,
                     "title" : "공부하기 싫다",
                     "contents" : [ {
-                      "emoji" : "/src/assets/icons/emoji/tired.svg",
                       "blockType" : "emotion",
-                      "description" : "피곤해요"
+                      "description" : "피곤해요",
+                      "emoji" : "/src/assets/icons/emoji/tired.svg"
                     }, {
-                      "weather" : "/src/assets/icons/weather/sun.svg",
                       "blockType" : "4f",
-                      "description" : "날씨 너무 좋음"
+                      "description" : "날씨 너무 좋음",
+                      "weather" : "/src/assets/icons/weather/sun.svg"
                     }, {
+                      "future" : "향후 헹동",
+                      "facts" : "팩트",
                       "feelings" : "느낌",
                       "blockType" : "4f",
-                      "finding" : "교훈",
-                      "future" : "향후 헹동",
-                      "facts" : "팩트"
+                      "finding" : "교훈"
                     } ]
                   }
       responses:
@@ -1303,20 +1333,20 @@ paths:
                         "review_count" : 2,
                         "reviews" : [ {
                           "review_id" : 0,
-                          "created_at" : "2024-05-12T14:14:35.73854",
+                          "created_at" : "2024-05-12T15:42:21.10022",
                           "thumbnail_content" : {
-                            "emoji" : "/src/assets/icons/emoji/tired.svg",
                             "blockType" : "emotion",
-                            "description" : "피곤해요"
+                            "description" : "피곤해요",
+                            "emoji" : "/src/assets/icons/emoji/tired.svg"
                           },
                           "title" : "공부하기 싫다"
                         }, {
                           "review_id" : 0,
-                          "created_at" : "2024-05-12T14:14:35.738549",
+                          "created_at" : "2024-05-12T15:42:21.100231",
                           "thumbnail_content" : {
-                            "weather" : "/src/assets/icons/weather/sun.svg",
                             "blockType" : "4f",
-                            "description" : "날씨 너무 좋음"
+                            "description" : "날씨 너무 좋음",
+                            "weather" : "/src/assets/icons/weather/sun.svg"
                           },
                           "title" : "오늘도 공부하기 싫다"
                         } ]
@@ -1366,19 +1396,19 @@ paths:
                           } ]
                         },
                         "contents" : [ {
-                          "emoji" : "/src/assets/icons/emoji/tired.svg",
                           "blockType" : "emotion",
-                          "description" : "피곤해요"
+                          "description" : "피곤해요",
+                          "emoji" : "/src/assets/icons/emoji/tired.svg"
                         }, {
-                          "weather" : "/src/assets/icons/weather/sun.svg",
                           "blockType" : "4f",
-                          "description" : "날씨 너무 좋음"
+                          "description" : "날씨 너무 좋음",
+                          "weather" : "/src/assets/icons/weather/sun.svg"
                         }, {
+                          "future" : "향후 헹동",
+                          "facts" : "팩트",
                           "feelings" : "느낌",
                           "blockType" : "4f",
-                          "finding" : "교훈",
-                          "future" : "향후 헹동",
-                          "facts" : "팩트"
+                          "finding" : "교훈"
                         } ]
                       }
                     }
@@ -2048,6 +2078,18 @@ paths:
                     }
 components:
   schemas:
+    label-v1-labels-label526348895:
+      required:
+      - color
+      - title
+      type: object
+      properties:
+        color:
+          type: string
+          description: 라벨 색상
+        title:
+          type: string
+          description: 라벨 제목
     review-v1-reviews-type-1001641780:
       required:
       - message
@@ -2090,18 +2132,6 @@ components:
         message:
           type: string
           description: 응답 메세지
-    label-v1-labels-label526348895:
-      required:
-      - color
-      - title
-      type: object
-      properties:
-        color:
-          type: string
-          description: 라벨 색상
-        title:
-          type: string
-          description: 라벨 제목
     todo-v1-todos852877396:
       required:
       - message
@@ -3204,7 +3234,7 @@ components:
         message:
           type: string
           description: 응답 메시지
-    auth-v1-sign-in-provider-723021484:
+    auth-v1-reissue-723021484:
       required:
       - message
       type: object
