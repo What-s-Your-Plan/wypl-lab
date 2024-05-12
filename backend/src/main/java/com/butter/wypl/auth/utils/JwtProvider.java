@@ -132,6 +132,16 @@ public class JwtProvider {
 				.get("member_id", Integer.class);
 	}
 
+	public int getPayloadByRefreshToken(final String token) {
+		validateToken(token);
+		return Jwts.parserBuilder()
+				.setSigningKey(refreshKey)
+				.build()
+				.parseClaimsJws(token)
+				.getBody()
+				.get("member_id", Integer.class);
+	}
+
 	private record TokenType(String type) {
 	}
 }

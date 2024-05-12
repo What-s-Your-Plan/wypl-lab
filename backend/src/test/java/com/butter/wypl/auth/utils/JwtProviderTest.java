@@ -63,6 +63,20 @@ class JwtProviderTest {
 		assertThat(atMemberId).isEqualTo(memberId);
 	}
 
+	@DisplayName("RefreshToken Payload 조회에 성공한다.")
+	@Test
+	void getPayloadByRefreshTokenTest() {
+		/* Given */
+		int memberId = 0;
+		JsonWebTokens tokens = jwtProvider.generateJsonWebTokens(memberId);
+
+		/* When */
+		int rtMemberId = jwtProvider.getPayloadByRefreshToken(tokens.refreshToken());
+
+		/* Then */
+		assertThat(rtMemberId).isEqualTo(memberId);
+	}
+
 	@DisplayName("payload 추출에 실패한다.")
 	@Test
 	void parsePayloadFailedTest() {

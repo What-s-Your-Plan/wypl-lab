@@ -29,4 +29,8 @@ public class RefreshToken {
 	) {
 		return new RefreshToken(memberId, token);
 	}
+
+	public boolean isEqualsToken(final String token) {
+		return this.token.equals(token);
+	}
 }

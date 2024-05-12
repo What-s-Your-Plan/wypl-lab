@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,15 @@ public class AuthController {
 		AuthTokensResponse response = authService.generateTokens(provider, code);
 		return ResponseEntity.status(HttpStatus.CREATED)
 				.body(Message.withBody("로그인에 성공하였습니다.", response));
+	}
+
+	@PutMapping("/v1/reissue")
+	public ResponseEntity<Message<AuthTokensResponse>> reissue(
+			@RequestParam("refresh_token") String refreshToken
+	) {
+		AuthTokensResponse response = authService.reissueTokens(refreshToken);
+		return ResponseEntity.status(HttpStatus.CREATED)
+				.body(Message.withBody("토큰 재발급에 성공하였습니다.", response));
 	}
 
 	@DeleteMapping("/v1/logout")
