@@ -1,5 +1,6 @@
 package com.butter.wypl.group.controller;
 
+import static com.butter.wypl.global.common.Color.*;
 import static com.butter.wypl.group.fixture.GroupFixture.*;
 import static com.butter.wypl.member.fixture.MemberFixture.*;
 import static com.epages.restdocs.apispec.MockMvcRestDocumentationWrapper.*;
@@ -31,10 +32,13 @@ import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.data.response.GroupListByMemberIdResponse;
+import com.butter.wypl.group.domain.Group;
+import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.group.service.GroupLoadService;
 import com.butter.wypl.group.service.GroupModifyService;
+import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
 
 class GroupControllerTest extends ControllerTest {
@@ -245,10 +249,31 @@ class GroupControllerTest extends ControllerTest {
 	void getGroupListByMemberIdTest() throws Exception {
 
 		/* Given */
-		int memberId = 1;
+		// 회원 데이터 생성
+		Member member = HAN_JI_WON.toMemberWithId(1);
+		Member member2 = KIM_JEONG_UK.toMemberWithId(2);
+		Member member3 = JWA_SO_YEON.toMemberWithId(3);
+
+		// 그룹 데이터 생성
+		Group group1 = GROUP_STUDY.toGroup(member);
+		MemberGroup member1Group1 = MemberGroup.of(member, group1, labelYellow);
+		MemberGroup member2Group1 = MemberGroup.of(member2, group1, labelRed);
+		MemberGroup member3Group1 = MemberGroup.of(member3, group1, labelBlue);
+		group1.getMemberGroups().add(member1Group1);
+		group1.getMemberGroups().add(member2Group1);
+		group1.getMemberGroups().add(member3Group1);
+		Group group2 = GROUP_WORK.toGroup(member);
+		MemberGroup member1Group2 = MemberGroup.of(member, group2, labelYellow);
+		MemberGroup member3Group2 = MemberGroup.of(member3, group2, labelRed);
+		group2.getMemberGroups().add(member1Group2);
+		group2.getMemberGroups().add(member3Group2);
+
+		// 회원 그룹 목록 연결
+		member.getMemberGroups().add(member1Group1);
+		member.getMemberGroups().add(member1Group2);
 
 		given(groupLoadService.getGroupListByMemberId(anyInt()))
-			.willReturn(GroupListByMemberIdResponse.from(HAN_JI_WON.toMember()));
+			.willReturn(GroupListByMemberIdResponse.from(member));
 
 		givenMockLoginMember();
 
@@ -290,6 +315,8 @@ class GroupControllerTest extends ControllerTest {
 						.description("그룹 소유자 식별자"),
 					fieldWithPath("body.groups[].owner.email").type(JsonFieldType.STRING).optional()
 						.description("그룹 소유자 이메일"),
+					fieldWithPath("body.groups[].owner.nickname").type(JsonFieldType.STRING).optional()
+						.description("그룹 소유자 닉네임"),
 					fieldWithPath("body.groups[].owner.profile_image").type(JsonFieldType.STRING).optional()
 						.description("그룹 소유자 프로필 이미지"),
 					fieldWithPath("body.groups[].member_count").type(JsonFieldType.NUMBER).optional()
