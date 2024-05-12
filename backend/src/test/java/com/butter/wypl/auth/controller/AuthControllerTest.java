@@ -73,6 +73,45 @@ class AuthControllerTest extends ControllerTest {
 				.andExpect(status().isCreated());
 	}
 
+	@DisplayName("JWT 재발급 한다.")
+	@Test
+	void reissueTest() throws Exception {
+		/* Given */
+		AuthTokensResponse response = new AuthTokensResponse(0, "at", "rt");
+		given(authService.reissueTokens(any(String.class)))
+				.willReturn(response);
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+				RestDocumentationRequestBuilders.put(
+								"/auth/v1/reissue?refresh_token={refresh_token}",
+								"token"
+						)
+						.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		/* Then */
+		actions.andDo(print())
+				.andDo(document("auth/reissue",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						queryParameters(
+								parameterWithName("refresh_token").description("Refresh Token")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING)
+										.description("응답 메시지"),
+								fieldWithPath("body.member_id").type(JsonFieldType.NUMBER)
+										.description("회원 식별자"),
+								fieldWithPath("body.access_token").type(JsonFieldType.STRING)
+										.description("JWT Access Token"),
+								fieldWithPath("body.refresh_token").type(JsonFieldType.STRING)
+										.description("JWT Refresh Token")
+						)
+				))
+				.andExpect(status().isCreated());
+	}
+
 	@DisplayName("사용자가 로그아웃한다.")
 	@Test
 	void logoutTest() throws Exception {
