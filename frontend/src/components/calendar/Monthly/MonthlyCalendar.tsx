@@ -57,9 +57,7 @@ function MonthlyCalender() {
   };
 
   const updateInfo = useCallback(async (first: Date) => {
-    const response = await getCalendars('MONTH', {
-      date: dateToString(selectedDate),
-    });
+    const response = await getCalendars('MONTH', dateToString(selectedDate));
     const init: Array<DateSchedule> = createInit();
 
     if (response) {

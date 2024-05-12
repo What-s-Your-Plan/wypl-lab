@@ -55,9 +55,7 @@ function WeeklyCalendar() {
   };
 
   const updateInfo = useCallback(async () => {
-    const response = await getCalendars('WEEK', {
-      date: dateToString(selectedDate),
-    });
+    const response = await getCalendars('WEEK', dateToString(selectedDate));
 
     if (response) {
       const bitArray = [0, 0, 0, 0, 0, 0, 0];
@@ -182,7 +180,6 @@ function WeeklyCalendar() {
 
               {/* Horizontal lines */}
               <WeeklyHorizontal />
-
 
               {/* Schedules */}
               <WeeklySchedules schedules={schedules} />
