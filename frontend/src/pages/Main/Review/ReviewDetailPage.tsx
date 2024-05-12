@@ -5,6 +5,7 @@ import getReviewDetail from '@/services/review/getReviewDetail';
 import { splitTTime } from '@/utils/DateUtils';
 
 import { ReviewResponse } from '@/@types/ReviewResponse';
+import { Content } from '@/objects/Content';
 
 import DetailBlockList from '@/components/review/view/DetailBlockList';
 import { Container } from '@/components/common/Container';
@@ -23,7 +24,7 @@ function ReviewDetailPage() {
         const response = await getReviewDetail(reviewId);
         const mappedResponse = {
           ...response,
-          contents: response.contents.map((content) => ({
+          contents: response.contents.map((content: Content) => ({
             ...content,
             blockType: content.blockType as ReviewType,
           })),
