@@ -1,20 +1,21 @@
 import { useRef, useState } from 'react';
 
+import { UpdateNicknameRequest, UpdateNicknameResponse } from '@/@types/Member';
 import CheckIcon from '@/assets/icons/check.svg';
 import XIcon from '@/assets/icons/x.svg';
+
 import patchNickname from '@/services/member/patchNickname';
 import useMemberStore from '@/stores/MemberStore';
 
 import * as S from './MemberNickname.styled';
-import { UpdateNicknameRequest, UpdateNicknameResponse } from '@/@types/Member';
 
 function MemberNickname() {
   const { nickname, setNickname } = useMemberStore();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [name, setName] = useState<string>(nickname!);
+  const [inputNickname, setInputNickname] = useState<string>(nickname!);
   const handleNickname = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+    setInputNickname(e.target.value);
   };
 
   const [edit, setEdit] = useState<boolean>(false);
@@ -25,18 +26,22 @@ function MemberNickname() {
     }
   };
   const resetEdit = () => {
-    setName(nickname!);
+    setInputNickname(nickname!);
     setEdit(false);
   };
 
   const requestUpdateNickname = async () => {
-    if (nickname === name || name.length > 12 || name.length === 0) {
-      setName(nickname!);
+    if (
+      nickname === inputNickname ||
+      inputNickname.length > 12 ||
+      inputNickname.length === 0
+    ) {
+      setInputNickname(nickname!);
       setEdit(false);
       return;
     }
     const request: UpdateNicknameRequest = {
-      nickname: name,
+      nickname: inputNickname,
     };
     const response: UpdateNicknameResponse = await patchNickname(request);
     setNickname(response.nickname);
@@ -48,7 +53,7 @@ function MemberNickname() {
       {edit ? (
         <S.NicknameUpdateWrapper>
           <S.NicknameInput
-            value={name}
+            value={inputNickname}
             onChange={handleNickname}
             maxLength={12}
             ref={inputRef}
@@ -61,7 +66,9 @@ function MemberNickname() {
       ) : (
         <S.Nickname>
           안녕하세요,&nbsp;
-          <S.NicknameUpdateBox onClick={toggleEdit}>{name}</S.NicknameUpdateBox>
+          <S.NicknameUpdateBox onClick={toggleEdit}>
+            {nickname}
+          </S.NicknameUpdateBox>
           님
         </S.Nickname>
       )}
