@@ -33,12 +33,20 @@ function Navbar() {
           Authorization: `Bearer ${accessToken}`,
         },
         heartbeatTimeout: 30000,
-        withCredentials: true,
       },
     );
 
+    source.onopen = function (event) {
+      console.log(event);
+    };
+
     source.onmessage = function (event) {
       console.log(event.data);
+    };
+
+    source.onerror = function (event) {
+      console.error(event);
+      source.close();
     };
 
     return () => {
@@ -76,10 +84,7 @@ function Navbar() {
   return (
     <S.Container>
       <S.Wrapper>
-        <S.Logo
-          onClick={() => navigate(BROWSER_PATH.CALENDAR)}
-          src={logo}
-        ></S.Logo>
+        <S.Logo onClick={() => navigate(BROWSER_PATH.CALENDAR)} src={logo} />
         <NavEventBar changeSheetEvent={changeSheet} />
       </S.Wrapper>
       {sheetComponents.map(

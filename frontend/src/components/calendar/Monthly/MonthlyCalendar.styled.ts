@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { LabelColorsType, BgTheme } from '@/assets/styles/colorThemes';
 
 const DateContainer = styled.div`
-  ${tw`flex flex-col border-t-2 border-t-main relative`}
+  ${tw`flex flex-col border-t-2 border-t-main h-20`}
 `;
 
 const ScheduleSpan = styled.span<{

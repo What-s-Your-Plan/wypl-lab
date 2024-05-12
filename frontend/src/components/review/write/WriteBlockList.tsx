@@ -41,14 +41,18 @@ function WriteBlockList() {
     navigator(-1);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     const body = {
       title: reviewStore.title,
-      scheduleId: reviewStore.scheduleId,
+      schedule_id: reviewStore.scheduleId,
       contents: reviewStore.contents,
     };
-    const response = postReview(body);
-    navigator(`/review/${response.body.review_id}`);
+    const reviewId = await postReview(body);
+    console.log(reviewId);
+    if (reviewId) {
+      reviewStore.resetReview();
+      navigator(`/review/${reviewId}`);
+    }
   };
 
   const preventClose = (e: BeforeUnloadEvent) => {
@@ -84,7 +88,7 @@ function WriteBlockList() {
         </span>
         <div>
           <RTitle $title={reviewStore.title} $setTitle={reviewStore.setTitle} />
-          <RSchedule $scheduleId={reviewStore.scheduleId} />
+          <RSchedule scheduleId={reviewStore.scheduleId} />
         </div>
       </div>
       <Divider />

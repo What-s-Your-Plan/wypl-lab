@@ -5,6 +5,7 @@ import getReviewDetail from '@/services/review/getReviewDetail';
 import { splitTTime } from '@/utils/DateUtils';
 
 import { ReviewResponse } from '@/@types/ReviewResponse';
+import { Content } from '@/objects/Content';
 
 import DetailBlockList from '@/components/review/view/DetailBlockList';
 import { Container } from '@/components/common/Container';
@@ -23,7 +24,7 @@ function ReviewDetailPage() {
         const response = await getReviewDetail(reviewId);
         const mappedResponse = {
           ...response,
-          contents: response.contents.map((content) => ({
+          contents: response.contents.map((content: Content) => ({
             ...content,
             blockType: content.blockType as ReviewType,
           })),
@@ -49,9 +50,11 @@ function ReviewDetailPage() {
               <span className="relative">
                 <PopOver
                   button={
-                    <Button $size="none" className="!bg-transparent">
-                      <img src={MoreVertical} alt="더보기" />
-                    </Button>
+                    <div>
+                      <Button $size="none" className="!bg-transparent">
+                        <img src={MoreVertical} alt="더보기" />
+                      </Button>
+                    </div>
                   }
                   panel={
                     <div className="flex flex-col gap-0.5 w-16 px-3 py-2 bg-default-white/95 rounded-lg shadow-lg">

@@ -10,7 +10,7 @@ const initialSchedule: Schedule & Repeat = {
   endHour: 12,
   startMinute: 0,
   endMinute: 0,
-  category: 'Member',
+  category: 'MEMBER',
   groupId: 0,
   label: null,
   members: [],

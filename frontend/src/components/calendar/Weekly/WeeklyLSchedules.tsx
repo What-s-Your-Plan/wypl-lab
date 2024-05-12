@@ -11,9 +11,7 @@ function WeeklyLSchedules({ lSchedules }: LSchedulesProps) {
 
   const renderSchedules = () => {
     return lSchedules.map((schedule, index) => {
-      const bgColor = schedule.schedule.label
-        ? schedule.schedule.label.color
-        : 'labelBrown';
+      const bgColor = schedule.schedule.label?.color || schedule.schedule.group?.color || 'labelBrown'
 
       return (
         <S.LScheduleSpan

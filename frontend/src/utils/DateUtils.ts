@@ -11,11 +11,11 @@ function isSameDay(date1: Date, date2: Date): boolean {
 }
 
 function dateToString(date: Date): string {
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  return `${date.getFullYear()}-${padding0(date.getMonth() + 1)}-${padding0(date.getDate())}`;
 }
 
 function dateTimeToString(date: Date): string {
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}T${padding0(date.getHours())}:${padding0(date.getMinutes())}`;
+  return `${date.getFullYear()}-${padding0(date.getMonth() + 1)}-${padding0(date.getDate())}T${padding0(date.getHours())}:${padding0(date.getMinutes())}`;
 }
 
 function stringToDate(str: string): Date {
@@ -44,8 +44,10 @@ function getDateDiff(d1: Date | string, d2: Date | string) {
 }
 
 function splitTTime(date: string) {
-  const result = date.split('T');
-  return result[0] + ' ' + result[1].slice(0, result[1].length - 3);
+  if (date) {
+    const result = date.split('T');
+    return result[0] + ' ' + result[1].slice(0, result[1].length - 3);
+  }
 }
 
 function isAllday(start: Date, end: Date): boolean {

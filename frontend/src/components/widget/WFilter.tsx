@@ -9,7 +9,7 @@ function WFilter() {
   const dateStore = useDateStore();
   const [isAllSelected, setIsAllSelected] = useState<boolean>(true);
   const [allBgColor, setAllBgColor] = useState<string>('labelBrown');
-  const [allClassName, setAllClassName] = useState<string>('font-semibold');
+  const [allClassName, setAllClassName] = useState<string>('h-8');
 
   const handleAllSelected = () => {
     if (!isAllSelected) dateStore.setAllSelected();
@@ -61,7 +61,9 @@ function WFilter() {
 
   useEffect(() => {
     setAllBgColor(isAllSelected ? 'labelBrown' : 'coolGray');
-    setAllClassName(isAllSelected ? 'font-semibold' : '!text-default-black');
+    setAllClassName(
+      isAllSelected ? 'font-semibold' : '!text-default-black !font-medium',
+    );
   }, [isAllSelected]);
 
   return (

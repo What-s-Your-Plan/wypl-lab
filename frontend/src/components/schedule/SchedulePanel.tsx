@@ -18,7 +18,7 @@ function SchedulePanel({
 }: SchedulePanelProps) {
   return (
     <form
-      className="w-[580px] flex flex-col justify-center border-2"
+      className="w-[580px] flex flex-col justify-center"
       onSubmit={(e) => {
         e.preventDefault();
       }}
@@ -31,7 +31,7 @@ function SchedulePanel({
       />
       <Items.Description states={states} handleChange={handleChange} />
       <Items.Label states={states} setStates={setStates} />
-      {states.category === 'Member' ? null : (
+      {states.category === 'MEMBER' && (
         <Items.Users states={states} setStates={setStates} />
       )}
       <Items.Repeat

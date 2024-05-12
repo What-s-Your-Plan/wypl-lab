@@ -1,31 +1,29 @@
 import Modal from '@/components/common/Modal';
 import useForm from '@/hooks/useForm';
-import initialSchedule from '@/constants/ScheduleFormInit';
 import SchedulePanel from '@/components/schedule/SchedulePanel';
 import postSchedule from '@/services/schedule/postSchedule';
 
 type ScheduleModalProps = {
   isOpen: boolean;
-  init?: Schedule & Repeat;
+  init: Schedule & Repeat;
   handleClose: (() => void) | (() => Promise<void>);
-  handleConfirm?: (() => void) | (() => Promise<void>);
 };
 
 function ScheduleModal({
   isOpen,
-  init = { ...initialSchedule },
+  init,
   handleClose,
-  handleConfirm,
 }: ScheduleModalProps) {
-  const { form, setForm, handleChange } = useForm<Schedule & Repeat>(
+  const { form, setForm, handleChange, handleSubmit } = useForm<Schedule & Repeat>(
     init,
     postSchedule,
   );
+
   return (
     <Modal
       isOpen={isOpen}
       cancel="취소"
-      confirm="저장"
+      confirm={{content:"저장", handleConfirm: handleSubmit}}
       title={<></>}
       contents={
         <SchedulePanel
@@ -35,7 +33,6 @@ function ScheduleModal({
         />
       }
       handleClose={handleClose}
-      handleConfirm={handleConfirm}
     />
   );
 }
