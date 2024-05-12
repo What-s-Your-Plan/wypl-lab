@@ -9,6 +9,7 @@ import {
   ReviewIndex,
   ReviewWrite,
   ReviewDetail,
+  ReviewModify,
   NotFound,
 } from '@/pages/Pages';
 
@@ -25,6 +26,7 @@ function Routes() {
         <Route path={BROWSER_PATH.REVIEW.BASE} element={<ReviewIndex />} />
         <Route path={BROWSER_PATH.REVIEW.WRITE} element={<ReviewWrite />} />
         <Route path={BROWSER_PATH.REVIEW.DETAIL} element={<ReviewDetail />} />
+        <Route path={BROWSER_PATH.REVIEW.MODIFY} element={<ReviewModify />} />
       </Route>
       <Route path={BROWSER_PATH.NOT_FOUND} element={<NotFound />} />
     </BrowserRouter>

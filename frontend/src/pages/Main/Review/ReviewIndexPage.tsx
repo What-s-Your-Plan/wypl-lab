@@ -26,7 +26,7 @@ function ReviewIndexPage() {
             blockType={review.thumbnail_content?.blockType}
             thumbnailContent={review.thumbnail_content}
           />
-          <div>{review.title}</div>
+          <div className="font-semibold">{review.title}</div>
         </WhiteContainer>
       );
     });
@@ -34,8 +34,12 @@ function ReviewIndexPage() {
 
   const fetchReviewList = async () => {
     const response = await getReviewList(viewType, lastId);
+    const last =
+      response.reviews.length > 0
+        ? response.reviews[response.reviews.length - 1].review_id
+        : lastId;
     setReviews([...reviews, ...response.reviews]);
-    setLastId(response.lastId);
+    setLastId(last);
   };
 
   useEffect(() => {
@@ -45,7 +49,7 @@ function ReviewIndexPage() {
 
   return (
     <div className="container flex items-center ss:max-sm:block h-dvh">
-      <Container $width="1200" className="h-[90%]">
+      <Container $width="1200" className="h-[90%] flex flex-wrap gap-4">
         {renderReviewIndex()}
       </Container>
     </div>
