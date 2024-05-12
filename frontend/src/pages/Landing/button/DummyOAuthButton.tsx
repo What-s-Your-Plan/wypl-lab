@@ -13,7 +13,7 @@ function DummyOAuthButton() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>('');
-  const changeEmail = (e: any) => {
+  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
 
