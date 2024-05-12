@@ -46,9 +46,9 @@ class DDayWidgetTest {
 
 		/* Then */
 		if (days > 0) {
-			assertThat(dDay).isEqualTo("D -" + Math.abs(days));
+			assertThat(dDay).isEqualTo("D-" + Math.abs(days));
 		} else if (days < 0) {
-			assertThat(dDay).isEqualTo("D +" + Math.abs(days));
+			assertThat(dDay).isEqualTo("D+" + Math.abs(days));
 		} else {
 			assertThat(dDay).isEqualTo("D-DAY");
 		}
