@@ -42,14 +42,15 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 public class CalendarService {
 
-	private MemberScheduleRepository memberScheduleRepository;
-	private LabelRepository labelRepository;
+	private final MemberScheduleRepository memberScheduleRepository;
+	
+	private final LabelRepository labelRepository;
 
-	private ScheduleRepository scheduleRepository;
+	private final ScheduleRepository scheduleRepository;
 
-	private MemberGroupRepository memberGroupRepository;
+	private final MemberGroupRepository memberGroupRepository;
 
-	private GroupRepository groupRepository;
+	private final GroupRepository groupRepository;
 
 	public CalendarListResponse getCalendarSchedules(int memberId, CalendarType calendarType, Integer labelId,
 		LocalDate startDate) {
