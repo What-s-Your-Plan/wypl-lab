@@ -177,8 +177,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		memberGroupRepository.delete(memberGroup);
 	}
 
-	private void validateMaxMemberCount(List<Integer> memberIdList) {
-		if (memberIdList.size() >= 50) {
 	private void saveAllMemberGroup(List<Member> members, Group group) {
 		List<MemberGroup> memberGroups = new ArrayList<>();
 		members.forEach(member -> {
