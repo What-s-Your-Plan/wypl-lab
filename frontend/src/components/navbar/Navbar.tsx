@@ -54,12 +54,12 @@ function Navbar() {
     source.addEventListener('sse', function (event) {
       console.log('최초연결');
       console.log('SSE Event:', event);
-      setLastEventId(event.lastEventId);
+      // setLastEventId(event.lastEventId);
     });
 
     source.addEventListener('notification', function (event) {
       console.log(event);
-      setLastEventId(event.lastEventId);
+      // setLastEventId(event.lastEventId);//
     });
 
     return () => {
