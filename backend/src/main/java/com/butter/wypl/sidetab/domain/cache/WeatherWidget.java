@@ -7,10 +7,12 @@ import com.butter.wypl.infrastructure.weather.WeatherRegion;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @RedisHash(timeToLive = 60 * 60)
 @Getter
