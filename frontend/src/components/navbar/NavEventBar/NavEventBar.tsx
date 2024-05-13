@@ -9,14 +9,16 @@ import GroupSvg from '@/assets/icons/users.svg';
 import NotepadSvg from '@/assets/icons/notePad.svg';
 import NotificationSvg from '@/assets/icons/bell.svg';
 import { BROWSER_PATH } from '@/constants/Path';
+import useMemberStore from '@/stores/MemberStore';
 
-type Props = {
+type NavEventBarProps = {
   changeSheetEvent: (sheet: SheetType) => void;
 };
 
-function NavEventBar({ changeSheetEvent }: Props) {
-  const navigate = useNavigate();
+function NavEventBar({ changeSheetEvent }: NavEventBarProps) {
+  const { profileImage } = useMemberStore();
 
+  const navigate = useNavigate();
   const gotoPages = (url: string): void => {
     navigate(url);
   };
@@ -46,7 +48,7 @@ function NavEventBar({ changeSheetEvent }: Props) {
       event: () => changeSheetEvent('NOTIFICATION'),
     },
     {
-      imageUrl: NotificationSvg,
+      imageUrl: profileImage,
       alt: '회원',
       event: () => changeSheetEvent('MEMBER'),
     },

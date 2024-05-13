@@ -11,3 +11,7 @@ type IssueTokenResponse = {
   access_token: string;
   refresh_token: string;
 };
+
+type ReissueTokenParams = {
+  refresh_token: string;
+};

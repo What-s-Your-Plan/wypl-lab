@@ -1,5 +1,24 @@
 import styled from 'styled-components';
+import tw from 'twin.macro';
 
-const Container = styled.div``;
+const Container = styled.div`
+  ${tw`
+      flex
+      flex-col
+      items-center
 
-export { Container };
+      h-full
+      w-full
+    `}
+`;
+
+const Icon = styled.img`
+  ${tw`
+    h-4
+    w-4
+
+    cursor-pointer
+  `}
+`;
+
+export { Container, Icon };

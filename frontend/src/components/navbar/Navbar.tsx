@@ -23,6 +23,7 @@ type SheetComponent = {
 function Navbar() {
   const navigate = useNavigate();
   const { accessToken } = useJsonWebTokensStore();
+
   useEffect(() => {
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const source = new EventSource(
@@ -75,6 +76,10 @@ function Navbar() {
       component: <NotificationSheet />,
     },
   ];
+
+  useEffect(() => {
+    resetSheet();
+  }, [window.location.href]);
 
   return (
     <S.Container>
