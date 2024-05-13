@@ -76,13 +76,13 @@ public class CalendarService {
 		if (labelId == null) {
 			schedules = memberScheduleRepository.getCalendarSchedules(memberId,
 				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-				LocalDateTime.of(endDate, LocalTime.of(0, 0)));
+				LocalDateTime.of(endDate, LocalTime.of(23, 59)));
 		} else {
 			Label label = LabelServiceUtils.getLabelByLabelId(labelRepository, labelId);
 
 			schedules = memberScheduleRepository.getCalendarSchedulesWithLabel(memberId,
 				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-				LocalDateTime.of(endDate, LocalTime.of(0, 0)),
+				LocalDateTime.of(endDate, LocalTime.of(23, 59)),
 				label.getLabelId());
 		}
 
@@ -123,7 +123,7 @@ public class CalendarService {
 
 		List<Schedule> schedules = scheduleRepository.findAllByGroupIdAndStartDateBetween(groupId,
 			LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-			LocalDateTime.of(endDate, LocalTime.of(0, 0)));
+			LocalDateTime.of(endDate, LocalTime.of(23, 59)));
 
 		return GroupCalendarListResponse.of(
 			schedules.stream()
