@@ -14,12 +14,11 @@ type DailyProps = {
 function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
   const { selectedDate } = useDateStore();
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
-  const { mainColor } = useMemberStore()
+  const { mainColor } = useMemberStore();
 
   const updateInfo = useCallback(async () => {
     const response = await getCalendars('DAY', dateToString(selectedDate));
     if (response) {
-      console.log(response.schedules)
       setSchedules(response.schedules);
     }
   }, [selectedDate]);
@@ -43,7 +42,9 @@ function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
           <S.ScheduleContainer key={schedule.schedule_id}>
             <S.LabelDiv
               $bgColor={
-                (schedule.label?.color || schedule.group?.color || mainColor) as LabelColorsType
+                (schedule.label?.color ||
+                  schedule.group?.color ||
+                  mainColor) as LabelColorsType
               }
             />
             <S.ScheduleContents>

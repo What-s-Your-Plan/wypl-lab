@@ -13,7 +13,6 @@ type CreateLabelProps = {
 function CreateLabel({ color, setColor, handleKeyDown }: CreateLabelProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const handleCreate = async () => {
-    console.log(inputRef.current?.value, color);
     handleKeyDown ? await handleKeyDown() : null;
   };
   return (

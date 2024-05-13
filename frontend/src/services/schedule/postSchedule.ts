@@ -15,7 +15,6 @@ async function postSchedule(schedule: Schedule & Repeat) {
     }
   }
 
-  console.log(schedule.members);
   body.members = schedule.members.map((member) => {
     return {
       member_id: member.member_id,
@@ -28,8 +27,6 @@ async function postSchedule(schedule: Schedule & Repeat) {
 
   const startDate = new Date(schedule.startDate);
   const endDate = new Date(schedule.endDate);
-  console.log(startDate)
-  console.log(endDate)
   if (schedule.isAllday === true) {
     startDate.setHours(0);
     startDate.setMinutes(0);
@@ -41,19 +38,13 @@ async function postSchedule(schedule: Schedule & Repeat) {
     let endHour = schedule.endHour === 12 ? 0 : Number(schedule.endHour);
     let endMinute = schedule.endMinute;
 
-    schedule.startAMPM === 'PM' ? startHour += 12 : null;
-    schedule.endAMPM === 'PM' ? endHour += 12 : null;
-
-    console.log(startHour)
-    console.log(endHour)
+    schedule.startAMPM === 'PM' ? (startHour += 12) : null;
+    schedule.endAMPM === 'PM' ? (endHour += 12) : null;
 
     startDate.setHours(startHour);
     startDate.setMinutes(startMinute);
     endDate.setHours(endHour);
     endDate.setMinutes(endMinute);
-
-    console.log(startDate)
-    console.log(endDate)
   }
 
   body.start_date = dateTimeToString(startDate);
@@ -86,8 +77,6 @@ async function postSchedule(schedule: Schedule & Repeat) {
       body.repetition.repetition_end_date = schedule.endRDate;
     }
   }
-  console.log(schedule)
-  console.log(body)
 
   try {
     const response = await axiosWithAccessToken.post(
