@@ -13,7 +13,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -117,10 +116,14 @@ class GroupControllerTest extends ControllerTest {
 
 		/* Given */
 		int groupId = 1;
+		Group group = GROUP_STUDY.toGroup(HAN_JI_WON.toMember());
+		group.getMemberGroups().add(MemberGroup.of(HAN_JI_WON.toMember(), group, labelYellow));
+		group.getMemberGroups().add(MemberGroup.of(KIM_JEONG_UK.toMember(), group, labelRed));
+
+		GroupDetailResponse groupDetailResponse = GroupDetailResponse.of(group);
 
 		given(groupLoadService.getDetailById(anyInt(), anyInt()))
-			.willReturn(GroupDetailResponse.of(GROUP_STUDY.toGroup(HAN_JI_WON.toMember()),
-				Collections.singletonList(HAN_JI_WON.toMember())));
+			.willReturn(groupDetailResponse);
 
 		givenMockLoginMember();
 
@@ -153,6 +156,8 @@ class GroupControllerTest extends ControllerTest {
 						.description("그룹 소유자 정보"),
 					fieldWithPath("body.owner.member_id").type(JsonFieldType.NUMBER)
 						.description("그룹 소유자 식별자"),
+					fieldWithPath("body.owner.group_invite_state").type(JsonFieldType.STRING).optional()
+						.description("그룹 소유자 초대 상태"),
 					fieldWithPath("body.owner.email").type(JsonFieldType.STRING)
 						.description("그룹 소유자 이메일"),
 					fieldWithPath("body.owner.nickname").type(JsonFieldType.STRING)
@@ -165,6 +170,8 @@ class GroupControllerTest extends ControllerTest {
 						.description("그룹 멤버 리스트"),
 					fieldWithPath("body.members[].member_id").type(JsonFieldType.NUMBER)
 						.description("그룹 멤버 식별자"),
+					fieldWithPath("body.members[].group_invite_state").type(JsonFieldType.STRING).optional()
+						.description("그룹 멤버 초대 상태"),
 					fieldWithPath("body.members[].email").type(JsonFieldType.STRING)
 						.description("그룹 멤버 이메일"),
 					fieldWithPath("body.members[].nickname").type(JsonFieldType.STRING)
@@ -318,6 +325,8 @@ class GroupControllerTest extends ControllerTest {
 						.description("그룹 소유자 정보"),
 					fieldWithPath("body.groups[].owner.member_id").type(JsonFieldType.NUMBER).optional()
 						.description("그룹 소유자 식별자"),
+					fieldWithPath("body.groups[].owner.group_invite_state").type(JsonFieldType.STRING).optional()
+						.description("그룹 소유자 초대 상태"),
 					fieldWithPath("body.groups[].owner.email").type(JsonFieldType.STRING).optional()
 						.description("그룹 소유자 이메일"),
 					fieldWithPath("body.groups[].owner.nickname").type(JsonFieldType.STRING).optional()
@@ -330,6 +339,8 @@ class GroupControllerTest extends ControllerTest {
 						.description("그룹 멤버 리스트"),
 					fieldWithPath("body.groups[].members[].member_id").type(JsonFieldType.NUMBER).optional()
 						.description("그룹 멤버 식별자"),
+					fieldWithPath("body.groups[].members[].group_invite_state").type(JsonFieldType.STRING).optional()
+						.description("그룹 멤버 초대 상태"),
 					fieldWithPath("body.groups[].members[].email").type(JsonFieldType.STRING).optional()
 						.description("그룹 멤버 이메일"),
 					fieldWithPath("body.groups[].members[].nickname").type(JsonFieldType.STRING).optional()

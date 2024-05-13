@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.MemberGroup;
-import com.butter.wypl.member.domain.Member;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GroupDetailResponse(
@@ -24,29 +23,36 @@ public record GroupDetailResponse(
 	List<MemberResponse> members
 
 ) {
-	public static GroupDetailResponse of(Group group, List<Member> members) {
+	public static GroupDetailResponse of(Group group) {
+		MemberGroup ownerMemberGroup = group.getMemberGroups()
+			.stream()
+			.filter(MemberGroup::isOwner)
+			.findFirst().orElse(null);
+
 		return new GroupDetailResponse(
 			group.getId(),
 			group.getName(),
 			group.getDescription(),
-			MemberResponse.from(group.getOwner()),
+			MemberResponse.from(ownerMemberGroup),
 			group.getMemberGroups().size(),
-			MemberResponse.from(members)
+			MemberResponse.from(group.getMemberGroups())
 		);
 	}
 
-	public static GroupDetailResponse from(Group group) {
+	public static GroupDetailResponse from(MemberGroup memberGroup) {
+		Group group = memberGroup.getGroup();
+		MemberGroup ownerMemberGroup = group.getMemberGroups()
+			.stream()
+			.filter(MemberGroup::isOwner)
+			.findFirst().orElse(null);
+
 		return new GroupDetailResponse(
 			group.getId(),
 			group.getName(),
 			group.getDescription(),
-			MemberResponse.from(group.getOwner()),
+			MemberResponse.from(ownerMemberGroup),
 			group.getMemberGroups().size(),
-			MemberResponse.from(
-				group.getMemberGroups().stream()
-					.map(MemberGroup::getMember)
-					.toList()
-			)
+			MemberResponse.from(group.getMemberGroups())
 		);
 	}
 }

@@ -2,7 +2,7 @@ package com.butter.wypl.group.data.response;
 
 import java.util.List;
 
-import com.butter.wypl.member.domain.Member;
+import com.butter.wypl.group.domain.MemberGroup;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,16 +17,24 @@ public record MemberResponse(
 
 	@JsonProperty("profile_image")
 	@JsonInclude(JsonInclude.Include.NON_NULL)
-	String profileImage
+	String profileImage,
+
+	@JsonProperty("group_invite_state")
+	String GroupInviteState
 
 ) {
 
-	public static MemberResponse from(Member member) {
-		return new MemberResponse(member.getId(), member.getEmail(), member.getNickname(), member.getProfileImage());
+	public static MemberResponse from(MemberGroup memberGroup) {
+		return new MemberResponse(
+			memberGroup.getMember().getId()
+			, memberGroup.getMember().getEmail()
+			, memberGroup.getMember().getNickname()
+			, memberGroup.getMember().getProfileImage()
+			, memberGroup.getGroupInviteState().name());
 	}
 
-	public static List<MemberResponse> from(List<Member> members) {
-		return members.stream().map(MemberResponse::from)
+	public static List<MemberResponse> from(List<MemberGroup> memberGroups) {
+		return memberGroups.stream().map(MemberResponse::from)
 			.toList();
 	}
 }

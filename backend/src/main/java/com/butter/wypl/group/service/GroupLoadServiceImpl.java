@@ -1,7 +1,5 @@
 package com.butter.wypl.group.service;
 
-import static com.butter.wypl.group.utils.MemberGroupServiceUtils.*;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,7 +32,7 @@ public class GroupLoadServiceImpl implements GroupLoadService {
 		MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, userId,
 			foundGroup.getId());
 
-		return GroupDetailResponse.of(foundGroup, getMembersByGroupId(memberGroupRepository, groupId));
+		return GroupDetailResponse.of(foundGroup);
 	}
 
 	@Override

@@ -82,4 +82,8 @@ public class MemberGroup extends BaseEntity {
 	public void setGroupInviteStateAccepted() {
 		this.groupInviteState = GroupInviteState.ACCEPTED;
 	}
+
+	public boolean isOwner() {
+		return this.group.getOwner().getId() == this.member.getId();
+	}
 }

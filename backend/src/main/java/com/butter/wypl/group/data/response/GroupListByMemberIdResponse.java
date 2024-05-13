@@ -32,7 +32,7 @@ public record GroupListByMemberIdResponse(
 			member.getMemberGroups().size(),
 			member.getMemberGroups()
 				.stream()
-				.map(memberGroup -> GroupDetailResponse.from(memberGroup.getGroup()))
+				.map(memberGroup -> GroupDetailResponse.from(memberGroup))
 				.toList()
 		);
 	}
