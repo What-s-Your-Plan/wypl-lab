@@ -32,7 +32,7 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
   };
 
   const { selectedDate, setSelectedDate } = useDateStore();
-  const [monthSchedules, setMonthSchedules] = useState<Array<DateSchedule>>(createInit()); // 임시
+  const [monthSchedules, setMonthSchedules] = useState<Array<DateSchedule>>(createInit());
   const [firstDay, setFirstDay] = useState<Date | null>(null);
 
   const handleNextMonth = () => {

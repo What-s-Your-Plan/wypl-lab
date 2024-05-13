@@ -1,10 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import getCalendars from '@/services/calendar/getCalendars';
 import useDateStore from '@/stores/DateStore';
-import { dateToString } from '@/utils/DateUtils';
+import { dateToString, getTime } from '@/utils/DateUtils';
 import * as S from './DailyCalendar.styled';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
-import { getTime } from '@/utils/DateUtils';
 
 type DailyProps = {
   needUpdate: boolean;
@@ -13,8 +12,7 @@ type DailyProps = {
 
 function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
   const { selectedDate } = useDateStore();
-  const [schedules, setSchedules] =
-    useState<Array<CalendarSchedule>>([]);
+  const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
 
   const updateInfo = useCallback(async () => {
     const response = await getCalendars('DAY', dateToString(selectedDate));
@@ -51,8 +49,8 @@ function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
               <span className="text-sm text-zinc-500">
                 {getTime(schedule.start_date)} ~ {getTime(schedule.end_date)}
               </span>
-              <span className="text-lg font-bold">제목 : {schedule.title}</span>
-              <p className="flex">설명 : {schedule.description}</p>
+              <span className="text-xl font-bold">{schedule.title}</span>
+              <p className="flex">{schedule.description}</p>
             </S.ScheduleContents>
           </S.ScheduleContainer>
         </>
@@ -65,11 +63,8 @@ function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
       {schedules.length === 0 ? (
         <div>일정을 추가해 주세요</div>
       ) : (
-        <div className='overflow-y-auto h-full scrollBar flex'>
-
-          <div className="w-full h-fit p-4 m-auto">
-            {renderSchedule()}
-          </div>
+        <div className="overflow-y-auto h-full scrollBar flex">
+          <div className="w-full h-fit p-4 m-auto">{renderSchedule()}</div>
         </div>
       )}
     </>
