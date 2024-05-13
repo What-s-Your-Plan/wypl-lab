@@ -7,11 +7,12 @@ import useMemberStore from '@/stores/MemberStore';
 
 type MDayProps = {
   date: Date;
+  firstDay:Date;
   schedules: DateSchedule;
   isCurrentMonth: boolean;
 };
 
-function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
+function MonthlyDay({ date, firstDay, schedules, isCurrentMonth }: MDayProps) {
   const { selectedDate } = useDateStore();
   const { mainColor } = useMemberStore();
 
@@ -22,7 +23,7 @@ function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
           const start = stringToDate(schedule[0].start_date);
           const end = stringToDate(schedule[0].end_date);
 
-          if (isSameDay(start, date) || date.getDay() === 0) {
+          if (isSameDay(firstDay, date) ||isSameDay(start, date) || date.getDay() === 0) {
             const width = Math.min(
               7 - date.getDay(),
               getDateDiff(date, end) + 1,

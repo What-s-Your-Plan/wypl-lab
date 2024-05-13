@@ -5,6 +5,7 @@ import { dateToString, getTime } from '@/utils/DateUtils';
 import * as S from './DailyCalendar.styled';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 import useMemberStore from '@/stores/MemberStore';
+import { labelFilter } from '@/utils/FilterUtils';
 
 type DailyProps = {
   needUpdate: boolean;
@@ -12,21 +13,30 @@ type DailyProps = {
 };
 
 function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
-  const { selectedDate } = useDateStore();
+  const { selectedDate, selectedLabels } = useDateStore();
+  const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
   const { mainColor } = useMemberStore();
 
   const updateInfo = useCallback(async () => {
     const response = await getCalendars('DAY', dateToString(selectedDate));
     if (response) {
-      setSchedules(response.schedules);
+      setOriginSked(response.schedules);
     }
   }, [selectedDate]);
+
+  const filteredSked = useCallback(() => {
+    setSchedules(labelFilter(originSked, selectedLabels))
+  }, [originSked, selectedLabels])
 
   useEffect(() => {
     updateInfo();
     setUpdateFalse();
   }, [selectedDate, needUpdate]);
+
+  useEffect(() => {
+    filteredSked()
+  }, [filteredSked])
 
   const renderSchedule = () => {
     return schedules.map((schedule, idx) => {

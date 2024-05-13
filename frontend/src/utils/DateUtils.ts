@@ -40,7 +40,7 @@ function getDateDiff(d1: Date | string, d2: Date | string) {
   } else {
     d2 = new Date(d2.getFullYear(), d2.getMonth(), d2.getDate());
   }
-  return Math.abs((d1.getTime() - d2.getTime()) / (1000 * 60 * 60 * 24));
+  return (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24);
 }
 
 function splitTTime(date: string) {

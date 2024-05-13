@@ -114,6 +114,8 @@ const LScheduleSpan = styled.span<LScheduleSpanProps>`
     truncate
     text-xs
     z-[5]
+    border-x
+    border-b
   `}
   ${(props) => BgTheme[props.$bgColor]}
   grid-column: ${(props) =>
