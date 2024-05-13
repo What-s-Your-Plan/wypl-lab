@@ -19,7 +19,7 @@ public class MemberGroupRepositoryCustomImpl implements MemberGroupRepositoryCus
 	private final JPAQueryFactory query;
 
 	@Override
-	public Optional<MemberGroup> findFirstPendingMemberGroupsByGroupId(int memberId, int groupId) {
+	public Optional<MemberGroup> findPendingMemberGroup(int memberId, int groupId) {
 		MemberGroup findMemberGroup = query.selectFrom(memberGroup)
 			.join(memberGroup.member, member).fetchJoin()
 			.join(memberGroup.group, group).fetchJoin()
@@ -32,12 +32,22 @@ public class MemberGroupRepositoryCustomImpl implements MemberGroupRepositoryCus
 	}
 
 	@Override
-	public List<MemberGroup> findMemberGroupsByGroupId(int groupId) {
+	public List<MemberGroup> findAcceptedMemberGroups(int groupId) {
 		return query.selectFrom(memberGroup)
 			.join(memberGroup.member, member).fetchJoin()
 			.join(memberGroup.group, group).fetchJoin()
 			.where(group.id.eq(groupId)
 				.and(memberGroup.groupInviteState.eq(GroupInviteState.ACCEPTED))
+				.and(member.deletedAt.isNull()))
+			.fetch();
+	}
+
+	@Override
+	public List<MemberGroup> findAllMemberGroups(int groupId) {
+		return query.selectFrom(memberGroup)
+			.join(memberGroup.member, member).fetchJoin()
+			.join(memberGroup.group, group).fetchJoin()
+			.where(group.id.eq(groupId)
 				.and(member.deletedAt.isNull()))
 			.fetch();
 	}

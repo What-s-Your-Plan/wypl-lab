@@ -75,7 +75,7 @@ class MemberGroupRepositoryTest {
 
 	@Test
 	@DisplayName("그룹아이디로 회원그룹 리스트 조회 성공")
-	void findMemberGroupsByGroupId() {
+	void findAllMemberGroupsByGroupId() {
 
 		/* Given */
 		Member savedMember = memberRepository.save(HAN_JI_WON.toMember());
@@ -88,7 +88,7 @@ class MemberGroupRepositoryTest {
 		memberGroupRepository.save(MemberGroup.of(savedMember3, savedGroup, labelRed));
 
 		/* When */
-		List<MemberGroup> foundMemberGroups = memberGroupRepository.findMemberGroupsByGroupId(savedGroup.getId());
+		List<MemberGroup> foundMemberGroups = memberGroupRepository.findAllMemberGroups(savedGroup.getId());
 
 		/* Then */
 		assertThatCode(() -> {

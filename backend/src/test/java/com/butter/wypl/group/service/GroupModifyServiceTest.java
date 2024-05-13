@@ -173,7 +173,7 @@ class GroupModifyServiceTest {
 
 			MemberGroup memberGroup = MemberGroup.of(member, group, Color.labelBrown);
 			List<MemberGroup> memberGroups = List.of(memberGroup);
-			given(memberGroupRepository.findMemberGroupsByGroupId(groupId))
+			given(memberGroupRepository.findAcceptedMemberGroups(groupId))
 				.willReturn(memberGroups);
 
 			/* When */
@@ -245,5 +245,37 @@ class GroupModifyServiceTest {
 
 		}
 
+	}
+
+	@Nested
+	@DisplayName("그룹 회원 초대 수락 테스트")
+	class acceptGroupInvitationTest {
+
+		private final Member owner = HAN_JI_WON.toMemberWithId(1);
+		private final Member member1 = KIM_JEONG_UK.toMemberWithId(2);
+
+		private final Group group = GROUP_STUDY.toGroup(owner);
+
+		@Test
+		@DisplayName("그룹 회원 초대 수락 성공")
+		void whenSuccess() {
+
+			/* Given */
+			given(memberRepository.findById(anyInt()))
+				.willReturn(Optional.of(member1));
+
+			given(groupRepository.findById(anyInt()))
+				.willReturn(Optional.of(group));
+
+			MemberGroup memberGroup = MemberGroup.of(member1, group);
+			given(memberGroupRepository.findPendingMemberGroup(anyInt(), anyInt()))
+				.willReturn(Optional.of(memberGroup));
+
+			/* When, Then */
+			assertThatCode(() -> {
+				groupModifyService.acceptGroupInvitation(member1.getId(), group.getId());
+			}).doesNotThrowAnyException();
+
+		}
 	}
 }

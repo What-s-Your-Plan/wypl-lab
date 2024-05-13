@@ -36,7 +36,7 @@ class MemberGroupServiceUtilsTest {
 		);
 		List<String> memberNicknames = Arrays.asList(HAN_JI_WON.getNickname(), KIM_JEONG_UK.getNickname(),
 			LEE_JI_WON.getNickname());
-		given(memberGroupRepository.findMemberGroupsByGroupId(any(Integer.class)))
+		given(memberGroupRepository.findAcceptedMemberGroups(any(Integer.class)))
 			.willReturn(memberGroups);
 		int groupId = 1;
 
