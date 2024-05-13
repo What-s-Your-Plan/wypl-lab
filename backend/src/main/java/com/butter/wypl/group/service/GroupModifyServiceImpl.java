@@ -130,12 +130,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	@Override
 	public void rejectGroupInvitation(int memberId, int groupId) {
-
-		Member foundMember = getMember(memberId);
-		Group foundGroup = getGroup(groupId);
-
-		MemberGroup memberGroup = getPendingMemberGroup(foundMember, foundGroup);
-
+		MemberGroup memberGroup = getPendingMemberGroup(getMember(memberId), getGroup(groupId));
 		memberGroupRepository.delete(memberGroup);
 	}
 
