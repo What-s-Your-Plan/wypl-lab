@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -74,10 +73,10 @@ public class LabelController {
 			);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{labelId}")
 	public ResponseEntity<Message<LabelIdResponse>> deleteLabel(
 		@Authenticated AuthMember authMember,
-		@RequestHeader("Label_id") int labelId
+		@PathVariable("labelId") int labelId
 	) {
 		return ResponseEntity
 			.ok().body(

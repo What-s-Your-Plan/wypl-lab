@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -83,11 +82,11 @@ public class ScheduleController {
 			);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{scheduleId}/{modificationType}")
 	public ResponseEntity<Message<ScheduleIdListResponse>> deleteSchedules(
 		@Authenticated AuthMember authMember,
-		@RequestHeader("Schedule_id") int scheduleId,
-		@RequestHeader("Modification_type") ModificationType modificationType
+		@PathVariable("scheduleId") int scheduleId,
+		@PathVariable("modificationType") ModificationType modificationType
 	) {
 		return ResponseEntity
 			.ok().body(
