@@ -76,7 +76,7 @@ function WidgetList() {
   }, [isModifying]);
 
   return (
-    <S.Container $width="300" className="!p-2">
+    <S.Container $width="left" className="!p-2">
       <div className="flex justify-end z-50 sticky float-right">
         {isModifying && (
           <Button

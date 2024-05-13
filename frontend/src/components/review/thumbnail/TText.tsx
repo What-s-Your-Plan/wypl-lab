@@ -6,9 +6,13 @@ type TTextProps = {
 };
 
 function TText({ thumbnailContent }: TTextProps) {
+  const text =
+    thumbnailContent.text.length > 100
+      ? thumbnailContent.text.slice(0, 100) + '...'
+      : thumbnailContent.text;
   return (
     <div>
-      <Text content={thumbnailContent.text} />
+      <Text content={text} />
     </div>
   );
 }

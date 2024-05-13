@@ -35,8 +35,10 @@ function TWeather({ thumbnailContent }: TWeatherProps) {
         <img src={SunDim} alt="날씨" className="w-5 mr-2" />
         <span>오늘의 날씨</span>
       </div>
-      {renderWeather(thumbnailContent.weather)}
-      {thumbnailContent.description}
+      <div className="flex flex-row items-center gap-2 m-2">
+        {renderWeather(thumbnailContent.weather)}
+        {thumbnailContent.description}
+      </div>
     </div>
   );
 }

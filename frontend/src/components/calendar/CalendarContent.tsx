@@ -70,7 +70,7 @@ function CalendarContent() {
 
   return (
     <>
-      <Containers.Container className="flex" $width="800">
+      <Containers.Container className="flex" $width="right">
         <Containers.WhiteContainer $width="1300" $height="max">
           <div className="flex p-3 h-full gap-4">
             <div className="grow">{renderCalender()}</div>

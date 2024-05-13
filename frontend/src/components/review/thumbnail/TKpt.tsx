@@ -6,9 +6,13 @@ type TKptProps = {
 };
 
 function TKpt({ thumbnailContent }: TKptProps) {
+  const keep =
+    thumbnailContent.keepStr.length > 100
+      ? thumbnailContent.keepStr.slice(0, 100) + '...'
+      : thumbnailContent.keepStr;
   return (
     <div>
-      <Text content={thumbnailContent.keepStr} />
+      <Text content={keep} />
     </div>
   );
 }

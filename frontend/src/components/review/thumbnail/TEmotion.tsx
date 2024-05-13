@@ -50,8 +50,10 @@ function TEmotion({ thumbnailContent }: TEmotionProps) {
         <img src={Smiley} alt="기분" className="w-5 mr-2" />
         <span>오늘의 기분</span>
       </div>
-      {renderEmoji(thumbnailContent.emoji)}
-      {thumbnailContent.description}
+      <div className="flex flex-row items-center gap-2 m-2">
+        {renderEmoji(thumbnailContent.emoji)}
+        {thumbnailContent.description}
+      </div>
     </div>
   );
 }
