@@ -37,7 +37,7 @@ import com.butter.wypl.notification.service.GroupNotificationService;
 
 import lombok.RequiredArgsConstructor;
 
-@Transactional(readOnly = true)
+@Transactional
 @Service
 @RequiredArgsConstructor
 public class GroupModifyServiceImpl implements GroupModifyService {
@@ -47,7 +47,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	private final MemberGroupRepository memberGroupRepository;
 	private final GroupNotificationService groupNotificationService;
 
-	@Transactional
 	@Override
 	public GroupIdResponse createGroup(int ownerId, GroupCreateRequest createRequest) {
 
@@ -65,7 +64,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		return new GroupIdResponse(savedGroup.getId());
 	}
 
-	@Transactional
 	@Override
 	public GroupIdResponse updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest) {
 
@@ -77,7 +75,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		return new GroupIdResponse(foundGroup.getId());
 	}
 
-	@Transactional
 	@Override
 	public void deleteGroup(int memberId, int groupId) {
 
@@ -125,30 +122,19 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		return new MemberIdResponse(member.getId());
 	}
 
-	@Transactional
 	@Override
 	public void acceptGroupInvitation(int memberId, int groupId) {
-
-		Member foundMember = getMember(memberId);
-		Group foundGroup = getGroup(groupId);
-
-		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
-				foundGroup.getId())
-			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
-
+		MemberGroup memberGroup = getPendingMemberGroup(getMember(memberId), getGroup(groupId));
 		memberGroup.setGroupInviteStateAccepted();
 	}
 
-	@Transactional
 	@Override
 	public void rejectGroupInvitation(int memberId, int groupId) {
 
 		Member foundMember = getMember(memberId);
 		Group foundGroup = getGroup(groupId);
 
-		MemberGroup memberGroup = memberGroupRepository.findFirstPendingMemberGroupsByGroupId(foundMember.getId(),
-				foundGroup.getId())
-			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
+		MemberGroup memberGroup = getPendingMemberGroup(foundMember, foundGroup);
 
 		memberGroupRepository.delete(memberGroup);
 	}
@@ -200,6 +186,12 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		if (!isGroupOwner(owner, group)) {
 			throw new GroupException(errorCode);
 		}
+	}
+
+	private MemberGroup getPendingMemberGroup(Member foundMember, Group foundGroup) {
+		return memberGroupRepository.findPendingMemberGroup(foundMember.getId(),
+				foundGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
 	}
 
 	private Member getMember(int ownerId) {
