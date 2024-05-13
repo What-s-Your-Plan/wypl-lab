@@ -115,9 +115,9 @@ class NotificationServiceImplTest {
 		given(notificationRepository.findById(notificationId))
 			.willReturn(Optional.of(notification));
 
+		//when
 		notificationService.updateIsActedToTrue(notification.getMemberId(), notificationId);
 
-		//when
 		//then
 		verify(notificationRepository, times(1)).findById(notificationId);
 		assertThat(notification.getIsActed()).isTrue();
