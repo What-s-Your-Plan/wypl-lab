@@ -14,7 +14,5 @@ public enum Color {
 	labelPurple,
 	labelLavender,
 	labelCharcoal,
-	labelBrown,
-	warmGray,
-	coolGray,
+	labelBrown
 }
