@@ -14,8 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Message;
-import com.butter.wypl.notification.data.NotificationTypeCode;
-import com.butter.wypl.notification.data.request.NotificationCreateRequest;
 import com.butter.wypl.notification.data.response.NotificationPageResponse;
 import com.butter.wypl.notification.service.EmitterModifyService;
 import com.butter.wypl.notification.service.NotificationLoadService;
@@ -52,6 +50,7 @@ public class NotificationController {
 		 * 2. Map 에 put
 		 * 3. emitter 가 onCompletion or onTimeout 이면 Map 에서 제거
 		 * */
+		log.info("SSE subscribe MemberID = {}", authMember.getId());
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("text/event-stream;charset=UTF-8"));
 

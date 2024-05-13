@@ -83,7 +83,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 	private Notification createGroupNotification(final NotificationCreateRequest request) {
 		Notification notification = Notification.builder()
 			.memberId(request.memberId())
-			.message(makeMessage(request.typeCode(), null, request.nickName(), null))
+			.message(makeMessage(request.typeCode(), request.groupName(), request.nickName(), null))
 			.isRead(false)
 			.isActed(false)
 			.typeCode(request.typeCode())
