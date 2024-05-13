@@ -144,7 +144,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		 * 2. 그 이후 조회시 no-offset 조회 마지막 행 알림 lastID 이용
 		 * */
 		Page<Notification> result;
-		if (StringUtils.hasText(lastId)) {
+		if (!StringUtils.hasText(lastId)) {
 			result = notificationRepository.findByMemberIdWithPage(memberId, pageRequest);
 		} else {
 			result = notificationRepository.findAllByLastId(memberId, lastId, pageRequest);
