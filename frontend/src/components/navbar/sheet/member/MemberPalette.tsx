@@ -12,6 +12,7 @@ import { BgColors, LabelColors } from '@/assets/styles/colorThemes';
 import check from '@/assets/icons/check.svg';
 
 import * as S from './MemberPalette.styled';
+import { useEffect } from 'react';
 
 function MemberPalette() {
   const { mainColor, setLabelColor } = useMemberStore();
@@ -42,7 +43,9 @@ function MemberPalette() {
             {LabelColors.slice(groupIdx * 7, (groupIdx + 1) * 7).map(
               (value, idx) => (
                 <S.SelectLabelColor>
-                  {mainColor === value && <S.Icon src={check} />}
+                  {mainColor === value && (
+                    <S.Icon src={check} className={'whiteImg'} />
+                  )}
                   <ColorCircle
                     key={idx}
                     onClick={() => changeLabelColor(value)}
