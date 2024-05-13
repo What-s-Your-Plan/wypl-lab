@@ -18,7 +18,7 @@ import lombok.extern.log4j.Log4j2;
 @RequiredArgsConstructor
 public class EmitterServiceImpl implements EmitterModifyService{
 
-	private final static Long EMITTER_TIMEOUT = 30L * 1000 * 60;
+	private final static Long EMITTER_TIMEOUT = 10L * 1000 * 60;
 	private final EmitterRepository emitterRepository;
 
 
