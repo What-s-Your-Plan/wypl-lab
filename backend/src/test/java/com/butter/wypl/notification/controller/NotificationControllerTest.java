@@ -86,7 +86,8 @@ class NotificationControllerTest extends ControllerTest {
 
 		//when
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.get(URI_PATH + "/{lastId}", lastId)
+			RestDocumentationRequestBuilders.get(URI_PATH)
+				.queryParam("lastId", "test1234")
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
@@ -135,6 +136,31 @@ class NotificationControllerTest extends ControllerTest {
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
 
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	public void updateIsActedToTrue() throws Exception {
+		//given
+		willDoNothing()
+			.given(notificationModifyService).updateIsActedToTrue(anyInt(), anyString());
+
+		String notificationId = "test1234";
+		//when
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.patch(URI_PATH + "/action/{notificationId}", notificationId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+		);
+
+		//then
+		actions.andDo(print())
+			.andDo(document("notification/update-action",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지")
 				)
