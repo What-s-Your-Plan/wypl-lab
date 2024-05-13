@@ -33,7 +33,7 @@ function ReviewDetailPage() {
       try {
         await deleteReview(reviewId as string);
         alert('리뷰가 삭제되었습니다.'); // 성공적으로 삭제되었음을 사용자에게 알림
-        navigator('/reviews'); // 삭제 후 리뷰 목록 페이지로 리다이렉트
+        navigator('/review'); // 삭제 후 리뷰 목록 페이지로 리다이렉트
       } catch (error) {
         alert('리뷰 삭제에 실패했습니다.'); // 에러 처리
       }
@@ -63,7 +63,11 @@ function ReviewDetailPage() {
         <Container $width="1200" className="h-[90vh]">
           <div className="flex justify-between">
             <span>
-              <Button $size="none" className="!bg-transparent">
+              <Button
+                $size="none"
+                className="!bg-transparent"
+                onClick={() => navigator(`/review`)}
+              >
                 <img src={ArrowLeft} alt="뒤로가기" />
               </Button>
             </span>

@@ -27,6 +27,7 @@ const WhiteContainer = styled.div<WhiteContainerProps>`
 const containerTheme = {
   width: {
     '300': tw`w-300 ss:max-sm:w-full h-[90vh]`,
+    '400': tw`w-400`,
     '500': tw`w-500`,
     '800': tw`w-800 ml-0 ss:max-sm:w-full ss:max-sm:ml-7 h-[90vh]`,
     '900': tw`w-900`,
@@ -38,6 +39,7 @@ const containerTheme = {
     quarter: tw`h-[10vh]`,
     third: tw`h-[15vh]`,
     half: tw`h-[20vh]`,
+    twoThird: tw`h-[25vh]`,
     one: tw`h-[40vh]`,
     max: tw`h-[85vh]`,
   },

@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Review } from '@/@types/ReviewResponse';
 import getReviewList from '@/services/review/getReviewList';
 
 import { Container, WhiteContainer } from '@/components/common/Container';
 import ReviewThumbnail from '@/components/review/thumbnail/ReviewThumbnail';
+import { Divider } from '@/components/common/Divider';
 
 function ReviewIndexPage() {
+  const navigator = useNavigate();
   const [reviews, setReviews] = useState<Review[]>([]);
   const [lastId, setLastId] = useState<string>('');
   const [viewType, setViewType] = useState<'NEWEST' | 'OLDEST'>('NEWEST');
@@ -21,11 +24,17 @@ function ReviewIndexPage() {
     }
     return reviews.map((review, index) => {
       return (
-        <WhiteContainer key={index} $width="300" $height="half">
+        <WhiteContainer
+          key={index}
+          $width="1300"
+          $height="twoThird"
+          onClick={() => navigator(`/review/${review.review_id}`)}
+        >
           <ReviewThumbnail
             blockType={review.thumbnail_content?.blockType}
             thumbnailContent={review.thumbnail_content}
           />
+          <Divider />
           <div className="font-semibold">{review.title}</div>
         </WhiteContainer>
       );
@@ -49,8 +58,11 @@ function ReviewIndexPage() {
 
   return (
     <div className="container flex items-center ss:max-sm:block h-dvh">
-      <Container $width="1200" className="h-[90%] flex flex-wrap gap-4">
-        {renderReviewIndex()}
+      <Container $width="1200" className="h-[90%]">
+        <div className="text-lg font-semibold">회고록</div>
+        <div className="grid gap-6 grid-cols-3 grid-rows-3 p-6">
+          {renderReviewIndex()}
+        </div>
       </Container>
     </div>
   );
