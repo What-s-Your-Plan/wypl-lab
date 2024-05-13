@@ -6,6 +6,7 @@ import {
   getDateDiff,
   dateToString,
 } from '@/utils/DateUtils';
+// import { labelFilter } from '@/utils/FilterUtils';
 import useDateStore from '@/stores/DateStore';
 import getCalendars from '@/services/calendar/getCalendars';
 import { Chevrons } from '../DatePicker.styled';
@@ -32,6 +33,8 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
   };
 
   const { selectedDate, setSelectedDate } = useDateStore();
+  // const { selectedDate, setSelectedDate, labels } = useDateStore();
+  // const [originSked, setOriginSked] = useState<Array<CalendarsResponse>>([]);
   const [monthSchedules, setMonthSchedules] =
     useState<Array<DateSchedule>>(createInit());
   const [firstDay, setFirstDay] = useState<Date | null>(null);

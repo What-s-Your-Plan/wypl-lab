@@ -103,7 +103,7 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
       setSchedules(newSchedule);
       setHeight(maxIdx);
     }
-  }, []);
+  }, [selectedDate]);
 
   useEffect(() => {
     const newFirst = new Date(
@@ -120,8 +120,8 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
 
   useEffect(() => {
     if (needUpdate && firstDay) {
-      setUpdateFalse();
       updateInfo();
+      setUpdateFalse();
     }
   }, [needUpdate])
 
