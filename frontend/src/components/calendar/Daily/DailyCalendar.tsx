@@ -4,7 +4,7 @@ import useDateStore from '@/stores/DateStore';
 import { dateToString } from '@/utils/DateUtils';
 import * as S from './DailyCalendar.styled';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
-import { splitTTime, getTime } from '@/utils/DateUtils';
+import { getTime } from '@/utils/DateUtils';
 
 type DailyProps = {
   needUpdate: boolean;
