@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
+import { EventSourcePolyfill } from 'event-source-polyfill';
 
 import logo from '@/assets/images/logo.png';
 
@@ -15,6 +15,20 @@ import { BROWSER_PATH } from '@/constants/Path';
 
 import * as S from './Navbar.styled';
 
+interface CustomEventMap {
+  sse: MessageEvent;
+  notification: MessageEvent;
+}
+
+type ExtendedEventSource = EventSource & {
+  addEventListener<K extends keyof CustomEventMap>(
+    type: K,
+    listener: (this: EventSource, ev: CustomEventMap[K]) => any,
+    options?: boolean | AddEventListenerOptions,
+  ): void;
+  lastEventId: string; // lastEventId를 명시적으로 추가
+};
+
 type SheetComponent = {
   sheetType: SheetType;
   component: JSX.Element;
@@ -23,47 +37,57 @@ type SheetComponent = {
 function Navbar() {
   const navigate = useNavigate();
   const { accessToken } = useJsonWebTokensStore();
-  // const [lastEventId, setLastEventId] = useState<string>('');
+  const [lastEventId, setLastEventId] = useState<string>('');
   useEffect(() => {
-    const EventSource = EventSourcePolyfill || NativeEventSource;
-    const source = new EventSource(
-      `${import.meta.env.VITE_BASE_URL}/notification/v1/notifications/subscribe`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          // 'Last-Event-ID': `${lastEventId}`,
+    let source: ExtendedEventSource | null = null;
+
+    const EventSource = EventSourcePolyfill;
+    function connect() {
+      source = new EventSource(
+        `${import.meta.env.VITE_BASE_URL}/notification/v1/notifications/subscribe`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'Last-Event-ID': `${lastEventId}`,
+          },
+          heartbeatTimeout: 1 * 1000 * 60,
         },
-        heartbeatTimeout: 1800000,
-      },
-    );
+      ) as ExtendedEventSource;
 
-    source.onopen = function (event) {
-      console.log(event);
-    };
+      source.onopen = function (event) {
+        console.log(event);
+      };
 
-    source.onmessage = function (event) {
-      console.log(event);
-    };
+      source.onmessage = function (event) {
+        console.log(event);
+      };
 
-    source.onerror = function (event) {
-      console.log(source);
-      console.error(event);
-      source.close();
-    };
+      source.onerror = function (event) {
+        console.log('연결 끊김');
+        console.error(event);
+        if (source) {
+          source.close();
+        }
+      };
 
-    source.addEventListener('sse', function (event) {
-      console.log('최초연결');
-      console.log('SSE Event:', event);
-      // setLastEventId(event.lastEventId);
-    });
+      source.addEventListener('sse', function (event) {
+        console.log('최초연결');
+        console.log('SSE Event:', event);
+        setLastEventId(event.lastEventId);
+      });
 
-    source.addEventListener('notification', function (event) {
-      console.log(event);
-      // setLastEventId(event.lastEventId);//
-    });
+      source.addEventListener('notification', function (event) {
+        console.log(event);
+        setLastEventId(event.lastEventId);
+      });
+    }
+
+    connect();
 
     return () => {
-      source.close();
+      if (source) {
+        source.close();
+      }
     };
   }, []);
 
