@@ -4,7 +4,7 @@
 PROFILE="$1" #"dev"
 PORT="$2"
 NAME="$3" #"wypl-web-dev"
-VOLUME_PATH="$4"
+VOLUME_PATH="$4" #
 TAG="latest"
 
 # Build Docker Image
@@ -14,6 +14,12 @@ docker build -t "$NAME":"$TAG" .
 # date tag
 # DATE_TAG=$(date +%y%m%d%H%M)
 # docker build -t "$REPOSITORY_NAME":"$DATE_TAG" .
+
+# Make Log Directory
+if [ ! -d "/home/ubuntu/$VOLUME_PATH/logs" ]; then
+    echo "Making log directory..."
+    mkdir -p /home/ubuntu/$VOLUME_PATH/logs
+fi
 
 # Deploy
 if [ $(docker ps -aq -f name=$NAME) ]; then
