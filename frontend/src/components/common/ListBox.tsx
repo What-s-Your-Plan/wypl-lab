@@ -55,7 +55,7 @@ function ListBox({
                 <Listbox.Option
                   key={itemIdx}
                   className={({ active }) =>
-                    `relative cursor-pointer select-none px-4 py-2 text-gray-700 ${
+                    ` relative cursor-pointer select-none px-4 py-2 text-gray-700 ${
                       active ? 'bg-main/20' : ''
                     }`
                   }
