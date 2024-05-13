@@ -128,7 +128,7 @@ public class SideTabServiceImpl implements
 		String updateTime = getUpdateTime(cond.city());
 		WeatherWidget weatherWidget = WeatherWidget.builder()
 				.weatherRegion(cond.city())
-				.weatherId(response.getWeatherId())
+				.weatherId(getWeatherId(response.getWeatherId()))
 				.temp(Math.round(response.getTemperature()))
 				.minTemp(Math.round(response.getMinTemperature()))
 				.maxTemp(Math.round(response.getMaxTemperature()))
