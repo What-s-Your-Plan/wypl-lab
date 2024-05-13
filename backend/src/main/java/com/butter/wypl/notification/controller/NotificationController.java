@@ -65,7 +65,7 @@ public class NotificationController {
 	@GetMapping("/{lastId}")
 	public ResponseEntity<Message<NotificationPageResponse>> getNotificationsPage(
 		@Authenticated AuthMember authMember,
-		@PathVariable("lastId") String lastId
+		@PathVariable(name = "lastId", required = false) String lastId
 	) {
 		return ResponseEntity.ok()
 			.body(Message.withBody("알림 조회 성공", notificationLoadService.getNotifications(authMember.getId(), lastId)));
