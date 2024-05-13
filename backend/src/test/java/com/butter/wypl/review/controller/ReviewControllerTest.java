@@ -162,9 +162,8 @@ public class ReviewControllerTest extends ControllerTest {
 
 		// When
 		ResultActions resultActions = mockMvc.perform(
-			RestDocumentationRequestBuilders.delete("/review/v1/reviews")
+			RestDocumentationRequestBuilders.delete("/review/v1/reviews/{reviewId}", 1)
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-				.header("Review_id", 1)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
 
@@ -173,6 +172,9 @@ public class ReviewControllerTest extends ControllerTest {
 			.andDo(document("review/delete",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("reviewId").description("리뷰 id")
+				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
 					fieldWithPath("body.review_id").type(JsonFieldType.NUMBER).description("수정한 리뷰의 엔덱스")

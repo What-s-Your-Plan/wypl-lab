@@ -474,11 +474,10 @@ public class ScheduleControllerTest extends ControllerTest {
 
 		//when
 		ResultActions resultActions = mockMvc.perform(
-			RestDocumentationRequestBuilders.delete("/schedule/v1/schedules")
+			RestDocumentationRequestBuilders.delete("/schedule/v1/schedules/{scheduleId}/{modificationType}", 1,
+					ModificationType.ALL)
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
-				.header("Schedule_id", 1)
-				.header("Modification_type", ModificationType.ALL)
 		);
 
 		//then
@@ -486,6 +485,10 @@ public class ScheduleControllerTest extends ControllerTest {
 			.andDo(document("label/deleteLabel",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("scheduleId").description("일정 id"),
+					parameterWithName("modificationType").description("변환 타입")
+				),
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
 					fieldWithPath("body.schedule_count").type(JsonFieldType.NUMBER).description("삭제한 일정의 개수"),

@@ -128,6 +128,9 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("그룹의 색상"),
 						fieldWithPath("body.schedules[].group.title").optional()
 							.type(JsonFieldType.STRING)
+							.description("그룹의 제목"),
+						fieldWithPath("body.schedules[].group.description").optional()
+							.type(JsonFieldType.STRING)
 							.description("그룹의 제목")
 					)
 				))
@@ -207,7 +210,10 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("그룹의 색상"),
 						fieldWithPath("body.schedules[].group.title").optional()
 							.type(JsonFieldType.STRING)
-							.description("그룹의 제목")
+							.description("그룹의 제목"),
+						fieldWithPath("body.schedules[].group.description").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 설명")
 					)
 				))
 				.andExpect(status().isOk());
@@ -285,7 +291,11 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("그룹의 색상"),
 						fieldWithPath("body.schedules[].group.title").optional()
 							.type(JsonFieldType.STRING)
-							.description("그룹의 제목")
+							.description("그룹의 제목"),
+						fieldWithPath("body.schedules[].group.description").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 설명")
+
 					)
 				))
 				.andExpect(status().isOk());
@@ -359,7 +369,11 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("그룹의 색상"),
 						fieldWithPath("body.schedules[].group.title").optional()
 							.type(JsonFieldType.STRING)
-							.description("그룹의 제목")
+							.description("그룹의 제목"),
+						fieldWithPath("body.schedules[].group.description").optional()
+							.type(JsonFieldType.STRING)
+							.description("그룹의 설명")
+
 					)
 				))
 				.andExpect(status().isOk());
@@ -431,7 +445,8 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("일정의 속한 멤버의 기본 색상"),
 						fieldWithPath("body.group.group_id").type(JsonFieldType.NUMBER).description("그룹의 그룹 id"),
 						fieldWithPath("body.group.title").type(JsonFieldType.STRING).description("그룹의 그룹 이름"),
-						fieldWithPath("body.group.color").type(JsonFieldType.STRING).description("그룹의 그룹 색상")
+						fieldWithPath("body.group.color").type(JsonFieldType.STRING).description("그룹의 그룹 색상"),
+						fieldWithPath("body.group.description").type(JsonFieldType.STRING).description("그룹의 설명")
 					)
 				))
 				.andExpect(status().isOk());
@@ -502,7 +517,8 @@ public class CalendarControllerTest extends ControllerTest {
 							.description("일정의 속한 멤버의 기본 색상"),
 						fieldWithPath("body.group.group_id").type(JsonFieldType.NUMBER).description("그룹의 그룹 id"),
 						fieldWithPath("body.group.title").type(JsonFieldType.STRING).description("그룹의 그룹 이름"),
-						fieldWithPath("body.group.color").type(JsonFieldType.STRING).description("그룹의 그룹 색상")
+						fieldWithPath("body.group.color").type(JsonFieldType.STRING).description("그룹의 그룹 색상"),
+						fieldWithPath("body.group.description").type(JsonFieldType.STRING).description("그룹의 설명")
 					)
 				))
 				.andExpect(status().isOk());

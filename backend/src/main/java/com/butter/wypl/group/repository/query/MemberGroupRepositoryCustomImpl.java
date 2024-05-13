@@ -21,24 +21,24 @@ public class MemberGroupRepositoryCustomImpl implements MemberGroupRepositoryCus
 	@Override
 	public Optional<MemberGroup> findFirstPendingMemberGroupsByGroupId(int memberId, int groupId) {
 		MemberGroup findMemberGroup = query.selectFrom(memberGroup)
-				.join(memberGroup.member, member).fetchJoin()
-				.join(memberGroup.group, group).fetchJoin()
-				.where(group.id.eq(groupId)
-						.and(member.id.eq(memberId))
-						.and(memberGroup.groupInviteState.eq(GroupInviteState.PENDING))
-						.and(member.deletedAt.isNull()))
-				.fetchFirst();
+			.join(memberGroup.member, member).fetchJoin()
+			.join(memberGroup.group, group).fetchJoin()
+			.where(group.id.eq(groupId)
+				.and(member.id.eq(memberId))
+				.and(memberGroup.groupInviteState.eq(GroupInviteState.PENDING))
+				.and(member.deletedAt.isNull()))
+			.fetchFirst();
 		return Optional.ofNullable(findMemberGroup);
 	}
 
 	@Override
 	public List<MemberGroup> findMemberGroupsByGroupId(int groupId) {
 		return query.selectFrom(memberGroup)
-				.join(memberGroup.member, member).fetchJoin()
-				.join(memberGroup.group, group).fetchJoin()
-				.where(group.id.eq(groupId)
-						.and(memberGroup.groupInviteState.eq(GroupInviteState.ACCEPTED))
-						.and(member.deletedAt.isNull()))
-				.fetch();
+			.join(memberGroup.member, member).fetchJoin()
+			.join(memberGroup.group, group).fetchJoin()
+			.where(group.id.eq(groupId)
+				.and(memberGroup.groupInviteState.eq(GroupInviteState.ACCEPTED))
+				.and(member.deletedAt.isNull()))
+			.fetch();
 	}
 }

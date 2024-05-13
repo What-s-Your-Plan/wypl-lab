@@ -12,12 +12,14 @@ public record GroupResponse(
 
 	Color color,
 
-	String title
+	String title,
+
+	String description
 ) {
 
 	public static GroupResponse from(MemberGroup memberGroup) {
 		Group group = memberGroup.getGroup();
 
-		return new GroupResponse(group.getId(), memberGroup.getColor(), group.getName());
+		return new GroupResponse(group.getId(), memberGroup.getColor(), group.getName(), group.getDescription());
 	}
 }

@@ -28,14 +28,21 @@ public class EmitterServiceImpl implements EmitterModifyService{
 		String emitterId = makeSseEmitterId(memberId);
 
 		emitterRepository.save(emitterId, emitter);
-		emitter.onCompletion(() -> emitterRepository.deleteByEmitterId(emitterId));
-		emitter.onTimeout(() -> emitterRepository.deleteByEmitterId(emitterId));
+		emitter.onCompletion(() -> {
+			log.info("연결된 Emitter ID={} 가 완료되었습니다. Emitter를 repository에서 삭제합니다.", emitterId);
+			emitterRepository.deleteByEmitterId(emitterId);
+		});
+		emitter.onTimeout(() -> {
+			log.info("연결된 Emitter ID={} 가 설정한 시간이 지나 Timeout이 발생하였습니다. Emitter를 repository에서 삭제합니다.", emitterId);
+			emitterRepository.deleteByEmitterId(emitterId);
+		});
 
 		String eventId = makeSseEmitterId(memberId);
 		sendEmitter(emitter, eventId, emitterId, "최초 연결");
 
 		// 클라이언트가 미수신한 Event 목록이 존재할 경우 전송 -> Event 유실 예방
 		if (hasLostData(lastEventId)) {
+			log.info("미수신한 SSE 존재, 마지막으로 수신한 Emitter ID={}", lastEventId);
 			sendLostData(lastEventId,memberId,emitterId,emitter);
 		}
 
@@ -59,12 +66,14 @@ public class EmitterServiceImpl implements EmitterModifyService{
 					.name("notification")
 					.data(NotificationResponse.from(notification))
 				);
+				log.info("보낸 알림 Emitter ID={}",eventId);
 			} else {
 				emitter.send(SseEmitter.event()
 					.id(eventId)
 					.name("sse")
 					.data(object)
 				);
+				log.info("최초 연결 Emitter ID={}",eventId);
 			}
 
 		} catch (IOException e) {

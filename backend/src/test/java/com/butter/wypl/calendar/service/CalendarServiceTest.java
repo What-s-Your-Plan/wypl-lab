@@ -65,8 +65,8 @@ public class CalendarServiceTest {
 			Member member = MemberFixture.JWA_SO_YEON.toMember();
 			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
 
-			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
-				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
+			lenient().when(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+				.thenReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 		}
 
 		@Test
