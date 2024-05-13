@@ -15,6 +15,7 @@ function ColorSelectButton({ color, setColor }: ColorSelectProps) {
   };
   return (
     <PopOver
+      panelPosition='top-8'
       button={
         <ColorCircle
           as="button"

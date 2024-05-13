@@ -9,6 +9,7 @@ import LabelButton from '@/components/common/LabelButton';
 import ListBox from '@/components/common/ListBox';
 import Toggle from '@/components/common/Toggle';
 import CreateLabel from '@/components/label/CreateLabel';
+import useDateStore from '@/stores/DateStore';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 import CalendarAddIcon from '@/assets/icons/calendarAdd.svg';
 import ClockIcon from '@/assets/icons/clock.svg';
@@ -18,6 +19,7 @@ import LabelIcon from '@/assets/icons/tag.svg';
 import UsersIcon from '@/assets/icons/users.svg';
 import RepeatIcon from '@/assets/icons/repeat.svg';
 import Plus from '@/assets/icons/plus.svg';
+import getLabelList from '@/services/label/getLabelList';
 
 type ChangeProps = {
   states: Schedule & Repeat;
@@ -216,6 +218,7 @@ function Description({ states, handleChange }: ChangeProps) {
 }
 
 function Label({ states, setStates }: SetProps) {
+  const { labels, setLabels } = useDateStore()
   const [color, setColor] = useState<LabelColorsType>('labelRed');
   const [create, setCreate] = useState<boolean>(false);
   const handleLabel = (value: Label) => {
@@ -236,24 +239,7 @@ function Label({ states, setStates }: SetProps) {
           height="h-[44px]"
           list={[
             null,
-            {
-              label_id: 0,
-              title: 'hihi',
-              color: 'labelRed',
-              member_id: 1,
-            },
-            {
-              label_id: 2,
-              title: '123123',
-              color: 'labelGreen',
-              member_id: 1,
-            },
-            {
-              label_id: 3,
-              title: 'hihi',
-              color: 'labelBlue',
-              member_id: 1,
-            },
+            ...labels
           ]}
           selected={states.label}
           setSelected={handleLabel}
@@ -267,18 +253,20 @@ function Label({ states, setStates }: SetProps) {
             );
           }}
           topList={
-            <div className="px-3">
+            <div className="">
               {create ? (
                 <CreateLabel
                   color={color}
                   setColor={setColor}
-                  handleKeyDown={() => {
+                  handleKeyDown={async() => {
+                    const newLabel = await getLabelList()
+                    setLabels(newLabel)
                     setCreate(false);
                   }}
                 />
               ) : (
                 <div
-                  className="w-full h-9 flex justify-center items-center"
+                  className="w-full h-9 flex justify-center items-center hover:bg-main/20"
                   onClick={() => {
                     setCreate(true);
                   }}
