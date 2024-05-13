@@ -4,6 +4,7 @@
 PROFILE="$1" #"dev"
 PORT="$2"
 NAME="$3" #"wypl-web-dev"
+VOLUME_PATH="$4"
 TAG="latest"
 
 # Build Docker Image
@@ -21,4 +22,4 @@ if [ $(docker ps -aq -f name=$NAME) ]; then
     docker rm $NAME
 fi
 echo "Deploy Spring Boot!!"
-docker run -d --name $NAME -e PROFILE=$PROFILE -p $PORT:8080 -v /home/ubuntu/wypl/logs:/logs $NAME:$TAG
+docker run -d --name $NAME -e PROFILE=$PROFILE -p $PORT:8080 -v /home/ubuntu/$VOLUME_PATH/logs:/logs $NAME:$TAG
