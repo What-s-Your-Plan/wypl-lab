@@ -15,6 +15,8 @@ public record GroupCalendarResponse(
 
 	String title,
 
+	String description,
+
 	Category category,
 
 	@JsonProperty("start_date")
@@ -34,6 +36,7 @@ public record GroupCalendarResponse(
 		return new GroupCalendarResponse(
 			schedule.getScheduleId(),
 			schedule.getTitle(),
+			schedule.getDescription(),
 			schedule.getCategory(),
 			schedule.getStartDate(),
 			schedule.getEndDate(),
