@@ -55,6 +55,7 @@ interface Schedule {
 type CalendarSchedule = {
   schedule_id: number; // 일정의 인덱스
   title: string;
+  description: string;
   category: string;
   start_date: string; //ex) "2024-04-16T10:57:00"
   end_date: string; //ex) "2024-04-16T10:57:00"

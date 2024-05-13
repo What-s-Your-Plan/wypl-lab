@@ -4,6 +4,7 @@ import { PictureContent } from '@/objects/Content';
 import { WhiteContainer } from '@/components/common/Container';
 import Upload from '@/assets/icons/upload.svg';
 import useReviewStore from '@/stores/ReviewStore';
+import postPicture from '@/services/review/postPicture';
 
 type RPictureProps = {
   index: number;
@@ -16,23 +17,16 @@ function RPicture({ index, content }: RPictureProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   //TODO: 이미지 업로드 시 파일 validation 체크 필요
-  const handleImgChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImgChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      let reader = new FileReader();
+      const formData = new FormData();
+      formData.append('image', e.target.files[0]);
 
-      if (e.target.files[0]) {
-        reader.readAsDataURL(e.target.files[0]);
-      }
+      const previewImgUrl = await postPicture(formData);
 
-      reader.onloadend = () => {
-        const previewImgUrl = reader.result;
-
-        if (typeof previewImgUrl === 'string') {
-          const newContent = content;
-          newContent.path = previewImgUrl;
-          setContent(index, newContent);
-        }
-      };
+      const newContent = content;
+      newContent.path = previewImgUrl;
+      setContent(index, newContent);
     }
   };
 
@@ -41,7 +35,7 @@ function RPicture({ index, content }: RPictureProps) {
       <label htmlFor="file">
         <img
           src={content.path === '' ? Upload : content.path}
-          className="w-40 h-40"
+          className="object-fill h-40"
         />
         <input
           type="file"

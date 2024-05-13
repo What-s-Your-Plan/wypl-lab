@@ -59,6 +59,16 @@ function isAllday(start: Date, end: Date): boolean {
   );
 }
 
+function getTime(date: string) {
+  const time = date.split('T')[1].split(':');
+  let hour = time[0];
+  const minute = time[1];
+  const ampm = Number(hour) >= 12 ? 'PM' : 'AM';
+  hour = Number(hour) ? hour : '12'
+
+  return `${ampm} ${hour}:${minute}`;
+}
+
 export {
   isCurrentMonth,
   isSameDay,
@@ -69,4 +79,5 @@ export {
   getDateDiff,
   splitTTime,
   isAllday,
+  getTime,
 };

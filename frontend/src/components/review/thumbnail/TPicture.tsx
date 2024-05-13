@@ -6,8 +6,14 @@ type TPictureProps = {
 
 function TPicture({ thumbnailContent }: TPictureProps) {
   return (
-    <div className="flex justify-center">
-      <img src={thumbnailContent.path} alt="사진" />
+    <div className="h-full">
+      <div className="h-full flex justify-center">
+        <img
+          src={thumbnailContent.path}
+          alt="사진"
+          className="object-contain"
+        />
+      </div>
     </div>
   );
 }

@@ -9,6 +9,8 @@ const CreateDiv = styled.div`
     justify-center
     content-center
     items-center
+    h-9
+    cursor-default
   `}
 `;
 

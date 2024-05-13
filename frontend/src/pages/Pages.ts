@@ -8,6 +8,7 @@ const Group = lazy(() => import('@/pages/Main/Group/GroupPage'));
 const ReviewIndex = lazy(() => import('@/pages/Main/Review/ReviewIndexPage'));
 const ReviewWrite = lazy(() => import('@/pages/Main/Review/ReviewWritePage'));
 const ReviewDetail = lazy(() => import('@/pages/Main/Review/ReviewDetailPage'));
+const ReviewModify = lazy(() => import('@/pages/Main/Review/ReviewModifyPage'));
 const NotFound = lazy(() => import('@/pages/NotFoundPage'));
 
 export {
@@ -19,5 +20,6 @@ export {
   ReviewIndex,
   ReviewWrite,
   ReviewDetail,
+  ReviewModify,
   NotFound,
 };
