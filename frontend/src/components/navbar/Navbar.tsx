@@ -23,7 +23,7 @@ type SheetComponent = {
 function Navbar() {
   const navigate = useNavigate();
   const { accessToken } = useJsonWebTokensStore();
-  const [lastEventId, setLastEventId] = useState<string>('');
+  // const [lastEventId, setLastEventId] = useState<string>('');
   useEffect(() => {
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const source = new EventSource(
@@ -31,7 +31,7 @@ function Navbar() {
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          'Last-Event-ID': `${lastEventId}`,
+          // 'Last-Event-ID': `${lastEventId}`,
         },
         heartbeatTimeout: 1800000,
       },
