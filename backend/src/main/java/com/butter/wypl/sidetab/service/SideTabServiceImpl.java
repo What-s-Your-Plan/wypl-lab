@@ -126,17 +126,18 @@ public class SideTabServiceImpl implements
 		OpenWeatherResponse response = weatherClient.fetchWeather(cond);
 
 		String updateTime = getUpdateTime(cond.city());
-		WeatherWidget weatherWidget = new WeatherWidget(cond.city(),
-				getWeatherId(response.getWeatherId()),
-				Math.round(response.getTemperature()),
-				Math.round(response.getMinTemperature()),
-				Math.round(response.getMaxTemperature()),
-				updateTime,
-				response.getWeatherName(),
-				response.getWeatherDescription(),
-				response.getSunrise(),
-				response.getSunset());
-
+		WeatherWidget weatherWidget = WeatherWidget.builder()
+				.weatherRegion(cond.city())
+				.weatherId(response.getWeatherId())
+				.temp(Math.round(response.getTemperature()))
+				.minTemp(Math.round(response.getMinTemperature()))
+				.maxTemp(Math.round(response.getMaxTemperature()))
+				.updateTime(updateTime)
+				.main(response.getWeatherName())
+				.desc(response.getWeatherDescription())
+				.sunset(response.getSunset())
+				.sunrise(response.getSunrise())
+				.build();
 		return weatherWidgetRepository.save(weatherWidget);
 	}
 
