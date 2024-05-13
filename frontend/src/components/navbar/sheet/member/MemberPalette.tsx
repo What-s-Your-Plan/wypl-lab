@@ -1,21 +1,15 @@
+import ColorCircle from '@/components/common/ColorCircle';
+
+import useLoading from '@/hooks/useLoading';
+import patchMemberLabelColor from '@/services/member/patchMemberLabelColor';
+import useMemberStore from '@/stores/MemberStore';
+
 import {
   UpdateLabelColorResponse,
   UpdateLabelColorRequest,
 } from '@/@types/Member';
-
-import {
-  BgColors,
-  LabelColors,
-  LabelColorsType,
-} from '@/assets/styles/colorThemes';
-
-import ColorCircle from '@/components/common/ColorCircle';
-import Text from '@/components/common/Text';
-
-import useLoading from '@/hooks/useLoading';
-
-import patchMemberLabelColor from '@/services/member/patchMemberLabelColor';
-import useMemberStore from '@/stores/MemberStore';
+import { BgColors, LabelColors } from '@/assets/styles/colorThemes';
+import check from '@/assets/icons/check.svg';
 
 import * as S from './MemberPalette.styled';
 
@@ -42,37 +36,39 @@ function MemberPalette() {
 
   return (
     <S.Container>
-      <S.SelectLabelColorWrapper>
-        <Text content={'선택한 색상'} />
-        <ColorCircle
-          $bgColor={mainColor ? (mainColor as LabelColorsType) : 'labelBrown'}
-        />
-      </S.SelectLabelColorWrapper>
       <S.SelectLabelColorsWrapper>
-        {[...Array(3)].map((_, groupIdx) => (
+        {[...Array(2)].map((_, groupIdx) => (
           <S.SelectLabelColorsBox key={groupIdx}>
-            {LabelColors.slice(groupIdx * 6, (groupIdx + 1) * 6).map(
+            {LabelColors.slice(groupIdx * 7, (groupIdx + 1) * 7).map(
               (value, idx) => (
-                <ColorCircle
-                  key={idx}
-                  onClick={() => changeLabelColor(value)}
-                  $bgColor={value}
-                  $hover={true}
-                  $size={'1.3rem'}
-                  $cursor={'pointer'}
-                />
+                <S.SelectLabelColor>
+                  {mainColor === value && <S.Icon src={check} />}
+                  <ColorCircle
+                    key={idx}
+                    onClick={() => changeLabelColor(value)}
+                    $bgColor={value}
+                    $hover={true}
+                    $cursor={'pointer'}
+                  />
+                </S.SelectLabelColor>
               ),
             )}
           </S.SelectLabelColorsBox>
         ))}
-        <S.SelectLabelColorsBox>
-          {LabelColors.slice(18).map((value, idx) => (
-            <ColorCircle key={idx} $bgColor={value} />
-          ))}
-        </S.SelectLabelColorsBox>
       </S.SelectLabelColorsWrapper>
     </S.Container>
   );
 }
 
 export default MemberPalette;
+
+{
+  /* <ColorCircle
+                  key={idx}
+                  onClick={() => changeLabelColor(value)}
+                  $bgColor={value}
+                  $hover={true}
+                  $size={'1.3rem'}
+                  $cursor={'pointer'}
+                /> */
+}

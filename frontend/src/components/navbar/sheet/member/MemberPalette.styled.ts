@@ -13,10 +13,9 @@ const Container = styled.div`
 
     rounded-[20px]
     p-2
+    border
+    border-slate-300
   `}
-
-  border-color: #00000033;
-  border-width: 1px;
 `;
 
 const SelectLabelColorWrapper = styled.div`
@@ -55,10 +54,25 @@ const SelectLabelColorsBox = styled.div`
     flex-row
     
     justify-around
+    items-center
     w-full
     h-full
     
     mt-1
+  `}
+`;
+
+const SelectLabelColor = styled.div`
+  ${tw`
+    border-2
+    rounded-full
+    border-neutral-900
+  `}
+`;
+
+const Icon = styled.img`
+  ${tw`
+    fixed
   `}
 `;
 
@@ -68,4 +82,6 @@ export {
   LabelColor,
   SelectLabelColorsWrapper,
   SelectLabelColorsBox,
+  SelectLabelColor,
+  Icon,
 };
