@@ -22,7 +22,9 @@ import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
 import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
+import com.butter.wypl.group.data.request.MemberIdRequest;
 import com.butter.wypl.group.data.response.GroupIdResponse;
+import com.butter.wypl.group.data.response.MemberIdResponse;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.exception.GroupErrorCode;
@@ -105,6 +107,17 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		});
 
 		return new GroupIdResponse(group.getId());
+	}
+
+	@Override
+	public MemberIdResponse forceOutGroupMember(int ownerId, int groupId, MemberIdRequest userIdRequest) {
+		Member owner = getMember(ownerId);
+		Group group = getGroup(groupId);
+		validateOwnerPermission(owner, group, HAS_NOT_FORCE_OUT_PERMISSION);
+
+		Member member = getMember(userIdRequest.memberId());
+		memberGroupRepository.deleteByMemberIdAndGroupId(member.getId(), group.getId());
+		return new MemberIdResponse(member.getId());
 	}
 
 	@Transactional

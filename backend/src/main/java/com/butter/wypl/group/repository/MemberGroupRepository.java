@@ -10,7 +10,7 @@ import com.butter.wypl.group.domain.MemberGroupId;
 import com.butter.wypl.group.repository.query.MemberGroupRepositoryCustom;
 
 public interface MemberGroupRepository extends JpaRepository<MemberGroup, MemberGroupId>,
-		MemberGroupRepositoryCustom {
+	MemberGroupRepositoryCustom {
 
 	@Query("SELECT COUNT(mg) FROM MemberGroup mg WHERE mg.member.id = :memberId")
 	int countByMemberId(int memberId);
@@ -32,5 +32,7 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Member
 	*/
 
 	Optional<MemberGroup> findMemberGroupByMemberIdAndGroupId(int memberId, int groupId);
+
+	void deleteByMemberIdAndGroupId(int memberId, int groupId);
 
 }

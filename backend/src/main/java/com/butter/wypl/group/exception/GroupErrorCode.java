@@ -22,7 +22,9 @@ public enum GroupErrorCode implements ErrorCode {
 	NOT_EXIST_PENDING_MEMBER_GROUP(HttpStatus.BAD_REQUEST, "GROUP_009", "그룹 초대 대기 목록에 존재하지 않습니다."),
 	NOT_ACCEPTED_LEAVE_GROUP(HttpStatus.BAD_REQUEST, "GROUP_010", "그룹을 나갈 수 없습니다."),
 	HAS_NOT_INVITE_PERMISSION(HttpStatus.BAD_REQUEST, "GROUP_011", "그룹 초대 권한이 없습니다."),
-	EXISTS_INVALID_MEMBER(HttpStatus.BAD_REQUEST, "GROUP_012", "유효하지 않은 회원이 존재합니다.");
+	EXISTS_INVALID_MEMBER(HttpStatus.BAD_REQUEST, "GROUP_012", "유효하지 않은 회원이 존재합니다."),
+	HAS_NOT_FORCE_OUT_PERMISSION(HttpStatus.BAD_REQUEST, "GROUP_013", "그룹 강퇴 권한이 없습니다."),
+	;
 	private final HttpStatus httpStatus;
 	private final String errorCode;
 	private final String message;
