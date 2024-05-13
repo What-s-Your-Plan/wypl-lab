@@ -3,6 +3,7 @@ package com.butter.wypl.member.repository.query;
 import static com.butter.wypl.member.domain.QMember.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.query.data.MemberSearchCond;

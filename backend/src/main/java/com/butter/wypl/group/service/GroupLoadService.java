@@ -1,12 +1,11 @@
 package com.butter.wypl.group.service;
 
-import com.butter.wypl.group.data.response.GroupDetailResponse;
-import com.butter.wypl.group.data.response.GroupListByMemberIdResponse;
+import com.butter.wypl.group.data.response.FindGroupMembersResponse;
+import com.butter.wypl.group.data.response.FindGroupsResponse;
 
 public interface GroupLoadService {
 
-	GroupDetailResponse getDetailById(int memberId, int groupId);
+	FindGroupMembersResponse getDetailById(int memberId, int groupId);
 
-	GroupListByMemberIdResponse getGroupListByMemberId(int memberId);
-
+	FindGroupsResponse getGroupsByMemberId(int memberId);
 }
