@@ -16,10 +16,12 @@ public record DDayWidgetResponse(
 		@JsonProperty("local_date")
 		LocalDate localDate
 ) {
-	public static DDayWidgetResponse from(final DDayWidget dDay) {
+	public static DDayWidgetResponse of(
+			final DDayWidget dDay,
+			final String dayAsString) {
 		return new DDayWidgetResponse(
 				dDay.getTitle(),
-				dDay.getDDay(),
+				dayAsString,
 				LocalDateUtils.toString(dDay.getValue()),
 				dDay.getValue());
 	}
