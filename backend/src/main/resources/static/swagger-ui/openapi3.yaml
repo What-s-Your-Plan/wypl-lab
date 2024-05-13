@@ -458,6 +458,37 @@ paths:
               examples:
                 group/leave-group:
                   value: "{\r\n  \"message\" : \"그룹을 탈퇴했습니다.\"\r\n}"
+  /group/v1/groups/{groupId}/members/force-out:
+    delete:
+      tags:
+      - group
+      operationId: group/group-member/force-out
+      parameters:
+      - name: groupId
+        in: path
+        description: 그룹 식별자
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json;charset=UTF-8:
+            schema:
+              $ref: '#/components/schemas/group-v1-groups-groupId-members-force-out-674408473'
+            examples:
+              group/group-member/force-out:
+                value: "{\r\n  \"member_id\" : 2\r\n}"
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/group-v1-groups-groupId-members-force-out-100813394'
+              examples:
+                group/group-member/force-out:
+                  value: "{\r\n  \"message\" : \"그룹 멤버 강제 탈퇴에 성공했습니다.\",\r\n  \"body\"\
+                    \ : {\r\n    \"member_id\" : 2\r\n  }\r\n}"
   /group/v1/groups/{groupId}/members/invitation:
     post:
       tags:
@@ -477,7 +508,7 @@ paths:
               $ref: '#/components/schemas/group-v1-groups-groupId-members-invitation1210620785'
             examples:
               group/invite-group-member:
-                value: "{\r\n  \"member_id_list\" : [ 3, 2 ]\r\n}"
+                value: "{\r\n  \"member_id_list\" : [ 2, 3 ]\r\n}"
       responses:
         "201":
           description: "201"
@@ -904,12 +935,13 @@ paths:
               review/create:
                 value: "{\r\n  \"schedule_id\" : 0,\r\n  \"title\" : \"공부하기 싫다\",\r\
                   \n  \"contents\" : [ {\r\n    \"description\" : \"피곤해요\",\r\n  \
-                  \  \"blockType\" : \"emotion\",\r\n    \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
-                  \r\n  }, {\r\n    \"description\" : \"날씨 너무 좋음\",\r\n    \"blockType\"\
-                  \ : \"4f\",\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
-                  \r\n  }, {\r\n    \"facts\" : \"팩트\",\r\n    \"future\" : \"향후 헹\
-                  동\",\r\n    \"finding\" : \"교훈\",\r\n    \"blockType\" : \"4f\"\
-                  ,\r\n    \"feelings\" : \"느낌\"\r\n  } ]\r\n}"
+                  \  \"emoji\" : \"/src/assets/icons/emoji/tired.svg\",\r\n    \"\
+                  blockType\" : \"emotion\"\r\n  }, {\r\n    \"description\" : \"날\
+                  씨 너무 좋음\",\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
+                  ,\r\n    \"blockType\" : \"4f\"\r\n  }, {\r\n    \"future\" : \"\
+                  향후 헹동\",\r\n    \"facts\" : \"팩트\",\r\n    \"feelings\" : \"느낌\"\
+                  ,\r\n    \"blockType\" : \"4f\",\r\n    \"finding\" : \"교훈\"\r\n\
+                  \  } ]\r\n}"
       responses:
         "201":
           description: "201"
@@ -957,12 +989,13 @@ paths:
               review/update:
                 value: "{\r\n  \"schedule_id\" : 0,\r\n  \"title\" : \"공부하기 싫다\",\r\
                   \n  \"contents\" : [ {\r\n    \"description\" : \"피곤해요\",\r\n  \
-                  \  \"blockType\" : \"emotion\",\r\n    \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
-                  \r\n  }, {\r\n    \"description\" : \"날씨 너무 좋음\",\r\n    \"blockType\"\
-                  \ : \"4f\",\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
-                  \r\n  }, {\r\n    \"facts\" : \"팩트\",\r\n    \"future\" : \"향후 헹\
-                  동\",\r\n    \"finding\" : \"교훈\",\r\n    \"blockType\" : \"4f\"\
-                  ,\r\n    \"feelings\" : \"느낌\"\r\n  } ]\r\n}"
+                  \  \"emoji\" : \"/src/assets/icons/emoji/tired.svg\",\r\n    \"\
+                  blockType\" : \"emotion\"\r\n  }, {\r\n    \"description\" : \"날\
+                  씨 너무 좋음\",\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
+                  ,\r\n    \"blockType\" : \"4f\"\r\n  }, {\r\n    \"future\" : \"\
+                  향후 헹동\",\r\n    \"facts\" : \"팩트\",\r\n    \"feelings\" : \"느낌\"\
+                  ,\r\n    \"blockType\" : \"4f\",\r\n    \"finding\" : \"교훈\"\r\n\
+                  \  } ]\r\n}"
       responses:
         "200":
           description: "200"
@@ -1021,17 +1054,16 @@ paths:
                 review/getReviewsByMember:
                   value: "{\r\n  \"message\" : \"리뷰 목록 조회에 성공했습니다.\",\r\n  \"body\"\
                     \ : {\r\n    \"review_count\" : 2,\r\n    \"reviews\" : [ {\r\n\
-                    \      \"review_id\" : 0,\r\n      \"created_at\" : \"2024-05-12T22:44:37.6157943\"\
+                    \      \"review_id\" : 0,\r\n      \"created_at\" : \"2024-05-13T10:05:00.1314668\"\
                     ,\r\n      \"thumbnail_content\" : {\r\n        \"description\"\
-                    \ : \"피곤해요\",\r\n        \"blockType\" : \"emotion\",\r\n    \
-                    \    \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\r\n   \
-                    \   },\r\n      \"title\" : \"공부하기 싫다\"\r\n    }, {\r\n      \"\
-                    review_id\" : 0,\r\n      \"created_at\" : \"2024-05-12T22:44:37.6157943\"\
+                    \ : \"피곤해요\",\r\n        \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
+                    ,\r\n        \"blockType\" : \"emotion\"\r\n      },\r\n     \
+                    \ \"title\" : \"공부하기 싫다\"\r\n    }, {\r\n      \"review_id\" :\
+                    \ 0,\r\n      \"created_at\" : \"2024-05-13T10:05:00.1314668\"\
                     ,\r\n      \"thumbnail_content\" : {\r\n        \"description\"\
-                    \ : \"날씨 너무 좋음\",\r\n        \"blockType\" : \"4f\",\r\n     \
-                    \   \"weather\" : \"/src/assets/icons/weather/sun.svg\"\r\n  \
-                    \    },\r\n      \"title\" : \"오늘도 공부하기 싫다\"\r\n    } ]\r\n  }\r\
-                    \n}"
+                    \ : \"날씨 너무 좋음\",\r\n        \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
+                    ,\r\n        \"blockType\" : \"4f\"\r\n      },\r\n      \"title\"\
+                    \ : \"오늘도 공부하기 싫다\"\r\n    } ]\r\n  }\r\n}"
   /review/v1/reviews/detail/{reviewId}:
     get:
       tags:
@@ -1064,14 +1096,13 @@ paths:
                     \ : [ {\r\n        \"member_id\" : 0,\r\n        \"profile_image\"\
                     \ : null,\r\n        \"nickname\" : \"좌랑둥이\"\r\n      } ]\r\n\
                     \    },\r\n    \"contents\" : [ {\r\n      \"description\" : \"\
-                    피곤해요\",\r\n      \"blockType\" : \"emotion\",\r\n      \"emoji\"\
-                    \ : \"/src/assets/icons/emoji/tired.svg\"\r\n    }, {\r\n    \
-                    \  \"description\" : \"날씨 너무 좋음\",\r\n      \"blockType\" : \"\
-                    4f\",\r\n      \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
-                    \r\n    }, {\r\n      \"facts\" : \"팩트\",\r\n      \"future\"\
-                    \ : \"향후 헹동\",\r\n      \"finding\" : \"교훈\",\r\n      \"blockType\"\
-                    \ : \"4f\",\r\n      \"feelings\" : \"느낌\"\r\n    } ]\r\n  }\r\
-                    \n}"
+                    피곤해요\",\r\n      \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
+                    ,\r\n      \"blockType\" : \"emotion\"\r\n    }, {\r\n      \"\
+                    description\" : \"날씨 너무 좋음\",\r\n      \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
+                    ,\r\n      \"blockType\" : \"4f\"\r\n    }, {\r\n      \"future\"\
+                    \ : \"향후 헹동\",\r\n      \"facts\" : \"팩트\",\r\n      \"feelings\"\
+                    \ : \"느낌\",\r\n      \"blockType\" : \"4f\",\r\n      \"finding\"\
+                    \ : \"교훈\"\r\n    } ]\r\n  }\r\n}"
   /schedule/v1/schedules:
     post:
       tags:
@@ -1302,8 +1333,8 @@ paths:
                 side-tab/find-d-day:
                   value: "{\r\n  \"message\" : \"디데이를 조회했습니다\",\r\n  \"body\" : {\r\
                     \n    \"title\" : \"디데이의 제목\",\r\n    \"d_day\" : \"D-DAY\",\r\
-                    \n    \"date\" : \"2024년 5월 12일\",\r\n    \"local_date\" : \"\
-                    2024-05-12\"\r\n  }\r\n}"
+                    \n    \"date\" : \"2024년 5월 13일\",\r\n    \"local_date\" : \"\
+                    2024-05-13\"\r\n  }\r\n}"
     patch:
       tags:
       - side
@@ -1322,7 +1353,7 @@ paths:
               $ref: '#/components/schemas/side-v1-d-day-d_day_id-529626301'
             examples:
               side-tab/update-d-day:
-                value: "{\r\n  \"title\" : \"디데이의 제목\",\r\n  \"date\" : \"2024-05-12\"\
+                value: "{\r\n  \"title\" : \"디데이의 제목\",\r\n  \"date\" : \"2024-05-13\"\
                   \r\n}"
       responses:
         "200":
@@ -1335,8 +1366,8 @@ paths:
                 side-tab/update-d-day:
                   value: "{\r\n  \"message\" : \"디데이를 수정했습니다\",\r\n  \"body\" : {\r\
                     \n    \"title\" : \"디데이의 제목\",\r\n    \"d_day\" : \"D-DAY\",\r\
-                    \n    \"date\" : \"2024년 5월 12일\",\r\n    \"local_date\" : \"\
-                    2024-05-12\"\r\n  }\r\n}"
+                    \n    \"date\" : \"2024년 5월 13일\",\r\n    \"local_date\" : \"\
+                    2024-05-13\"\r\n  }\r\n}"
   /side/v1/goals/{goal_id}:
     get:
       tags:
@@ -1675,22 +1706,6 @@ components:
         message:
           type: string
           description: 응답 메시지
-    review-v1-reviews-1465059799:
-      required:
-      - message
-      type: object
-      properties:
-        body:
-          required:
-          - review_id
-          type: object
-          properties:
-            review_id:
-              type: number
-              description: 생성한 리뷰의 엔덱스
-        message:
-          type: string
-          description: 응답 메세지
     member-v1-members-nickname-139893332:
       required:
       - message
@@ -1707,6 +1722,22 @@ components:
         message:
           type: string
           description: 응답 메시지
+    review-v1-reviews-1465059799:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - review_id
+          type: object
+          properties:
+            review_id:
+              type: number
+              description: 생성한 리뷰의 엔덱스
+        message:
+          type: string
+          description: 응답 메세지
     schedule-v1-schedules-scheduleId1157950338:
       required:
       - message
@@ -2575,6 +2606,14 @@ components:
         message:
           type: string
           description: 응답 메세지
+    group-v1-groups-groupId-members-force-out-674408473:
+      required:
+      - member_id
+      type: object
+      properties:
+        member_id:
+          type: number
+          description: 강제 퇴장할 그룹 멤버 식별자
     schedule-v1-schedules1075432245:
       required:
       - message
@@ -3054,6 +3093,22 @@ components:
         start_date:
           type: string
           description: 일정 시작 날짜와 시간
+    group-v1-groups-groupId-members-force-out-100813394:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - member_id
+          type: object
+          properties:
+            member_id:
+              type: number
+              description: 강제 퇴장된 그룹 멤버 식별자
+        message:
+          type: string
+          description: 응답 메시지
     group-v1-groups-groupId-members-invitation1210620785:
       required:
       - member_id_list
