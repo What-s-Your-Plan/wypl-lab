@@ -23,7 +23,7 @@ type SheetComponent = {
 function Navbar() {
   const navigate = useNavigate();
   const { accessToken } = useJsonWebTokensStore();
-
+  const [lastEventId, setLastEventId] = useState<string>('');
   useEffect(() => {
     const EventSource = EventSourcePolyfill || NativeEventSource;
     const source = new EventSource(
@@ -31,8 +31,9 @@ function Navbar() {
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
+          'Last-Event-ID': `${lastEventId}`,
         },
-        heartbeatTimeout: 120000,
+        heartbeatTimeout: 1800000,
       },
     );
 
@@ -41,13 +42,25 @@ function Navbar() {
     };
 
     source.onmessage = function (event) {
-      console.log(event.data);
+      console.log(event);
     };
 
     source.onerror = function (event) {
+      console.log(source);
       console.error(event);
       source.close();
     };
+
+    source.addEventListener('sse', function (event) {
+      console.log('최초연결');
+      console.log('SSE Event:', event);
+      setLastEventId(event.lastEventId);
+    });
+
+    source.addEventListener('notification', function (event) {
+      console.log(event);
+      setLastEventId(event.lastEventId);
+    });
 
     return () => {
       source.close();

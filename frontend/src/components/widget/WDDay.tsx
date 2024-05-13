@@ -28,6 +28,14 @@ function WDDay() {
     }
   };
 
+  const getFontSize = (dday: string) => {
+    if (!dday) return 'text-3xl'; // 기본 폰트 사이즈
+    const length = dday.length;
+    if (length < 4) return 'text-3xl';
+    if (length < 6) return 'text-xl';
+    return 'text-base'; // 긴 텍스트에 대한 작은 폰트 사이즈
+  };
+
   useEffect(() => {
     const fetchUserDDay = async () => {
       if (memberId) {
@@ -89,7 +97,9 @@ function WDDay() {
             placeholder="디데이 날짜 선택"
           />
         ) : (
-          <div className="text-3xl text-center mt-1 font-semibold">
+          <div
+            className={`${getFontSize(userDDay)} text-center mt-1 font-semibold`}
+          >
             {userDDay}
           </div>
         )}
