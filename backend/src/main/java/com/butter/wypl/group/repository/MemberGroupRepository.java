@@ -1,5 +1,6 @@
 package com.butter.wypl.group.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -35,4 +36,6 @@ public interface MemberGroupRepository extends JpaRepository<MemberGroup, Member
 
 	void deleteByMemberIdAndGroupId(int memberId, int groupId);
 
+	//member에 해당하는 member_group
+	List<MemberGroup> findMemberGroupsByMemberId(int memberId);
 }
