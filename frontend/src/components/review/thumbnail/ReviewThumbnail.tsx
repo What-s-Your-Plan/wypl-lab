@@ -47,7 +47,7 @@ const ReviewThumbnail = ({
         return <div></div>;
     }
   };
-  return <div>{renderThumbnail()}</div>;
+  return <div className="h-[80%]">{renderThumbnail()}</div>;
 };
 
 export default ReviewThumbnail;

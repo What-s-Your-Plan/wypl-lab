@@ -76,43 +76,20 @@ function ReviewWrite({ index, content }: ReviewWriteProps) {
   };
 
   const renderBlock = () => {
+    console.log(content);
     switch (content.blockType) {
       case 'text':
-        if (content instanceof TextContent) {
-          return <RText index={index} content={content} />;
-        } else {
-          throw new Error('Content for text block is missing text property');
-        }
+        return <RText index={index} content={content as TextContent} />;
       case 'picture':
-        if (content instanceof PictureContent) {
-          return <RPicture index={index} content={content} />;
-        } else {
-          throw new Error('Content for text block is missing text property');
-        }
+        return <RPicture index={index} content={content as PictureContent} />;
       case 'emotion':
-        if (content instanceof EmotionContent) {
-          return <REmotion index={index} content={content} />;
-        } else {
-          throw new Error('Content for text block is missing text property');
-        }
+        return <REmotion index={index} content={content as EmotionContent} />;
       case 'weather':
-        if (content instanceof WeatherContent) {
-          return <RWeather index={index} content={content} />;
-        } else {
-          throw new Error('Content for text block is missing text property');
-        }
+        return <RWeather index={index} content={content as WeatherContent} />;
       case 'kpt':
-        if (content instanceof KPTContent) {
-          return <RKpt index={index} content={content} />;
-        } else {
-          throw new Error('Content for text block is missing text property');
-        }
+        return <RKpt index={index} content={content as KPTContent} />;
       case '4f':
-        if (content instanceof FourFContent) {
-          return <R4F index={index} content={content} />;
-        } else {
-          throw new Error('Content for text block is missing text property');
-        }
+        return <R4F index={index} content={content as FourFContent} />;
       default:
         return null;
     }

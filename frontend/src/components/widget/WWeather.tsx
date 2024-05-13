@@ -10,7 +10,7 @@ import Moon from '@/assets/icons/weather/moon.svg';
 import Sun from '@/assets/icons/weather/sun.svg';
 import Tornado from '@/assets/icons/weather/tornado.svg';
 import MistSun from '@/assets/icons/weather/mistSun.svg';
-// import MistMoon from '@/assets/icons/weather/mistMoon.svg';
+import MistMoon from '@/assets/icons/weather/mistMoon.svg';
 
 function WWeather() {
   const [weather, setWeather] = useState<Weather>();
@@ -18,7 +18,8 @@ function WWeather() {
   const renderWeatherIcon = (weather_id: number) => {
     switch (weather_id) {
       case 1:
-        return Sun;
+        if (weather?.is_sunrise) return Sun;
+        return Moon;
       case 2:
         return Cloud;
       case 3:
@@ -28,7 +29,8 @@ function WWeather() {
       case 5:
         return CloudSnow;
       case 6:
-        return MistSun;
+        if (weather?.is_sunrise) return MistSun;
+        return MistMoon;
       case 7:
         return CloudAngledRain;
       case 8:
@@ -36,6 +38,14 @@ function WWeather() {
       default:
         return Moon;
     }
+  };
+
+  const getFontSize = (desc: string) => {
+    if (!desc) return 'text-base'; // 기본 폰트 사이즈
+    const length = desc.length;
+    if (length < 4) return 'text-base';
+    if (length < 6) return 'text-sm';
+    return 'text-xs'; // 긴 텍스트에 대한 작은 폰트 사이즈
   };
 
   useEffect(() => {
@@ -62,7 +72,9 @@ function WWeather() {
                 alt="날씨"
                 className="-mt-2"
               />
-              <span className="-mt-2">{weather?.desc}</span>
+              <span className={`-mt-2 ${getFontSize(weather?.desc)}`}>
+                {weather?.desc}
+              </span>
             </div>
             <div className="flex flex-col justify-center items-center">
               <div>
