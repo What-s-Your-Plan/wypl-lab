@@ -32,7 +32,7 @@ function Navbar() {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
-        heartbeatTimeout: 30000,
+        heartbeatTimeout: 120000,
       },
     );
 

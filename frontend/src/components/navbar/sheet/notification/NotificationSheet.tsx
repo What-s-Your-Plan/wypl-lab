@@ -7,6 +7,8 @@ import ReviewNotification from './ReviewNotification';
 import { Divider } from '@/components/common/Divider';
 import * as S from './NotificationSheet.styled';
 import Bell from '@/assets/icons/bell.svg';
+import Button from '@/components/common/Button';
+import deleteNotification from '@/services/notification/deleteNotification';
 
 function NotificationSheet() {
   const [notifications, setNotifications] =
@@ -42,11 +44,23 @@ function NotificationSheet() {
   }, []);
   return (
     <S.Container>
-      <div className="h-[10%]">
+      <div className="h-[10%] flex items-center">
         <img src={Bell} alt="알림" />
       </div>
-      <div className="scrollBar w-full h-5/6 flex flex-col">
+      <div className="scrollBar w-full h-4/5 flex flex-col">
         {renderNotification()}
+      </div>
+      <div className="flex justify-end mt-1">
+        <Button
+          $size="lg"
+          $width="120px"
+          $border="black"
+          onClick={() => {
+            deleteNotification();
+          }}
+        >
+          알림함 비우기
+        </Button>
       </div>
     </S.Container>
   );

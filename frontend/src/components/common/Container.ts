@@ -34,6 +34,8 @@ const containerTheme = {
     '1100': tw`w-1100 ss:max-sm:w-full h-[90vh]`,
     '1200': tw`w-1200`,
     '1300': tw`w-1300`,
+    left: tw`w-[24%] ss:max-sm:w-full h-[90vh]`,
+    right: tw`w-[70%] ml-0 ss:max-sm:w-full ss:max-sm:ml-7 h-[90vh]`,
   },
   height: {
     quarter: tw`h-[10vh]`,

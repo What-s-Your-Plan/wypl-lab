@@ -1,10 +1,19 @@
 // import { axiosWithAccessToken } from '../axios';
 
 const getNotification = async (lastId: string | undefined) => {
-  // const response = await axiosWithAccessToken.get(
-  //   `/notification/v1/notifications/${lastId}`,
-  // );
-  // console.log(response);
+  // if (lastId !== undefined) {
+  //   const response = await axiosWithAccessToken.get(
+  //     `/notification/v1/notifications/${lastId}`,
+  //   );
+  //   console.log(response);
+  //   console.log(lastId);
+  // } else {
+  //   const response = await axiosWithAccessToken.get(
+  //     `/notification/v1/notifications`,
+  //   );
+  //   console.log(response);
+  //   console.log(lastId);
+  // }
   console.log(lastId);
 
   return {

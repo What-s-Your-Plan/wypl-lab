@@ -37,7 +37,7 @@ function ReviewIndexPage() {
             thumbnailContent={review.thumbnail_content}
           />
           <Divider />
-          <div className="font-semibold">{review.title}</div>
+          <div className="font-semibold mt-2">{review.title}</div>
         </WhiteContainer>
       );
     });
@@ -60,10 +60,10 @@ function ReviewIndexPage() {
   }, []);
 
   return (
-    <div className="container flex items-center ss:max-sm:block h-dvh">
+    <div className="container flex items-center   justify-center ss:max-sm:block h-dvh">
       <Container $width="1200" className="h-[90%]">
         <div className="text-lg font-semibold">회고록</div>
-        <div className="scrollBar flex gap-6 flex-wrap px-4 mt-4 h-[95%]">
+        <div className="scrollBar flex gap-6 gap-x-10 flex-wrap justify-start content-start pl-10 px-4 mt-4 h-[95%]">
           {renderReviewIndex()}
           {hasNext && (
             <div className="flex justify-center text-center">
