@@ -15,9 +15,24 @@ import ChevronLeft from '@/assets/icons/chevronLeft.svg';
 
 export type DateSchedule = Array<Array<CalendarSchedule>>;
 
-function MonthlyCalender() {
+type MonthlyProps = {
+  needUpdate: boolean;
+  setUpdateFalse: () => void;
+};
+
+function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
+  const createInit = () : Array<DateSchedule> => {
+    const init = [];
+
+    for (let i = 0; i < 42; i++) {
+      init.push([[], [], []]);
+    }
+
+    return init;
+  };
+
   const { selectedDate, setSelectedDate } = useDateStore();
-  const [monthSchedules, setMonthSchedules] = useState<Array<DateSchedule>>([]); // 임시
+  const [monthSchedules, setMonthSchedules] = useState<Array<DateSchedule>>(createInit());
   const [firstDay, setFirstDay] = useState<Date | null>(null);
 
   const handleNextMonth = () => {
@@ -46,20 +61,9 @@ function MonthlyCalender() {
     setSelectedDate(prevMonth);
   };
 
-  const createInit = () => {
-    const init = [];
-
-    for (let i = 0; i < 42; i++) {
-      init.push([[], [], []]);
-    }
-
-    return init;
-  };
-
   const updateInfo = useCallback(async (first: Date) => {
-    const response = await getCalendars('MONTH', {
-      date: dateToString(selectedDate),
-    });
+    const response = await getCalendars('MONTH', dateToString(selectedDate));
+    console.log(response)
     const init: Array<DateSchedule> = createInit();
 
     if (response) {
@@ -95,8 +99,15 @@ function MonthlyCalender() {
       setFirstDay(newFirst);
 
       updateInfo(newFirst);
+      setUpdateFalse();
     }
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (needUpdate && firstDay) {
+      updateInfo(firstDay);
+    }
+  }, [needUpdate]);
 
   const renderMonthly = () => {
     const calendar: Array<JSX.Element> = [];

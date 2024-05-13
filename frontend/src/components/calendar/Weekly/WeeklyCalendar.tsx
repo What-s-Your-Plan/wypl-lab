@@ -27,7 +27,12 @@ export type LongSchedule = {
   period: number;
 };
 
-function WeeklyCalendar() {
+type WeeklyProps = {
+  needUpdate: boolean;
+  setUpdateFalse: () => void;
+}
+
+function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
   const { selectedDate, setSelectedDate } = useDateStore();
   const [firstDay, setFirstDay] = useState<Date | null>(null);
   const [height, setHeight] = useState<number>(0);
@@ -55,9 +60,7 @@ function WeeklyCalendar() {
   };
 
   const updateInfo = useCallback(async () => {
-    const response = await getCalendars('WEEK', {
-      date: dateToString(selectedDate),
-    });
+    const response = await getCalendars('WEEK', dateToString(selectedDate));
 
     if (response) {
       const bitArray = [0, 0, 0, 0, 0, 0, 0];
@@ -114,6 +117,13 @@ function WeeklyCalendar() {
       updateInfo();
     }
   }, [selectedDate]);
+
+  useEffect(() => {
+    if (needUpdate && firstDay) {
+      setUpdateFalse();
+      updateInfo();
+    }
+  }, [needUpdate])
 
   const renderHeader = () => {
     if (firstDay) {
@@ -182,7 +192,6 @@ function WeeklyCalendar() {
 
               {/* Horizontal lines */}
               <WeeklyHorizontal />
-
 
               {/* Schedules */}
               <WeeklySchedules schedules={schedules} />
