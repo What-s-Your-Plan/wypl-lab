@@ -403,7 +403,7 @@ class MemberControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.multipart("/member/v1/members/profile-iamge")
+				RestDocumentationRequestBuilders.multipart("/member/v1/members/profile-image")
 						.file(PNG_IMAGE.getMockMultipartFile())
 						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 		);
