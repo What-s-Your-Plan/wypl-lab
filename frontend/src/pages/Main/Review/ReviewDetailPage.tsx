@@ -84,8 +84,13 @@ function ReviewDetailPage() {
                   }
                   panel={
                     <div className="flex flex-col gap-0.5 w-16 px-3 py-2 bg-default-white/95 rounded-lg shadow-lg">
-                      <div onClick={handleModify}>수정</div>
-                      <div onClick={hanldeDelete} className="text-label-red">
+                      <div onClick={handleModify} className="cursor-pointer">
+                        수정
+                      </div>
+                      <div
+                        onClick={hanldeDelete}
+                        className="text-label-red cursor-pointer"
+                      >
                         삭제
                       </div>
                     </div>
