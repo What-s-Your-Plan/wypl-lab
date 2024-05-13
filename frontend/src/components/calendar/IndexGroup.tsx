@@ -38,8 +38,7 @@ function IndexGroup({ calendarType, setCType }: IndexGroupProps) {
       <IndexButton
         $isActive={calendarType === 'DAY'}
         onClick={() => {
-          // setCType('DAY');
-          alert('준비 중');
+          setCType('DAY');
         }}
       >
         Day

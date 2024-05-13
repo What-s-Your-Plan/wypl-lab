@@ -11,6 +11,7 @@ import initialSchedule from '@/constants/ScheduleFormInit';
 import { dateToString } from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
 import useMemberStore from '@/stores/MemberStore';
+import DailyCalendar from './Daily/DailyCalendar';
 
 function CalendarContent() {
   const { selectedDate } = useDateStore();
@@ -49,10 +50,19 @@ function CalendarContent() {
           />
         );
       case 'WEEK':
-        return <WeeklyCalendar
-        needUpdate={needUpdate}
-        setUpdateFalse={setUpdateFalse}
-        />;
+        return (
+          <WeeklyCalendar
+            needUpdate={needUpdate}
+            setUpdateFalse={setUpdateFalse}
+          />
+        );
+      case 'DAY':
+        return (
+          <DailyCalendar
+            needUpdate={needUpdate}
+            setUpdateFalse={setUpdateFalse}
+          />
+        );
       default:
         null;
     }
