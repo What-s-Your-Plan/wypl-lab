@@ -1,10 +1,19 @@
+import { useNavigate } from 'react-router-dom';
+
+import deleteJsonWebTokens from '@/services/auth/logout';
 import issueTokens from '@/services/auth/signIn';
+
 import useMemberStore from '@/stores/MemberStore';
 import useJsonWebTokensStore from '@/stores/TokenStore';
 
+import { BROWSER_PATH } from '@/constants/Path';
+
 export default function useJsonWebTokens() {
-  const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
-  const { setId } = useMemberStore();
+  const { setAccessToken, setRefreshToken, resetTokens } =
+    useJsonWebTokensStore();
+  const { setId, resetMember } = useMemberStore();
+
+  const navigate = useNavigate();
 
   const requestIssueTokens = async (
     params: IssueTokenParams,
@@ -19,5 +28,13 @@ export default function useJsonWebTokens() {
     );
   };
 
-  return { requestIssueTokens };
+  const requestDeleteTokens = async () => {
+    await deleteJsonWebTokens().finally(() => {
+      resetTokens();
+      resetMember();
+      navigate(BROWSER_PATH.LANDING);
+    });
+  };
+
+  return { requestIssueTokens, requestDeleteTokens };
 }

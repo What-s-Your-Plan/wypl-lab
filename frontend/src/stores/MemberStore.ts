@@ -16,6 +16,7 @@ type MemberState = {
   setNickname: (newNickname: string) => void;
   setMainColor: (newMainColor: string) => void;
   setProfile: (profile: FindMemberProfileResponse) => void;
+  resetMember: () => void;
 };
 
 const useMemberStore = create<MemberState>()(
@@ -57,6 +58,15 @@ const useMemberStore = create<MemberState>()(
             profile.profile_image_url,
           ),
           mainColor: profile.main_color,
+        }));
+      },
+      resetMember: () => {
+        set(() => ({
+          memberId: undefined,
+          profileImage: defaultImage,
+          email: undefined,
+          nickname: undefined,
+          mainColor: undefined,
         }));
       },
     }),
