@@ -9,6 +9,8 @@ import NavEventBar from '@/components/navbar/NavEventBar/NavEventBar';
 import NotificationSheet from '@/components/navbar/sheet/notification/NotificationSheet';
 import Sheet from '@/components/navbar/sheet/Sheet';
 
+import useMemberProfile from '@/hooks/api/useMemberProfile';
+import useMemberStore from '@/stores/MemberStore';
 import useJsonWebTokensStore from '@/stores/TokenStore';
 
 import { BROWSER_PATH } from '@/constants/Path';
@@ -23,6 +25,8 @@ type SheetComponent = {
 function Navbar() {
   const navigate = useNavigate();
   const { accessToken } = useJsonWebTokensStore();
+  const { memberId } = useMemberStore();
+  const { requestMemberProfile } = useMemberProfile();
 
   useEffect(() => {
     const EventSource = EventSourcePolyfill || NativeEventSource;
@@ -79,6 +83,7 @@ function Navbar() {
 
   useEffect(() => {
     resetSheet();
+    requestMemberProfile(memberId!);
   }, [window.location.href]);
 
   return (

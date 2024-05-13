@@ -12,10 +12,9 @@ import { BgColors, LabelColors } from '@/assets/styles/colorThemes';
 import check from '@/assets/icons/check.svg';
 
 import * as S from './MemberPalette.styled';
-import { useEffect } from 'react';
 
 function MemberPalette() {
-  const { mainColor, setLabelColor } = useMemberStore();
+  const { mainColor, setMainColor: setLabelColor } = useMemberStore();
   const { isLoading, startLoading, endLoading } = useLoading();
 
   const changeLabelColor = async (color: BgColors) => {

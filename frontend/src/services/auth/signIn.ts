@@ -8,7 +8,7 @@ const issueTokens = (params: IssueTokenParams, provider: string) => {
       BaseResponse<IssueTokenResponse>
     >(API_PATH.AUTH.ISSUE_TOKENS + `/${provider}`, {}, { params })
     .then((res) => {
-      return res.data.body;
+      return res.data.body!;
     });
 };
 
