@@ -87,8 +87,8 @@ function Modal({
                         $bgColor="labelBrown"
                         $textColor="white"
                         $hover={true}
-                        onClick={() => {
-                          confirm.handleConfirm();
+                        onClick={async () => {
+                          await confirm.handleConfirm();
                           handleClose();
                         }}
                       >
