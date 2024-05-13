@@ -53,7 +53,7 @@ public enum ScheduleFixture {
 	LABEL_GROUP_SCHEDUEL(
 		"알고르즘 스터디",
 		"하루에 한문제씩 풀기",
-		LocalDateTime.of(2024, 04, 27, 11, 0),
+		LocalDateTime.of(2024, 04, 26, 11, 0),
 		LocalDateTime.of(2024, 04, 27, 12, 0),
 		LabelFixture.STUDY_LABEL.toLabel(),
 		null,
@@ -89,7 +89,7 @@ public enum ScheduleFixture {
 	REPEAT_GROUP_SCHEDULE(
 		"알고르즘 스터디",
 		"하루에 한문제씩 풀기",
-		LocalDateTime.of(2024, 04, 27, 11, 0),
+		LocalDateTime.of(2024, 04, 26, 11, 0),
 		LocalDateTime.of(2024, 04, 27, 12, 0),
 		null,
 		RepetitionFixture.YEARLY_REPETITION.toRepetition(),

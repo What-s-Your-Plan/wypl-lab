@@ -110,14 +110,17 @@ public class MemberScheduleRepositoryTest {
 	@DisplayName("라벨의 일정 조회")
 	void getCalendarSchedulesWithLabel() {
 		// Given
+		Schedule schedule3 = scheduleRepository.save(
+			ScheduleFixture.LABEL_GROUP_SCHEDUEL.toScheduleWithLabel(3, label));
+
 		MemberSchedule memberSchedule = MemberSchedule.builder()
 			.schedule(schedule1)
 			.member(member1)
 			.build();
 
 		MemberSchedule memberSchedule2 = MemberSchedule.builder()
-			.schedule(schedule1)
-			.member(member2)
+			.schedule(schedule3)
+			.member(member1)
 			.build();
 
 		memberScheduleRepository.saveAll(
@@ -127,14 +130,13 @@ public class MemberScheduleRepositoryTest {
 		// When
 		List<Schedule> schedules = memberScheduleRepository.getCalendarSchedulesWithLabel(
 			member1.getId(),
-			LocalDateTime.of(2024, 4, 25, 0, 0),
 			LocalDateTime.of(2024, 4, 27, 0, 0),
+			LocalDateTime.of(2024, 4, 27, 23, 59),
 			label.getLabelId()
 		);
 
 		// Then
-		assertThat(schedules.size()).isEqualTo(1);
-		assertThat(schedules.get(0)).isEqualTo(schedule1);
+		assertThat(schedules.size()).isEqualTo(2);
 	}
 
 	@Test
