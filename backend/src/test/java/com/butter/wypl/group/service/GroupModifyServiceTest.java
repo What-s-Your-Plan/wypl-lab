@@ -25,6 +25,7 @@ import com.butter.wypl.global.annotation.MockServiceTest;
 import com.butter.wypl.global.common.Color;
 import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.exception.GroupErrorCode;
@@ -34,6 +35,7 @@ import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.member.repository.MemberRepository;
+import com.butter.wypl.notification.service.GroupNotificationService;
 
 @MockServiceTest
 class GroupModifyServiceTest {
@@ -49,6 +51,9 @@ class GroupModifyServiceTest {
 
 	@Mock
 	private MemberGroupRepository memberGroupRepository;
+
+	@Mock
+	private GroupNotificationService groupNotificationService;
 
 	@Nested
 	@DisplayName("그룹 생성 테스트")
@@ -148,6 +153,7 @@ class GroupModifyServiceTest {
 	}
 
 	@Nested
+	@DisplayName("그룹 삭제 테스트")
 	class deleteGroupTest {
 
 		@Test
@@ -179,5 +185,65 @@ class GroupModifyServiceTest {
 				() -> memberGroups.forEach(mg -> assertThat(mg.isDeleted()).isTrue())
 			);
 		}
+	}
+
+	@Nested
+	@DisplayName("그룹 초대 테스트")
+	class inviteGroupMember {
+
+		private final Member owner = HAN_JI_WON.toMemberWithId(1);
+		private final Member member1 = KIM_JEONG_UK.toMemberWithId(2);
+		private final Member member2 = LEE_JI_WON.toMemberWithId(3);
+
+		private final Group group = GROUP_STUDY.toGroup(owner);
+
+		@Test
+		@DisplayName("그룹 멤버 초대 성공")
+		void whenSuccess() {
+
+			/* Given */
+			GroupMemberInviteRequest inviteRequest = new GroupMemberInviteRequest(
+				Set.of(member1.getId(), member2.getId()));
+
+			given(memberRepository.findById(anyInt()))
+				.willReturn(Optional.of(owner));
+
+			given(groupRepository.findById(anyInt()))
+				.willReturn(Optional.of(group));
+
+			List<Member> memberIdList = List.of(member1, member2);
+			given(memberRepository.findAllById(anySet())).willReturn(memberIdList);
+
+			groupNotificationService.createGroupNotification(anyInt(), anyString(), anyString(), anyInt());
+
+			/* When, Then */
+			assertThatCode(() -> {
+				groupModifyService.inviteGroupMember(owner.getId(), group.getId(), inviteRequest);
+			}).doesNotThrowAnyException();
+
+		}
+
+		@Test
+		@DisplayName("그룹 멤버 초대 실패: 그룹 소유자가 아닌 경우")
+		void whenFailOfHasNotInvitePermission() {
+
+			/* Given */
+			GroupMemberInviteRequest inviteRequest = new GroupMemberInviteRequest(
+				Set.of(member2.getId()));
+
+			given(memberRepository.findById(member1.getId()))
+				.willReturn(Optional.of(member1));
+
+			given(groupRepository.findById(anyInt()))
+				.willReturn(Optional.of(group));
+
+			/* When, Then */
+			assertThatThrownBy(() -> {
+				groupModifyService.inviteGroupMember(member1.getId(), group.getId(), inviteRequest);
+			}).isInstanceOf(GroupException.class)
+				.hasMessageContaining(HAS_NOT_INVITE_PERMISSION.getMessage());
+
+		}
+
 	}
 }

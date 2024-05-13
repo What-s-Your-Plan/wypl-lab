@@ -33,6 +33,7 @@ import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
+import com.butter.wypl.notification.service.GroupNotificationService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,6 +45,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	private final GroupRepository groupRepository;
 	private final MemberRepository memberRepository;
 	private final MemberGroupRepository memberGroupRepository;
+	private final GroupNotificationService groupNotificationService;
 
 	@Transactional
 	@Override
@@ -93,17 +95,20 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 		Member owner = getMember(ownerId);
 		Group group = getGroup(groupId);
-		Set<Integer> memberIdList = inviteRequest.memberIdList();
+		Set<Integer> memberIds = inviteRequest.memberIdList();
 
 		validateOwnerPermission(owner, group, HAS_NOT_INVITE_PERMISSION);
-		validateMaxMemberCount(memberIdList);
+		validateMaxMemberCount(memberIds);
 
-		List<Member> members = memberRepository.findAllById(memberIdList);
-		validateAllMembersExist(members, memberIdList);
+		List<Member> members = memberRepository.findAllById(memberIds);
+		validateAllMembersExist(members, memberIds);
 
 		saveAllMemberGroup(members, group);
 		members.forEach(member -> {
 			/* 그룹 초대 알림 전송 */
+			groupNotificationService.createGroupNotification(
+				member.getId(), owner.getNickname(), group.getName(), group.getId()
+			);
 		});
 
 		return new GroupIdResponse(group.getId());
