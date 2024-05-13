@@ -18,4 +18,5 @@ type WYPLNotificationResponse = {
   notification: WYPLNotification[];
   last_id: string;
   has_next: boolean;
+  page_size: number;
 };
