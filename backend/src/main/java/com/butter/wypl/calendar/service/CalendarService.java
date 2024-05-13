@@ -43,7 +43,7 @@ import lombok.RequiredArgsConstructor;
 public class CalendarService {
 
 	private final MemberScheduleRepository memberScheduleRepository;
-	
+
 	private final LabelRepository labelRepository;
 
 	private final ScheduleRepository scheduleRepository;
@@ -89,7 +89,9 @@ public class CalendarService {
 		return CalendarListResponse.from(
 			schedules.stream().map(
 				schedule -> CalendarResponse.of(schedule,
-					MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId, schedule.getScheduleId()))
+					(schedule.getGroupId() == null) ? null :
+						MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId,
+							schedule.getScheduleId()))
 			).toList()
 		);
 	}
