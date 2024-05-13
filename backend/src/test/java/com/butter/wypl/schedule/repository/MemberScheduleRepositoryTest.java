@@ -40,7 +40,7 @@ public class MemberScheduleRepositoryTest {
 
 	@Autowired
 	public MemberScheduleRepositoryTest(MemberScheduleRepository memberScheduleRepository,
-			MemberRepository memberRepository, ScheduleRepository scheduleRepository, LabelRepository labelRepository) {
+		MemberRepository memberRepository, ScheduleRepository scheduleRepository, LabelRepository labelRepository) {
 		this.memberScheduleRepository = memberScheduleRepository;
 		this.memberRepository = memberRepository;
 		this.scheduleRepository = scheduleRepository;
@@ -63,9 +63,9 @@ public class MemberScheduleRepositoryTest {
 	void create() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-				.schedule(schedule1)
-				.member(member1)
-				.build();
+			.schedule(schedule1)
+			.member(member1)
+			.build();
 
 		// When
 		MemberSchedule savedMemberSchedule = memberScheduleRepository.save(memberSchedule);
@@ -81,24 +81,24 @@ public class MemberScheduleRepositoryTest {
 	void getCalendarSchedules() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-				.schedule(schedule1)
-				.member(member1)
-				.build();
+			.schedule(schedule1)
+			.member(member1)
+			.build();
 
 		MemberSchedule memberSchedule2 = MemberSchedule.builder()
-				.schedule(schedule2)
-				.member(member1)
-				.build();
+			.schedule(schedule2)
+			.member(member1)
+			.build();
 
 		memberScheduleRepository.saveAll(
-				List.of(memberSchedule, memberSchedule2)
+			List.of(memberSchedule, memberSchedule2)
 		);
 
 		// When
 		List<Schedule> schedules = memberScheduleRepository.getCalendarSchedules(
-				member1.getId(),
-				LocalDateTime.of(2024, 4, 25, 0, 0),
-				LocalDateTime.of(2024, 4, 27, 0, 0)
+			member1.getId(),
+			LocalDateTime.of(2024, 4, 27, 0, 0),
+			LocalDateTime.of(2024, 4, 27, 23, 59)
 		);
 
 		// Then
@@ -111,25 +111,25 @@ public class MemberScheduleRepositoryTest {
 	void getCalendarSchedulesWithLabel() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-				.schedule(schedule1)
-				.member(member1)
-				.build();
+			.schedule(schedule1)
+			.member(member1)
+			.build();
 
 		MemberSchedule memberSchedule2 = MemberSchedule.builder()
-				.schedule(schedule1)
-				.member(member2)
-				.build();
+			.schedule(schedule1)
+			.member(member2)
+			.build();
 
 		memberScheduleRepository.saveAll(
-				List.of(memberSchedule, memberSchedule2)
+			List.of(memberSchedule, memberSchedule2)
 		);
 
 		// When
 		List<Schedule> schedules = memberScheduleRepository.getCalendarSchedulesWithLabel(
-				member1.getId(),
-				LocalDateTime.of(2024, 4, 25, 0, 0),
-				LocalDateTime.of(2024, 4, 27, 0, 0),
-				label.getLabelId()
+			member1.getId(),
+			LocalDateTime.of(2024, 4, 25, 0, 0),
+			LocalDateTime.of(2024, 4, 27, 0, 0),
+			label.getLabelId()
 		);
 
 		// Then
@@ -142,14 +142,14 @@ public class MemberScheduleRepositoryTest {
 	void getMembersBySchedule() {
 		// Given
 		MemberSchedule memberSchedule1 = MemberSchedule.builder()
-				.member(member1)
-				.schedule(schedule1)
-				.build();
+			.member(member1)
+			.schedule(schedule1)
+			.build();
 
 		MemberSchedule memberSchedule2 = MemberSchedule.builder()
-				.member(member2)
-				.schedule(schedule1)
-				.build();
+			.member(member2)
+			.schedule(schedule1)
+			.build();
 
 		memberScheduleRepository.saveAll(List.of(memberSchedule1, memberSchedule2));
 

@@ -19,7 +19,11 @@ public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, 
 	List<MemberSchedule> findAllBySchedule(Schedule schedule);
 
 	//해당 기간 내에 존재하는 모든 일정
-	@Query("select s from MemberSchedule ms join ms.schedule s where ms.member.id = :member_id and s.startDate between :first_date and :last_date")
+	@Query("select s "
+		+ "from MemberSchedule ms join ms.schedule s "
+		+ "where ms.member.id = :member_id "
+		+ "and (s.startDate between :first_date and :last_date "
+		+ "or s.endDate between :first_date and :last_date)")
 	List<Schedule> getCalendarSchedules(
 		@Param("member_id") int memberId,
 		@Param("first_date") LocalDateTime firstDate,
@@ -29,7 +33,9 @@ public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, 
 	//해당 기간 + 라벨에 해당하는 모든 일정
 	@Query("select s "
 		+ "from MemberSchedule ms join ms.schedule s "
-		+ "where ms.member.id = :member_id and s.startDate between :first_date and :last_date and s.label.labelId = :label_id")
+		+ "where ms.member.id = :member_id "
+		+ "and (s.startDate between :first_date and :last_date or s.endDate between :first_date and :last_date) "
+		+ "and s.label.labelId = :label_id")
 	List<Schedule> getCalendarSchedulesWithLabel(
 		@Param("member_id") int memberId,
 		@Param("first_date") LocalDateTime firstDate,

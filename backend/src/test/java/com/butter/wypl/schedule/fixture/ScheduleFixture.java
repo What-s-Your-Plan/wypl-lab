@@ -18,7 +18,7 @@ public enum ScheduleFixture {
 		"테니스 가기",
 		"장소 : 신촌 테니스",
 		LocalDateTime.of(2024, 04, 26, 11, 0),
-		LocalDateTime.of(2024, 04, 26, 13, 0),
+		LocalDateTime.of(2024, 04, 27, 13, 0),
 		null,
 		null,
 		Category.MEMBER,
@@ -29,7 +29,7 @@ public enum ScheduleFixture {
 	LABEL_PERSONAL_SCHEDULE(
 		"테니스 가기",
 		"장소 : 신촌 테니스",
-		LocalDateTime.of(2024, 04, 26, 11, 0),
+		LocalDateTime.of(2024, 04, 27, 11, 0),
 		LocalDateTime.of(2024, 04, 28, 13, 0),
 		LabelFixture.STUDY_LABEL.toLabel(),
 		null,
