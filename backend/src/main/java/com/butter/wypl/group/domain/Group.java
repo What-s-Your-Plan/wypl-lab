@@ -26,7 +26,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "group_tbl")
+@Table(name = "groups")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Group extends BaseEntity {
 
@@ -59,10 +59,10 @@ public class Group extends BaseEntity {
 		validateName(name);
 		validateDescription(description);
 		return Group.builder()
-				.name(name)
-				.description(description)
-				.owner(owner)
-				.build();
+			.name(name)
+			.description(description)
+			.owner(owner)
+			.build();
 	}
 
 	public static void validateName(String name) {
