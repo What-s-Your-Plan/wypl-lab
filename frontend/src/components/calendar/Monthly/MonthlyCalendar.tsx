@@ -63,10 +63,11 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
 
   const updateInfo = useCallback(async (first: Date) => {
     const response = await getCalendars('MONTH', dateToString(selectedDate));
-    console.log(response)
     const init: Array<DateSchedule> = createInit();
+    console.log(selectedDate)
 
     if (response) {
+      console.log('update')
       for (const res of response.schedules) {
         const idx = getDateDiff(first, res.start_date);
         const period = getDateDiff(res.start_date, res.end_date);
@@ -84,9 +85,9 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
         }
       }
     }
-
+    console.log(init)
     setMonthSchedules(init);
-  }, []);
+  }, [selectedDate]);
 
   useEffect(() => {
     const newFirst = new Date(
@@ -101,10 +102,11 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
       updateInfo(newFirst);
       setUpdateFalse();
     }
-  }, [selectedDate]);
+  }, [updateInfo]);
 
   useEffect(() => {
     if (needUpdate && firstDay) {
+      console.log('need update')
       updateInfo(firstDay);
     }
   }, [needUpdate]);

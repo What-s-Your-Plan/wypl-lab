@@ -28,24 +28,32 @@ async function postSchedule(schedule: Schedule & Repeat) {
 
   const startDate = new Date(schedule.startDate);
   const endDate = new Date(schedule.endDate);
+  console.log(startDate)
+  console.log(endDate)
   if (schedule.isAllday === true) {
     startDate.setHours(0);
     startDate.setMinutes(0);
     endDate.setHours(23);
     endDate.setMinutes(59);
   } else if (schedule.isAllday === false) {
-    let startHour = schedule.startHour === 12 ? 0 : schedule.startHour;
+    let startHour = schedule.startHour === 12 ? 0 : Number(schedule.startHour);
     let startMinute = schedule.startMinute;
-    let endHour = schedule.endHour === 12 ? 0 : schedule.endHour;
+    let endHour = schedule.endHour === 12 ? 0 : Number(schedule.endHour);
     let endMinute = schedule.endMinute;
 
-    schedule.startAMPM === 'PM' ? startHour + 12 : null;
-    schedule.endAMPM === 'PM' ? endHour + 12 : null;
+    schedule.startAMPM === 'PM' ? startHour += 12 : null;
+    schedule.endAMPM === 'PM' ? endHour += 12 : null;
+
+    console.log(startHour)
+    console.log(endHour)
 
     startDate.setHours(startHour);
     startDate.setMinutes(startMinute);
     endDate.setHours(endHour);
     endDate.setMinutes(endMinute);
+
+    console.log(startDate)
+    console.log(endDate)
   }
 
   body.start_date = dateTimeToString(startDate);
@@ -78,7 +86,9 @@ async function postSchedule(schedule: Schedule & Repeat) {
       body.repetition.repetition_end_date = schedule.endRDate;
     }
   }
-  console.log(body);
+  console.log(schedule)
+  console.log(body)
+
   try {
     const response = await axiosWithAccessToken.post(
       '/schedule/v1/schedules',

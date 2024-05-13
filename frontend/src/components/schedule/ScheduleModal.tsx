@@ -20,9 +20,9 @@ function ScheduleModal({
     Schedule & Repeat
   >(init, postSchedule);
 
-  const handleConfirmClick = () => {
+  const handleConfirmClick = async () => {
+    await handleSubmit();
     handleConfirm();
-    handleSubmit();
   };
 
   return (

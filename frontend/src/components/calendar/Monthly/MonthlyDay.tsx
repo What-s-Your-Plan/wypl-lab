@@ -3,6 +3,7 @@ import { LabelColorsType } from '@/assets/styles/colorThemes';
 import { DateSchedule } from './MonthlyCalendar';
 import { isSameDay, stringToDate, getDateDiff } from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
+import useMemberStore from '@/stores/MemberStore';
 
 type MDayProps = {
   date: Date;
@@ -12,6 +13,7 @@ type MDayProps = {
 
 function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
   const { selectedDate } = useDateStore();
+  const { mainColor } = useMemberStore();
 
   const renderSchedule = () => {
     return schedules.map((schedule, idx) => {
@@ -25,7 +27,8 @@ function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
               7 - date.getDay(),
               getDateDiff(date, end) + 1,
             );
-            const color = schedule[0].label?.color || schedule[0].group?.color || 'labelBrown'
+            const color =
+              schedule[0].label?.color || schedule[0].group?.color || mainColor;
 
             return (
               <S.ScheduleSpan

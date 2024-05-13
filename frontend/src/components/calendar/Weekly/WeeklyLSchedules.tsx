@@ -1,6 +1,7 @@
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 import { LongSchedule } from './WeeklyCalendar';
 import * as S from './WeeklyCalendar.styled';
+import useMemberStore from '@/stores/MemberStore';
 
 type LSchedulesProps = {
   lSchedules: Array<LongSchedule>;
@@ -8,10 +9,14 @@ type LSchedulesProps = {
 
 function WeeklyLSchedules({ lSchedules }: LSchedulesProps) {
   const gridRow = Math.max(2, lSchedules.length);
+  const { mainColor } = useMemberStore();
 
   const renderSchedules = () => {
     return lSchedules.map((schedule, index) => {
-      const bgColor = schedule.schedule.label?.color || schedule.schedule.group?.color || 'labelBrown'
+      const bgColor =
+        schedule.schedule.label?.color ||
+        schedule.schedule.group?.color ||
+        mainColor;
 
       return (
         <S.LScheduleSpan

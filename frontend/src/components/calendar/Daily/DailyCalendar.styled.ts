@@ -4,10 +4,6 @@ import { BgTheme, LabelColorsType } from '@/assets/styles/colorThemes';
 
 const VerticalLine = styled.span`
   ${tw`
-    // absolute 
-    // left-5 
-    // top-5 
-    // -ml-px 
     border-t
     border-b
     h-10
@@ -29,8 +25,7 @@ const LabelDiv = styled.div<{ $bgColor: LabelColorsType }>`
     rounded-xl
     w-8
   `}
-  ${(props) =>
-    props.$bgColor ? BgTheme[props.$bgColor] : BgTheme['labelBrown']}
+  ${(props) => BgTheme[props.$bgColor]}
 `;
 
 const ScheduleContents = styled.div`
