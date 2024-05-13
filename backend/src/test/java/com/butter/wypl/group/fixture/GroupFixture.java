@@ -1,5 +1,6 @@
 package com.butter.wypl.group.fixture;
 
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.member.domain.Member;
 
@@ -8,19 +9,19 @@ import lombok.Getter;
 @Getter
 public enum GroupFixture {
 
-	GROUP_STUDY("study group", "신나는 스터디 모임"),
-	GROUP_WORK("work group", "일하기 위한 모임");
+	GROUP_STUDY("study group", Color.labelBrown),
+	GROUP_WORK("work group", Color.labelNavy);
 
 	private final String name;
-	private final String description;
+	private final Color color;
 	private Member owner;
 
-	GroupFixture(String name, String description) {
+	GroupFixture(String name, Color color) {
 		this.name = name;
-		this.description = description;
+		this.color = color;
 	}
 
 	public Group toGroup(Member owner) {
-		return Group.of(name, description, owner);
+		return Group.of(name, color, owner);
 	}
 }
