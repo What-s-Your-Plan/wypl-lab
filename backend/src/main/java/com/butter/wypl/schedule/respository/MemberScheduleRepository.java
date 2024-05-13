@@ -23,7 +23,9 @@ public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, 
 		+ "from MemberSchedule ms join ms.schedule s "
 		+ "where ms.member.id = :member_id "
 		+ "and (:first_date between s.startDate and s.endDate "
-		+ "or :last_date between s.startDate and s.endDate) "
+		+ "or :last_date between s.startDate and s.endDate "
+		+ "or s.startDate between :first_date and :last_date "
+		+ "or s.endDate between :first_date and :last_date) "
 		+ "order by s.startDate")
 	List<Schedule> getCalendarSchedules(
 		@Param("member_id") int memberId,
@@ -36,7 +38,9 @@ public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, 
 		+ "from MemberSchedule ms join ms.schedule s "
 		+ "where ms.member.id = :member_id "
 		+ "and (:first_date between s.startDate and s.endDate "
-		+ "or :last_date between s.startDate and s.endDate) "
+		+ "or :last_date between s.startDate and s.endDate "
+		+ "or s.startDate between :first_date and :last_date "
+		+ "or s.endDate between :first_date and :last_date) "
 		+ "and s.label.labelId = :label_id "
 		+ "order by s.startDate")
 	List<Schedule> getCalendarSchedulesWithLabel(
