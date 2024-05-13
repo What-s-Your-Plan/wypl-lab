@@ -11,7 +11,7 @@ const ScheduleSpan = styled.span<{
   $top: number;
   $width: number;
 }>`
-  ${tw`flex p-1 rounded absolute left-0 justify-center items-center z-[5] text-xs h-4 text-default-white`}
+  ${tw`flex border-x border-b p-1 rounded absolute left-0 justify-center items-center z-[5] text-xs h-4 text-default-white`}
   ${(props) => BgTheme[props.$color]}
   ${(props) => `top: ${props.$top}rem;`}
   ${(props) => `width: ${props.$width}00%;`}

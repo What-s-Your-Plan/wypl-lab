@@ -1,12 +1,9 @@
-function labelFilter(schedules: CalendarSchedule[], labels: LabelResponse[]) {
+function labelFilter(schedules: CalendarSchedule[], labels: number[]) {
   if (labels.length === 0) {
     return schedules;
   }
-  const labelIds: Array<number | undefined> = labels.map((label) => {
-    return label.label_id;
-  });
   return schedules.filter((schedule) => {
-    return labelIds.includes(schedule.label?.label_id);
+    return labels.includes(schedule.label?.label_id as number);
   });
 }
 

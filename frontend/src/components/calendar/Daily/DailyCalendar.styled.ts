@@ -8,7 +8,7 @@ const VerticalLine = styled.span`
     border-b
     h-10
     w-1 
-    bg-main
+    bg-default-coolgray
   `}
 `;
 
