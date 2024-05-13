@@ -19,6 +19,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -31,9 +32,11 @@ import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
 import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
+import com.butter.wypl.group.data.request.MemberIdRequest;
 import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.data.response.GroupListByMemberIdResponse;
+import com.butter.wypl.group.data.response.MemberIdResponse;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.repository.GroupRepository;
@@ -380,6 +383,49 @@ class GroupControllerTest extends ControllerTest {
 				)
 			))
 			.andExpect(status().isCreated());
+	}
+
+	@Test
+	@DisplayName("그룹 회원 강제 퇴장")
+	void forceOutGroupMemberTest() throws Exception {
+		/* Given */
+		int groupId = 1;
+		Member member = KIM_JEONG_UK.toMemberWithId(2);
+		MemberIdRequest memberIdRequest = new MemberIdRequest(member.getId());
+		MemberIdResponse memberIdResponse = new MemberIdResponse(member.getId());
+
+		BDDMockito.given(groupModifyService.forceOutGroupMember(
+				anyInt(), anyInt(), any(MemberIdRequest.class)))
+			.willReturn(memberIdResponse);
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}/members/force-out", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(memberIdRequest))
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/group-member/force-out",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				requestFields(
+					fieldWithPath("member_id").type(JsonFieldType.NUMBER)
+						.description("강제 퇴장할 그룹 멤버 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.member_id").type(JsonFieldType.NUMBER)
+						.description("강제 퇴장된 그룹 멤버 식별자")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 
 	@Test

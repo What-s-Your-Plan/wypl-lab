@@ -17,9 +17,11 @@ import com.butter.wypl.global.common.Message;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
 import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
+import com.butter.wypl.group.data.request.MemberIdRequest;
 import com.butter.wypl.group.data.response.GroupDetailResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.data.response.GroupListByMemberIdResponse;
+import com.butter.wypl.group.data.response.MemberIdResponse;
 import com.butter.wypl.group.service.GroupLoadService;
 import com.butter.wypl.group.service.GroupModifyService;
 
@@ -74,6 +76,14 @@ public class GroupController {
 		@RequestBody GroupMemberInviteRequest inviteRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(Message.withBody("그룹 멤버 초대에 성공했습니다.",
 			groupModifyService.inviteGroupMember(authMember.getId(), groupId, inviteRequest)));
+	}
+
+	@DeleteMapping("/v1/groups/{groupId}/members/force-out")
+	public ResponseEntity<Message<MemberIdResponse>> forceOutGroupMember(@Authenticated AuthMember authMember,
+		@PathVariable int groupId,
+		@RequestBody MemberIdRequest memberIdRequest) {
+		return ResponseEntity.ok(Message.withBody("그룹 멤버 강제 탈퇴에 성공했습니다.",
+			groupModifyService.forceOutGroupMember(authMember.getId(), groupId, memberIdRequest)));
 	}
 
 	@PatchMapping("/v1/groups/{groupId}/members/invitation")
