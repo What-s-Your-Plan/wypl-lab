@@ -6,7 +6,9 @@ import java.util.Optional;
 import com.butter.wypl.group.domain.MemberGroup;
 
 public interface MemberGroupRepositoryCustom {
-	List<MemberGroup> findMemberGroupsByGroupId(int groupId);
+	List<MemberGroup> findAllMemberGroups(int groupId);
 
-	Optional<MemberGroup> findFirstPendingMemberGroupsByGroupId(int memberId, int groupId);
+	List<MemberGroup> findAcceptedMemberGroups(int groupId);
+
+	Optional<MemberGroup> findPendingMemberGroup(int memberId, int groupId);
 }
