@@ -101,6 +101,7 @@ public class CalendarControllerTest extends ControllerTest {
 						fieldWithPath("body.schedule_count").type(JsonFieldType.NUMBER).description("일정 개수"),
 						fieldWithPath("body.schedules[].schedule_id").type(JsonFieldType.NUMBER).description("일정 인덱스"),
 						fieldWithPath("body.schedules[].title").type(JsonFieldType.STRING).description("일정 제목"),
+						fieldWithPath("body.schedules[].description").type(JsonFieldType.STRING).description("일정 설명"),
 						fieldWithPath("body.schedules[].category").type(JsonFieldType.STRING).description("일정 종류"),
 						fieldWithPath("body.schedules[].start_date").type(JsonFieldType.STRING)
 							.description("일정 시작 날짜, 시간"),
@@ -183,6 +184,7 @@ public class CalendarControllerTest extends ControllerTest {
 						fieldWithPath("body.schedule_count").type(JsonFieldType.NUMBER).description("일정 개수"),
 						fieldWithPath("body.schedules[].schedule_id").type(JsonFieldType.NUMBER).description("일정 인덱스"),
 						fieldWithPath("body.schedules[].title").type(JsonFieldType.STRING).description("일정 제목"),
+						fieldWithPath("body.schedules[].description").type(JsonFieldType.STRING).description("일정 설명"),
 						fieldWithPath("body.schedules[].category").type(JsonFieldType.STRING).description("일정 종류"),
 						fieldWithPath("body.schedules[].start_date").type(JsonFieldType.STRING)
 							.description("일정 시작 날짜, 시간"),
@@ -264,6 +266,7 @@ public class CalendarControllerTest extends ControllerTest {
 						fieldWithPath("body.schedule_count").type(JsonFieldType.NUMBER).description("일정 개수"),
 						fieldWithPath("body.schedules[].schedule_id").type(JsonFieldType.NUMBER).description("일정 인덱스"),
 						fieldWithPath("body.schedules[].title").type(JsonFieldType.STRING).description("일정 제목"),
+						fieldWithPath("body.schedules[].description").type(JsonFieldType.STRING).description("일정 설명"),
 						fieldWithPath("body.schedules[].category").type(JsonFieldType.STRING).description("일정 종류"),
 						fieldWithPath("body.schedules[].start_date").type(JsonFieldType.STRING)
 							.description("일정 시작 날짜, 시간"),
@@ -342,6 +345,7 @@ public class CalendarControllerTest extends ControllerTest {
 						fieldWithPath("body.schedule_count").type(JsonFieldType.NUMBER).description("일정 개수"),
 						fieldWithPath("body.schedules[].schedule_id").type(JsonFieldType.NUMBER).description("일정 인덱스"),
 						fieldWithPath("body.schedules[].title").type(JsonFieldType.STRING).description("일정 제목"),
+						fieldWithPath("body.schedules[].description").type(JsonFieldType.STRING).description("일정 설명"),
 						fieldWithPath("body.schedules[].category").type(JsonFieldType.STRING).description("일정 종류"),
 						fieldWithPath("body.schedules[].start_date").type(JsonFieldType.STRING)
 							.description("일정 시작 날짜, 시간"),
@@ -430,6 +434,7 @@ public class CalendarControllerTest extends ControllerTest {
 						fieldWithPath("body.schedule_count").type(JsonFieldType.NUMBER).description("일정 개수"),
 						fieldWithPath("body.schedules[].schedule_id").type(JsonFieldType.NUMBER).description("일정 인덱스"),
 						fieldWithPath("body.schedules[].title").type(JsonFieldType.STRING).description("일정 제목"),
+						fieldWithPath("body.schedules[].description").type(JsonFieldType.STRING).description("일정 설명"),
 						fieldWithPath("body.schedules[].category").type(JsonFieldType.STRING).description("일정 종류"),
 						fieldWithPath("body.schedules[].start_date").type(JsonFieldType.STRING)
 							.description("일정 시작 날짜, 시간"),
@@ -502,6 +507,7 @@ public class CalendarControllerTest extends ControllerTest {
 						fieldWithPath("body.schedule_count").type(JsonFieldType.NUMBER).description("일정 개수"),
 						fieldWithPath("body.schedules[].schedule_id").type(JsonFieldType.NUMBER).description("일정 인덱스"),
 						fieldWithPath("body.schedules[].title").type(JsonFieldType.STRING).description("일정 제목"),
+						fieldWithPath("body.schedules[].description").type(JsonFieldType.STRING).description("일정 설명"),
 						fieldWithPath("body.schedules[].category").type(JsonFieldType.STRING).description("일정 종류"),
 						fieldWithPath("body.schedules[].start_date").type(JsonFieldType.STRING)
 							.description("일정 시작 날짜, 시간"),
