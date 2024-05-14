@@ -16,4 +16,5 @@ spring:
         - default
         - local
         - dev
-        - prod
+        - prod1
+        - prod2
