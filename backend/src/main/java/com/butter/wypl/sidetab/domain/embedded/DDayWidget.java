@@ -19,6 +19,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class DDayWidget {
+	private static final LocalDate START_DATE = LocalDate.of(1970, 1, 1);
+	private static final LocalDate END_DATE = LocalDate.of(2199, 12, 31);
+
 	@Column(name = "title", length = 20)
 	private String title;
 
@@ -38,6 +41,7 @@ public class DDayWidget {
 			final LocalDate value
 	) {
 		validateTitle(title);
+		validateDate(value);
 		return new DDayWidget(title, value);
 	}
 
@@ -47,6 +51,12 @@ public class DDayWidget {
 		}
 		if (newTitle.length() > 20) {
 			throw new MemberException(MemberErrorCode.TOO_LONG_CONTENT);
+		}
+	}
+
+	private static void validateDate(final LocalDate localDate) {
+		if (localDate.isBefore(START_DATE) || localDate.isAfter(END_DATE)) {
+			throw new MemberException(MemberErrorCode.INVALID_DATE);
 		}
 	}
 
