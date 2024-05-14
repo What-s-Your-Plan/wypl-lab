@@ -7,10 +7,12 @@ import { Divider } from '../common/Divider';
 import Button from '../common/Button';
 import InvitedGroupInfo from './InvitedGroupInfo';
 import GroupInfo from './GroupInfo';
+import { Disclosure } from '@headlessui/react';
 
 import Envelope from '@/assets/icons/envelope.svg';
 import Users from '@/assets/icons/users.svg';
 import Plus from '@/assets/icons/plus.svg';
+import ChevronDown from '@/assets/icons/chevronDown.svg';
 
 function GroupList() {
   const [groupList, setGroupList] = useState<Group[]>([]);
@@ -42,7 +44,20 @@ function GroupList() {
     const response = await getMemberGroupList();
     setGroupList(response.groups);
     setInvitedGroupList(response.invited_groups);
-
+    setGroupList([
+      {
+        group_id: 1,
+        name: 'A602',
+        group_color: 'labelRed',
+        is_owner: true,
+      },
+      {
+        group_id: 2,
+        name: 'A602',
+        group_color: 'labelRed',
+        is_owner: true,
+      },
+    ]);
     setInvitedGroupList([
       {
         group_id: 1,
@@ -64,13 +79,26 @@ function GroupList() {
   }, []);
   return (
     <Container $width="left" className="flex flex-col gap-4">
-      <div>
-        <div className="flex gap-2">
-          <img src={Envelope} alt="초대" className="w-4" />
-          초대받은 그룹
-        </div>
-        {renderInvitedGroupList()}
-      </div>
+      <Disclosure>
+        {({ open }) => (
+          <>
+            <Disclosure.Button className="w-full flex justify-between items-center cursor-default">
+              <div className="flex gap-2 cursor-pointer">
+                <img src={Envelope} alt="초대" className="w-4" />
+                초대받은 그룹 (+{invitedGroupList.length})
+              </div>
+              <Button className="!bg-transparent" $size="none">
+                <img
+                  src={ChevronDown}
+                  alt="펼치기"
+                  className={open ? 'rotate-180 transform w-5' : 'w-5'}
+                />
+              </Button>
+            </Disclosure.Button>
+            <Disclosure.Panel>{renderInvitedGroupList()}</Disclosure.Panel>
+          </>
+        )}
+      </Disclosure>
       <Divider />
       <div className="scrollBar flex flex-col gap-2 h-[70%]">
         <div className="flex justify-between">
@@ -83,7 +111,7 @@ function GroupList() {
             $size="none"
             onClick={handleGroupCreate}
           >
-            <img src={Plus} alt="그룹 생성" className="w-4" />
+            <img src={Plus} alt="그룹 생성" className="w-5 cursor-pointer" />
           </Button>
         </div>
         {renderGroupList()}

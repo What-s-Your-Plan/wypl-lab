@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-
 import { Divider } from '../common/Divider';
 import ColorCircle from '../common/ColorCircle';
+
+import styled from 'styled-components';
 import { BgColors } from '@/assets/styles/colorThemes';
 import Check from '@/assets/icons/check.svg';
 import X from '@/assets/icons/x.svg';
@@ -11,7 +11,6 @@ type InvitedGroupInfoProps = {
 };
 
 function InvitedGroupInfo({ group }: InvitedGroupInfoProps) {
-  const navigator = useNavigate();
   const handleAccept = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     console.log('Open Settings');
@@ -22,24 +21,35 @@ function InvitedGroupInfo({ group }: InvitedGroupInfoProps) {
     console.log('Reject ');
   };
   return (
-    <div onClick={() => navigator(`/group/${group.group_id}`)}>
-      <div>
-        <div className="pt-2 pb-4 w-full border-none">
-          <div className="flex justify-between items-center">
-            <div className="flex gap-4">
-              <ColorCircle $bgColor={group.group_color as BgColors} />
-              {group.name}
-            </div>
-            <div className="flex gap-4">
-              <img src={Check} alt="펼치기" onClick={handleAccept} />
-              <img src={X} alt="설정" onClick={handleReject} />
-            </div>
+    <div>
+      <Divider />
+      <div className="pt-2 pb-4 w-full border-none">
+        <div className="flex justify-between items-center">
+          <div className="flex gap-4">
+            <ColorCircle
+              $bgColor={group.group_color as BgColors}
+              className="!rounded-lg"
+            />
+            {group.name}
+          </div>
+          <div className="flex gap-4">
+            <GreenImg src={Check} alt="수락" onClick={handleAccept} />
+            <RedImg src={X} alt="거부" onClick={handleReject} />
           </div>
         </div>
-        <Divider />
       </div>
     </div>
   );
 }
+
+const GreenImg = styled.img`
+  filter: brightness(0) saturate(100%) invert(61%) sepia(99%) saturate(355%)
+    hue-rotate(55deg) brightness(91%) contrast(87%);
+`;
+
+const RedImg = styled.img`
+  filter: brightness(0) saturate(100%) invert(58%) sepia(92%) saturate(4683%)
+    hue-rotate(335deg) brightness(109%) contrast(90%);
+`;
 
 export default InvitedGroupInfo;
