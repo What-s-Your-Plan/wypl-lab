@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import lombok.RequiredArgsConstructor;
 
-@Profile({"dev", "prod"})
+@Profile({"dev", "prod1", "prod2"})
 @RequiredArgsConstructor
 @Configuration
 public class SecurityConfiguration {
@@ -19,14 +19,14 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-				.csrf(AbstractHttpConfigurer::disable)
-				.cors(AbstractHttpConfigurer::disable)
-				.formLogin(AbstractHttpConfigurer::disable)
-				.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.headers(httpSecurityHeadersConfigurer ->
-						httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-				.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-						authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
+			.csrf(AbstractHttpConfigurer::disable)
+			.cors(AbstractHttpConfigurer::disable)
+			.formLogin(AbstractHttpConfigurer::disable)
+			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			.headers(httpSecurityHeadersConfigurer ->
+				httpSecurityHeadersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+			.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
+				authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
 		return http.build();
 	}
 }
