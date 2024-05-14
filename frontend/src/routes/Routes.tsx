@@ -13,7 +13,7 @@ import {
   NotFound,
 } from '@/pages/Pages';
 
-import PrivateWrapper from './PrivateRotues';
+import PrivateWrapper from './PrivateRoutes';
 import { BROWSER_PATH } from '@/constants/Path';
 
 function Routes() {
