@@ -1,67 +1,36 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import useJsonWebTokensStore from '@/stores/TokenStore';
+import GoogleLoadingAnimation from '@/components/animation/GoogleLoading';
+
 import useMemberStore from '@/stores/MemberStore';
 
-import { FindMemberProfileResponse } from '@/@types/Member';
+import useQueryParams from '@/hooks/useSearchParams';
+import useMemberProfile from '@/hooks/api/useMemberProfile';
+import useJsonWebTokens from '@/hooks/api/useJsonWebTokens';
+
 import OAUTH_PROVIDER from '@/constants/OAuth';
 import { BROWSER_PATH } from '@/constants/Path';
-import useQueryParams from '@/hooks/useSearchParams';
-import issueTokens from '@/services/auth/signIn';
-import getMemberProfile from '@/services/member/getMemberProfile';
-import GoogleLoadingAnimation from '@/components/animation/GoogleLoading';
 
 import * as S from './GoogleOAuth.styled';
 
 function GoogleOAuth() {
-  const { code } = useQueryParams();
   const navigate = useNavigate();
 
-  const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
-  const {
-    setId: setMemberId,
-    memberId,
-    email,
-    nickname,
-    mainColor,
-    setProfile,
-  } = useMemberStore();
+  const { code } = useQueryParams();
+  const { memberId } = useMemberStore();
+  const { requestMemberProfile } = useMemberProfile();
+  const { requestIssueTokens } = useJsonWebTokens();
 
   const fetchJsonWebTokens = async () => {
     const param: IssueTokenParams = { code };
-    const body = await issueTokens(param, OAUTH_PROVIDER.GOOGLE);
-    if (body === null) {
+    const body = await requestIssueTokens(param, OAUTH_PROVIDER.GOOGLE);
+    if (body === null || memberId === undefined) {
       navigate(BROWSER_PATH.LANDING);
       return;
     }
-    await updateStores(body);
-    await requestMemberProfile();
+    await requestMemberProfile(memberId);
     navigate(BROWSER_PATH.CALENDAR);
-  };
-
-  const requestMemberProfile = async () => {
-    if (
-      email !== undefined &&
-      nickname !== undefined &&
-      mainColor !== undefined
-    ) {
-      return;
-    }
-    const memberProfile: FindMemberProfileResponse = await getMemberProfile(
-      memberId!,
-    );
-    setProfile(memberProfile);
-  };
-
-  const updateStores = ({
-    access_token,
-    refresh_token,
-    member_id,
-  }: IssueTokenResponse) => {
-    setAccessToken(access_token);
-    setRefreshToken(refresh_token);
-    setMemberId(member_id);
   };
 
   useEffect(() => {

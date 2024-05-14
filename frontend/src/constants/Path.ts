@@ -22,6 +22,7 @@ const API_PATH = {
     ISSUE_TOKENS: '/auth/v1/sign-in',
     REISSUE: '/auth/v1/reissue',
     MOCK_ISSUE_TOKENS: '/auth/v1/sign-in/mock',
+    LOGOUT: '/auth/v1/logout',
   },
   MEMBER: {
     BASE: '/member/v1/members',

@@ -62,13 +62,7 @@ const SelectLabelColorsBox = styled.div`
   `}
 `;
 
-const SelectLabelColor = styled.div`
-  ${tw`
-    border-2
-    rounded-full
-    border-neutral-900
-  `}
-`;
+const SelectLabelColor = styled.div``;
 
 const Icon = styled.img`
   ${tw`
