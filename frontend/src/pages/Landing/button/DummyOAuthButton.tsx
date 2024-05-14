@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { FindMemberProfileResponse } from '@/@types/Member';
 import mockIssueTokens from '@/services/auth/mockSignIn';
-import getMemberProfile from '@/services/member/getMemberProfile';
 import useJsonWebTokensStore from '@/stores/TokenStore';
 import useMemberStore from '@/stores/MemberStore';
 import { BROWSER_PATH } from '@/constants/Path';
@@ -20,14 +18,7 @@ function DummyOAuthButton() {
   };
 
   const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
-  const {
-    setId: setMemberId,
-    memberId,
-    email,
-    nickname,
-    mainColor,
-    setProfile,
-  } = useMemberStore();
+  const { setId: setMemberId } = useMemberStore();
 
   const fetchMockJsonWebTokens = async () => {
     if (dummyEmail.length < 8 || dummyEmail.length > 16) {
@@ -44,22 +35,7 @@ function DummyOAuthButton() {
       return;
     }
     await updateStores(body);
-    await requestMemberProfile();
     navigate(BROWSER_PATH.CALENDAR);
-  };
-
-  const requestMemberProfile = async () => {
-    if (
-      email !== undefined &&
-      nickname !== undefined &&
-      mainColor !== undefined
-    ) {
-      return;
-    }
-    const memberProfile: FindMemberProfileResponse = await getMemberProfile(
-      memberId!,
-    );
-    setProfile(memberProfile);
   };
 
   const updateStores = ({
