@@ -83,12 +83,16 @@ public class SideTabServiceImpl implements
 			final int dDayId,
 			final DDayUpdateRequest request
 	) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
 		SideTab findSideTab = findSideTabWidget(authMember, dDayId);
 
 		DDayWidget dDayWidget = DDayWidget.of(request.title(), request.date());
 		findSideTab.updateDDay(dDayWidget);
 
-		return DDayWidgetResponse.from(findSideTab.getDDay());
+		return DDayWidgetResponse.of(
+				findSideTab.getDDay(),
+				dDayWidget.getDDay(findMember.getTimeZone().getTimeZone())
+		);
 	}
 
 	@Override
@@ -96,9 +100,13 @@ public class SideTabServiceImpl implements
 			final AuthMember authMember,
 			final int dDayId
 	) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
 		SideTab findSideTab = findSideTabWidget(authMember, dDayId);
 
-		return DDayWidgetResponse.from(findSideTab.getDDay());
+		return DDayWidgetResponse.of(
+				findSideTab.getDDay(),
+				findSideTab.getDDay().getDDay(findMember.getTimeZone().getTimeZone())
+		);
 	}
 
 	@Transactional

@@ -51,21 +51,16 @@ class GroupRepositoryTest {
 			Group savedGroup = groupRepository.save(GROUP_STUDY.toGroup(savedMember));
 			MemberGroup memberGroup = memberGroupRepository.save(MemberGroup.of(savedMember, savedGroup, labelRed));
 
-
 			/* When */
 			Group foundGroup = groupRepository.findDetailById(savedGroup.getId())
 				.orElseThrow(() -> new IllegalArgumentException("그룹이 존재하지 않습니다."));
 
-			System.out.println(foundGroup.getId() + " " + foundGroup.getMemberGroups());
-
 			/* Then */
 			assertDoesNotThrow(() -> {
 				assertThat(foundGroup.getName()).isEqualTo(GROUP_STUDY.getName());
-				assertThat(foundGroup.getDescription()).isEqualTo(GROUP_STUDY.getDescription());
-
+				assertThat(foundGroup.getColor()).isEqualTo(GROUP_STUDY.getColor());
 				assertNotNull(foundGroup.getOwner());
 				assertThat(foundGroup.getOwner().getId());
-
 			});
 		}
 

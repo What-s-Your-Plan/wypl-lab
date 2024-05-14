@@ -11,6 +11,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.butter.wypl.member.domain.CalendarTimeZone;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.sidetab.fixture.SideTabFixture;
@@ -42,7 +43,7 @@ class DDayWidgetTest {
 		DDayWidget dDayWidget = DDayWidget.of("디데이", LocalDate.now().plusDays(days));
 
 		/* When */
-		String dDay = dDayWidget.getDDay();
+		String dDay = dDayWidget.getDDay(CalendarTimeZone.KOREA.getTimeZone());
 
 		/* Then */
 		if (days > 0) {

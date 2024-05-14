@@ -6,4 +6,5 @@ public interface NotificationModifyService {
 
 	void createNotification(final NotificationCreateRequest notificationCreateRequest);
 	void deleteNotification(final int memberId);
+	void updateIsActedToTrue(final int memberId, final String id);
 }

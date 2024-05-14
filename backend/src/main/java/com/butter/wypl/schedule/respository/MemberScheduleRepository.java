@@ -18,18 +18,31 @@ public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, 
 
 	List<MemberSchedule> findAllBySchedule(Schedule schedule);
 
-	//해당 기간 내에 존재하는 모든 일정
-	@Query("select s from MemberSchedule ms join ms.schedule s where ms.member.id = :member_id and s.startDate between :first_date and :last_date")
+	//해당 기간 내에 존재 하는 모든 일정
+	@Query("select s "
+		+ "from MemberSchedule ms join ms.schedule s "
+		+ "where ms.member.id = :member_id "
+		+ "and (:first_date between s.startDate and s.endDate "
+		+ "or :last_date between s.startDate and s.endDate "
+		+ "or s.startDate between :first_date and :last_date "
+		+ "or s.endDate between :first_date and :last_date) "
+		+ "order by s.startDate")
 	List<Schedule> getCalendarSchedules(
 		@Param("member_id") int memberId,
 		@Param("first_date") LocalDateTime firstDate,
 		@Param("last_date") LocalDateTime lastDate
 	);
 
-	//해당 기간 + 라벨에 해당하는 모든 일정
+	//해당 기간 + 라벨에 해당 하는 모든 일정
 	@Query("select s "
 		+ "from MemberSchedule ms join ms.schedule s "
-		+ "where ms.member.id = :member_id and s.startDate between :first_date and :last_date and s.label.labelId = :label_id")
+		+ "where ms.member.id = :member_id "
+		+ "and (:first_date between s.startDate and s.endDate "
+		+ "or :last_date between s.startDate and s.endDate "
+		+ "or s.startDate between :first_date and :last_date "
+		+ "or s.endDate between :first_date and :last_date) "
+		+ "and s.label.labelId = :label_id "
+		+ "order by s.startDate")
 	List<Schedule> getCalendarSchedulesWithLabel(
 		@Param("member_id") int memberId,
 		@Param("first_date") LocalDateTime firstDate,
@@ -39,7 +52,7 @@ public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, 
 
 	@Query("select m "
 		+ "from MemberSchedule ms join ms.member m "
-		+ "where ms.schedule.scheduleId = :schedule_id")
+		+ "where ms.schedule.scheduleId = :schedule_id ")
 	List<Member> getMemberWithSchedule(@Param("schedule_id") int scheduleId);
 
 }
