@@ -70,7 +70,7 @@ function BlockList() {
   };
 
   return (
-    <Container $width="300" className="scrollBar ss:max-sm:!h-40">
+    <Container $width="left" className="scrollBar ss:max-sm:!h-40">
       {renderBlock()}
     </Container>
   );

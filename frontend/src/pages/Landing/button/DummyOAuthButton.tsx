@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { FindMemberProfileResponse } from '@/@types/Member';
 import mockIssueTokens from '@/services/auth/mockSignIn';
+import getMemberProfile from '@/services/member/getMemberProfile';
 import useJsonWebTokensStore from '@/stores/TokenStore';
 import useMemberStore from '@/stores/MemberStore';
 import { BROWSER_PATH } from '@/constants/Path';
@@ -12,30 +14,52 @@ import * as DS from './DummyOAuthButton.styled';
 function DummyOAuthButton() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<string>('');
-  const changeEmail = (e: any) => {
-    setEmail(e.target.value);
+  const [dummyEmail, setDummyEmail] = useState<string>('');
+  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDummyEmail(e.target.value);
   };
 
   const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
-  const { setMemberId } = useMemberStore();
+  const {
+    setId: setMemberId,
+    memberId,
+    email,
+    nickname,
+    mainColor,
+    setProfile,
+  } = useMemberStore();
 
   const fetchMockJsonWebTokens = async () => {
-    if (email.length < 8 || email.length > 16) {
+    if (dummyEmail.length < 8 || dummyEmail.length > 16) {
       console.warn(
-        `이메일(${email}, ${email.length})의 길이가 8자 미만, 16자 이상입니다.`,
+        `이메일(${dummyEmail}, ${dummyEmail.length})의 길이가 8자 미만, 16자 이상입니다.`,
       );
       return;
     }
 
-    const params: MockIssueTokenParams = { email };
+    const params: MockIssueTokenParams = { email: dummyEmail };
     const body = await mockIssueTokens(params);
     if (body === null) {
       navigate(BROWSER_PATH.LANDING);
       return;
     }
-    updateStores(body);
+    await updateStores(body);
+    await requestMemberProfile();
     navigate(BROWSER_PATH.CALENDAR);
+  };
+
+  const requestMemberProfile = async () => {
+    if (
+      email !== undefined &&
+      nickname !== undefined &&
+      mainColor !== undefined
+    ) {
+      return;
+    }
+    const memberProfile: FindMemberProfileResponse = await getMemberProfile(
+      memberId!,
+    );
+    setProfile(memberProfile);
   };
 
   const updateStores = ({

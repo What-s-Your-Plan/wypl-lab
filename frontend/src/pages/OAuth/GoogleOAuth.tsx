@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import useJsonWebTokensStore from '@/stores/TokenStore';
 import useMemberStore from '@/stores/MemberStore';
 
+import { FindMemberProfileResponse } from '@/@types/Member';
 import OAUTH_PROVIDER from '@/constants/OAuth';
 import { BROWSER_PATH } from '@/constants/Path';
 import useQueryParams from '@/hooks/useSearchParams';
 import issueTokens from '@/services/auth/signIn';
+import getMemberProfile from '@/services/member/getMemberProfile';
 import GoogleLoadingAnimation from '@/components/animation/GoogleLoading';
 
 import * as S from './GoogleOAuth.styled';
@@ -17,7 +19,14 @@ function GoogleOAuth() {
   const navigate = useNavigate();
 
   const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
-  const { setMemberId } = useMemberStore();
+  const {
+    setId: setMemberId,
+    memberId,
+    email,
+    nickname,
+    mainColor,
+    setProfile,
+  } = useMemberStore();
 
   const fetchJsonWebTokens = async () => {
     const param: IssueTokenParams = { code };
@@ -27,7 +36,22 @@ function GoogleOAuth() {
       return;
     }
     await updateStores(body);
+    await requestMemberProfile();
     navigate(BROWSER_PATH.CALENDAR);
+  };
+
+  const requestMemberProfile = async () => {
+    if (
+      email !== undefined &&
+      nickname !== undefined &&
+      mainColor !== undefined
+    ) {
+      return;
+    }
+    const memberProfile: FindMemberProfileResponse = await getMemberProfile(
+      memberId!,
+    );
+    setProfile(memberProfile);
   };
 
   const updateStores = ({

@@ -68,7 +68,7 @@ function WriteBlockList() {
   }, []);
 
   return (
-    <S.Container $width="800" className="scrollBar flex flex-col gap-4">
+    <S.Container $width="right" className="scrollBar flex flex-col gap-4">
       <div>
         <span className="float-end flex gap-2">
           <Button

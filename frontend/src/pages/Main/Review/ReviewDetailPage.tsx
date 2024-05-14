@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import getReviewDetail from '@/services/review/getReviewDetail';
+import deleteReview from '@/services/review/deleteReview';
 import { splitTTime } from '@/utils/DateUtils';
 
 import { ReviewResponse } from '@/@types/ReviewResponse';
@@ -15,8 +16,29 @@ import MoreVertical from '@/assets/icons/moreVertical.svg';
 import PopOver from '@/components/common/PopOver';
 
 function ReviewDetailPage() {
+  const navigator = useNavigate();
   const { reviewId } = useParams();
   const [detail, setDetail] = useState<ReviewResponse>();
+
+  if (typeof reviewId !== 'string') {
+    navigator('/notfound');
+  }
+
+  const handleModify = () => {
+    navigator(`/review/modify/${detail?.schedule.schedule_id}/${reviewId}`);
+  };
+
+  const hanldeDelete = async () => {
+    if (window.confirm('정말로 회고록을 삭제하시겠습니까?')) {
+      try {
+        await deleteReview(reviewId as string);
+        alert('리뷰가 삭제되었습니다.'); // 성공적으로 삭제되었음을 사용자에게 알림
+        navigator('/review'); // 삭제 후 리뷰 목록 페이지로 리다이렉트
+      } catch (error) {
+        alert('리뷰 삭제에 실패했습니다.'); // 에러 처리
+      }
+    }
+  };
 
   useEffect(() => {
     const fetchReviewDetail = async () => {
@@ -41,7 +63,11 @@ function ReviewDetailPage() {
         <Container $width="1200" className="h-[90vh]">
           <div className="flex justify-between">
             <span>
-              <Button $size="none" className="!bg-transparent">
+              <Button
+                $size="none"
+                className="!bg-transparent"
+                onClick={() => navigator(`/review`)}
+              >
                 <img src={ArrowLeft} alt="뒤로가기" />
               </Button>
             </span>
@@ -50,14 +76,23 @@ function ReviewDetailPage() {
               <span className="relative">
                 <PopOver
                   button={
-                    <Button $size="none" className="!bg-transparent">
-                      <img src={MoreVertical} alt="더보기" />
-                    </Button>
+                    <div>
+                      <Button $size="none" className="!bg-transparent">
+                        <img src={MoreVertical} alt="더보기" />
+                      </Button>
+                    </div>
                   }
                   panel={
                     <div className="flex flex-col gap-0.5 w-16 px-3 py-2 bg-default-white/95 rounded-lg shadow-lg">
-                      <div>수정</div>
-                      <div className="text-label-red">삭제</div>
+                      <div onClick={handleModify} className="cursor-pointer">
+                        수정
+                      </div>
+                      <div
+                        onClick={hanldeDelete}
+                        className="text-label-red cursor-pointer"
+                      >
+                        삭제
+                      </div>
                     </div>
                   }
                   panelPosition="right-0 top-7"

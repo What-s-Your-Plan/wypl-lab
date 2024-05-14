@@ -1,34 +1,39 @@
 import { WhiteContainer } from '../common/Container';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import xButton from '@/assets/icons/x.svg';
-import plusButton from '@/assets/icons/edit.svg';
-
-type todoType = {
-  todo_id : number,
-  content : string,
-  is_completed : boolean
-}
+import editButton from '@/assets/icons/x.svg';
+import plusButton from '@/assets/icons/plus.svg';
+import updateButton from '@/assets/icons/edit.svg';
+import { InputDefault } from '../common/InputText';
+import postTodo from '@/services/todo/postTodo';
+import getTodoList from '@/services/todo/getTodoList';
+import deleteTodo from '@/services/todo/deleteTodo';
+import checkTodo from '@/services/todo/checkTodo';
+import patchTodo from '@/services/todo/patchTodo';
 
 const Form = styled.form`
   width : 100%;
   display : flex;
   align-items : start;
+
+  & > span{
+    width : 100%;
+    font-size : 13px;
+    cursor: pointer;
+  }
 `
 const CheckBox = styled.input`
   margin-top : 6px;
   margin-right : 4px;
 `
 
-const Label = styled.label`
-  width : 100%;
-  font-size : 15px;
-`
 
 const IconButton = styled.img`
-  width : 20px;
-  margin-top : 2px;
+  width : 15px;
+  margin-top : 4px;
+  cursor : pointer;
+  margin-left : 7px;
 `
 const TodoElement = styled.div`
   width : 100%;
@@ -45,73 +50,110 @@ const Header = styled.div`
   justify-content: space-between;
 
   & > {
-    width : 20px;
+    width : 12px;
   }
 `
 
-const TextInput = styled.input`
+const SubmitDiv = styled.div`
   width : 100%;
+  display : flex;
+  flex-direction: row;
+`
+
+const StyledInputDefault = styled(InputDefault)`
+  font-size: 0.85rem;
+  cursor : pointer;
+  background-color: transparent;
+  margin-left : 3px;
 `
 
 function Todo() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [content, setContent] = useState<string>("");
-  const [todos, setTodos] = useState<todoType[]>([
-    {
-      todo_id : 1,
-      content : "좌소연의 프론트 도전기",
-      is_completed : false
-    },
-    {
-      todo_id : 2,
-      content : "조다민의 좌소연 길들이기",
-      is_completed : true
-    },
-    {
-      todo_id : 1,
-      content : "좌소연의 프론트 도전기",
-      is_completed : false
-    },
-    {
-      todo_id : 2,
-      content : "조다민의 좌소연 길들이기",
-      is_completed : true
-    }
-  ])
+  const [todos, setTodos] = useState<todoType[]>([]);
+  const [chosenTodo, setChosenTodo] = useState(-1);
 
-  const clickTodo = (id : number) => {
-    setTodos(todos.map((todo) => {
-      if (todo.todo_id === id) {    
-        //체크 axios 연결
-        return { ...todo, is_completed: !todo.is_completed }; 
-      }
-      return todo;
-    }));
+  async function fetchTodoList() {
+    try {
+      const todoList = await getTodoList();
+      setTodos(todoList);
+      setChosenTodo(-1);
+    } catch (error) {
+      console.error('투두 리스트 호출 실패:', error);
+    }
   }
 
-  const deleteTodo = (id : number) => {
-    //axios 연결
+  useEffect(()=>{
+    fetchTodoList();
+  },[]);
 
-    setTodos(todos.filter(todo => (todo.todo_id !== id)));
+  const clickTodo =async (id : string) => {
+    await checkTodo(id)
+    .then(()=>{
+      fetchTodoList()
+    })
+    .catch((error)=>{
+      console.log("투두 체크 실패: ",error);
+    })
+    
+  }
+
+  const deleteTodoElement = async (id : string) => {
+    await deleteTodo(id)
+    .then(()=>{
+      fetchTodoList();
+    })
+    .catch((error)=>{
+      console.log("투두 삭제 실패: ",error);
+    })
   }
 
   const clickPlusButton = () => {
     setIsOpen(!isOpen);
   }
 
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+  const createTodo = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    //제출 axios 연결
-    //새로 불러오는 axios
+    await postTodo({
+      content : content
+    }).then(
+      () => {
+        setContent("");
+        setIsOpen(false);
+        fetchTodoList();
+      }
+    ).catch((error)=>{
+      console.log("투두리스트 생성 실패 : ",error);
+    })
+  }
 
-    setContent("");
-    setIsOpen(false);
+  const updateTodo = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+   
+    await patchTodo(chosenTodo, {
+      content : todos[todos.findIndex(todo => todo.todo_id === chosenTodo)].content
+    }).then(()=>{
+      fetchTodoList();
+    }).catch((error)=>{
+      console.log("투두 리스트 없뎃 실패 : ", error);
+    })
   }
 
   const changeContent = (e:React.ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
   }
+
+  const changeOriginContent = (e:React.ChangeEvent<HTMLInputElement>) => {
+    let updatedTodoIndex = todos.findIndex(todo => todo.todo_id === chosenTodo);
+
+    let copiedTodos = [...todos];
+    copiedTodos[updatedTodoIndex].content = e.target.value;
+
+    setTodos(copiedTodos);
+  }
+
+
 
   return <WhiteContainer $width="1300" className = "h-[30vh]">
     <Header>
@@ -125,13 +167,21 @@ function Todo() {
           {
             todos.map((todo) => (
               <TodoElement key={todo.todo_id}>
-                <Form>
+                <Form onSubmit={updateTodo}>
                   <CheckBox type='checkbox' id = {String(todo.todo_id)} name= "todo" 
                     checked = {todo.is_completed}
-                    onClick={() => clickTodo(todo.todo_id)}></CheckBox>
-                  <Label htmlFor= {String(todo.todo_id)}>{todo.content}</Label>
+                    onClick={() => clickTodo(`${todo.todo_id}`)}></CheckBox>
+                     <StyledInputDefault 
+                     className='!h-6 !p-1' 
+                     $width='100%' $void = {true} type = "text" name = "content" 
+                     value={todo.content} onMouseUp={() => setChosenTodo(todo.todo_id)} onChange={changeOriginContent}></StyledInputDefault>
                 </Form>
-                <IconButton src = {xButton} onClick={() => deleteTodo(todo.todo_id)}></IconButton>
+                {
+                  todo.todo_id == chosenTodo ?
+                  <IconButton src = {updateButton}></IconButton>
+                  :
+                  <IconButton src = {editButton} onClick={() => deleteTodoElement(`${todo.todo_id}`)}></IconButton>
+                }
               </TodoElement>
             ))
           }
@@ -140,9 +190,13 @@ function Todo() {
     }
     {
       isOpen && (
-        <Form onSubmit={submit}>
-          <TextInput type = "text" name = "content" value = {content} onChange={changeContent}></TextInput>
-        </Form>
+        <SubmitDiv>
+          <Form onSubmit={createTodo}>
+            <CheckBox type='checkbox'  name= "todo" disabled></CheckBox>
+            <StyledInputDefault className='!h-6 !p-1' $width='85%' type = "text" name = "content" value = {content} onChange={changeContent}></StyledInputDefault>
+          </Form>
+          <IconButton src = {updateButton}></IconButton>
+        </SubmitDiv>
       )
     }
   </div>

@@ -1,5 +1,4 @@
 import {
-  LabelColors,
   LabelColorsType,
   BgColors,
 } from '@/assets/styles/colorThemes';
@@ -10,16 +9,33 @@ type PalettePanelProps = {
   setColor: (color: LabelColorsType) => void;
 };
 
+const palette = [
+  'labelRed',
+  'labelPink',
+  'labelOrange',
+  'labelYellow',
+  'labelGreen',
+  'labelLeaf',
+  'labelBlue',
+  'labelSky',
+  'labelNavy',
+  'labelIndigo',
+  'labelPurple',
+  'labelLavender',
+  'labelCharcoal',
+  'labelBrown'
+]
+
 function PalettePanel({ setColor }: PalettePanelProps) {
   const renderColors = () => {
-    return LabelColors.map((color) => {
+    return palette.map((color) => {
       return (
         <S.Element key={color}>
           <ColorCircle
             $bgColor={color as BgColors}
             $cursor="pointer"
             onClick={() => {
-              setColor(color);
+              setColor(color as LabelColorsType);
             }}
           />
         </S.Element>

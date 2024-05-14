@@ -12,15 +12,17 @@ import { dateToString } from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
 import useMemberStore from '@/stores/MemberStore';
 import Todo from './Todo';
+import DailyCalendar from './Daily/DailyCalendar';
 
 function CalendarContent() {
   const { selectedDate } = useDateStore();
-  const {memberId} = useMemberStore();
+  const { memberId } = useMemberStore();
   const [calendarType, setCalendarType] = useState<CalenderType>('MONTH');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [needUpdate, setNeedUpdate] = useState<boolean>(false);
   const [skedInit, setSkedInit] = useState<Schedule & Repeat>({
     ...initialSchedule,
-    members: [{member_id: memberId as number}]
+    members: [{ member_id: memberId as number }],
   });
 
   const closeModal = () => {
@@ -31,12 +33,37 @@ function CalendarContent() {
     setIsModalOpen(true);
   };
 
+  const setUpdateTrue = () => {
+    setNeedUpdate(true);
+  };
+
+  const setUpdateFalse = () => {
+    setNeedUpdate(false);
+  };
+
   const renderCalender = () => {
     switch (calendarType) {
       case 'MONTH':
-        return <MonthlyCalender />;
+        return (
+          <MonthlyCalender
+            needUpdate={needUpdate}
+            setUpdateFalse={setUpdateFalse}
+          />
+        );
       case 'WEEK':
-        return <WeeklyCalendar />;
+        return (
+          <WeeklyCalendar
+            needUpdate={needUpdate}
+            setUpdateFalse={setUpdateFalse}
+          />
+        );
+      case 'DAY':
+        return (
+          <DailyCalendar
+            needUpdate={needUpdate}
+            setUpdateFalse={setUpdateFalse}
+          />
+        );
       default:
         null;
     }
@@ -44,7 +71,7 @@ function CalendarContent() {
 
   return (
     <>
-      <Containers.Container className="flex" $width="800">
+      <Containers.Container className="flex" $width="right">
         <Containers.WhiteContainer $width="1300" $height="max">
           <div className="flex p-3 h-full gap-4">
             <div className="grow">{renderCalender()}</div>
@@ -73,7 +100,12 @@ function CalendarContent() {
         </Containers.WhiteContainer>
         <IndexGroup calendarType={calendarType} setCType={setCalendarType} />
       </Containers.Container>
-      <ScheduleModal isOpen={isModalOpen} init={skedInit} handleClose={closeModal}/>
+      <ScheduleModal
+        isOpen={isModalOpen}
+        init={skedInit}
+        handleClose={closeModal}
+        handleConfirm={setUpdateTrue}
+      />
     </>
   );
 }
