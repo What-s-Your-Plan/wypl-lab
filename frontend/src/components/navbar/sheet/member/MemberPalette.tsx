@@ -15,16 +15,15 @@ import * as S from './MemberPalette.styled';
 
 function MemberPalette() {
   const { mainColor, setMainColor: setLabelColor } = useMemberStore();
-  const { isLoading, startLoading, endLoading } = useLoading();
+  const { canStartLoading, endLoading } = useLoading();
 
   const changeLabelColor = async (color: BgColors) => {
-    if (isLoading() || mainColor === color) {
+    if (canStartLoading() || mainColor === color) {
       return;
     }
     const request: UpdateLabelColorRequest = {
       color,
     };
-    startLoading();
     await patchMemberLabelColor(request)
       .then((res: UpdateLabelColorResponse) => {
         setLabelColor(res.color);
@@ -37,16 +36,16 @@ function MemberPalette() {
   return (
     <S.Container>
       <S.SelectLabelColorsWrapper>
-        {[...Array(2)].map((_, groupIdx) => (
-          <S.SelectLabelColorsBox key={groupIdx}>
-            {LabelColors.slice(groupIdx * 7, (groupIdx + 1) * 7).map(
-              (value, idx) => (
+        {[...Array(2)].map((_, boxIdx: number) => (
+          <S.SelectLabelColorsBox key={boxIdx}>
+            {LabelColors.slice(boxIdx * 7, (boxIdx + 1) * 7).map(
+              (value: BgColors, idx: number) => (
                 <S.SelectLabelColor>
                   {mainColor === value && (
                     <S.Icon src={check} className={'whiteImg'} />
                   )}
                   <ColorCircle
-                    key={idx}
+                    key={boxIdx * idx}
                     onClick={() => changeLabelColor(value)}
                     $bgColor={value}
                     $hover={true}
@@ -63,14 +62,3 @@ function MemberPalette() {
 }
 
 export default MemberPalette;
-
-{
-  /* <ColorCircle
-                  key={idx}
-                  onClick={() => changeLabelColor(value)}
-                  $bgColor={value}
-                  $hover={true}
-                  $size={'1.3rem'}
-                  $cursor={'pointer'}
-                /> */
-}
