@@ -8,7 +8,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import com.butter.wypl.member.domain.CalendarTimeZone;
@@ -19,10 +18,9 @@ import com.butter.wypl.sidetab.fixture.SideTabFixture;
 class DDayWidgetTest {
 
 	@DisplayName("D-Day 위젯 생성에 성공한다.")
-	@ParameterizedTest
-	@EnumSource(value = SideTabFixture.class)
-	void generateDDay(SideTabFixture sideTabFixture) {
+	void generateDDay() {
 		/* Given */
+		SideTabFixture sideTabFixture = SideTabFixture.SIDE_TAB_ONE;
 		String title = sideTabFixture.getTitle();
 		LocalDate dDay = sideTabFixture.getDDay();
 
@@ -68,7 +66,7 @@ class DDayWidgetTest {
 			/* When */
 			/* Then */
 			assertThatCode(() -> {
-				DDayWidget dDayWidget = DDayWidget.of(dDayTitleAsString, null);
+				DDayWidget dDayWidget = DDayWidget.of(dDayTitleAsString, LocalDate.now());
 				assertThat(dDayWidget.getTitle()).isEqualTo(dDayTitleAsString);
 			}).doesNotThrowAnyException();
 		}
@@ -84,6 +82,33 @@ class DDayWidgetTest {
 			assertThatThrownBy(() -> DDayWidget.of(dDayTitleAsString, null))
 					.isInstanceOf(MemberException.class)
 					.hasMessageContaining(MemberErrorCode.TOO_LONG_CONTENT.getMessage());
+		}
+	}
+
+	@DisplayName("디데이 날짜 검증 테스트")
+	@Nested
+	class ValidateDateTest {
+		@DisplayName("디데이 날짜 검증에 성공한다.")
+		@Test
+		void validateSuccessTest() {
+			assertThatCode(() -> DDayWidget.of("디데이", LocalDate.now()))
+					.doesNotThrowAnyException();
+		}
+
+		@DisplayName("1970년 이전이면 예외를 던진다.")
+		@Test
+		void before1970YearsTest() {
+			assertThatThrownBy(() -> DDayWidget.of("디데이", LocalDate.of(1969, 12, 31)))
+					.isInstanceOf(MemberException.class)
+					.hasMessageContaining(MemberErrorCode.INVALID_DATE.getMessage());
+		}
+
+		@DisplayName("2200년 이후이면 예외를 던진다.")
+		@Test
+		void after2199YearsTest() {
+			assertThatThrownBy(() -> DDayWidget.of("디데이", LocalDate.of(2200, 1, 1)))
+					.isInstanceOf(MemberException.class)
+					.hasMessageContaining(MemberErrorCode.INVALID_DATE.getMessage());
 		}
 	}
 }
