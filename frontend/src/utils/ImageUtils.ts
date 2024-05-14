@@ -1,7 +1,9 @@
 import defaultImage from '@/assets/images/defaultImage.png';
 
 function getMemberProfileImageOrDefault(memberProfileImage: string | null) {
-  return memberProfileImage === null ? defaultImage : memberProfileImage;
+  return memberProfileImage === null || memberProfileImage === undefined
+    ? defaultImage
+    : memberProfileImage;
 }
 
 export { getMemberProfileImageOrDefault };

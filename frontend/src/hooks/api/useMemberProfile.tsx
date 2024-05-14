@@ -5,13 +5,10 @@ import useMemberStore from '@/stores/MemberStore';
 
 export default function useMemberProfile() {
   const [isLoading, setLoading] = useState<boolean>(false);
-  const { email, mainColor, nickname, setProfile } = useMemberStore();
+  const { setProfile } = useMemberStore();
 
   const requestMemberProfile = async (memberId: number) => {
-    if (
-      isLoading ||
-      (email !== undefined && nickname !== undefined && mainColor !== undefined)
-    ) {
+    if (isLoading) {
       return;
     }
     setLoading(true);

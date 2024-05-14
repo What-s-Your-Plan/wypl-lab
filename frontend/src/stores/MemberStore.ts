@@ -63,7 +63,7 @@ const useMemberStore = create<MemberState>()(
       resetMember: () => {
         set(() => ({
           memberId: undefined,
-          profileImage: defaultImage,
+          profileImage: undefined,
           email: undefined,
           nickname: undefined,
           mainColor: undefined,
