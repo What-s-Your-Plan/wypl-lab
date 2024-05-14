@@ -26,6 +26,42 @@ const axiosWithMultiPart = Axios.create({
   },
 });
 
+let isTokenBeingReissued = false;
+let tokenReissuePromise: Promise<void> | null = null;
+
+const handleUnauthorizedError = async (error: any, axiosInstance: any) => {
+  const refreshToken = useJsonWebTokensStore.getState().refreshToken;
+  if (error.response.status === HttpStatusCode.Unauthorized && refreshToken) {
+    if (!isTokenBeingReissued) {
+      isTokenBeingReissued = true;
+      tokenReissuePromise = (async () => {
+        const params: ReissueTokenParams = {
+          refresh_token: refreshToken,
+        };
+        const body = await reissueTokens(params);
+        if (body !== null) {
+          useJsonWebTokensStore.getState().setAccessToken(body.access_token);
+          useJsonWebTokensStore.getState().setRefreshToken(body.refresh_token);
+        } else {
+          useJsonWebTokensStore.getState().resetTokens();
+        }
+        isTokenBeingReissued = false;
+      })();
+    }
+
+    await tokenReissuePromise;
+
+    if (useJsonWebTokensStore.getState().accessToken) {
+      error.config.headers.Authorization = `Bearer ${useJsonWebTokensStore.getState().accessToken}`;
+      return axiosInstance(error.config);
+    }
+  }
+  if (error.response.status === HttpStatusCode.Forbidden) {
+    useJsonWebTokensStore.getState().resetTokens();
+  }
+  return Promise.reject(error);
+};
+
 axiosWithAccessToken.interceptors.request.use((config) => {
   const accessToken = useJsonWebTokensStore.getState().accessToken;
   if (config.headers && accessToken) {
@@ -35,24 +71,7 @@ axiosWithAccessToken.interceptors.request.use((config) => {
 });
 
 axiosWithAccessToken.interceptors.response.use(null, async function (error) {
-  const refreshToken = useJsonWebTokensStore.getState().refreshToken;
-  if (error.response.status === HttpStatusCode.Unauthorized && refreshToken) {
-    const params: ReissueTokenParams = {
-      refresh_token: refreshToken,
-    };
-    const body = await reissueTokens(params);
-    if (body === null) {
-      return Promise.reject(error);
-    }
-    useJsonWebTokensStore.getState().setAccessToken(body.access_token);
-    useJsonWebTokensStore.getState().setRefreshToken(body.refresh_token);
-    error.config.headers.Authorization = `Bearer ${useJsonWebTokensStore.getState().accessToken}`;
-    return axiosWithAccessToken(error.config);
-  }
-  if (error.response.status === HttpStatusCode.Forbidden) {
-    useJsonWebTokensStore.getState().resetTokens();
-  }
-  return Promise.reject(error);
+  return handleUnauthorizedError(error, axiosWithAccessToken);
 });
 
 axiosWithMultiPart.interceptors.request.use((config) => {
@@ -64,24 +83,7 @@ axiosWithMultiPart.interceptors.request.use((config) => {
 });
 
 axiosWithMultiPart.interceptors.response.use(null, async function (error) {
-  const refreshToken = useJsonWebTokensStore.getState().refreshToken;
-  if (error.response.status === HttpStatusCode.Unauthorized && refreshToken) {
-    const params: ReissueTokenParams = {
-      refresh_token: refreshToken,
-    };
-    const body = await reissueTokens(params);
-    if (body === null) {
-      return Promise.reject(error);
-    }
-    useJsonWebTokensStore.getState().setAccessToken(body.access_token);
-    useJsonWebTokensStore.getState().setRefreshToken(body.refresh_token);
-    error.config.headers.Authorization = `Bearer ${useJsonWebTokensStore.getState().accessToken}`;
-    return axiosWithMultiPart(error.config);
-  }
-  if (error.response.status === HttpStatusCode.Forbidden) {
-    useJsonWebTokensStore.getState().resetTokens();
-  }
-  return Promise.reject(error);
+  return handleUnauthorizedError(error, axiosWithMultiPart);
 });
 
 export { baseURL, axios, axiosWithAccessToken, axiosWithMultiPart };

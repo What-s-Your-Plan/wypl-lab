@@ -3,8 +3,12 @@ import { useState } from 'react';
 function useLoading() {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const startLoading = () => {
+  const canStartLoading = (): boolean => {
+    if (loading === true) {
+      return true;
+    }
     setLoading(true);
+    return false;
   };
 
   const endLoading = () => {
@@ -15,7 +19,7 @@ function useLoading() {
     return loading;
   };
 
-  return { isLoading, startLoading, endLoading };
+  return { isLoading, canStartLoading, endLoading };
 }
 
 export default useLoading;
