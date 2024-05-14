@@ -1,7 +1,7 @@
 type Group = {
-  group_id: number;
+  id: number;
   name: string;
-  group_color: string;
+  color: string;
   is_owner: boolean;
 };
 
@@ -9,7 +9,7 @@ type GroupMember = {
   member_id: number;
   oauth_id: string; //"jiwons0803@naver.com",
   nickname: string; //"지롱이"
-  profile_image: string;
+  profile_image_url: string;
   is_accepted: boolean;
 };
 

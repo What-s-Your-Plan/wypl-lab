@@ -18,7 +18,7 @@ function GroupInfo({ group }: GroupInfoProps) {
     console.log('Open Settings');
   };
   return (
-    <div onClick={() => navigator(`/group/${group.group_id}`)}>
+    <div onClick={() => navigator(`/group/${group.id}`)}>
       <Disclosure>
         {({ open }) => (
           <>
@@ -26,7 +26,7 @@ function GroupInfo({ group }: GroupInfoProps) {
               <div className="flex justify-between items-center">
                 <div className="flex gap-4">
                   <ColorCircle
-                    $bgColor={group.group_color as BgColors}
+                    $bgColor={group.color as BgColors}
                     className="!rounded-lg"
                   />
                   {group.name}
@@ -50,7 +50,7 @@ function GroupInfo({ group }: GroupInfoProps) {
             </Disclosure.Button>
             <Divider />
             <Disclosure.Panel>
-              <GroupMemberList groupId={group.group_id} />
+              <GroupMemberList groupId={group.id} />
             </Disclosure.Panel>
           </>
         )}
