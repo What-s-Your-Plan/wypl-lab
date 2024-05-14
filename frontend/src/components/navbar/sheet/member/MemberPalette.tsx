@@ -40,12 +40,12 @@ function MemberPalette() {
           <S.SelectLabelColorsBox key={boxIdx}>
             {LabelColors.slice(boxIdx * 7, (boxIdx + 1) * 7).map(
               (value: BgColors, idx: number) => (
-                <S.SelectLabelColor>
+                <S.SelectLabelColor key={`${boxIdx}-${idx}-color`}>
                   {mainColor === value && (
                     <S.Icon src={check} className={'whiteImg'} />
                   )}
                   <ColorCircle
-                    key={boxIdx * idx}
+                    key={`${boxIdx}-${idx}-circle`}
                     onClick={() => changeLabelColor(value)}
                     $bgColor={value}
                     $hover={true}
