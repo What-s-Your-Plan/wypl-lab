@@ -10,9 +10,16 @@ type MDayProps = {
   firstDay: Date;
   schedules: DateSchedule;
   isCurrentMonth: boolean;
+  handleSkedClick: (id: number) => void;
 };
 
-function MonthlyDay({ date, firstDay, schedules, isCurrentMonth }: MDayProps) {
+function MonthlyDay({
+  date,
+  firstDay,
+  schedules,
+  isCurrentMonth,
+  handleSkedClick,
+}: MDayProps) {
   const { selectedDate } = useDateStore();
   const { mainColor } = useMemberStore();
 
@@ -36,14 +43,17 @@ function MonthlyDay({ date, firstDay, schedules, isCurrentMonth }: MDayProps) {
               schedule[0].label?.color || schedule[0].group?.color || mainColor;
 
             return (
-              <S.ScheduleSpan
+              <S.ScheduleButton
                 key={idx}
                 $color={color as LabelColorsType}
                 $top={idx}
                 $width={width}
+                onClick={() => {
+                  handleSkedClick(schedule[0].schedule_id);
+                }}
               >
-                <span className="w-full truncate">{schedule[0].title}</span>
-              </S.ScheduleSpan>
+                <span className="truncate">{schedule[0].title}</span>
+              </S.ScheduleButton>
             );
           }
         } else {
@@ -64,9 +74,9 @@ function MonthlyDay({ date, firstDay, schedules, isCurrentMonth }: MDayProps) {
           return (
             <div
               key={idx}
-              className="flex items-center truncate h-4 absolute top-8 pl-1 hover:bg-default-coolgray w-full transition-all"
+              className="flex items-center h-4 absolute top-8 pl-1 hover:bg-default-coolgray w-full transition-all"
             >
-              <span>+ {schedule.length}</span>
+              <span className="truncate w-full">+ {schedule.length}</span>
             </div>
           );
         }

@@ -19,9 +19,10 @@ export type DateSchedule = Array<Array<CalendarSchedule>>;
 type MonthlyProps = {
   needUpdate: boolean;
   setUpdateFalse: () => void;
+  handleSkedClick: (id:number) => void;
 };
 
-function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
+function MonthlyCalender({ needUpdate, setUpdateFalse, handleSkedClick }: MonthlyProps) {
   const createInit = (): Array<DateSchedule> => {
     const init = [];
 
@@ -145,6 +146,7 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
         calendar.push(
           <MonthlyDay
             key={i}
+            handleSkedClick={handleSkedClick}
             date={date}
             firstDay={firstDay}
             schedules={monthSchedules[i]}

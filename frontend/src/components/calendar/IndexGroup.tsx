@@ -10,7 +10,7 @@ function IndexGroup({ calendarType, setCType }: IndexGroupProps) {
   return (
     <div className="flex flex-col">
       <div className="invisible h-6" aria-hidden="true" />
-      <IndexButton
+      {/* <IndexButton
         $isActive={calendarType === 'YEAR'}
         onClick={() => {
           // setCType('YEAR');
@@ -18,7 +18,7 @@ function IndexGroup({ calendarType, setCType }: IndexGroupProps) {
         }}
       >
         Year
-      </IndexButton>
+      </IndexButton> */}
       <IndexButton
         $isActive={calendarType === 'MONTH'}
         onClick={() => {

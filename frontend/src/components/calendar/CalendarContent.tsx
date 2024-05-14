@@ -6,6 +6,8 @@ import WeeklyCalendar from '@/components/calendar/Weekly/WeeklyCalendar';
 import IndexGroup from '@/components/calendar/IndexGroup';
 import Button from '@/components/common/Button';
 import ScheduleModal from '@/components/schedule/ScheduleModal';
+import SkedDetailModal from '@/components/schedule/SkedDetailModal';
+
 import CalendarAddIcon from '@/assets/icons/calendarAdd.svg';
 import initialSchedule from '@/constants/ScheduleFormInit';
 import { dateToString } from '@/utils/DateUtils';
@@ -18,19 +20,21 @@ function CalendarContent() {
   const { selectedDate } = useDateStore();
   const { memberId } = useMemberStore();
   const [calendarType, setCalendarType] = useState<CalenderType>('MONTH');
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isCreateOpen, setIsCreateOpen] = useState<boolean>(false);
+  const [isDetailOpen, setDetailOpen] = useState<boolean>(false);
+  const [detailId, setDetailId] = useState<number | null>(null);
   const [needUpdate, setNeedUpdate] = useState<boolean>(false);
   const [skedInit, setSkedInit] = useState<Schedule & Repeat>({
     ...initialSchedule,
     members: [{ member_id: memberId as number }],
   });
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const closeCreate = () => {
+    setIsCreateOpen(false);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openCreate = () => {
+    setIsCreateOpen(true);
   };
 
   const setUpdateTrue = () => {
@@ -41,11 +45,21 @@ function CalendarContent() {
     setNeedUpdate(false);
   };
 
+  const openDetail = (id: number) => {
+    setDetailId(id);
+    setDetailOpen(true);
+  };
+
+  const closeDetail = () => {
+    setDetailOpen(false);
+  };
+
   const renderCalender = () => {
     switch (calendarType) {
       case 'MONTH':
         return (
           <MonthlyCalender
+            handleSkedClick={openDetail}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
           />
@@ -89,7 +103,7 @@ function CalendarContent() {
                     startDate: dateToString(selectedDate),
                     endDate: dateToString(selectedDate),
                   });
-                  openModal();
+                  openCreate();
                 }}
               >
                 <img src={CalendarAddIcon} alt="calendar-add" />
@@ -101,10 +115,16 @@ function CalendarContent() {
         <IndexGroup calendarType={calendarType} setCType={setCalendarType} />
       </Containers.Container>
       <ScheduleModal
-        isOpen={isModalOpen}
+        isOpen={isCreateOpen}
         init={skedInit}
-        handleClose={closeModal}
+        handleClose={closeCreate}
         handleConfirm={setUpdateTrue}
+      />
+      <SkedDetailModal
+        isOpen={isDetailOpen}
+        scheduleId={detailId as number}
+        handleClose={closeDetail}
+        handleConfirm={() => {}}
       />
     </>
   );

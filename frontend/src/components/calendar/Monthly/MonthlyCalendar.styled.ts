@@ -6,7 +6,7 @@ const DateContainer = styled.div`
   ${tw`flex flex-col border-t-2 border-t-main h-20`}
 `;
 
-const ScheduleSpan = styled.span<{
+const ScheduleButton = styled.button<{
   $color: LabelColorsType;
   $top: number;
   $width: number;
@@ -20,7 +20,7 @@ const ScheduleSpan = styled.span<{
     rounded 
     absolute 
     left-0 
-    justify-center 
+    // justify-center 
     items-center 
     z-[5] 
     text-xs 
@@ -62,4 +62,4 @@ const NoSchedule = styled.div<{ $top: number }>`
   ${(props) => `top: ${props.$top}rem;`}
 `;
 
-export { DateContainer, ScheduleSpan, DateSpan, NoSchedule };
+export { DateContainer, ScheduleButton, DateSpan, NoSchedule };

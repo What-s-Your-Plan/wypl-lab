@@ -54,23 +54,23 @@ function Title({ states, handleChange }: ChangeProps) {
 function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
   const ampm = ['AM', 'PM'];
 
-  const onInputHour = (e: any) => {
-    e.target.value = Math.floor(e.target.value);
-    if (e.target.value < 1) {
-      e.target.value = 1;
-    } else if (e.target.value > 12) {
-      e.target.value = 12;
-    }
-  };
+  // const onInputHour = (e: any) => {
+  //   e.target.value = Math.floor(e.target.value);
+  //   if (e.target.value < 1) {
+  //     e.target.value = 1;
+  //   } else if (e.target.value > 12) {
+  //     e.target.value = 12;
+  //   }
+  // };
 
-  const onInputMinute = (e: any) => {
-    e.target.value = Math.floor(e.target.value);
-    if (e.target.value < 0) {
-      e.target.value = 0;
-    } else if (e.target.value > 59) {
-      e.target.value = 59;
-    }
-  };
+  // const onInputMinute = (e: any) => {
+  //   e.target.value = Math.floor(e.target.value);
+  //   if (e.target.value < 0) {
+  //     e.target.value = 0;
+  //   } else if (e.target.value > 59) {
+  //     e.target.value = 59;
+  //   }
+  // };
 
   const handleAllday = (value: boolean) => {
     setStates((prev) => {
@@ -135,7 +135,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   max="12"
                   value={states.startHour}
                   name="startHour"
-                  onInput={onInputHour}
+                  // onInput={onInputHour}
                   onChange={handleChange}
                 />
                 <span>:</span>
@@ -146,7 +146,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   max="59"
                   value={states.startMinute}
                   name="startMinute"
-                  onInput={onInputMinute}
+                  // onInput={onInputMinute}
                   onChange={handleChange}
                 />
               </S.TimeContainer>
@@ -177,7 +177,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   max="12"
                   value={states.endHour}
                   name="endHour"
-                  onInput={onInputHour}
+                  // onInput={onInputHour}
                   onChange={handleChange}
                 />
                 <span>:</span>
@@ -188,7 +188,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   max="59"
                   value={states.endMinute}
                   name="endMinute"
-                  onInput={onInputMinute}
+                  // onInput={onInputMinute}
                   onChange={handleChange}
                 />
               </S.TimeContainer>
