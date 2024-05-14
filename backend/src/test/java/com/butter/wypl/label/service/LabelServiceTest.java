@@ -68,7 +68,7 @@ public class LabelServiceTest {
 			}).isInstanceOf(LabelException.class)
 				.hasMessageContaining(LabelErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
 		}
-		
+
 	}
 
 	@DisplayName("수정 test")
