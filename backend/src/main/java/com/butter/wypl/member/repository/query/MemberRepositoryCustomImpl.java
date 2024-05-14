@@ -17,8 +17,8 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
 	@Override
 	public List<Member> findBySearchCond(MemberSearchCond cond) {
 		return query.selectFrom(member)
-				.where(member.email.like("%" + cond.query() + "%")
-						.and(member.deletedAt.isNull())
+				.where((member.deletedAt.isNull())
+						.and(member.email.like("%" + cond.q() + "%"))
 				)
 				.limit(cond.size())
 				.fetch();

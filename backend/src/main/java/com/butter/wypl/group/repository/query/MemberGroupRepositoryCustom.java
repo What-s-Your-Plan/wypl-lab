@@ -11,4 +11,12 @@ public interface MemberGroupRepositoryCustom {
 	List<MemberGroup> findAcceptedMemberGroups(int groupId);
 
 	Optional<MemberGroup> findPendingMemberGroup(int memberId, int groupId);
+
+	/**
+	 * @param memberId 조회 요청한 회원의 식별자
+	 *
+	 * @hidden MemberGroup Fetch Join Member <p>
+	 *     MemberGroup Fetch Join Group
+	 */
+	List<MemberGroup> findAllByMemberId(int memberId);
 }

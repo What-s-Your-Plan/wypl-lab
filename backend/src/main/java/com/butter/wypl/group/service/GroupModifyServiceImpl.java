@@ -31,6 +31,7 @@ import com.butter.wypl.group.exception.GroupErrorCode;
 import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
+import com.butter.wypl.group.utils.GroupServiceUtils;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.notification.service.GroupNotificationService;
@@ -47,9 +48,15 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	private final MemberGroupRepository memberGroupRepository;
 	private final GroupNotificationService groupNotificationService;
 
+	private static void validateOwnerPermission(Member owner, Group group, GroupErrorCode errorCode) {
+		if (!isGroupOwner(owner, group)) {
+			throw new GroupException(errorCode);
+		}
+	}
+
 	@Override
 	public GroupIdResponse createGroup(int ownerId, GroupCreateRequest createRequest) {
-
+		Member findOwnerMember = findById(memberRepository, ownerId);
 		Set<Integer> memberIds = new HashSet<>(createRequest.memberIdList());
 		memberIds.add(ownerId);
 		validateMaxMemberCount(memberIds);
@@ -58,7 +65,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		validateAllMembersExist(members, memberIds);
 
 		Group savedGroup = groupRepository.save(
-			Group.of(createRequest.name(), createRequest.description(), getMember(ownerId)));
+				Group.of(createRequest.name(), createRequest.color(), getMember(ownerId)));
 		saveAllMemberGroup(members, savedGroup);
 
 		members.forEach(member -> {
@@ -78,7 +85,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		Group foundGroup = getGroup(groupId);
 		isGroupMember(foundMember.getId(), getMembersByGroupId(memberGroupRepository, foundGroup.getId()));
 
-		foundGroup.updateGroupInfo(updateRequest.name(), updateRequest.description());
+		foundGroup.updateGroupInfo(updateRequest.name(), updateRequest.color());
 		return new GroupIdResponse(foundGroup.getId());
 	}
 
@@ -111,7 +118,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		members.forEach(member -> {
 			/* 그룹 초대 알림 전송 */
 			groupNotificationService.createGroupNotification(
-				member.getId(), owner.getNickname(), group.getName(), group.getId()
+					member.getId(), owner.getNickname(), group.getName(), group.getId()
 			);
 		});
 
@@ -148,13 +155,13 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		Group foundGroup = getGroup(groupId);
 
 		if (isGroupOwner(foundMember, foundGroup)
-			&& getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
+				&& getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
 			throw new GroupException(NOT_ACCEPTED_LEAVE_GROUP);
 		}
 
 		MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(
-				foundMember.getId(), foundGroup.getId())
-			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
+						foundMember.getId(), foundGroup.getId())
+				.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
 
 		memberGroupRepository.delete(memberGroup);
 	}
@@ -162,12 +169,15 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	private void saveAllMemberGroup(List<Member> members, Group group) {
 		List<MemberGroup> memberGroups = new ArrayList<>();
 		members.forEach(member -> {
-				if (member.getMemberGroups().size() >= 50) {
-					throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
-						member.getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
+					if (member.getMemberGroups().size() >= 50) {
+						throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
+								member.getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
+					}
+					MemberGroup memberGroup = MemberGroup.of(member, group, group.getColor());
+					if (GroupServiceUtils.isGroupOwner(member, group))
+						memberGroup.setGroupInviteStateAccepted();
+					memberGroups.add(memberGroup);
 				}
-				memberGroups.add(MemberGroup.of(member, group));
-			}
 		);
 		memberGroupRepository.saveAll(memberGroups);
 	}
@@ -184,16 +194,10 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		}
 	}
 
-	private static void validateOwnerPermission(Member owner, Group group, GroupErrorCode errorCode) {
-		if (!isGroupOwner(owner, group)) {
-			throw new GroupException(errorCode);
-		}
-	}
-
 	private MemberGroup getPendingMemberGroup(Member foundMember, Group foundGroup) {
 		return memberGroupRepository.findPendingMemberGroup(foundMember.getId(),
-				foundGroup.getId())
-			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
+						foundGroup.getId())
+				.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
 	}
 
 	private Member getMember(int ownerId) {

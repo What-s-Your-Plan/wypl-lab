@@ -1,7 +1,10 @@
 package com.butter.wypl.sidetab.domain.embedded;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.TimeZone;
 
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
@@ -47,8 +50,11 @@ public class DDayWidget {
 		}
 	}
 
-	public String getDDay() {
-		long between = ChronoUnit.DAYS.between(LocalDate.now(), value);
+	public String getDDay(TimeZone timeZone) {
+		ZoneId zoneId = timeZone.toZoneId();
+		ZonedDateTime zonedNow = ZonedDateTime.now(zoneId);
+		LocalDate today = zonedNow.toLocalDate();
+		long between = ChronoUnit.DAYS.between(today, value);
 		if (between < 0) {
 			return "D+" + Math.abs(between);
 		}

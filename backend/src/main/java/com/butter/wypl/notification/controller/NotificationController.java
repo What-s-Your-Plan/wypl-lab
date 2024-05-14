@@ -5,6 +5,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -74,6 +76,15 @@ public class NotificationController {
 	public ResponseEntity<Message<Void>> deleteNotification(@Authenticated AuthMember authMember) {
 		notificationModifyService.deleteNotification(authMember.getId());
 		return ResponseEntity.ok(Message.onlyMessage("회원 알림 전체 삭제 성공"));
+	}
+
+	@PatchMapping("/action/{notificationId}")
+	public ResponseEntity<Message<Void>> updateIsActedToTrue(
+		@Authenticated AuthMember authMember,
+		@PathVariable("notificationId") String notificationId
+	) {
+		notificationModifyService.updateIsActedToTrue(authMember.getId(), notificationId);
+		return ResponseEntity.ok(Message.onlyMessage("알림 isActed True 처리 성공"));
 	}
 
 }

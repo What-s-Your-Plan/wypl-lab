@@ -41,5 +41,5 @@ public class MemberGroupServiceUtils {
 			.map(MemberGroup::getMember)
 			.toList();
 	}
-
+	
 }
