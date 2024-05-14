@@ -18,6 +18,7 @@ import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.schedule.data.ModificationType;
 import com.butter.wypl.schedule.data.request.ScheduleCreateRequest;
 import com.butter.wypl.schedule.data.request.ScheduleUpdateRequest;
+import com.butter.wypl.schedule.data.response.MemberIdResponse;
 import com.butter.wypl.schedule.data.response.ScheduleDetailResponse;
 import com.butter.wypl.schedule.data.response.ScheduleIdListResponse;
 import com.butter.wypl.schedule.data.response.ScheduleIdResponse;
@@ -60,7 +61,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 			Repetition repetition = repetitionService.createRepetition(scheduleCreateRequest.repetition().toEntity());
 
 			schedule.updateRepetition(repetition);
-			createRepetitionSchedules(schedule, repetition);
+			createRepetitionSchedules(schedule, repetition, memberId);
 		}
 
 		return ScheduleDetailResponse.of(schedule, memberResponses);
@@ -93,6 +94,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		//이전 일정의 반복과 관련된 일정 삭제
 		List<Schedule> modifySchedules = modifyRepetitionSchedule(schedule, scheduleUpdateRequest.modificationType());
 		for (Schedule modifySchedule : modifySchedules) {
+			memberScheduleService.getMemberScheduleByMemberAndSchedule(memberId, modifySchedule).delete();
 			modifySchedule.delete();
 		}
 
@@ -105,7 +107,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 				repetitionService.createRepetition(scheduleUpdateRequest.repetition().toEntity());
 		schedule.updateRepetition(updatedRepetition);
 
-		createRepetitionSchedules(schedule, updatedRepetition);
+		createRepetitionSchedules(schedule, updatedRepetition, memberId);
 
 		return ScheduleDetailResponse.of(schedule, members);
 	}
@@ -129,6 +131,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		List<ScheduleIdResponse> scheduleIdResponses = new ArrayList<>();
 
 		for (Schedule deleteSchedule : deleteSchedules) {
+			memberScheduleService.getMemberScheduleByMemberAndSchedule(memberId, deleteSchedule).delete();
 			deleteSchedule.delete();
 			scheduleIdResponses.add(ScheduleIdResponse.from(deleteSchedule));
 		}
@@ -154,7 +157,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		return ScheduleResponse.of(schedule, memberScheduleService.getMembersBySchedule(schedule));
 	}
 
-	private void createRepetitionSchedules(Schedule originSchedule, Repetition repetition) {
+	private void createRepetitionSchedules(Schedule originSchedule, Repetition repetition, int memberId) {
 		if (repetition == null) {
 			return;
 		}
@@ -168,8 +171,6 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		startDateTime = originSchedule.getStartDate();
 		endDateTime = originSchedule.getEndDate();
 
-		List<Schedule> addSchedules = new ArrayList<>();
-
 		switch (repetition.getRepetitionCycle()) {
 			case YEAR -> {
 				startDateTime = startDateTime.plusYears(1);
@@ -178,7 +179,11 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 				while (startDateTime.toLocalDate().isEqual(repetitionEndDate) || startDateTime.toLocalDate()
 					.isBefore(repetitionEndDate)) {
 
-					addSchedules.add(originSchedule.toRepetitionSchedule(startDateTime, endDateTime));
+					Schedule repetitionSchedule = scheduleRepository.save(
+						originSchedule.toRepetitionSchedule(startDateTime, endDateTime));
+
+					memberScheduleService.createMemberSchedule(repetitionSchedule,
+						List.of(new MemberIdResponse(memberId)));
 
 					startDateTime = startDateTime.plusYears(1);
 					endDateTime = endDateTime.plusYears(1);
@@ -190,7 +195,12 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 				while (startDateTime.toLocalDate().isEqual(repetitionEndDate) || startDateTime.toLocalDate()
 					.isBefore(repetitionEndDate)) {
-					addSchedules.add(originSchedule.toRepetitionSchedule(startDateTime, endDateTime));
+
+					Schedule repetitionSchedule = scheduleRepository.save(
+						originSchedule.toRepetitionSchedule(startDateTime, endDateTime));
+
+					memberScheduleService.createMemberSchedule(repetitionSchedule,
+						List.of(new MemberIdResponse(memberId)));
 
 					startDateTime = startDateTime.plusMonths(1);
 					endDateTime = endDateTime.plusMonths(1);
@@ -220,7 +230,12 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 						while (startDateTime.toLocalDate().isEqual(repetitionEndDate) || startDateTime.toLocalDate()
 							.isBefore(repetitionEndDate)) {
-							addSchedules.add(originSchedule.toRepetitionSchedule(startDateTime, endDateTime));
+
+							Schedule repetitionSchedule = scheduleRepository.save(
+								originSchedule.toRepetitionSchedule(startDateTime, endDateTime));
+
+							memberScheduleService.createMemberSchedule(repetitionSchedule,
+								List.of(new MemberIdResponse(memberId)));
 
 							startDateTime = startDateTime.plusWeeks(1);
 							endDateTime = endDateTime.plusWeeks(1);
@@ -231,7 +246,6 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 			default -> throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_REPETITION_CYCLE);
 		}
 
-		scheduleRepository.saveAll(addSchedules);
 	}
 
 	private List<Schedule> modifyRepetitionSchedule(Schedule originalSchedule,
@@ -240,13 +254,11 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		switch (modificationType) {
 			case NOW -> {
-				break;
 			}
 			case AFTER -> {
 				modifySchedules.addAll(
 					scheduleRepository.findAllByRepetitionAndStartDateAfter(originalSchedule.getRepetition(),
 						originalSchedule.getStartDate()));
-				break;
 			}
 			case ALL -> {
 				modifySchedules.addAll(
@@ -255,7 +267,6 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 				modifySchedules.addAll(
 					scheduleRepository.findAllByRepetitionAndStartDateAfter(originalSchedule.getRepetition(),
 						originalSchedule.getStartDate()));
-				break;
 			}
 			default -> throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_MODIFICATION_TYPE);
 		}
