@@ -5,21 +5,31 @@ import styled from 'styled-components';
 import { BgColors } from '@/assets/styles/colorThemes';
 import Check from '@/assets/icons/check.svg';
 import X from '@/assets/icons/x.svg';
+import patchGroupInvite from '@/services/group/patchGroupInvite';
+import deleteGroupInvite from '@/services/group/deleteGroupInvite';
+import { useNavigate } from 'react-router-dom';
 
 type InvitedGroupInfoProps = {
   group: Group;
+  fetchList: () => void;
 };
 
-function InvitedGroupInfo({ group }: InvitedGroupInfoProps) {
+function InvitedGroupInfo({ group, fetchList }: InvitedGroupInfoProps) {
   const handleAccept = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log('Open Settings');
+    patchGroupInvite(group.id);
+    fetchList();
+    window.location.reload();
   };
 
   const handleReject = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    console.log('Reject ');
+    if (window.confirm('그룹 초대를 거절하시겠습니까?')) {
+      deleteGroupInvite(group.id);
+    }
+    fetchList();
   };
+
   return (
     <div>
       <Divider />
@@ -33,8 +43,18 @@ function InvitedGroupInfo({ group }: InvitedGroupInfoProps) {
             {group.name}
           </div>
           <div className="flex gap-4">
-            <GreenImg src={Check} alt="수락" onClick={handleAccept} />
-            <RedImg src={X} alt="거부" onClick={handleReject} />
+            <GreenImg
+              src={Check}
+              alt="수락"
+              onClick={handleAccept}
+              className="cursor-pointer"
+            />
+            <RedImg
+              src={X}
+              alt="거부"
+              onClick={handleReject}
+              className="cursor-pointer"
+            />
           </div>
         </div>
       </div>

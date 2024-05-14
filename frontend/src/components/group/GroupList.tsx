@@ -42,7 +42,13 @@ function GroupList() {
       return <div>새로운 초대가 없어요</div>;
     }
     return invitedGroupList?.map((group) => {
-      return <InvitedGroupInfo key={group.id} group={group} />;
+      return (
+        <InvitedGroupInfo
+          key={group.id}
+          group={group}
+          fetchList={fetchGroupList}
+        />
+      );
     });
   };
 
