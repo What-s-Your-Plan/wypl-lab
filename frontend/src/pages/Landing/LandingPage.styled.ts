@@ -48,10 +48,6 @@ const itemStyle = `
   animation-fill-mode: forwards;
 `;
 
-const colors = {
-  GRAY_400: '#ced4da',
-};
-
 const Container = styled.div`
   ${tw`
     relative
