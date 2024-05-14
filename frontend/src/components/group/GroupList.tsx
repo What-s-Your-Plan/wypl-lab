@@ -59,34 +59,6 @@ function GroupList() {
     const response = await getMemberGroupList();
     setGroupList(response.groups);
     setInvitedGroupList(response.invited_groups);
-    setGroupList([
-      {
-        group_id: 1,
-        name: 'A602',
-        group_color: 'labelRed',
-        is_owner: true,
-      },
-      {
-        group_id: 2,
-        name: 'A602',
-        group_color: 'labelRed',
-        is_owner: true,
-      },
-    ]);
-    setInvitedGroupList([
-      {
-        group_id: 1,
-        name: 'A602',
-        group_color: 'labelRed',
-        is_owner: true,
-      },
-      {
-        group_id: 2,
-        name: 'A602',
-        group_color: 'labelRed',
-        is_owner: true,
-      },
-    ]);
   };
 
   useEffect(() => {
