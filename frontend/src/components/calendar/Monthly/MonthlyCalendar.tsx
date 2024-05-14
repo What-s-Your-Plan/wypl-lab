@@ -79,6 +79,7 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
       for (const sked of labelFilter(originSked, selectedLabels)) {
         let idx = getDateDiff(firstDay, sked.start_date);
         let period = getDateDiff(sked.start_date, sked.end_date);
+        console.log(idx)
         if (idx < 0) {
           period += idx;
           idx = 0
@@ -86,6 +87,9 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
 
         let row: number | null = null;
         for (let p = 0; p <= period; p++) {
+          if (idx + p >= 42) {
+            break;
+          }
           if (row === null) {
             for (let i = 0; i < 3; i++) {
               if (init[idx + p][i].length === 0 || i === 2) {

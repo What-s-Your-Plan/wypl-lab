@@ -7,7 +7,7 @@ import useMemberStore from '@/stores/MemberStore';
 
 type MDayProps = {
   date: Date;
-  firstDay:Date;
+  firstDay: Date;
   schedules: DateSchedule;
   isCurrentMonth: boolean;
 };
@@ -23,7 +23,11 @@ function MonthlyDay({ date, firstDay, schedules, isCurrentMonth }: MDayProps) {
           const start = stringToDate(schedule[0].start_date);
           const end = stringToDate(schedule[0].end_date);
 
-          if (isSameDay(firstDay, date) ||isSameDay(start, date) || date.getDay() === 0) {
+          if (
+            isSameDay(firstDay, date) ||
+            isSameDay(start, date) ||
+            date.getDay() === 0
+          ) {
             const width = Math.min(
               7 - date.getDay(),
               getDateDiff(date, end) + 1,
@@ -58,9 +62,12 @@ function MonthlyDay({ date, firstDay, schedules, isCurrentMonth }: MDayProps) {
           );
         } else if (schedule.length > 0) {
           return (
-            <span key={idx} className="truncate h-4 absolute top-8 pl-1">
-              + {schedule.length}
-            </span>
+            <div
+              key={idx}
+              className="flex items-center truncate h-4 absolute top-8 pl-1 hover:bg-default-coolgray w-full transition-all"
+            >
+              <span>+ {schedule.length}</span>
+            </div>
           );
         }
       }
