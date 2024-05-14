@@ -11,7 +11,7 @@ DOCKER_VOLUME_PATH="/logs"
 
 # Build Docker Image
 echo "Building Docker image..."
-docker build -t "$NAME":"$TAG" .
+docker build -t $NAME:$TAG .
 
 # date tag
 # DATE_TAG=$(date +%y%m%d%H%M)
