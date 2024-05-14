@@ -1,15 +1,11 @@
 #!/bin/sh
 
 # Variable
-PROFILE="$1" #"dev"
+PROFILE="$1"
 PORT="$2"
-NAME="$3" #"wypl-web-dev"
-VOLUME_PATH="$4" #
+NAME="$3" #image name
+VOLUME_PATH="$4"
 TAG="latest"
-echo "PROFILE: $PROFILE"
-echo "PORT: $PORT"
-echo "NAME: $NAME"
-echo "VOLUME_PATH: $VOLUME_PATH"
 
 # Build Docker Image
 echo "Building Docker image..."
