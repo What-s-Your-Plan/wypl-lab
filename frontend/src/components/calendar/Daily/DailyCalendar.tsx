@@ -4,6 +4,8 @@ import useDateStore from '@/stores/DateStore';
 import { dateToString, getTime } from '@/utils/DateUtils';
 import * as S from './DailyCalendar.styled';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
+import useMemberStore from '@/stores/MemberStore';
+import { labelFilter } from '@/utils/FilterUtils';
 
 type DailyProps = {
   needUpdate: boolean;
@@ -11,20 +13,30 @@ type DailyProps = {
 };
 
 function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
-  const { selectedDate } = useDateStore();
+  const { selectedDate, selectedLabels } = useDateStore();
+  const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
+  const { mainColor } = useMemberStore();
 
   const updateInfo = useCallback(async () => {
     const response = await getCalendars('DAY', dateToString(selectedDate));
     if (response) {
-      setSchedules(response.schedules);
+      setOriginSked(response.schedules);
     }
   }, [selectedDate]);
+
+  const filteredSked = useCallback(() => {
+    setSchedules(labelFilter(originSked, selectedLabels))
+  }, [originSked, selectedLabels])
 
   useEffect(() => {
     updateInfo();
     setUpdateFalse();
   }, [selectedDate, needUpdate]);
+
+  useEffect(() => {
+    filteredSked()
+  }, [filteredSked])
 
   const renderSchedule = () => {
     return schedules.map((schedule, idx) => {
@@ -32,7 +44,7 @@ function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
         <>
           {idx !== 0 && (
             <>
-              <div className="w-8 h-10 flex justify-center">
+              <div className="w-8 h-10 flex justify-center" key={`line${idx}`}>
                 <S.VerticalLine />
               </div>
             </>
@@ -40,9 +52,9 @@ function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
           <S.ScheduleContainer key={schedule.schedule_id}>
             <S.LabelDiv
               $bgColor={
-                schedule.label
-                  ? (schedule.label.color as LabelColorsType)
-                  : 'labelBrown'
+                (schedule.label?.color ||
+                  schedule.group?.color ||
+                  mainColor) as LabelColorsType
               }
             />
             <S.ScheduleContents>

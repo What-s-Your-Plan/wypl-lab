@@ -14,7 +14,7 @@ import check from '@/assets/icons/check.svg';
 import * as S from './MemberPalette.styled';
 
 function MemberPalette() {
-  const { mainColor, setLabelColor } = useMemberStore();
+  const { mainColor, setMainColor: setLabelColor } = useMemberStore();
   const { isLoading, startLoading, endLoading } = useLoading();
 
   const changeLabelColor = async (color: BgColors) => {
@@ -42,7 +42,9 @@ function MemberPalette() {
             {LabelColors.slice(groupIdx * 7, (groupIdx + 1) * 7).map(
               (value, idx) => (
                 <S.SelectLabelColor>
-                  {mainColor === value && <S.Icon src={check} />}
+                  {mainColor === value && (
+                    <S.Icon src={check} className={'whiteImg'} />
+                  )}
                   <ColorCircle
                     key={idx}
                     onClick={() => changeLabelColor(value)}

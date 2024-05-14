@@ -6,6 +6,7 @@ import {
   getDateDiff,
   dateToString,
 } from '@/utils/DateUtils';
+import { labelFilter } from '@/utils/FilterUtils';
 import useDateStore from '@/stores/DateStore';
 import getCalendars from '@/services/calendar/getCalendars';
 import { Chevrons } from '../DatePicker.styled';
@@ -21,7 +22,7 @@ type MonthlyProps = {
 };
 
 function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
-  const createInit = () : Array<DateSchedule> => {
+  const createInit = (): Array<DateSchedule> => {
     const init = [];
 
     for (let i = 0; i < 42; i++) {
@@ -31,8 +32,10 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
     return init;
   };
 
-  const { selectedDate, setSelectedDate } = useDateStore();
-  const [monthSchedules, setMonthSchedules] = useState<Array<DateSchedule>>(createInit());
+  const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
+  const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
+  const [monthSchedules, setMonthSchedules] =
+    useState<Array<DateSchedule>>(createInit());
   const [firstDay, setFirstDay] = useState<Date | null>(null);
 
   const handleNextMonth = () => {
@@ -61,15 +64,26 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
     setSelectedDate(prevMonth);
   };
 
-  const updateInfo = useCallback(async (first: Date) => {
+  const updateInfo = useCallback(async () => {
     const response = await getCalendars('MONTH', dateToString(selectedDate));
-    console.log(response)
-    const init: Array<DateSchedule> = createInit();
 
     if (response) {
-      for (const res of response.schedules) {
-        const idx = getDateDiff(first, res.start_date);
-        const period = getDateDiff(res.start_date, res.end_date);
+      setOriginSked(response.schedules);
+    }
+  }, [selectedDate]);
+
+  const filteredSked = useCallback(() => {
+    if (firstDay) {
+      const init: Array<DateSchedule> = createInit();
+
+      for (const sked of labelFilter(originSked, selectedLabels)) {
+        let idx = getDateDiff(firstDay, sked.start_date);
+        let period = getDateDiff(sked.start_date, sked.end_date);
+        if (idx < 0) {
+          period += idx;
+          idx = 0
+        }
+
         let row: number | null = null;
         for (let p = 0; p <= period; p++) {
           if (row === null) {
@@ -80,13 +94,13 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
               }
             }
           }
-          init[idx + p][row!].push(res);
+          init[idx + p][row!].push(sked);
         }
       }
-    }
 
-    setMonthSchedules(init);
-  }, []);
+      setMonthSchedules(init);
+    }
+  }, [originSked, selectedLabels]);
 
   useEffect(() => {
     const newFirst = new Date(
@@ -98,16 +112,20 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
     if (firstDay === null || !isSameDay(firstDay, newFirst)) {
       setFirstDay(newFirst);
 
-      updateInfo(newFirst);
+      updateInfo();
       setUpdateFalse();
     }
-  }, [selectedDate]);
+  }, [updateInfo]);
 
   useEffect(() => {
     if (needUpdate && firstDay) {
-      updateInfo(firstDay);
+      updateInfo();
     }
   }, [needUpdate]);
+
+  useEffect(() => {
+    filteredSked();
+  }, [filteredSked]);
 
   const renderMonthly = () => {
     const calendar: Array<JSX.Element> = [];
@@ -124,6 +142,7 @@ function MonthlyCalender({ needUpdate, setUpdateFalse }: MonthlyProps) {
           <MonthlyDay
             key={i}
             date={date}
+            firstDay={firstDay}
             schedules={monthSchedules[i]}
             isCurrentMonth={isCurrentMonth(date, selectedDate.getMonth())}
           />,

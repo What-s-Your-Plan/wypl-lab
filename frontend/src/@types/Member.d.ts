@@ -22,7 +22,7 @@ type FindMemberProfileResponse = {
   id: number;
   email: string;
   nickname: string;
-  profile_image_url: string?;
+  profile_image_url: string | null;
   main_color: string;
 };
 

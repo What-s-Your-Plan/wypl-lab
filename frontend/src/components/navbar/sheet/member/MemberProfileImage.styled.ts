@@ -8,7 +8,7 @@ const Container = styled.div`
         items-center
 
         w-full
-        h-32
+        h-24
     `}
 `;
 
@@ -50,7 +50,7 @@ const IconWrapper = styled.div`
       rounded-full
 
       left-[280px]
-      bottom-[250px]
+      bottom-[270px]
 
       shadow-md
       cursor-pointer

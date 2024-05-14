@@ -100,7 +100,7 @@ function DatePicker() {
       </h2>
       <div className="flex items-center justify-between mt-1">
         <button
-          className="text-xs size-6 rounded-md border font-medium border-gray-500"
+          className="text-xs w-fit h-fit p-1 rounded-md border font-medium border-gray-500"
           onClick={() => {
             goToday();
           }}

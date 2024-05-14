@@ -8,6 +8,7 @@ import {
   stringToDate,
   isAllday,
 } from '@/utils/DateUtils';
+import { labelFilter } from '@/utils/FilterUtils';
 
 import { LScheduleContainer } from './WeeklyCalendar.styled';
 import WeeklyDays from './WeeklyDays';
@@ -30,12 +31,13 @@ export type LongSchedule = {
 type WeeklyProps = {
   needUpdate: boolean;
   setUpdateFalse: () => void;
-}
+};
 
 function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
-  const { selectedDate, setSelectedDate } = useDateStore();
+  const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
   const [firstDay, setFirstDay] = useState<Date | null>(null);
   const [height, setHeight] = useState<number>(0);
+  const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [longSchedules, setLongSchedules] = useState<Array<LongSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
 
@@ -63,15 +65,25 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
     const response = await getCalendars('WEEK', dateToString(selectedDate));
 
     if (response) {
+      setOriginSked(response.schedules);
+    }
+  }, [selectedDate]);
+
+  const filteredSked = useCallback(() => {
+    if (firstDay) {
       const bitArray = [0, 0, 0, 0, 0, 0, 0];
       const newLong: Array<LongSchedule> = [];
       const newSchedule: Array<CalendarSchedule> = [];
       let maxIdx: number = 0;
-      for (const res of response.schedules) {
-        const startDate = stringToDate(res.start_date);
-        const endDate = stringToDate(res.end_date);
-        const startDay = stringToDate(res.start_date).getDay();
-        const period = getDateDiff(res.start_date, res.end_date);
+
+      for (const sked of labelFilter(originSked, selectedLabels)) {
+        const startDate = stringToDate(sked.start_date);
+        const endDate = stringToDate(sked.end_date);
+        const period = getDateDiff(
+          firstDay > startDate ? firstDay : startDate,
+          sked.end_date,
+        );
+        const startDay = startDate < firstDay ? 0 : startDate.getDay();
 
         if (period > 0 || isAllday(startDate, endDate)) {
           const maxPeriod = Math.min(6 - startDay, period);
@@ -90,20 +102,20 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
             bitArray[startDay + p] = bitArray[startDay + p] | (1 << i);
           }
           newLong.push({
-            schedule: res,
+            schedule: sked,
             startDay,
             row: row as number,
             period: maxPeriod,
           });
         } else if (period === 0) {
-          newSchedule.push(res);
+          newSchedule.push(sked);
         }
       }
       setLongSchedules(newLong);
       setSchedules(newSchedule);
       setHeight(maxIdx);
     }
-  }, []);
+  }, [originSked, selectedLabels]);
 
   useEffect(() => {
     const newFirst = new Date(
@@ -120,10 +132,14 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
 
   useEffect(() => {
     if (needUpdate && firstDay) {
-      setUpdateFalse();
       updateInfo();
+      setUpdateFalse();
     }
-  }, [needUpdate])
+  }, [needUpdate]);
+
+  useEffect(() => {
+    filteredSked();
+  }, [filteredSked]);
 
   const renderHeader = () => {
     if (firstDay) {
@@ -181,7 +197,7 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
             <WeeklyDays firstDay={firstDay} />
             <LScheduleContainer $height={height + 1}>
               <WeeklyVertical />
-              <WeeklyLSchedules lSchedules={longSchedules} />
+              <WeeklyLSchedules lSchedules={longSchedules} row={height + 1} />
             </LScheduleContainer>
           </div>
           <div className="flex flex-auto">

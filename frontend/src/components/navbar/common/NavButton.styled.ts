@@ -22,10 +22,8 @@ const Button = styled.button`
 
 const Image = styled.img`
   ${tw`
-    h-7
-    w-7
-
-    rounded-full
+    h-6
+    w-6
 `}
 `;
 

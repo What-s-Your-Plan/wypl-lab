@@ -21,4 +21,14 @@ const Icon = styled.img`
   `}
 `;
 
-export { Container, Icon };
+const LogoutButtonWrapper = styled.div`
+  ${tw`
+    flex
+    justify-center
+    
+    w-full
+    mt-5
+  `}
+`;
+
+export { Container, Icon, LogoutButtonWrapper };

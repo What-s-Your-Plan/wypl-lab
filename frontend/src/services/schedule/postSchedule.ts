@@ -15,7 +15,6 @@ async function postSchedule(schedule: Schedule & Repeat) {
     }
   }
 
-  console.log(schedule.members);
   body.members = schedule.members.map((member) => {
     return {
       member_id: member.member_id,
@@ -34,13 +33,13 @@ async function postSchedule(schedule: Schedule & Repeat) {
     endDate.setHours(23);
     endDate.setMinutes(59);
   } else if (schedule.isAllday === false) {
-    let startHour = schedule.startHour === 12 ? 0 : schedule.startHour;
+    let startHour = schedule.startHour === 12 ? 0 : Number(schedule.startHour);
     let startMinute = schedule.startMinute;
-    let endHour = schedule.endHour === 12 ? 0 : schedule.endHour;
+    let endHour = schedule.endHour === 12 ? 0 : Number(schedule.endHour);
     let endMinute = schedule.endMinute;
 
-    schedule.startAMPM === 'PM' ? startHour + 12 : null;
-    schedule.endAMPM === 'PM' ? endHour + 12 : null;
+    schedule.startAMPM === 'PM' ? (startHour += 12) : null;
+    schedule.endAMPM === 'PM' ? (endHour += 12) : null;
 
     startDate.setHours(startHour);
     startDate.setMinutes(startMinute);
@@ -67,9 +66,11 @@ async function postSchedule(schedule: Schedule & Repeat) {
         break;
       case '매 달':
         body.repetition.repetition_cycle = 'MONTH';
+        body.day_of_week = 0
         break;
       case '매 년':
         body.repetition.repetition_cycle = 'YEAR';
+        body.day_of_week = 0
         break;
       default:
         break;
@@ -78,7 +79,7 @@ async function postSchedule(schedule: Schedule & Repeat) {
       body.repetition.repetition_end_date = schedule.endRDate;
     }
   }
-  console.log(body);
+
   try {
     const response = await axiosWithAccessToken.post(
       '/schedule/v1/schedules',

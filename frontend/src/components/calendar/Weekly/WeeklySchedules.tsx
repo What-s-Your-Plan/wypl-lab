@@ -1,12 +1,14 @@
-import { stringToDate } from '@/utils/DateUtils';
+import { stringToDate, padding0 } from '@/utils/DateUtils';
 import * as S from './WeeklyCalendar.styled';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
+import useMemberStore from '@/stores/MemberStore';
 
 type WSchedulesProps = {
   schedules: Array<CalendarSchedule>;
 };
 
 function WeeklySchedules({ schedules }: WSchedulesProps) {
+  const { mainColor } = useMemberStore();
   const renderSchedules = () => {
     return schedules.map((schedule, index) => {
       const startDate = stringToDate(schedule.start_date);
@@ -36,20 +38,23 @@ function WeeklySchedules({ schedules }: WSchedulesProps) {
         >
           <S.ScheduleButton
             $bgColor={
-              schedule.label
-                ? (schedule.label.color as LabelColorsType)
-                : 'labelBrown'
+              (schedule.label?.color ||
+                schedule.group?.color ||
+                mainColor) as LabelColorsType
             }
           >
-            <p className="order-1 font-semibold text-default-white">
+            <p className="order-1 font-semibold text-default-white text-left">
               {schedule.title}
             </p>
-            <p className="text-default-coolgray text-left">
+            <p className="text-default-coolgray text-left text-xs">
               <time dateTime={schedule.start_date}>
-                {hour12(startDate)}:{startDate.getMinutes()} {startAmPm} ~{' '}
+                {startAmPm}
+                {padding0(hour12(startDate))}:{padding0(startDate.getMinutes())}{' '}
+                ~{' '}
               </time>
               <time dateTime={schedule.end_date}>
-                {hour12(endDate)}:{endDate.getMinutes()} {endAmPm}
+                {endAmPm}
+                {padding0(hour12(endDate))}:{padding0(endDate.getMinutes())}
               </time>
             </p>
           </S.ScheduleButton>

@@ -22,17 +22,15 @@ const DayButton = styled.button<{
   $sun?: boolean;
   $satur?: boolean;
 }>`
-  ${tw`size-8 rounded-full cursor-pointer border-2 font-bold`}
-  ${(props) => (props.$sun ? tw`text-red-500` : '')}
-  ${(props) => (props.$satur ? tw`text-blue-600` : '')}
+  ${tw`size-8 rounded-full cursor-pointer border-2 border-gray-400 text-gray-400 font-bold transition-all`}
   ${(props) => {
     if (props.$isSelected) {
       if (props.$sun) {
-        return tw`border-red-500`;
+        return tw`border-red-500 text-red-500`;
       } else if (props.$satur) {
-        return tw`border-blue-600`;
+        return tw`border-blue-600 text-blue-600`;
       }
-      return tw`border-default-black`;
+      return tw`border-default-black text-default-black`;
     }
     return '';
   }}
