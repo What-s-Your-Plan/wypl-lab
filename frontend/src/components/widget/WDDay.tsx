@@ -94,6 +94,7 @@ function WDDay() {
             disabled={!isModifyingDDay}
             onChange={(e) => setTargetDate(e.target.value)}
             min={'1970-01-01'}
+            max={'2199-12-31'}
             placeholder="디데이 날짜 선택"
           />
         ) : (
