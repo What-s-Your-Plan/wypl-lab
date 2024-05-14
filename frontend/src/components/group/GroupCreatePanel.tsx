@@ -159,6 +159,7 @@ function GroupCreatePanel({
         <div>
           <span>그룹멤버</span>
           <InputDefault
+            disabled={selectedMembers.length > 10}
             value={searchMember}
             onChange={handleSearchMemberChange}
           />

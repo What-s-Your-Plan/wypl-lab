@@ -3,12 +3,14 @@ import getScheduleDetail from '@/services/schedule/getScheduleDetail';
 import * as Items from './SkedDetailItems';
 import TrashIcon from '@/assets/icons/trash.svg';
 import EditIcon from '@/assets/icons/editPaper.svg';
+import { useNavigate } from 'react-router-dom';
 
 type DetailProps = {
   scheduleId: number;
 };
 
 function SkedDetailPanel({ scheduleId }: DetailProps) {
+  const navigator = useNavigate();
   const [schedule, setSchedule] = useState<ScheduleResponse | null>(null);
   const getSchedule = async () => {
     const response = await getScheduleDetail(scheduleId);
@@ -48,6 +50,7 @@ function SkedDetailPanel({ scheduleId }: DetailProps) {
           {schedule.repetition && (
             <Items.Repeat repeat={schedule.repetition}/>
           )}
+          <Items.WriteReview handleClick={() => {navigator(`/review/write/${scheduleId}`)}}/>
         </>
       )}
     </div>

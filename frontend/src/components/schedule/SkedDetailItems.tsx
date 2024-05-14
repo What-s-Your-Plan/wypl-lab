@@ -2,6 +2,7 @@ import * as S from './Schedule.styled';
 import LabelButton from '@/components/common/LabelButton';
 import { isAllday, padding0, stringToDate } from '@/utils/DateUtils';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
+import Button from '@/components/common/Button';
 
 import CalendarIcon from '@/assets/icons/calendar.svg';
 import DescriptionIcon from '@/assets/icons/textAlignLeft.svg';
@@ -10,6 +11,7 @@ import ArrowRightIcon from '@/assets/icons/arrowRight.svg';
 import LabelIcon from '@/assets/icons/tag.svg';
 import UsersIcon from '@/assets/icons/users.svg';
 import RepeatIcon from '@/assets/icons/repeat.svg';
+import PenIcon from '@/assets/icons/pen.svg';
 
 function Title({ title }: { title: string }) {
   return (
@@ -162,4 +164,15 @@ function Repeat({ repeat }: { repeat: RepetitionResponse }) {
   );
 }
 
-export { Title, Time, Description, Label, Member, Repeat };
+function WriteReview({handleClick}:{handleClick: () => void}) {
+  return (
+    <div className='flex justify-center'>
+    <Button $width='80%' $size='lg' $border='black' onClick={handleClick}>
+      <img src={PenIcon} alt="write-review" />
+      <span>회고 작성하기</span>
+    </Button>
+    </div>
+  )
+}
+
+export { Title, Time, Description, Label, Member, Repeat, WriteReview };
