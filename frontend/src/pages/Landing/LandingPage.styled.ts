@@ -49,13 +49,7 @@ const itemStyle = `
 `;
 
 const colors = {
-  YELLOW_500: '#F4BD68',
-  WHITE: '#ffffff',
   GRAY_400: '#ced4da',
-  GRAY_500: '#adb5bd',
-  BLACK: '#000000',
-  ORANGE_500: '#EE6C4C',
-  BLUE_500: '#88B6B9',
 };
 
 const Container = styled.div`
@@ -91,7 +85,12 @@ const CalendarStyle = styled.div`
   top: -2.5rem;
 
   width: 50rem;
-  border: 1px solid ${colors.GRAY_400};
+
+  ${tw`
+    border
+    border-solid
+    border-default-coolgray
+  `}
   box-sizing: content-box;
   box-shadow: 1.25px 1.25px 1.25px rgba(0, 0, 0, 0.25);
 
@@ -120,7 +119,9 @@ const DateItemStyle = styled.div`
   height: 7.5rem;
   padding: 1.5rem 1.5rem 1rem;
 
-  background: ${colors.WHITE};
+  ${tw`
+    bg-default-white
+  `}
 
   font-size: 5rem;
   text-align: right;
@@ -129,7 +130,9 @@ const DateItemStyle = styled.div`
 const FirstItemStyle = styled.div`
   ${itemStyle};
 
-  background: ${colors.YELLOW_500};
+  ${tw`
+    bg-label-yellow
+  `}
 
   animation-delay: 0.5s;
 `;
@@ -137,7 +140,9 @@ const FirstItemStyle = styled.div`
 const SecondItemStyle = styled.div`
   ${itemStyle};
 
-  background: ${colors.ORANGE_500};
+  ${tw`
+    bg-label-orange
+  `}
 
   animation-delay: 1s;
 `;
@@ -145,7 +150,9 @@ const SecondItemStyle = styled.div`
 const ThirdItemStyle = styled.div`
   ${itemStyle};
 
-  background: ${colors.BLUE_500};
+  ${tw`
+    bg-label-blue
+  `}
 
   animation-delay: 1.5s;
 `;
@@ -169,7 +176,9 @@ const BlackTextStyle = styled.span`
   font-size: 5rem;
   font-weight: 700;
   line-height: 6.25rem;
-  color: ${colors.BLACK};
+  ${tw`
+    text-default-black
+  `}
   text-shadow: 1.25px 1.25px 2.5px rgba(0, 0, 0, 0.25);
 `;
 
@@ -179,13 +188,17 @@ const WhiteTextStyle = styled.span`
   font-size: 5rem;
   font-weight: 700;
   line-height: 6.25rem;
-  color: ${colors.WHITE};
+  ${tw`
+    text-default-white
+  `}
   text-shadow: 1.25px 1.25px 2.5px rgba(0, 0, 0, 0.25);
 `;
 
 const DetailTextStyle = styled.span`
   font-size: 1rem;
-  color: ${colors.GRAY_500};
+  ${tw`
+    text-label-charcoal
+  `}
   line-height: 120%;
 `;
 

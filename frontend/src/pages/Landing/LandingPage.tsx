@@ -3,7 +3,6 @@ import Responsive from './Responsive';
 import GoogleOAuthButton from './button/GoogleOAuthButton';
 
 import {
-  Layout,
   Container,
   BlackTextStyle,
   CalendarStyle,
