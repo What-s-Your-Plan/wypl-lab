@@ -13,6 +13,7 @@ function RTitle({ $title, $setTitle }: RTitleProps) {
         placeholder="제목을 입력해주세요"
         $width="100%"
         value={$title}
+        maxLength={30}
         onChange={(e) => {
           $setTitle(e.target.value);
         }}

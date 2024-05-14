@@ -1,5 +1,3 @@
-import { useRef } from 'react';
-
 import { PictureContent } from '@/objects/Content';
 import { WhiteContainer } from '@/components/common/Container';
 import Upload from '@/assets/icons/upload.svg';
@@ -13,8 +11,6 @@ type RPictureProps = {
 
 function RPicture({ index, content }: RPictureProps) {
   const { setContent } = useReviewStore();
-
-  const inputRef = useRef<HTMLInputElement>(null);
 
   //TODO: 이미지 업로드 시 파일 validation 체크 필요
   const handleImgChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,19 +27,19 @@ function RPicture({ index, content }: RPictureProps) {
   };
 
   return (
-    <WhiteContainer $width="900" className="flex justify-center">
-      <label htmlFor="file">
+    <WhiteContainer $width="900" className="flex justify-center !py-8">
+      <label htmlFor={`file${index}`}>
         <img
           src={content.path === '' ? Upload : content.path}
           className="object-fill h-40"
         />
         <input
           type="file"
-          id="file"
+          id={`file${index}`}
+          name={`file${index}`}
           accept="image/png, image/jpg, image/jpeg"
           multiple={false}
           onChange={handleImgChange}
-          ref={inputRef}
           className="hidden"
         />
       </label>
