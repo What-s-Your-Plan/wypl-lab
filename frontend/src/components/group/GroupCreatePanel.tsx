@@ -1,14 +1,18 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+
+import getMemberbyEmail from '@/services/member/getMemberbyEmail';
+
 import { InputDefault } from '../common/InputText';
-import { BgColors, LabelColorsType } from '@/assets/styles/colorThemes';
 import PopOver from '../common/PopOver';
 import ColorCircle from '../common/ColorCircle';
 import PalettePanel from '../color/PalettePanel';
 import Button from '../common/Button';
-import X from '@/assets/icons/x.svg';
-import getMemberbyEmail from '@/services/member/getMemberbyEmail';
+
 import { FindMemberProfileResponse } from '@/@types/Member';
+import X from '@/assets/icons/x.svg';
 import DefaultImage from '@/assets/icons/user.svg';
+import { BgColors, LabelColorsType } from '@/assets/styles/colorThemes';
+
 type GroupCreatePanelProps = {
   states: GroupInfo;
   handleChange: (
@@ -106,6 +110,18 @@ function GroupCreatePanel({
       };
     });
   }, [color]);
+
+  useEffect(() => {
+    const newMemberList = selectedMembers.map((member) => {
+      return member.id;
+    });
+    setStates((prev) => {
+      return {
+        ...prev,
+        member_id_list: newMemberList,
+      };
+    });
+  }, [selectedMembers]);
 
   return (
     <form

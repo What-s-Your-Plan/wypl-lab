@@ -42,21 +42,22 @@ function GroupList() {
       return <div>새로운 초대가 없어요</div>;
     }
     return invitedGroupList?.map((group) => {
-      return <InvitedGroupInfo key={group.group_id} group={group} />;
+      return <InvitedGroupInfo key={group.id} group={group} />;
     });
   };
 
   const renderGroupList = () => {
-    if (!groupList || groupList?.length === 0) {
+    if (groupList?.length === 0) {
       return <div>속해있는 그룹이 없어요</div>;
     }
     return groupList?.map((group) => {
-      return <GroupInfo key={group.group_id} group={group} />;
+      return <GroupInfo key={group.id} group={group} />;
     });
   };
 
   const fetchGroupList = async () => {
     const response = await getMemberGroupList();
+    console.log(response);
     setGroupList(response.groups);
     setInvitedGroupList(response.invited_groups);
   };
@@ -64,6 +65,11 @@ function GroupList() {
   useEffect(() => {
     fetchGroupList();
   }, []);
+
+  useEffect(() => {
+    fetchGroupList();
+  }, [isModalOpen]);
+
   return (
     <>
       <Container $width="left" className="flex flex-col gap-4">
@@ -73,7 +79,10 @@ function GroupList() {
               <Disclosure.Button className="w-full flex justify-between items-center cursor-default">
                 <div className="flex gap-2 cursor-pointer">
                   <img src={Envelope} alt="초대" className="w-4" />
-                  초대받은 그룹 (+{invitedGroupList.length})
+                  <span>초대받은 그룹</span>
+                  {invitedGroupList && (
+                    <span>(+{invitedGroupList.length})</span>
+                  )}
                 </div>
                 <Button className="!bg-transparent" $size="none">
                   <img
