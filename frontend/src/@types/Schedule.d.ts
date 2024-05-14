@@ -68,14 +68,13 @@ type CalendarsResponse = {
   schedules: Array<CalendarSchedule>;
 };
 
-//이거 그대로 쓰지 마세요 Repititon 정의 안되어 있습니다..
-//위에 있는 Repeat이랑 노션 다르길래 일단 이렇게 둘게..!
 type ScheduleResponse = {
   schedule_id: number;
   title: string;
   start_date: string; //ex) "2024-04-16T15:00:00"
   end_date: string; //ex) "2024-04-16T17:00:00",
   category: string;
+  description: string;
   group_id: number | null;
   repetition: Repetition | null;
   label: LabelResponse | null;
@@ -94,3 +93,12 @@ type ScheduleSimpleResponse = {
   member_count: number;
   members: Member[]; //개인 일정일 경우 1명의 정보만 들어
 };
+
+type RepetitionResponse = {
+  repetition_id : number
+	repetition_cycle : string,
+	repetition_start_date : string,
+	repetition_end_date : string,
+	day_of_week : number,
+	week : number
+}
