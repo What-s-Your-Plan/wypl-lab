@@ -11,6 +11,7 @@ import initialSchedule from '@/constants/ScheduleFormInit';
 import { dateToString } from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
 import useMemberStore from '@/stores/MemberStore';
+import Todo from './Todo';
 import DailyCalendar from './Daily/DailyCalendar';
 
 function CalendarContent() {
@@ -78,9 +79,7 @@ function CalendarContent() {
               <Containers.WhiteContainer $width="1300" $height="one">
                 <DatePicker />
               </Containers.WhiteContainer>
-              <Containers.WhiteContainer $width="1300" $height="one">
-                todo
-              </Containers.WhiteContainer>
+              <Todo/>
               <Button
                 className="py-2"
                 $size="lg"
