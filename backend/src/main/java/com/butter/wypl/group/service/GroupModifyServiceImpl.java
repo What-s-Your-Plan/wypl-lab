@@ -69,8 +69,9 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		saveAllMemberGroup(members, savedGroup);
 
 		members.forEach(member -> {
+			/* 그룹 초대 알림 전송 */
 			groupNotificationService.createGroupNotification(
-					member.getId(), findOwnerMember.getNickname(), savedGroup.getName(), savedGroup.getId()
+				member.getId(), member.getNickname(), savedGroup.getName(), savedGroup.getId()
 			);
 		});
 
