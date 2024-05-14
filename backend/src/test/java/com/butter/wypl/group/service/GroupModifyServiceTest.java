@@ -30,7 +30,6 @@ import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.exception.GroupErrorCode;
 import com.butter.wypl.group.exception.GroupException;
-import com.butter.wypl.group.fixture.GroupFixture;
 import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.member.domain.Member;
@@ -99,6 +98,9 @@ class GroupModifyServiceTest {
 			GroupCreateRequest givenGroupCreateRequest =
 					new GroupCreateRequest("name", Color.labelBrown, memberIdList);
 
+			given(memberRepository.findById(anyInt()))
+					.willReturn(Optional.of(owner));
+
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
 						groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
@@ -113,6 +115,9 @@ class GroupModifyServiceTest {
 			int givenMemberId = 1;
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", Color.labelBrown,
 					new HashSet<>(Arrays.asList(2, 3)));
+
+			given(memberRepository.findById(anyInt()))
+					.willReturn(Optional.of(owner));
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
