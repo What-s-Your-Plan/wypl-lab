@@ -7,7 +7,6 @@ import Check from '@/assets/icons/check.svg';
 import X from '@/assets/icons/x.svg';
 import patchGroupInvite from '@/services/group/patchGroupInvite';
 import deleteGroupInvite from '@/services/group/deleteGroupInvite';
-import { useNavigate } from 'react-router-dom';
 
 type InvitedGroupInfoProps = {
   group: Group;
