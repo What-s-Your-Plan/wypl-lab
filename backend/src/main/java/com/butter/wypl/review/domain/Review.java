@@ -41,6 +41,8 @@ public class Review extends BaseEntity {
 
 	@Builder
 	public Review(int reviewId, String title, MemberSchedule memberSchedule) {
+		validateTitle(title);
+
 		this.reviewId = reviewId;
 		this.title = title;
 		this.memberSchedule = memberSchedule;
@@ -54,6 +56,8 @@ public class Review extends BaseEntity {
 	}
 
 	public void updateTitle(String title) {
+		validateTitle(title);
+
 		this.title = title;
 	}
 
@@ -64,6 +68,12 @@ public class Review extends BaseEntity {
 	public void validationOwnerByMemberId(int memberId) {
 		if (getMemberId() != memberId) {
 			throw new ReviewException(ReviewErrorCode.NOT_PERMISSION_TO_REVIEW);
+		}
+	}
+
+	private void validateTitle(String title) {
+		if (title == null || title.length() > 30 || title.isEmpty()) {
+			throw new ReviewException(ReviewErrorCode.NOT_APPROPRIATE_TITLE);
 		}
 	}
 }
