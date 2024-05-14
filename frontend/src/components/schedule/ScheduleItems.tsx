@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import * as S from './Styled';
+import * as S from './Schedule.styled';
 import {
   InputDefault,
   InputTitle,
