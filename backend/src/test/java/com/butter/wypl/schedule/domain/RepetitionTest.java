@@ -27,7 +27,7 @@ public class RepetitionTest {
 					.repetitionEndDate(repetition.getRepetitionEndDate())
 					.repetitionCycle(repetition.getRepetitionCycle())
 					.week(repetition.getWeek())
-					.dayOfWeek((byte)0b11111111)
+					.dayOfWeek(128)
 					.build();
 			}
 		).isInstanceOf(ScheduleException.class)
