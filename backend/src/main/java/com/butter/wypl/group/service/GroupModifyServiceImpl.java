@@ -56,7 +56,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	@Override
 	public GroupIdResponse createGroup(int ownerId, GroupCreateRequest createRequest) {
-		Member findOwnerMember = findById(memberRepository, ownerId);
 		Set<Integer> memberIds = new HashSet<>(createRequest.memberIdList());
 		memberIds.add(ownerId);
 		validateMaxMemberCount(memberIds);
@@ -67,12 +66,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		Group savedGroup = groupRepository.save(
 				Group.of(createRequest.name(), createRequest.color(), getMember(ownerId)));
 		saveAllMemberGroup(members, savedGroup);
-
-		members.forEach(member -> {
-			groupNotificationService.createGroupNotification(
-					member.getId(), findOwnerMember.getNickname(), savedGroup.getName(), savedGroup.getId()
-			);
-		});
 
 		return new GroupIdResponse(savedGroup.getId());
 	}
