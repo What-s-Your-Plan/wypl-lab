@@ -86,4 +86,31 @@ class DDayWidgetTest {
 					.hasMessageContaining(MemberErrorCode.TOO_LONG_CONTENT.getMessage());
 		}
 	}
+
+	@DisplayName("디데이 날짜 검증 테스트")
+	@Nested
+	class ValidateDateTest {
+		@DisplayName("디데이 날짜 검증에 성공한다.")
+		@Test
+		void validateSuccessTest() {
+			assertThatCode(() -> DDayWidget.of("디데이", LocalDate.now()))
+					.doesNotThrowAnyException();
+		}
+
+		@DisplayName("1970년 이전이면 예외를 던진다.")
+		@Test
+		void before1970YearsTest() {
+			assertThatThrownBy(() -> DDayWidget.of("디데이", LocalDate.of(1969, 12, 31)))
+					.isInstanceOf(MemberException.class)
+					.hasMessageContaining(MemberErrorCode.INVALID_DATE.getMessage());
+		}
+
+		@DisplayName("2200년 이후이면 예외를 던진다.")
+		@Test
+		void after2199YearsTest() {
+			assertThatThrownBy(() -> DDayWidget.of("디데이", LocalDate.of(2200, 1, 1)))
+					.isInstanceOf(MemberException.class)
+					.hasMessageContaining(MemberErrorCode.INVALID_DATE.getMessage());
+		}
+	}
 }
