@@ -66,7 +66,7 @@ function WDDay() {
               placeholder="디데이 제목(10자 이내)"
             />
           ) : (
-            <span className="w-[60%] break-keep font-semibold">
+            <span className="w-[80%] break-keep font-semibold overflow-hidden text-ellipsis">
               {userTitle}
             </span>
           )}
