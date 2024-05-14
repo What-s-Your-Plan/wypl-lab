@@ -31,7 +31,7 @@ export type LongSchedule = {
 type WeeklyProps = {
   needUpdate: boolean;
   setUpdateFalse: () => void;
-}
+};
 
 function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
   const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
@@ -67,7 +67,7 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
     if (response) {
       setOriginSked(response.schedules);
     }
-  }, [selectedDate])
+  }, [selectedDate]);
 
   const filteredSked = useCallback(() => {
     if (firstDay) {
@@ -79,7 +79,10 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
       for (const sked of labelFilter(originSked, selectedLabels)) {
         const startDate = stringToDate(sked.start_date);
         const endDate = stringToDate(sked.end_date);
-        const period = getDateDiff(firstDay, sked.end_date);
+        const period = getDateDiff(
+          firstDay > startDate ? firstDay : startDate,
+          sked.end_date,
+        );
         const startDay = startDate < firstDay ? 0 : startDate.getDay();
 
         if (period > 0 || isAllday(startDate, endDate)) {
@@ -112,7 +115,7 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
       setSchedules(newSchedule);
       setHeight(maxIdx);
     }
-  }, [originSked, selectedLabels])
+  }, [originSked, selectedLabels]);
 
   useEffect(() => {
     const newFirst = new Date(
@@ -132,7 +135,7 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
       updateInfo();
       setUpdateFalse();
     }
-  }, [needUpdate])
+  }, [needUpdate]);
 
   useEffect(() => {
     filteredSked();
@@ -194,7 +197,7 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
             <WeeklyDays firstDay={firstDay} />
             <LScheduleContainer $height={height + 1}>
               <WeeklyVertical />
-              <WeeklyLSchedules lSchedules={longSchedules} />
+              <WeeklyLSchedules lSchedules={longSchedules} row={height + 1} />
             </LScheduleContainer>
           </div>
           <div className="flex flex-auto">

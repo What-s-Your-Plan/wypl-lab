@@ -5,10 +5,11 @@ import useMemberStore from '@/stores/MemberStore';
 
 type LSchedulesProps = {
   lSchedules: Array<LongSchedule>;
+  row: number;
 };
 
-function WeeklyLSchedules({ lSchedules }: LSchedulesProps) {
-  const gridRow = Math.max(2, lSchedules.length);
+function WeeklyLSchedules({ lSchedules, row }: LSchedulesProps) {
+  const gridRow = Math.max(2, row);
   const { mainColor } = useMemberStore();
 
   const renderSchedules = () => {

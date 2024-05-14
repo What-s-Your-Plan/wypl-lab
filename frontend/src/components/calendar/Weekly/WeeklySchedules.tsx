@@ -43,7 +43,7 @@ function WeeklySchedules({ schedules }: WSchedulesProps) {
                 mainColor) as LabelColorsType
             }
           >
-            <p className="order-1 font-semibold text-default-white">
+            <p className="order-1 font-semibold text-default-white text-left">
               {schedule.title}
             </p>
             <p className="text-default-coolgray text-left text-xs">
