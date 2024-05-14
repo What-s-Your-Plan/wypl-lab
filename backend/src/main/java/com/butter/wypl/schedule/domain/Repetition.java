@@ -45,11 +45,11 @@ public class Repetition extends BaseEntity {
 	private int week;
 
 	@Column(name = "day_of_week", columnDefinition = "BINARY(1)")
-	private Byte dayOfWeek;
+	private byte dayOfWeek;
 
 	@Builder
 	public Repetition(int repetitionId, RepetitionCycle repetitionCycle, LocalDate repetitionStartDate,
-		LocalDate repetitionEndDate, int week, Byte dayOfWeek) {
+		LocalDate repetitionEndDate, int week, byte dayOfWeek) {
 		dayOfWeekValidation(dayOfWeek);
 		durationValidation(repetitionStartDate, repetitionEndDate);
 
