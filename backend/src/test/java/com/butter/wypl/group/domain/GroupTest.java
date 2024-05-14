@@ -54,7 +54,6 @@ class GroupTest {
 				Group.validateName(name);
 			}).isInstanceOf(GroupException.class)
 				.hasMessageContaining(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME.getMessage());
-
 		}
 
 		@Test
@@ -69,42 +68,6 @@ class GroupTest {
 				Group.validateName(name);
 			}).isInstanceOf(GroupException.class)
 				.hasMessageContaining(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME.getMessage());
-
 		}
-
 	}
-
-	@Nested
-	@DisplayName("그룹 설명 검증")
-	class validateDescriptionTest {
-
-		@Test
-		@DisplayName("성공")
-		void whenSuccess() {
-
-			/* Given */
-			String description = "우리 그룹은 주말에 수영을 즐기죠.";
-
-			/* When, Then */
-			assertThatCode(() -> {
-				Group.validateDescription(description);
-			}).doesNotThrowAnyException();
-		}
-
-		@Test
-		@DisplayName("그룹 설명이 50자 초과이면 실패")
-		void whenFailExceedsMaxSize() {
-			/* Given */
-			String description = "우리 그룹은 주말에 수영을 즐기죠.".repeat(10);
-
-			/* When, Then */
-			assertThatCode(() -> {
-				Group.validateDescription(description);
-			}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(EXCEED_MAX_LENGTH_OF_GROUP_DESCRIPTION.getMessage());
-
-		}
-
-	}
-
 }

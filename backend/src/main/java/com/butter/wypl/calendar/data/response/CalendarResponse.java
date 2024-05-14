@@ -14,6 +14,8 @@ public record CalendarResponse(
 
 	String title,
 
+	String description,
+
 	Category category,
 
 	@JsonProperty("start_date")
@@ -31,6 +33,7 @@ public record CalendarResponse(
 		return new CalendarResponse(
 			schedule.getScheduleId(),
 			schedule.getTitle(),
+			schedule.getDescription(),
 			schedule.getCategory(),
 			schedule.getStartDate(),
 			schedule.getEndDate(),

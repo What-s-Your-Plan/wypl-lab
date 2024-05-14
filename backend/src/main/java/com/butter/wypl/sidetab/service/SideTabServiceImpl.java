@@ -83,12 +83,16 @@ public class SideTabServiceImpl implements
 			final int dDayId,
 			final DDayUpdateRequest request
 	) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
 		SideTab findSideTab = findSideTabWidget(authMember, dDayId);
 
 		DDayWidget dDayWidget = DDayWidget.of(request.title(), request.date());
 		findSideTab.updateDDay(dDayWidget);
 
-		return DDayWidgetResponse.from(findSideTab.getDDay());
+		return DDayWidgetResponse.of(
+				findSideTab.getDDay(),
+				dDayWidget.getDDay(findMember.getTimeZone().getTimeZone())
+		);
 	}
 
 	@Override
@@ -96,9 +100,13 @@ public class SideTabServiceImpl implements
 			final AuthMember authMember,
 			final int dDayId
 	) {
+		Member findMember = MemberServiceUtils.findById(memberRepository, authMember.getId());
 		SideTab findSideTab = findSideTabWidget(authMember, dDayId);
 
-		return DDayWidgetResponse.from(findSideTab.getDDay());
+		return DDayWidgetResponse.of(
+				findSideTab.getDDay(),
+				findSideTab.getDDay().getDDay(findMember.getTimeZone().getTimeZone())
+		);
 	}
 
 	@Transactional
@@ -126,17 +134,18 @@ public class SideTabServiceImpl implements
 		OpenWeatherResponse response = weatherClient.fetchWeather(cond);
 
 		String updateTime = getUpdateTime(cond.city());
-		WeatherWidget weatherWidget = new WeatherWidget(cond.city(),
-				getWeatherId(response.getWeatherId()),
-				Math.round(response.getTemperature()),
-				Math.round(response.getMinTemperature()),
-				Math.round(response.getMaxTemperature()),
-				updateTime,
-				response.getWeatherName(),
-				response.getWeatherDescription(),
-				response.getSunrise(),
-				response.getSunset());
-
+		WeatherWidget weatherWidget = WeatherWidget.builder()
+				.weatherRegion(cond.city())
+				.weatherId(getWeatherId(response.getWeatherId()))
+				.temp(Math.round(response.getTemperature()))
+				.minTemp(Math.round(response.getMinTemperature()))
+				.maxTemp(Math.round(response.getMaxTemperature()))
+				.updateTime(updateTime)
+				.main(response.getWeatherName())
+				.desc(response.getWeatherDescription())
+				.sunset(response.getSunset())
+				.sunrise(response.getSunrise())
+				.build();
 		return weatherWidgetRepository.save(weatherWidget);
 	}
 

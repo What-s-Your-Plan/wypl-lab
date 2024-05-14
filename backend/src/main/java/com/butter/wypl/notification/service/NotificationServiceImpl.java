@@ -80,10 +80,29 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		notificationRepository.deleteByMemberId(memberId);
 	}
 
+	/**
+	 * 회원이 알림에 대한 Action URL 처리를 했으면 true 처리
+	 * 해당 알림이 회원 알림인지 검증
+	 * @param id 알림 ID
+	 */
+	@Override
+	@Transactional
+	public void updateIsActedToTrue(final int memberId, final String id) {
+		Notification notification = notificationRepository.findById(id)
+			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_EXIST));
+
+		if (memberId != notification.getMemberId()) {
+			throw new NotificationException(NotificationErrorCode.NOT_YOUR_NOTIFICATION);
+		}
+
+		notification.updateIsActedToTrue();
+		notificationRepository.save(notification);
+	}
+
 	private Notification createGroupNotification(final NotificationCreateRequest request) {
 		Notification notification = Notification.builder()
 			.memberId(request.memberId())
-			.message(makeMessage(request.typeCode(), null, request.nickName(), null))
+			.message(makeMessage(request.typeCode(), request.groupName(), request.nickName(), null))
 			.isRead(false)
 			.isActed(false)
 			.typeCode(request.typeCode())
@@ -144,7 +163,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		 * 2. 그 이후 조회시 no-offset 조회 마지막 행 알림 lastID 이용
 		 * */
 		Page<Notification> result;
-		if (StringUtils.hasText(lastId)) {
+		if (!StringUtils.hasText(lastId)) {
 			result = notificationRepository.findByMemberIdWithPage(memberId, pageRequest);
 		} else {
 			result = notificationRepository.findAllByLastId(memberId, lastId, pageRequest);

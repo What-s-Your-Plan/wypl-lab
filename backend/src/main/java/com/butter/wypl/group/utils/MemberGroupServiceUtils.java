@@ -31,7 +31,7 @@ public class MemberGroupServiceUtils {
 
 	public static List<MemberGroup> getMemberGroupsByGroupId(MemberGroupRepository memberGroupRepository,
 		int groupId) {
-		return memberGroupRepository.findMemberGroupsByGroupId(groupId);
+		return memberGroupRepository.findAcceptedMemberGroups(groupId);
 	}
 
 	public static List<Member> getMembersByGroupId(MemberGroupRepository memberGroupRepository,
@@ -41,5 +41,5 @@ public class MemberGroupServiceUtils {
 			.map(MemberGroup::getMember)
 			.toList();
 	}
-
+	
 }

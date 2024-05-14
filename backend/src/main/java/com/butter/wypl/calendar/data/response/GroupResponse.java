@@ -7,19 +7,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GroupResponse(
 
-	@JsonProperty("group_id")
-	int groupId,
+		@JsonProperty("group_id")
+		int groupId,
 
-	Color color,
+		Color color,
 
-	String title,
-
-	String description
+		String title
 ) {
 
 	public static GroupResponse from(MemberGroup memberGroup) {
 		Group group = memberGroup.getGroup();
-
-		return new GroupResponse(group.getId(), memberGroup.getColor(), group.getName(), group.getDescription());
+		return new GroupResponse(group.getId(), memberGroup.getColor(), group.getName());
 	}
 }

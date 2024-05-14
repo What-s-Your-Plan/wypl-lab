@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.butter.wypl.global.annotation.ServiceTest;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.GroupInviteState;
@@ -55,17 +56,17 @@ class GroupModifyServiceJpaTest {
 			/* Given */
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
 			Group group = groupRepository.save(
-				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getDescription(), member));
+					Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
 			memberGroupRepository.save(MemberGroup.of(member, group, labelYellow, GroupInviteState.ACCEPTED));
 
 			em.flush();
 			em.clear();
 
 			String modifyGroupName = "변경된 그룹명";
-			String modifyGroupDescription = "변경된 그룹 설명";
+			Color modifyGroupColor = labelPink;
 
 			GroupUpdateRequest updateRequest = new GroupUpdateRequest(modifyGroupName,
-				modifyGroupDescription);
+					modifyGroupColor);
 
 			/* When */
 			groupModifyService.updateGroup(member.getId(), group.getId(), updateRequest);
@@ -73,7 +74,7 @@ class GroupModifyServiceJpaTest {
 
 			/* Then */
 			assertEquals(modifyGroupName, updatedGroup.getName());
-			assertEquals(modifyGroupDescription, updatedGroup.getDescription());
+			assertEquals(modifyGroupColor, updatedGroup.getColor());
 
 		}
 
@@ -85,25 +86,19 @@ class GroupModifyServiceJpaTest {
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
 			Member otherMember = memberRepository.save(KIM_JEONG_UK.toMember());
 			Group group = groupRepository.save(
-				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getDescription(), member));
+					Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
 
 			em.flush();
 			em.clear();
 
 			String modifyGroupName = "변경된 그룹명";
-			String modifyGroupDescription = "변경된 그룹 설명";
-
-			GroupUpdateRequest updateRequest = new GroupUpdateRequest(modifyGroupName,
-				modifyGroupDescription);
+			GroupUpdateRequest updateRequest = new GroupUpdateRequest(modifyGroupName, labelPink);
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.updateGroup(otherMember.getId(), group.getId(), updateRequest);
-				}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(GroupErrorCode.IS_NOT_GROUP_MEMBER.getMessage());
-
+						groupModifyService.updateGroup(otherMember.getId(), group.getId(), updateRequest);
+					}).isInstanceOf(GroupException.class)
+					.hasMessageContaining(GroupErrorCode.IS_NOT_GROUP_MEMBER.getMessage());
 		}
-
 	}
-
 }

@@ -79,9 +79,9 @@ public record OpenWeatherResponse(
 	public record MainResponse(
 			@JsonProperty("temp")
 			float temp,
-			@JsonProperty("temp_min")
-			float maxTemp,
 			@JsonProperty("temp_max")
+			float maxTemp,
+			@JsonProperty("temp_min")
 			float minTemp
 	) {
 	}
