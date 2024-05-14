@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 
 import * as S from '@/components/common/Container';
