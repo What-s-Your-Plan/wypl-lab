@@ -22,7 +22,12 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
 import com.butter.wypl.global.common.ControllerTest;
+import com.butter.wypl.group.domain.Group;
+import com.butter.wypl.group.domain.MemberGroup;
+import com.butter.wypl.group.fixture.GroupFixture;
 import com.butter.wypl.label.data.request.LabelRequest;
+import com.butter.wypl.label.data.response.AllLabelListResponse;
+import com.butter.wypl.label.data.response.AllLabelResponse;
 import com.butter.wypl.label.data.response.LabelIdResponse;
 import com.butter.wypl.label.data.response.LabelListResponse;
 import com.butter.wypl.label.data.response.LabelResponse;
@@ -30,6 +35,8 @@ import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.fixture.LabelFixture;
 import com.butter.wypl.label.service.LabelModifyService;
 import com.butter.wypl.label.service.LabelReadService;
+import com.butter.wypl.member.domain.Member;
+import com.butter.wypl.member.fixture.MemberFixture;
 
 public class LabelControllerTest extends ControllerTest {
 	private final LabelController labelController;
@@ -220,5 +227,46 @@ public class LabelControllerTest extends ControllerTest {
 				)
 			))
 			.andExpect(status().isOk());
+	}
+
+	@Test
+	@DisplayName("멤버의 모든 라벨과 그룹 정보 조회")
+	void getAllLabel() throws Exception {
+		// Given
+		Member member = MemberFixture.JWA_SO_YEON.toMember();
+		Group group = GroupFixture.GROUP_WORK.toGroup(member);
+
+		given(labelReadService.getAllLabelsByMemberId(anyInt()))
+			.willReturn(AllLabelListResponse.from(
+				List.of(
+					AllLabelResponse.from(LabelFixture.STUDY_LABEL.toLabel()),
+					AllLabelResponse.of(
+						MemberGroup.of(member, group), group
+					)
+				)
+			));
+		// When
+		ResultActions resultActions = mockMvc.perform(
+			RestDocumentationRequestBuilders.get("/label/v1/labels/main")
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+		);
+
+		// Then
+		resultActions.andDo(print())
+			.andDo(document("label/getAllLabel",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메세지"),
+					fieldWithPath("body.label_count").type(JsonFieldType.NUMBER).description("라벨과 그룹의 총 개수"),
+					fieldWithPath("body.labels[].id").type(JsonFieldType.NUMBER).description("라벨이나 그룹의 아이디"),
+					fieldWithPath("body.labels[].category").type(JsonFieldType.STRING).description("타입"),
+					fieldWithPath("body.labels[].title").type(JsonFieldType.STRING).description("라벨이나 그룹의 제목"),
+					fieldWithPath("body.labels[].color").type(JsonFieldType.STRING).description("라벨이나 그룹의 색상")
+				)
+			))
+			.andExpect(status().isOk());
+
 	}
 }
