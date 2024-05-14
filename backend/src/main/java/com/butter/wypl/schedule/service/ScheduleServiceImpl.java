@@ -11,6 +11,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.butter.wypl.group.repository.MemberGroupRepository;
+import com.butter.wypl.group.utils.MemberGroupServiceUtils;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.repository.LabelRepository;
 import com.butter.wypl.label.utils.LabelServiceUtils;
@@ -39,6 +41,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 	private final ScheduleRepository scheduleRepository;
 	private final LabelRepository labelRepository;
+	private final MemberGroupRepository memberGroupRepository;
 
 	private final MemberScheduleService memberScheduleService;
 	private final RepetitionService repetitionService;
@@ -51,7 +54,11 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		Schedule schedule = scheduleRepository.save(scheduleCreateRequest.toEntity(label)); //반복이 없다는 가정하에 저장
 
-		//TODO : 그룹 아이디 받았을 때 그룹에 포함된 사람인지 확인 해야 됨
+		//그룹일 경우 멤버가 포함되었는지 확인
+		if (schedule.getGroupId() != null) {
+			MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId, schedule.getScheduleId());
+		}
+
 		//멤버-일정 테이블 업데이트
 		List<Member> memberResponses = memberScheduleService.createMemberSchedule(schedule,
 			scheduleCreateRequest.members());
