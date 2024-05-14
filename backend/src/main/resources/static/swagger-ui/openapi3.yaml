@@ -817,6 +817,38 @@ paths:
                         "color" : "labelCharcoal"
                       }
                     }
+  /label/v1/labels/main:
+    get:
+      tags:
+      - label
+      operationId: label/getAllLabel
+      responses:
+        "200":
+          description: "200"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/label-v1-labels-main102750181'
+              examples:
+                label/getAllLabel:
+                  value: |-
+                    {
+                      "message" : "라벨+그룹 조회 성공",
+                      "body" : {
+                        "label_count" : 2,
+                        "labels" : [ {
+                          "id" : 0,
+                          "category" : "MEMBER",
+                          "title" : "알고리즘 스터디",
+                          "color" : "labelCharcoal"
+                        }, {
+                          "id" : 0,
+                          "category" : "GROUP",
+                          "title" : "work group",
+                          "color" : "labelYellow"
+                        } ]
+                      }
+                    }
   /label/v1/labels/{labelId}:
     get:
       tags:
@@ -1291,13 +1323,13 @@ paths:
                     "schedule_id" : 0,
                     "title" : "공부하기 싫다",
                     "contents" : [ {
-                      "blockType" : "emotion",
                       "description" : "피곤해요",
-                      "emoji" : "/src/assets/icons/emoji/tired.svg"
+                      "emoji" : "/src/assets/icons/emoji/tired.svg",
+                      "blockType" : "emotion"
                     }, {
-                      "blockType" : "4f",
                       "description" : "날씨 너무 좋음",
-                      "weather" : "/src/assets/icons/weather/sun.svg"
+                      "weather" : "/src/assets/icons/weather/sun.svg",
+                      "blockType" : "4f"
                     }, {
                       "future" : "향후 헹동",
                       "facts" : "팩트",
@@ -1373,13 +1405,13 @@ paths:
                     "schedule_id" : 0,
                     "title" : "공부하기 싫다",
                     "contents" : [ {
-                      "blockType" : "emotion",
                       "description" : "피곤해요",
-                      "emoji" : "/src/assets/icons/emoji/tired.svg"
+                      "emoji" : "/src/assets/icons/emoji/tired.svg",
+                      "blockType" : "emotion"
                     }, {
-                      "blockType" : "4f",
                       "description" : "날씨 너무 좋음",
-                      "weather" : "/src/assets/icons/weather/sun.svg"
+                      "weather" : "/src/assets/icons/weather/sun.svg",
+                      "blockType" : "4f"
                     }, {
                       "future" : "향후 헹동",
                       "facts" : "팩트",
@@ -1456,20 +1488,20 @@ paths:
                         "review_count" : 2,
                         "reviews" : [ {
                           "review_id" : 0,
-                          "created_at" : "2024-05-14T01:51:28.368224",
+                          "created_at" : "2024-05-14T23:42:51.737276",
                           "thumbnail_content" : {
-                            "blockType" : "emotion",
                             "description" : "피곤해요",
-                            "emoji" : "/src/assets/icons/emoji/tired.svg"
+                            "emoji" : "/src/assets/icons/emoji/tired.svg",
+                            "blockType" : "emotion"
                           },
                           "title" : "공부하기 싫다"
                         }, {
                           "review_id" : 0,
-                          "created_at" : "2024-05-14T01:51:28.368333",
+                          "created_at" : "2024-05-14T23:42:51.737356",
                           "thumbnail_content" : {
-                            "blockType" : "4f",
                             "description" : "날씨 너무 좋음",
-                            "weather" : "/src/assets/icons/weather/sun.svg"
+                            "weather" : "/src/assets/icons/weather/sun.svg",
+                            "blockType" : "4f"
                           },
                           "title" : "오늘도 공부하기 싫다"
                         } ]
@@ -1519,13 +1551,13 @@ paths:
                           } ]
                         },
                         "contents" : [ {
-                          "blockType" : "emotion",
                           "description" : "피곤해요",
-                          "emoji" : "/src/assets/icons/emoji/tired.svg"
+                          "emoji" : "/src/assets/icons/emoji/tired.svg",
+                          "blockType" : "emotion"
                         }, {
-                          "blockType" : "4f",
                           "description" : "날씨 너무 좋음",
-                          "weather" : "/src/assets/icons/weather/sun.svg"
+                          "weather" : "/src/assets/icons/weather/sun.svg",
+                          "blockType" : "4f"
                         }, {
                           "future" : "향후 헹동",
                           "facts" : "팩트",
@@ -2311,6 +2343,22 @@ components:
         message:
           type: string
           description: 응답 메시지
+    review-v1-reviews-1465059799:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - review_id
+          type: object
+          properties:
+            review_id:
+              type: number
+              description: 생성한 리뷰의 엔덱스
+        message:
+          type: string
+          description: 응답 메세지
     side-v1-memo-memo_id1285412632:
       required:
       - message
@@ -2343,22 +2391,6 @@ components:
         message:
           type: string
           description: 응답 메시지
-    review-v1-reviews-1465059799:
-      required:
-      - message
-      type: object
-      properties:
-        body:
-          required:
-          - review_id
-          type: object
-          properties:
-            review_id:
-              type: number
-              description: 생성한 리뷰의 엔덱스
-        message:
-          type: string
-          description: 응답 메세지
     schedule-v1-schedules-scheduleId1157950338:
       required:
       - message
@@ -3935,6 +3967,44 @@ components:
         memo:
           type: string
           description: 수정 요청한 메모
+    label-v1-labels-main102750181:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - label_count
+          type: object
+          properties:
+            label_count:
+              type: number
+              description: 라벨과 그룹의 총 개수
+            labels:
+              type: array
+              items:
+                required:
+                - category
+                - color
+                - id
+                - title
+                type: object
+                properties:
+                  color:
+                    type: string
+                    description: 라벨이나 그룹의 색상
+                  id:
+                    type: number
+                    description: 라벨이나 그룹의 아이디
+                  title:
+                    type: string
+                    description: 라벨이나 그룹의 제목
+                  category:
+                    type: string
+                    description: 타입
+        message:
+          type: string
+          description: 응답 메세지
     group-v1-groups-2118240443:
       required:
       - color
