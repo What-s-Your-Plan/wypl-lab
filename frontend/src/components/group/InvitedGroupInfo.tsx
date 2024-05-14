@@ -27,7 +27,7 @@ function InvitedGroupInfo({ group }: InvitedGroupInfoProps) {
         <div className="flex justify-between items-center">
           <div className="flex gap-4">
             <ColorCircle
-              $bgColor={group.group_color as BgColors}
+              $bgColor={group.color as BgColors}
               className="!rounded-lg"
             />
             {group.name}
