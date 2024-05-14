@@ -72,7 +72,7 @@ public class Review extends BaseEntity {
 	}
 
 	private void validateTitle(String title) {
-		if (title.length() > 30) {
+		if (title == null || title.length() > 30 || title.isEmpty()) {
 			throw new ReviewException(ReviewErrorCode.NOT_APPROPRIATE_TITLE);
 		}
 	}
