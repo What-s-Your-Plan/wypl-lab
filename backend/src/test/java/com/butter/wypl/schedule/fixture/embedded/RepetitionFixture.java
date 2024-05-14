@@ -11,35 +11,35 @@ public enum RepetitionFixture {
 		LocalDate.of(2024, 4, 25),
 		LocalDate.of(2025, 4, 25),
 		1,
-		(byte)0b000010
+		2
 	),
 	TUESDAY_THRUSDAY_REPETITION(
 		RepetitionCycle.WEEK,
 		LocalDate.of(2024, 4, 25),
 		LocalDate.of(2025, 4, 25),
 		2,
-		(byte)0b0010100
+		36
 	),
 	MONTHLY_REPETITION(
 		RepetitionCycle.MONTH,
 		LocalDate.of(2024, 4, 25),
 		LocalDate.of(2024, 7, 25),
 		0,
-		(byte)0b0000000
+		0
 	),
 	LAST_DAY_REPETITION(
 		RepetitionCycle.MONTH,
 		LocalDate.of(2024, 4, 25),
 		LocalDate.of(2025, 4, 25),
 		0,
-		(byte)0b0000000
+		0
 	),
 	YEARLY_REPETITION(
 		RepetitionCycle.YEAR,
 		LocalDate.of(2024, 4, 25),
 		null,
 		0,
-		(byte)0b0000000
+		0
 	),
 	;
 
@@ -51,10 +51,10 @@ public enum RepetitionFixture {
 
 	private final int week;
 
-	private final byte dayOfWeek;
+	private final int dayOfWeek;
 
 	RepetitionFixture(RepetitionCycle repetitionCycle, LocalDate repetitionStartDate,
-		LocalDate repetitionEndDate, int week, byte dayOfWeek) {
+		LocalDate repetitionEndDate, int week, int dayOfWeek) {
 		this.repetitionCycle = repetitionCycle;
 		this.repetitionStartDate = repetitionStartDate;
 		this.repetitionEndDate = repetitionEndDate;

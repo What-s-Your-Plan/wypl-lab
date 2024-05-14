@@ -216,11 +216,12 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 			case WEEK -> {
 				Duration diffDateTime = Duration.between(startDateTime, endDateTime);
 
-				byte repetitionWeek = originSchedule.getRepetition().getDayOfWeek();
+				int repetitionWeek = originSchedule.getRepetition().getDayOfWeek();
 				DayOfWeek dayOfWeek;
 
+				int mask = 1;
 				for (int i = 0; i < 7; i++) {
-					if ((repetitionWeek & (1 << i)) > 0) {
+					if ((repetitionWeek & mask) != 0) {
 						dayOfWeek = switch (i) {
 							case 0 -> DayOfWeek.SUNDAY;
 							case 1 -> DayOfWeek.MONDAY;
@@ -248,6 +249,8 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 							endDateTime = endDateTime.plusWeeks(1);
 						}
 					}
+
+					mask <<= 1;
 				}
 			}
 			default -> throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_REPETITION_CYCLE);
