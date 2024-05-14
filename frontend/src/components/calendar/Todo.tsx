@@ -29,11 +29,10 @@ const CheckBox = styled.input`
 `
 
 
-const IconButton = styled.img`
-  width : 15px;
+const IconButton = styled.button`
   margin-top : 4px;
   cursor : pointer;
-  margin-left : 7px;
+  margin-left : 5px;
 `
 const TodoElement = styled.div`
   width : 100%;
@@ -55,6 +54,7 @@ const Header = styled.div`
 `
 
 const SubmitDiv = styled.div`
+  margin-top : 6px;
   width : 100%;
   display : flex;
   flex-direction: row;
@@ -134,6 +134,7 @@ function Todo() {
     await patchTodo(chosenTodo, {
       content : todos[todos.findIndex(todo => todo.todo_id === chosenTodo)].content
     }).then(()=>{
+      setChosenTodo(-1);
       fetchTodoList();
     }).catch((error)=>{
       console.log("투두 리스트 없뎃 실패 : ", error);
@@ -158,7 +159,9 @@ function Todo() {
   return <WhiteContainer $width="1300" className = "h-[30vh]">
     <Header>
       <div className="font-bold">Todo</div>   
-      <IconButton src = {plusButton} onClick={clickPlusButton}></IconButton>
+      <IconButton style={{marginTop: 0}} onClick={clickPlusButton}>
+        <img src = {plusButton} ></img>
+      </IconButton>
     </Header>
     <div className="scrollBar h-[85%]">
     {
@@ -175,13 +178,18 @@ function Todo() {
                      className='!h-6 !p-1' 
                      $width='100%' $void = {true} type = "text" name = "content" 
                      value={todo.content} onMouseUp={() => setChosenTodo(todo.todo_id)} onChange={changeOriginContent}></StyledInputDefault>
-                </Form>
+                
                 {
                   todo.todo_id == chosenTodo ?
-                  <IconButton src = {updateButton}></IconButton>
+                  <IconButton type = "submit">
+                    <img src = {updateButton}></img>
+                  </IconButton>
                   :
-                  <IconButton src = {editButton} onClick={() => deleteTodoElement(`${todo.todo_id}`)}></IconButton>
+                  <IconButton onClick={() => deleteTodoElement(`${todo.todo_id}`)}>
+                    <img src = {editButton}></img>
+                  </IconButton>
                 }
+                </Form>
               </TodoElement>
             ))
           }
@@ -194,8 +202,11 @@ function Todo() {
           <Form onSubmit={createTodo}>
             <CheckBox type='checkbox'  name= "todo" disabled></CheckBox>
             <StyledInputDefault className='!h-6 !p-1' $width='85%' type = "text" name = "content" value = {content} onChange={changeContent}></StyledInputDefault>
+         
+            <IconButton type = "submit">
+              <img src = {updateButton}></img>
+            </IconButton>
           </Form>
-          <IconButton src = {updateButton}></IconButton>
         </SubmitDiv>
       )
     }
