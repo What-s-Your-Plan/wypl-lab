@@ -24,7 +24,7 @@ if [ ! -d "/home/ubuntu/$VOLUME_PATH/logs" ]; then
 fi
 
 ########## Deploy ##########
-CONTAINER_IDS=$(docker ps -aq --filter ancestor="$IMAGE_NAME") #$(docker ps -aq --filter ancestor=$IMAGE_NAME)
+CONTAINER_IDS=$(docker ps -aqf "name=$IMAGE_NAME") #$(docker ps -aq --filter ancestor=$IMAGE_NAME)
 echo "Find CONTAINER_IDS ...  >>  $CONTAINER_IDS"
 
 if [ -n "$CONTAINER_IDS" ]; then
