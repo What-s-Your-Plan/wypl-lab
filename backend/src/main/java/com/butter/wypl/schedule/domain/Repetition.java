@@ -44,7 +44,7 @@ public class Repetition extends BaseEntity {
 
 	private int week;
 
-	@Column(name = "day_of_week", columnDefinition = "BINARY(7)")
+	@Column(name = "day_of_week", columnDefinition = "BINARY(1)")
 	private Byte dayOfWeek;
 
 	@Builder
