@@ -12,3 +12,9 @@ type GroupMember = {
   profile_image: string;
   is_accepted: boolean;
 };
+
+type GroupInfo = {
+  name: string;
+  color: string;
+  member_id_list: Array<number>;
+};
