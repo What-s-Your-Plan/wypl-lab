@@ -334,7 +334,7 @@ function Users({ states, setStates }: SetProps) {
 }
 
 function Repeat({ states, handleChange, setStates }: ChangeProps & SetProps) {
-  const cycle = ['매일', '매 주', '매 달', '매 달 마지막', '매 년'];
+  const cycle = ['매일', '매 주', '매 달', '매 년'];
   const period = ['계속 반복', '종료 날짜'];
 
   const setRepetition = (value: boolean) => {
