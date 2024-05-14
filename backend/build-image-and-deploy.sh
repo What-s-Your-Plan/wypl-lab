@@ -3,9 +3,11 @@
 # Variable
 PROFILE="$1"
 PORT="$2"
-NAME="$3" #image name
-VOLUME_PATH="$4"
+NAME="$3" # image name
 TAG="latest"
+VOLUME_PROFILE="$4" # volume directory name of profile
+HOST_VOLUME_PATH="/home/ubuntu/$VOLUME_PROFILE/logs"
+DOCKER_VOLUME_PATH="/logs"
 
 # Build Docker Image
 echo "Building Docker image..."
@@ -28,4 +30,4 @@ if [ $(docker ps -aq -f name=$NAME) ]; then
     docker rm $NAME
 fi
 echo "Deploy Spring Boot!!"
-docker run -d --name $NAME -e PROFILE=$PROFILE -p $PORT:8080 -v /home/ubuntu/$VOLUME_PATH/logs:/logs $NAME:$TAG
+docker run -d --name $NAME -e PROFILE=$PROFILE -p $PORT:8080 -v $HOST_VOLUME_PATH:$DOCKER_VOLUME_PATH $NAME:$TAG
