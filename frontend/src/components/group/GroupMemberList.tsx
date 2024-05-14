@@ -24,7 +24,7 @@ function GroupMemberList({ groupId }: GroupMemberProps) {
               member.profile_image_url ? member.profile_image_url : DefaultImage
             }
             alt={member.nickname}
-            className="w-8 h-8 rounded-full"
+            className="w-8 h-8 rounded-full border-2"
           />
           <div>{member.nickname}</div>
         </div>
