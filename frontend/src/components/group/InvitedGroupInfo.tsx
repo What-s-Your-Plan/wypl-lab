@@ -15,12 +15,11 @@ type InvitedGroupInfoProps = {
 };
 
 function InvitedGroupInfo({ group, fetchList }: InvitedGroupInfoProps) {
-  const navigator = useNavigate();
   const handleAccept = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     patchGroupInvite(group.id);
     fetchList();
-    navigator(`/group/${group.id}`);
+    window.location.reload();
   };
 
   const handleReject = (event: React.MouseEvent<HTMLDivElement>) => {
