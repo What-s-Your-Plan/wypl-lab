@@ -8,7 +8,7 @@ const reissueTokens = (params: ReissueTokenParams) => {
       BaseResponse<IssueTokenResponse>
     >(API_PATH.AUTH.REISSUE, {}, { params })
     .then((res) => {
-      return res.data.body;
+      return res.data.body!;
     });
 };
 
