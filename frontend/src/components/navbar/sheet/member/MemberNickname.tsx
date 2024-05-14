@@ -1,14 +1,15 @@
 import { useRef, useState } from 'react';
 
 import { UpdateNicknameRequest, UpdateNicknameResponse } from '@/@types/Member';
-import CheckIcon from '@/assets/icons/check.svg';
-import XIcon from '@/assets/icons/x.svg';
+import { InputDefault } from '@/components/common/InputText';
 
 import patchNickname from '@/services/member/patchNickname';
 import useMemberStore from '@/stores/MemberStore';
 
+import CheckIcon from '@/assets/icons/check.svg';
+import XIcon from '@/assets/icons/x.svg';
+
 import * as S from './MemberNickname.styled';
-import { InputDefault } from '@/components/common/InputText';
 
 function MemberNickname() {
   const { nickname, setNickname } = useMemberStore();
