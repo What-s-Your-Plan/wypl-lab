@@ -107,4 +107,5 @@ public class MemberScheduleService {
 		return memberScheduleRepository.findByScheduleAndMember(schedule, member)
 			.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL));
 	}
+	
 }
