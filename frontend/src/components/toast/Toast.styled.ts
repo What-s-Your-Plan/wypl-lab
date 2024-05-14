@@ -24,8 +24,6 @@ type ContainerProps = {
 
 const Container = styled.div<ContainerProps>`
   ${tw`
-        fixed
-
         flex
         items-center
         justify-between
@@ -33,10 +31,11 @@ const Container = styled.div<ContainerProps>`
 
         w-[300px]
         h-[60px]
+        mt-4
     `}
   ${(props) => BgTheme[props.$bgColor]}
   ${(props) => TextTheme[props.$textColor]}
-  animation: ${show} 600ms ease-in-out;
+  animation: ${show} 500ms ease-in-out;
 `;
 
 const ShowWrapper = styled.div`

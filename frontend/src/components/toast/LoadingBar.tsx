@@ -20,7 +20,11 @@ const LoadingBarProgress = styled.div<{ width: number }>`
   transition: width 1ms ease-in-out;
 `;
 
-function LoadingBar({ initialTime = 300 }) {
+type LoadingBarProps = {
+  initialTime: number;
+};
+
+function LoadingBar({ initialTime }: LoadingBarProps) {
   const [width, setWidth] = useState(100);
 
   useEffect(() => {
