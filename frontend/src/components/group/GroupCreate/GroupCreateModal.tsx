@@ -1,9 +1,13 @@
+import { useState } from 'react';
+
 import Modal from '@/components/common/Modal';
 import GroupCreatePanel from '@/components/group/GroupCreate/GroupCreatePanel';
 
 import postGroupRegister from '@/services/group/postGroupRegister';
 
 import useForm from '@/hooks/useForm';
+
+import { LabelColorsType } from '@/assets/styles/colorThemes';
 
 import * as S from './GroupCreateModal.styled';
 
@@ -24,17 +28,17 @@ function GroupCreateModal({
     init,
     postGroupRegister,
   );
-
   const handleConfirmClick = async () => {
     await handleSubmit();
     handleConfirm();
   };
 
+  const [color, setColor] = useState<LabelColorsType>('labelRed');
   const CreateGroupHeader = () => {
     return (
       <S.TitleContainer>
         <S.Title>새로운 그룹을 생성해보세요!</S.Title>
-        <hr />
+        <S.Bar $color={color} />
       </S.TitleContainer>
     );
   };
@@ -47,6 +51,8 @@ function GroupCreateModal({
       title={CreateGroupHeader()}
       contents={
         <GroupCreatePanel
+          color={color}
+          setColor={setColor}
           states={form}
           handleChange={handleChange}
           setStates={setForm}
