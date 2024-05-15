@@ -111,6 +111,7 @@ jacocoTestReport {
                 files(classDirectories.files.collect {
                     fileTree(dir: it, excludes: [
                             "**/*Application*",
+                            "**/Q*",
                             "**/*Cond*",
                             "**/*Request*",
                             "**/*Response*",
@@ -144,6 +145,7 @@ jacocoTestCoverageVerification {
 
             excludes = [
                     "**/*Application*",
+                    "**/Q*",
                     "**/*Cond*",
                     "**/*Request*",
                     "**/*Response*",
