@@ -1,5 +1,3 @@
-import { Group } from '@/pages/Pages';
-
 const BROWSER_PATH = {
   OAUTH: {
     GOOGLE: '/login/oauth2/code/google',
@@ -35,6 +33,7 @@ const API_PATH = {
   GROUP: {
     BASE: '/group/v1/groups',
     MEMBER: '/group/v1/groups/members',
+    WITHDRAW: '/group/v1/groups/:groupId/members',
     FORCE_OUT: '/group/v1/groups/:groupId/members/force-out',
   },
 };
