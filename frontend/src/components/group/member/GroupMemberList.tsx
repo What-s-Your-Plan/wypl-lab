@@ -18,14 +18,21 @@ import deleteGroupMemberForceOut, {
   DeleteGroupMemberForceOutRequest,
   DeleteGroupMemberForceOutResponse,
 } from '@/services/group/deleteGroupMemberForceOut';
+import deleteGroupWithdraw from '@/services/group/deleteGroupWithdraw';
 
 type GroupMemberProps = {
   groupId: number;
   color: BgColors;
   isOwner: boolean;
+  groupWithdrawEvent: (groupId: number) => void;
 };
 
-function GroupMemberList({ groupId, color, isOwner }: GroupMemberProps) {
+function GroupMemberList({
+  groupId,
+  color,
+  isOwner,
+  groupWithdrawEvent,
+}: GroupMemberProps) {
   const { memberId } = useMemberStore();
 
   const [groupMembers, setGroupMembers] = useState<GroupMembers>({
@@ -61,6 +68,12 @@ function GroupMemberList({ groupId, color, isOwner }: GroupMemberProps) {
     });
   };
 
+  const requestWithdraw = async () => {
+    await deleteGroupWithdraw(groupId).then(() => {
+      groupWithdrawEvent(groupId);
+    });
+  };
+
   return (
     <S.Container>
       {groupMembers.members.map((member: GroupMember) => {
@@ -79,6 +92,9 @@ function GroupMemberList({ groupId, color, isOwner }: GroupMemberProps) {
                   src={X}
                   onClick={() => requestDeleteMember(member.id)}
                 />
+              )}
+              {isOwner === false && member.id === memberId && (
+                <ForceOutImg src={X} onClick={() => requestWithdraw()} />
               )}
               <S.Check
                 $isAccepted={member.is_accepted}

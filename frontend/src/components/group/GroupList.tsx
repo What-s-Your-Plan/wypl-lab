@@ -40,19 +40,19 @@ function GroupList() {
   };
 
   const handleMoveAcceptedGroupById = (acceptedGroupId: number) => {
-    setMemberGroups((prev) => {
+    setMemberGroups((prev: MemberGroups) => {
       const acceptedGroup: MemberGroup | undefined = prev.invited_groups.find(
-        (group) => group.id === acceptedGroupId,
+        (group: MemberGroup) => group.id === acceptedGroupId,
       );
       if (acceptedGroup === undefined) {
         return prev;
       }
 
       const updatedInvitedGroups = prev.invited_groups.filter(
-        (group) => group.id !== acceptedGroupId,
+        (group: MemberGroup) => group.id !== acceptedGroupId,
       );
 
-      const updatedGroups = [...prev.groups, acceptedGroup];
+      const updatedGroups: MemberGroup[] = [...prev.groups, acceptedGroup];
 
       return {
         groups: updatedGroups,
@@ -64,9 +64,9 @@ function GroupList() {
   };
 
   const handleRefuseGroupById = (refuseGroupId: number) => {
-    setMemberGroups((prev) => {
+    setMemberGroups((prev: MemberGroups) => {
       const updatedInvitedGroups = prev.invited_groups.filter(
-        (group) => group.id !== refuseGroupId,
+        (group: MemberGroup) => group.id !== refuseGroupId,
       );
 
       return {
@@ -77,21 +77,33 @@ function GroupList() {
     });
   };
 
+  const handleWithdrawGroupById = (withdrawGroupId: number) => {
+    setMemberGroups((prev: MemberGroups) => {
+      const updateGroups = prev.groups.filter(
+        (group: MemberGroup) => group.id !== withdrawGroupId,
+      );
+
+      return {
+        ...prev,
+        group_count: updateGroups.length,
+        groups: updateGroups,
+      };
+    });
+  };
+
   const [groupCreateInit] = useState<GroupInfo>({
     name: '',
     color: 'labelBrown',
     member_id_list: [],
   });
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
   const handleGroupCreate = () => {
     console.log('새로운 그룹 생성');
   };
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
   const openModal = () => {
     setIsModalOpen(true);
   };
@@ -117,7 +129,13 @@ function GroupList() {
       return <div>속해있는 그룹이 없어요</div>;
     }
     return memberGroups.groups.map((group: MemberGroup) => {
-      return <GroupDetail key={group.id} group={group} />;
+      return (
+        <GroupDetail
+          key={group.id}
+          group={group}
+          groupWithdrawEvent={handleWithdrawGroupById}
+        />
+      );
     });
   };
 

@@ -13,9 +13,10 @@ import * as S from './GroupDetailList.styled';
 
 type GroupInfoProps = {
   group: Group;
+  groupWithdrawEvent: (groupId: number) => void;
 };
 
-function GroupDetail({ group }: GroupInfoProps) {
+function GroupDetail({ group, groupWithdrawEvent }: GroupInfoProps) {
   const navigate = useNavigate();
   const { groupId } = useParams();
 
@@ -73,6 +74,7 @@ function GroupDetail({ group }: GroupInfoProps) {
                 groupId={group.id}
                 color={group.color as BgColors}
                 isOwner={group.is_owner}
+                groupWithdrawEvent={groupWithdrawEvent}
               />
             </Disclosure.Panel>
           </S.GroupContainer>
