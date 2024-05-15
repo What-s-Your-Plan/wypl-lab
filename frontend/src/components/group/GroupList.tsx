@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 
+import Tooltip from '../tooltip/Tooltip';
 import { Container } from '../common/Container';
 import { Divider } from '../common/Divider';
 import Button from '../common/Button';
@@ -178,13 +179,22 @@ function GroupList() {
               <img src={Users} alt="그룹" className="w-4" />
               <div>나의 그룹</div>
             </div>
-            <Button
-              className="!bg-transparent"
-              $size="none"
-              onClick={openModal}
-            >
-              <img src={Plus} alt="그룹 생성" className="w-5 cursor-pointer" />
-            </Button>
+            <Tooltip
+              children={
+                <Button
+                  className="!bg-transparent"
+                  $size="none"
+                  onClick={openModal}
+                >
+                  <img
+                    src={Plus}
+                    alt="그룹 생성"
+                    className="w-5 cursor-pointer"
+                  />
+                </Button>
+              }
+              text={'그룹 생성'}
+            />
           </div>
           {renderGroupList()}
         </div>

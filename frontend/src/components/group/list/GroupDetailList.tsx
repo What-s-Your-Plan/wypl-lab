@@ -7,6 +7,7 @@ import { Divider } from '../../common/Divider';
 import GroupMemberList from '../member/GroupMemberList';
 import PalettePanel from '@/components/color/PalettePanel';
 import PopOver from '@/components/common/PopOver';
+import Tooltip from '@/components/tooltip/Tooltip';
 
 import patchPersonalGroupColor from '@/services/group/patchGroupColor';
 
@@ -52,11 +53,16 @@ function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
           <S.Box className="pl-6">{group.name}</S.Box>
           <S.Box className="gap-4">
             {group.is_owner && (
-              <img
-                src={Setting}
-                alt="설정"
-                onClick={handleOpenSettings}
-                className="w-5"
+              <Tooltip
+                children={
+                  <img
+                    src={Setting}
+                    alt="설정"
+                    onClick={handleOpenSettings}
+                    className="w-5"
+                  />
+                }
+                text={'그룹 설정'}
               />
             )}
             <img

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import Tooltip from '@/components/tooltip/Tooltip';
+
 import getGroupMember, {
   FindGroupMembersResponse as GroupMembers,
   GroupMemberResponse as GroupMember,
@@ -88,13 +90,23 @@ function GroupMemberList({
             </S.Box>
             <S.Box>
               {isOwner && member.id !== memberId && (
-                <ForceOutImg
-                  src={X}
-                  onClick={() => requestDeleteMember(member.id)}
+                <Tooltip
+                  children={
+                    <ForceOutImg
+                      src={X}
+                      onClick={() => requestDeleteMember(member.id)}
+                    />
+                  }
+                  text={'회원 추방'}
                 />
               )}
               {isOwner === false && member.id === memberId && (
-                <ForceOutImg src={X} onClick={() => requestWithdraw()} />
+                <Tooltip
+                  children={
+                    <ForceOutImg src={X} onClick={() => requestWithdraw()} />
+                  }
+                  text={'그룹 탈퇴'}
+                />
               )}
               <S.Check
                 $isAccepted={member.is_accepted}

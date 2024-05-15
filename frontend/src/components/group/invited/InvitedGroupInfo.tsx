@@ -1,4 +1,5 @@
 import ColorCircle from '@/components/common/ColorCircle';
+import Tooltip from '@/components/tooltip/Tooltip';
 
 import styled from 'styled-components';
 import { BgColors } from '@/assets/styles/colorThemes';
@@ -39,17 +40,27 @@ function InvitedGroupInfo({
   const actionButtons = () => {
     return (
       <S.Box className="flex gap-4">
-        <GreenImg
-          src={Check}
-          alt="수락"
-          onClick={handleAccept}
-          className="cursor-pointer"
+        <Tooltip
+          children={
+            <GreenImg
+              src={Check}
+              alt="수락"
+              onClick={handleAccept}
+              className="cursor-pointer"
+            />
+          }
+          text={'초대 수락'}
         />
-        <RedImg
-          src={X}
-          alt="거부"
-          onClick={handleReject}
-          className="cursor-pointer"
+        <Tooltip
+          children={
+            <RedImg
+              src={X}
+              alt="거부"
+              onClick={handleReject}
+              className="cursor-pointer"
+            />
+          }
+          text={'초대 거부'}
         />
       </S.Box>
     );
