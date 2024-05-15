@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 
@@ -10,16 +10,21 @@ import { Divider } from '../../common/Divider';
 import GroupUpdateModal from '../update/GroupUpdateModal';
 import GroupMemberList from '../member/GroupMemberList';
 
+import patchGroupInfo, {
+  UpdateGroupInfoRequest,
+} from '@/services/group/patchGroupInfo';
+import postGroupInvite, {
+  GroupInviteRequest,
+} from '@/services/group/postGroupInvite';
 import patchPersonalGroupColor from '@/services/group/patchGroupColor';
+
+import useToastStore from '@/stores/ToastStore';
 
 import { BgColors } from '@/assets/styles/colorThemes';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
 import Setting from '@/assets/icons/settings.svg';
 
 import * as S from './GroupDetailList.styled';
-import patchGroupInfo, {
-  UpdateGroupInfoRequest,
-} from '@/services/group/patchGroupInfo';
 
 type GroupInfoProps = {
   group: Group;
@@ -34,6 +39,7 @@ function GroupDetailList({
 }: GroupInfoProps) {
   const navigate = useNavigate();
   const { groupId } = useParams();
+  const { addToast } = useToastStore();
   const [color, setColor] = useState<BgColors>(group.color as BgColors);
 
   const handleChangeColor = async (color: BgColors) => {
@@ -60,25 +66,48 @@ function GroupDetailList({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const closeModal = () => {
     setIsModalOpen(false);
+    // TODO: 회원 관리를 여기서 해야겠는데?
   };
   const openModal = () => {
     setIsModalOpen(true);
   };
-  useEffect(() => {}, [isModalOpen]);
 
-  const handleUpdateGroup = async (newName: string, newColor: BgColors) => {
-    const request: UpdateGroupInfoRequest = {
-      name: newName,
-      color: newColor,
-    };
-    await patchGroupInfo(group.id, request).then((res) => {
-      const body = res.data.body!;
-      groupUpdateEvent({
-        id: group.id,
-        name: body.name,
-        color: body.color,
+  const handleUpdateGroup = async (
+    newName: string,
+    newColor: BgColors,
+    memberIds: Array<number>,
+  ) => {
+    if (newName !== group.name || newColor !== (group.color as BgColors)) {
+      const request: UpdateGroupInfoRequest = {
+        name: newName,
+        color: newColor,
+      };
+      await patchGroupInfo(group.id, request).then((res) => {
+        const body = res.data.body!;
+        groupUpdateEvent({
+          id: group.id,
+          name: body.name,
+          color: body.color,
+        });
       });
-    });
+      addToast({
+        duration: 300,
+        message: `그룹 수정에 성공하였습니다.`,
+        type: 'NOTIFICATION',
+      });
+    }
+    console.log(memberIds);
+    if (memberIds.length > 0) {
+      const request: GroupInviteRequest = {
+        member_id_list: memberIds,
+      };
+      await postGroupInvite(group.id, request);
+      addToast({
+        duration: 300,
+        message: `그룹에 ${memberIds.length}명을 초대했습니다.`,
+        type: 'NOTIFICATION',
+      });
+    }
   };
 
   const groupDetail = (isOpen: boolean) => {
@@ -121,6 +150,7 @@ function GroupDetailList({
         init={groupUpdateInit}
         handleClose={closeModal}
         groupUpdateEvent={handleUpdateGroup}
+        groupDeleteEvent={groupDeleteEvent}
       />
       <S.PopOverWrapper>
         <PopOver

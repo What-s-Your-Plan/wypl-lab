@@ -1,16 +1,24 @@
 import { useState } from 'react';
 
+import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
 import GroupUpdatePanel from './GroupUpdatePanel';
 
 import { BgColors } from '@/assets/styles/colorThemes';
 
-import * as S from '@/components/group/create/GroupCreateModal.styled';
+import * as S from './GroupUpdateModal.styled';
+import useToastStore from '@/stores/ToastStore';
+import deleteGroup from '@/services/group/deleteGroup';
 
 type GroupUpdateModalProps = {
   isOpen: boolean;
   init: GroupUpdateInfo;
-  groupUpdateEvent: (newName: string, newColor: BgColors) => void;
+  groupUpdateEvent: (
+    newName: string,
+    newColor: BgColors,
+    memberIds: Array<number>,
+  ) => void;
+  groupDeleteEvent: (groupId: number) => void;
   handleClose: (() => void) | (() => Promise<void>);
 };
 
@@ -19,9 +27,10 @@ function GroupUpdateModal({
   init,
   handleClose,
   groupUpdateEvent,
+  groupDeleteEvent,
 }: GroupUpdateModalProps) {
+  const { addToast } = useToastStore();
   const [groupUpdateInfo, setGroupUpdateInfo] = useState<GroupUpdateInfo>(init);
-
   const handleGroupUpdateInfo = (newName: string, newColor: BgColors) => {
     setGroupUpdateInfo((prev) => {
       return {
@@ -32,19 +41,50 @@ function GroupUpdateModal({
     });
   };
 
+  const [memberIds, setMemberIds] = useState<Array<number>>([]);
+  const handleInviteMemberIds = async (newMemberIds: Array<number>) => {
+    await setMemberIds(newMemberIds);
+  };
+
   const handleConfirmClick = async () => {
     await groupUpdateEvent(
       groupUpdateInfo.name,
       groupUpdateInfo.color as BgColors,
+      memberIds,
     );
+  };
+
+  const handleDeleteGroup = async () => {
+    confirm('그룹 삭제할 시 복구할 수 없습니다.');
+    const groupId: number = groupUpdateInfo.id;
+    await deleteGroup(groupId);
+    groupDeleteEvent(groupId);
+    handleClose();
+    await addToast({
+      duration: 300,
+      message: '그룹을 삭제하였습니다.',
+      type: 'NOTIFICATION',
+    });
   };
 
   const CreateGroupHeader = () => {
     return (
-      <S.TitleContainer>
-        <S.Title>그룹을 수정해보세요!</S.Title>
+      <S.Container>
+        <S.Wrapper>
+          <S.Title>그룹을 수정해보세요!</S.Title>
+          <Button
+            $size={'none'}
+            $bgColor={'labelRed'}
+            $textColor={'white'}
+            $width={'100px'}
+            className={'mb-4'}
+            onClick={handleDeleteGroup}
+          >
+            그룹 삭제
+          </Button>
+        </S.Wrapper>
         <S.Bar $color={groupUpdateInfo.color as BgColors} />
-      </S.TitleContainer>
+      </S.Container>
     );
   };
 
@@ -59,8 +99,9 @@ function GroupUpdateModal({
       title={CreateGroupHeader()}
       contents={
         <GroupUpdatePanel
-          groupUpdateInfoEvent={handleGroupUpdateInfo}
           groupUpdateInfo={groupUpdateInfo}
+          groupUpdateInfoEvent={handleGroupUpdateInfo}
+          inviteMemberIdsEvent={handleInviteMemberIds}
         />
       }
       handleClose={handleClose}

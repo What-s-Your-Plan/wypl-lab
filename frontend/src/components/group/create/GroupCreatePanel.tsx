@@ -86,10 +86,10 @@ function GroupCreatePanel({
   }, [selectedMembers]);
 
   const renderSearchedMembers = () => {
-    return searchedMemberList.map((member: FindMemberProfile, idx: number) => {
+    return searchedMemberList.map((member: FindMemberProfile) => {
       return (
         <S.MemberContainer
-          key={'memberSearchContainer' + idx}
+          key={'memberSearchContainer' + member.id}
           onClick={() => {
             setSelectedMembers((prev) => {
               if (!prev.some((x) => x.id === member.id)) {
@@ -117,7 +117,10 @@ function GroupCreatePanel({
   const renderSelectedMembers = () => {
     return selectedMembers.map((member) => {
       return (
-        <S.MemberContainer onClick={() => handleMemberCancel(member.id)}>
+        <S.MemberContainer
+          key={'memberSelectContainer' + member.id}
+          onClick={() => handleMemberCancel(member.id)}
+        >
           <S.SelectMemberProfileWrapper $color={color}>
             <S.MemberProfileImg
               src={getMemberProfileImageOrDefault(member.profile_image_url)}

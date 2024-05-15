@@ -19,18 +19,17 @@ import * as S from '@/components/group/create/GroupCreatePanel.styled';
 type GroupUpdatePanelProps = {
   groupUpdateInfo: GroupUpdateInfo;
   groupUpdateInfoEvent: (newName: string, newColor: BgColors) => void;
+  inviteMemberIdsEvent: (memberIds: Array<number>) => void;
 };
 
 function GroupUpdatePanel({
   groupUpdateInfo,
   groupUpdateInfoEvent,
+  inviteMemberIdsEvent,
 }: GroupUpdatePanelProps) {
-  const [selectedMembers, setSelectedMembers] = useState<FindMemberProfile[]>(
-    [],
-  );
   const [searchMember, setSearchMember] = useState<string>('');
-  const [searchedMemberList, setSearchMemberList] = useState<
-    FindMemberProfile[]
+  const [searchedMembers, setSearchMembers] = useState<
+    Array<FindMemberProfile>
   >([]);
 
   const handleSearchMemberChange = async (
@@ -42,15 +41,42 @@ function GroupUpdatePanel({
         e.target.value,
         49,
       );
-      setSearchMemberList(response.members);
+      setSearchMembers(response.members);
     } else {
-      setSearchMemberList([]);
+      setSearchMembers([]);
     }
   };
 
-  const handleMemberCancel = (member_id: number) => {
-    setSelectedMembers(
-      selectedMembers.filter((member) => member.id !== member_id),
+  const [selectedMembers, setSelectedMembers] = useState<
+    Array<FindMemberProfile>
+  >([]);
+
+  const handleAddMember = async (member: FindMemberProfile) => {
+    await setSelectedMembers((prev: Array<FindMemberProfile>) => {
+      if (
+        !prev.some(
+          (memberProfile: FindMemberProfile) => memberProfile.id === member.id,
+        )
+      ) {
+        return [...prev, member];
+      }
+      return prev;
+    });
+    await inviteMemberIdsEvent(
+      selectedMembers.map((m: FindMemberProfile) => {
+        return m.id;
+      }),
+    );
+  };
+
+  const handleMemberCancel = async (memberId: number) => {
+    await setSelectedMembers(
+      selectedMembers.filter((member) => member.id !== memberId),
+    );
+    await inviteMemberIdsEvent(
+      selectedMembers.map((m: FindMemberProfile) => {
+        return m.id;
+      }),
     );
   };
 
@@ -64,18 +90,11 @@ function GroupUpdatePanel({
   }, [color, name]);
 
   const renderSearchedMembers = () => {
-    return searchedMemberList.map((member: FindMemberProfile, idx: number) => {
+    return searchedMembers.map((member: FindMemberProfile) => {
       return (
         <S.MemberContainer
-          key={'memberSearchContainer' + idx}
-          onClick={() => {
-            setSelectedMembers((prev) => {
-              if (!prev.some((x) => x.id === member.id)) {
-                return [...prev, member];
-              }
-              return prev;
-            });
-          }}
+          key={'memberSearchContainer' + member.id}
+          onClick={() => handleAddMember(member)}
         >
           <S.MemberProfileWrapper $color={color}>
             <S.MemberProfileImg
@@ -93,9 +112,12 @@ function GroupUpdatePanel({
   };
 
   const renderSelectedMembers = () => {
-    return selectedMembers.map((member) => {
+    return selectedMembers.map((member: FindMemberProfile) => {
       return (
-        <S.MemberContainer onClick={() => handleMemberCancel(member.id)}>
+        <S.MemberContainer
+          key={'memberSelectContainer' + member.id}
+          onClick={() => handleMemberCancel(member.id)}
+        >
           <S.SelectMemberProfileWrapper
             $color={groupUpdateInfo.color as BgColors}
           >
@@ -157,7 +179,7 @@ function GroupUpdatePanel({
           </S.InputWrapper>
         </S.MemberWrapper>
       </S.InputContainer>
-      {searchMember.length >= 2 && searchedMemberList.length === 0 && (
+      {searchMember.length >= 2 && searchedMembers.length === 0 && (
         <>
           <S.Bar $color={color} />
           <S.InputLabel>
@@ -168,7 +190,7 @@ function GroupUpdatePanel({
           </S.AnimationBox>
         </>
       )}
-      {searchedMemberList.length !== 0 && (
+      {searchedMembers.length !== 0 && (
         <>
           <S.Bar $color={color} />
           <S.InputLabel>검색된 사용자</S.InputLabel>

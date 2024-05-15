@@ -2,7 +2,19 @@ import { BgColors, BgTheme } from '@/assets/styles/colorThemes';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 
-const TitleContainer = styled.div``;
+const Container = styled.div`
+  ${tw`
+  
+  `}
+`;
+
+const Wrapper = styled.div`
+  ${tw`
+    flex
+    justify-between
+    items-center
+  `}
+`;
 
 const Title = styled.p`
   ${tw`
@@ -22,4 +34,4 @@ const Bar = styled.div<BarProps>`
   ${(props) => BgTheme[props.$color]}
 `;
 
-export { TitleContainer, Title, Bar };
+export { Container, Wrapper, Title, Bar };

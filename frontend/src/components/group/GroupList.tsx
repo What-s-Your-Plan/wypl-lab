@@ -20,10 +20,7 @@ import Users from '@/assets/icons/users.svg';
 import Plus from '@/assets/icons/plus.svg';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
 import { BROWSER_PATH } from '@/constants/Path';
-import { UpdateGroupInfoRequest } from '@/services/group/patchGroupInfo';
 import { BgColors } from '@/assets/styles/colorThemes';
-
-// import * as S from './GroupList.styled';
 
 function GroupList() {
   const navigate = useNavigate();
@@ -110,7 +107,6 @@ function GroupList() {
     });
   };
 
-  // TODO: 그룹 수정 핸들러 (정보 및 색상)
   const handleUpdateGroupById = (updateGroup: GroupUpdateInfo) => {
     setMemberGroups((prev: MemberGroups) => {
       const updateGroups = prev.groups.map((group: MemberGroup) => {

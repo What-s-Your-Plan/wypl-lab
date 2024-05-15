@@ -38,7 +38,7 @@ function GroupMemberList({
   const { memberId } = useMemberStore();
 
   const [groupMembers, setGroupMembers] = useState<GroupMembers>({
-    color: 'labelBrown',
+    color,
     member_count: 0,
     members: [],
   });
