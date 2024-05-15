@@ -27,8 +27,11 @@ function WriteBlockList() {
 
   const handleDropItem = (event: React.DragEvent) => {
     event.preventDefault();
+    if (reviewStore.contents.length > 100) {
+      alert('회고 블록은 100개까지 추가할 수 있습니다!');
+      return;
+    }
     const dragItem = event.dataTransfer.getData('blockType');
-    console.log(event.dataTransfer.getData('blockType'));
     if (dragItem) {
       reviewStore.addContent(
         reviewStore.contents.length - 1,
@@ -38,6 +41,7 @@ function WriteBlockList() {
   };
 
   const handleCancelClick = () => {
+    reviewStore.resetReview();
     navigator(-1);
   };
 
@@ -47,6 +51,22 @@ function WriteBlockList() {
       schedule_id: reviewStore.scheduleId,
       contents: reviewStore.contents,
     };
+    if (body.title === '') {
+      alert('제목을 입력해주세요');
+      return;
+    }
+    if (body.contents.length === 0) {
+      alert('회고록에 내용을 추가해주세요');
+      return;
+    } else {
+      for (var i = 0; i < body.contents.length; i++) {
+        if (!reviewStore.isContentComplete(i)) {
+          alert('내용이 빈 회고 블록이 있습니다');
+          reviewStore.setFocusIndex(i);
+          return;
+        }
+      }
+    }
     const reviewId = await postReview(body);
     console.log(reviewId);
     if (reviewId) {
@@ -97,10 +117,13 @@ function WriteBlockList() {
           event.preventDefault();
         }}
         onDrop={handleDropItem}
+        className="h-[50vh]"
       >
         {reviewStore.contents.length === 0 ? (
           <S.WhiteContainer $width="900">
-            <DividerLabel>블록을 추가해주세요</DividerLabel>
+            <DividerLabel>
+              좌측 블록 드래그&드랍으로 블록을 추가해주세요
+            </DividerLabel>
           </S.WhiteContainer>
         ) : (
           renderBlockList()

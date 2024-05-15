@@ -26,6 +26,7 @@ type ReviewAction = {
   addContent: (index: number, type: ReviewType) => void;
   moveContent: (fromIndex: number, toIndex: number) => void;
   deleteContent: (targetIndex: number) => void;
+  isContentComplete: (index: number) => boolean;
   resetReview: () => void;
 };
 
@@ -107,6 +108,48 @@ const useReviewStore = create<ReviewState & ReviewAction>()(
         contents: state.contents.filter((_, i) => i !== targetIndex),
         focusIndex: -1,
       }));
+    },
+    isContentComplete(index: number) {
+      const content = get().contents[index];
+      switch (content.blockType) {
+        case 'text':
+          // Check if text content is empty or not
+          return (content as TextContent).text.trim() !== '';
+        case 'picture':
+          // Check if picture path is not empty
+          return (content as PictureContent).path.trim() !== '';
+        case 'emotion':
+          // Check if any field in emotion content is empty
+          return (
+            (content as EmotionContent).emoji.trim() !== '' &&
+            (content as EmotionContent).description.trim() !== ''
+          );
+        case 'weather':
+          // Check if any field in weather content is empty
+          return (
+            (content as WeatherContent).weather.trim() !== '' &&
+            (content as WeatherContent).description.trim() !== ''
+          );
+        case 'kpt':
+          // Check if any field in KPT content is empty
+          return (
+            (content as KPTContent).keepStr.trim() !== '' &&
+            (content as KPTContent).problemStr.trim() !== '' &&
+            (content as KPTContent).tryStr.trim() !== ''
+          );
+        case '4f':
+          // Check if any field in Four F content is empty
+          return (
+            (content as FourFContent).facts.trim() !== '' &&
+            (content as FourFContent).feeling.trim() !== '' &&
+            (content as FourFContent).finding.trim() !== '' &&
+            (content as FourFContent).future.trim() !== ''
+          );
+        default:
+          // Log error or handle unknown type
+          console.error('Unknown content type:', content.blockType);
+          return false;
+      }
     },
     resetReview() {
       set(initialState);

@@ -25,7 +25,7 @@ function NotificationSheet() {
       return (
         <div key={notification.id} className="w-full mb-4">
           <Divider />
-          {notification.type_code === 'Group' ? (
+          {notification.type_code === 'GROUP' ? (
             <GroupNotification
               key={notification.id}
               notification={notification}
