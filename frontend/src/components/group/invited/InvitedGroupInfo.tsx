@@ -12,19 +12,27 @@ import * as S from './InvitedGroupInfo.styled';
 type InvitedGroupInfoProps = {
   group: Group;
   acceptedEvent: (groupId: number) => void;
+  refusedEvent: (groupId: number) => void;
 };
 
-function InvitedGroupInfo({ group, acceptedEvent }: InvitedGroupInfoProps) {
+function InvitedGroupInfo({
+  group,
+  acceptedEvent,
+  refusedEvent,
+}: InvitedGroupInfoProps) {
   const handleAccept = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    patchGroupInvite(group.id);
-    acceptedEvent(group.id);
+    patchGroupInvite(group.id).then(() => {
+      acceptedEvent(group.id);
+    });
   };
 
   const handleReject = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (window.confirm('그룹 초대를 거절하시겠습니까?')) {
-      deleteGroupInvite(group.id);
+      deleteGroupInvite(group.id).then(() => {
+        refusedEvent(group.id);
+      });
     }
   };
 
