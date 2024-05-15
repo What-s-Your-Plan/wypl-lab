@@ -15,12 +15,15 @@ import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Message;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupMemberColorUpdateRequest;
 import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.request.MemberIdRequest;
-import com.butter.wypl.group.data.response.GroupDetailResponse;
+import com.butter.wypl.group.data.response.FindGroupMembersResponse;
+import com.butter.wypl.group.data.response.FindGroupsResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
-import com.butter.wypl.group.data.response.GroupListByMemberIdResponse;
+import com.butter.wypl.group.data.response.GroupMemberColorUpdateResponse;
+import com.butter.wypl.group.data.response.GroupResponse;
 import com.butter.wypl.group.data.response.MemberIdResponse;
 import com.butter.wypl.group.service.GroupLoadService;
 import com.butter.wypl.group.service.GroupModifyService;
@@ -36,21 +39,23 @@ public class GroupController {
 	private final GroupLoadService groupLoadService;
 
 	@PostMapping("/v1/groups")
-	public ResponseEntity<Message<GroupIdResponse>> createGroup(@Authenticated AuthMember authMember,
+	public ResponseEntity<Message<GroupResponse>> createGroup(@Authenticated AuthMember authMember,
 		@RequestBody GroupCreateRequest createRequest) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(
 			Message.withBody("그룹 등록에 성공했습니다.", groupModifyService.createGroup(authMember.getId(), createRequest)));
 	}
 
 	@GetMapping("/v1/groups/{groupId}")
-	public ResponseEntity<Message<GroupDetailResponse>> getGroupDetail(@Authenticated AuthMember authMember,
-		@PathVariable int groupId) {
-		return ResponseEntity.ok(
-			Message.withBody("그룹 조회에 성공했습니다.", groupLoadService.getDetailById(authMember.getId(), groupId)));
+	public ResponseEntity<Message<FindGroupMembersResponse>> getGroupDetail(
+		@Authenticated AuthMember authMember,
+		@PathVariable int groupId
+	) {
+		FindGroupMembersResponse response = groupLoadService.getDetailById(authMember.getId(), groupId);
+		return ResponseEntity.ok(Message.withBody("그룹 조회에 성공했습니다.", response));
 	}
 
 	@PatchMapping("/v1/groups/{groupId}")
-	public ResponseEntity<Message<GroupIdResponse>> updateGroup(@Authenticated AuthMember authMember,
+	public ResponseEntity<Message<GroupResponse>> updateGroup(@Authenticated AuthMember authMember,
 		@PathVariable int groupId,
 		@RequestBody GroupUpdateRequest updateRequest) {
 		return ResponseEntity.ok(Message.withBody("그룹 수정에 성공했습니다.",
@@ -64,10 +69,12 @@ public class GroupController {
 	}
 
 	@GetMapping("/v1/groups/members")
-	public ResponseEntity<Message<GroupListByMemberIdResponse>> getGroupListByMemberId(
-		@Authenticated AuthMember authMember) {
+	public ResponseEntity<Message<FindGroupsResponse>> findJoinGroups(
+		@Authenticated AuthMember authMember
+	) {
+		FindGroupsResponse response = groupLoadService.getGroupsByMemberId(authMember.getId());
 		return ResponseEntity.ok(
-			Message.withBody("회원의 그룹 전체 조회에 성공했습니다.", groupLoadService.getGroupListByMemberId(authMember.getId())));
+			Message.withBody("회원의 그룹 전체 조회에 성공했습니다.", response));
 	}
 
 	@PostMapping("/v1/groups/{groupId}/members/invitation")
@@ -78,7 +85,7 @@ public class GroupController {
 			groupModifyService.inviteGroupMember(authMember.getId(), groupId, inviteRequest)));
 	}
 
-	@DeleteMapping("/v1/groups/{groupId}/members/force-out")
+	@PatchMapping("/v1/groups/{groupId}/members/force-out")
 	public ResponseEntity<Message<MemberIdResponse>> forceOutGroupMember(@Authenticated AuthMember authMember,
 		@PathVariable int groupId,
 		@RequestBody MemberIdRequest memberIdRequest) {
@@ -105,6 +112,14 @@ public class GroupController {
 		@PathVariable int groupId) {
 		groupModifyService.leaveGroup(authMember.getId(), groupId);
 		return ResponseEntity.ok(Message.onlyMessage("그룹을 탈퇴했습니다."));
+	}
+
+	@PatchMapping("/v1/groups/{groupId}/members/colors")
+	public ResponseEntity<Message<GroupMemberColorUpdateResponse>> updateGroupColor(
+		@Authenticated AuthMember authMember,
+		@PathVariable int groupId, @RequestBody GroupMemberColorUpdateRequest request) {
+		return ResponseEntity.ok(Message.withBody("그룹 개인화 색상 변경에 성공했습니다.",
+			groupModifyService.updateGroupColor(authMember.getId(), groupId, request)));
 	}
 
 }

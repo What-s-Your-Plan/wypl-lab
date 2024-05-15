@@ -20,7 +20,7 @@ public record RepetitionResponse(
 	LocalDate repetitionEndDate,
 
 	@JsonProperty("day_of_week")
-	Byte dayOfWeek,
+	int dayOfWeek,
 	Integer week
 ) {
 

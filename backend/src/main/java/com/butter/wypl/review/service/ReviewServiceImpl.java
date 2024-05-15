@@ -51,12 +51,13 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 
 		//schedule, member 유효성 판단
 		MemberSchedule memberSchedule = memberScheduleService.getMemberScheduleByMemberAndSchedule(memberId,
-			ScheduleServiceUtils.findById(scheduleRepository, reviewCreateRequest.scheduleId()));
+				ScheduleServiceUtils.findById(scheduleRepository, reviewCreateRequest.scheduleId()));
+		memberSchedule.writeReview();
 
 		Review savedReview = reviewRepository.save(Review.of(reviewCreateRequest, memberSchedule));
 
 		reviewContentsRepository.save(
-			ReviewContents.of(savedReview.getReviewId(), reviewCreateRequest.contents()));
+				ReviewContents.of(savedReview.getReviewId(), reviewCreateRequest.contents()));
 
 		return ReviewIdResponse.from(savedReview.getReviewId());
 	}
@@ -73,7 +74,7 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		review.updateTitle(reviewUpdateRequest.title());
 
 		ReviewContents reviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-			review.getReviewId());
+				review.getReviewId());
 		reviewContents.updateContents(reviewUpdateRequest.contents());
 
 		reviewContentsRepository.save(reviewContents);
@@ -90,7 +91,7 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		review.validationOwnerByMemberId(memberId);
 
 		ReviewContents reviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-			review.getReviewId());
+				review.getReviewId());
 		reviewContents.delete();
 
 		reviewContentsRepository.save(reviewContents);
@@ -108,18 +109,18 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		review.validationOwnerByMemberId(memberId);
 
 		ReviewContents reviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-			review.getReviewId());
+				review.getReviewId());
 
 		Schedule schedule = review.getMemberSchedule().getSchedule();
 
 		return ReviewDetailResponse.of(review, schedule,
-			memberScheduleService.getMembersBySchedule(schedule),
-			reviewContents == null ? null : reviewContents.getContents());
+				memberScheduleService.getMembersBySchedule(schedule),
+				reviewContents == null ? null : reviewContents.getContents());
 	}
 
 	@Override
 	public ReviewListResponse getReviews(int memberId, Integer lastReviewId, ReviewType reviewType, LocalDate startDate,
-		LocalDate endDate) {
+			LocalDate endDate) {
 
 		List<Review> reviews = switch (reviewType) {
 			case NEWEST -> {
@@ -159,20 +160,21 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		};
 
 		return ReviewListResponse.from(reviews.stream().map(
-			review -> ReviewResponse.builder()
-				.title(review.getTitle())
-				.createdAt(review.getCreatedAt())
-				.reviewId(review.getReviewId())
-				.thumbnailContent(getThumbnailContent(
-					reviewContentsRepository.findByReviewIdAndDeletedAtNull(review.getReviewId()).getContents()))
-				.build()
+				review -> ReviewResponse.builder()
+						.title(review.getTitle())
+						.createdAt(review.getCreatedAt())
+						.reviewId(review.getReviewId())
+						.thumbnailContent(getThumbnailContent(
+								reviewContentsRepository.findByReviewIdAndDeletedAtNull(review.getReviewId())
+										.getContents()))
+						.build()
 		).toList());
 	}
 
 	@Override
 	public ReviewListResponse getReviewsByScheduleId(int memberId, int scheduleId, ReviewType reviewType) {
 		MemberSchedule memberSchedule = memberScheduleService.getMemberScheduleByMemberAndSchedule(memberId,
-			ScheduleServiceUtils.findById(scheduleRepository, scheduleId));
+				ScheduleServiceUtils.findById(scheduleRepository, scheduleId));
 
 		List<Review> reviews = switch (reviewType) {
 			case NEWEST -> {
@@ -186,15 +188,16 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		List<ReviewResponse> reviewResponses = new ArrayList<>();
 		for (Review review : reviews) {
 			reviewResponses.add(
-				ReviewResponse.builder()
-					.reviewId(review.getReviewId())
-					.title(review.getTitle())
-					.createdAt(review.getCreatedAt())
-					.thumbnailContent(
-						getThumbnailContent(
-							reviewContentsRepository.findByReviewIdAndDeletedAtNull(review.getReviewId()).getContents())
-					)
-					.build()
+					ReviewResponse.builder()
+							.reviewId(review.getReviewId())
+							.title(review.getTitle())
+							.createdAt(review.getCreatedAt())
+							.thumbnailContent(
+									getThumbnailContent(
+											reviewContentsRepository.findByReviewIdAndDeletedAtNull(
+													review.getReviewId()).getContents())
+							)
+							.build()
 			);
 		}
 

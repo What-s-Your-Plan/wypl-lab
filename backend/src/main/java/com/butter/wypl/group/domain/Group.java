@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.butter.wypl.global.common.BaseEntity;
+import com.butter.wypl.global.common.Color;
 import com.butter.wypl.group.exception.GroupException;
 import com.butter.wypl.member.domain.Member;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -38,29 +41,30 @@ public class Group extends BaseEntity {
 	@Column(name = "name", length = 20, nullable = false)
 	private String name;
 
-	@Column(name = "description", length = 50)
-	private String description;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "color", length = 20)
+	private Color color;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "owner_id", nullable = false)
 	private Member owner;
 
 	@OneToMany(mappedBy = "group")
-	private List<MemberGroup> memberGroups = new ArrayList<>();
+	private List<MemberGroup> memberGroups;
 
 	@Builder
-	private Group(String name, String description, Member owner) {
+	private Group(String name, Color color, Member owner) {
 		this.name = name;
-		this.description = description;
+		this.color = color;
 		this.owner = owner;
+		this.memberGroups = new ArrayList<>();
 	}
 
-	public static Group of(String name, String description, Member owner) {
+	public static Group of(String name, Color color, Member owner) {
 		validateName(name);
-		validateDescription(description);
 		return Group.builder()
 				.name(name)
-				.description(description)
+				.color(color)
 				.owner(owner)
 				.build();
 	}
@@ -71,17 +75,9 @@ public class Group extends BaseEntity {
 		}
 	}
 
-	public static void validateDescription(String description) {
-		if (description.length() > 50) {
-			throw new GroupException(EXCEED_MAX_LENGTH_OF_GROUP_DESCRIPTION);
-		}
-	}
-
-	public void updateGroupInfo(String name, String description) {
+	public void updateGroupInfo(String name, Color color) {
 		validateName(name);
-		validateDescription(description);
 		this.name = name;
-		this.description = description;
+		this.color = color;
 	}
-
 }

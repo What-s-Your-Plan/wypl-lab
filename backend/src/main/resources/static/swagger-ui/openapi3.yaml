@@ -141,7 +141,7 @@ paths:
                   value: "{\r\n  \"message\" : \"개인 페이지 달력 조회 성공\",\r\n  \"body\"\
                     \ : {\r\n    \"schedule_count\" : 2,\r\n    \"schedules\" : [\
                     \ {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\" : \"\
-                    2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-26T13:00:00\"\
+                    2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-27T13:00:00\"\
                     ,\r\n      \"title\" : \"테니스 가기\",\r\n      \"description\" :\
                     \ \"장소 : 신촌 테니스\",\r\n      \"category\" : \"MEMBER\",\r\n   \
                     \   \"label\" : null,\r\n      \"group\" : null\r\n    }, {\r\n\
@@ -151,13 +151,12 @@ paths:
                     \ 풀기\",\r\n      \"category\" : \"GROUP\",\r\n      \"label\"\
                     \ : null,\r\n      \"group\" : {\r\n        \"group_id\" : 0,\r\
                     \n        \"color\" : \"labelBlue\",\r\n        \"title\" : \"\
-                    study group\",\r\n        \"description\" : \"신나는 스터디 모임\"\r\n\
-                    \      }\r\n    } ]\r\n  }\r\n}"
+                    study group\"\r\n      }\r\n    } ]\r\n  }\r\n}"
                 calendar/personal_date:
                   value: "{\r\n  \"message\" : \"개인 페이지 달력 조회 성공\",\r\n  \"body\"\
                     \ : {\r\n    \"schedule_count\" : 2,\r\n    \"schedules\" : [\
                     \ {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\" : \"\
-                    2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-26T13:00:00\"\
+                    2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-27T13:00:00\"\
                     ,\r\n      \"title\" : \"테니스 가기\",\r\n      \"description\" :\
                     \ \"장소 : 신촌 테니스\",\r\n      \"category\" : \"MEMBER\",\r\n   \
                     \   \"label\" : null,\r\n      \"group\" : null\r\n    }, {\r\n\
@@ -167,48 +166,47 @@ paths:
                     \ 풀기\",\r\n      \"category\" : \"GROUP\",\r\n      \"label\"\
                     \ : null,\r\n      \"group\" : {\r\n        \"group_id\" : 0,\r\
                     \n        \"color\" : \"labelBlue\",\r\n        \"title\" : \"\
-                    study group\",\r\n        \"description\" : \"신나는 스터디 모임\"\r\n\
-                    \      }\r\n    } ]\r\n  }\r\n}"
+                    study group\"\r\n      }\r\n    } ]\r\n  }\r\n}"
                 calendar/personal_label:
                   value: "{\r\n  \"message\" : \"개인 페이지 달력 조회 성공\",\r\n  \"body\"\
                     \ : {\r\n    \"schedule_count\" : 2,\r\n    \"schedules\" : [\
                     \ {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\" : \"\
-                    2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-28T13:00:00\"\
+                    2024-04-27T11:00:00\",\r\n      \"end_date\" : \"2024-04-28T13:00:00\"\
                     ,\r\n      \"title\" : \"테니스 가기\",\r\n      \"description\" :\
                     \ \"장소 : 신촌 테니스\",\r\n      \"category\" : \"MEMBER\",\r\n   \
                     \   \"label\" : {\r\n        \"label_id\" : 0,\r\n        \"member_id\"\
                     \ : 1,\r\n        \"title\" : \"알고리즘 스터디\",\r\n        \"color\"\
                     \ : \"labelCharcoal\"\r\n      },\r\n      \"group\" : null\r\n\
                     \    }, {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\"\
-                    \ : \"2024-04-27T11:00:00\",\r\n      \"end_date\" : \"2024-04-27T12:00:00\"\
+                    \ : \"2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-27T12:00:00\"\
                     ,\r\n      \"title\" : \"알고르즘 스터디\",\r\n      \"description\"\
                     \ : \"하루에 한문제씩 풀기\",\r\n      \"category\" : \"GROUP\",\r\n  \
                     \    \"label\" : {\r\n        \"label_id\" : 0,\r\n        \"\
                     member_id\" : 1,\r\n        \"title\" : \"알고리즘 스터디\",\r\n    \
                     \    \"color\" : \"labelCharcoal\"\r\n      },\r\n      \"group\"\
                     \ : {\r\n        \"group_id\" : 0,\r\n        \"color\" : \"labelBlue\"\
-                    ,\r\n        \"title\" : \"study group\",\r\n        \"description\"\
-                    \ : \"신나는 스터디 모임\"\r\n      }\r\n    } ]\r\n  }\r\n}"
+                    ,\r\n        \"title\" : \"study group\"\r\n      }\r\n    } ]\r\
+                    \n  }\r\n}"
                 calendar/personal_label_date:
                   value: "{\r\n  \"message\" : \"개인 페이지 달력 조회 성공\",\r\n  \"body\"\
                     \ : {\r\n    \"schedule_count\" : 2,\r\n    \"schedules\" : [\
                     \ {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\" : \"\
-                    2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-28T13:00:00\"\
+                    2024-04-27T11:00:00\",\r\n      \"end_date\" : \"2024-04-28T13:00:00\"\
                     ,\r\n      \"title\" : \"테니스 가기\",\r\n      \"description\" :\
                     \ \"장소 : 신촌 테니스\",\r\n      \"category\" : \"MEMBER\",\r\n   \
                     \   \"label\" : {\r\n        \"label_id\" : 0,\r\n        \"member_id\"\
                     \ : 1,\r\n        \"title\" : \"알고리즘 스터디\",\r\n        \"color\"\
                     \ : \"labelCharcoal\"\r\n      },\r\n      \"group\" : null\r\n\
                     \    }, {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\"\
-                    \ : \"2024-04-27T11:00:00\",\r\n      \"end_date\" : \"2024-04-27T12:00:00\"\
+                    \ : \"2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-27T12:00:00\"\
                     ,\r\n      \"title\" : \"알고르즘 스터디\",\r\n      \"description\"\
                     \ : \"하루에 한문제씩 풀기\",\r\n      \"category\" : \"GROUP\",\r\n  \
                     \    \"label\" : {\r\n        \"label_id\" : 0,\r\n        \"\
                     member_id\" : 1,\r\n        \"title\" : \"알고리즘 스터디\",\r\n    \
                     \    \"color\" : \"labelCharcoal\"\r\n      },\r\n      \"group\"\
                     \ : {\r\n        \"group_id\" : 0,\r\n        \"color\" : \"labelBlue\"\
-                    ,\r\n        \"title\" : \"study group\",\r\n        \"description\"\
-                    \ : \"신나는 스터디 모임\"\r\n      }\r\n    } ]\r\n  }\r\n}"
+                    ,\r\n        \"title\" : \"study group\"\r\n      }\r\n    } ]\r\
+                    \n  }\r\n}"
   /calendar/v1/calendars/{type}/{groupId}:
     get:
       tags:
@@ -239,50 +237,46 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/calendar-v1-calendars-type-groupId-1606921404'
+                $ref: '#/components/schemas/calendar-v1-calendars-type-groupId1204135838'
               examples:
                 calendar/group:
                   value: "{\r\n  \"message\" : \"그룹 페이지 달력 조회 성공\",\r\n  \"body\"\
                     \ : {\r\n    \"schedule_count\" : 2,\r\n    \"group\" : {\r\n\
                     \      \"group_id\" : 0,\r\n      \"color\" : \"labelBlue\",\r\
-                    \n      \"title\" : \"study group\",\r\n      \"description\"\
-                    \ : \"신나는 스터디 모임\"\r\n    },\r\n    \"schedules\" : [ {\r\n  \
-                    \    \"schedule_id\" : 0,\r\n      \"start_date\" : \"2024-04-26T11:00:00\"\
-                    ,\r\n      \"end_date\" : \"2024-04-28T13:00:00\",\r\n      \"\
-                    member_count\" : 1,\r\n      \"title\" : \"테니스 가기\",\r\n     \
-                    \ \"description\" : \"장소 : 신촌 테니스\",\r\n      \"category\" : \"\
-                    MEMBER\",\r\n      \"members\" : [ {\r\n        \"member_id\"\
-                    \ : 0,\r\n        \"nickname\" : \"좌랑둥이\",\r\n        \"color\"\
-                    \ : \"labelCharcoal\"\r\n      } ]\r\n    }, {\r\n      \"schedule_id\"\
-                    \ : 0,\r\n      \"start_date\" : \"2024-04-27T11:00:00\",\r\n\
-                    \      \"end_date\" : \"2024-04-27T12:00:00\",\r\n      \"member_count\"\
-                    \ : 2,\r\n      \"title\" : \"알고르즘 스터디\",\r\n      \"description\"\
-                    \ : \"하루에 한문제씩 풀기\",\r\n      \"category\" : \"GROUP\",\r\n  \
-                    \    \"members\" : [ {\r\n        \"member_id\" : 0,\r\n     \
-                    \   \"nickname\" : \"좌랑둥이\",\r\n        \"color\" : \"labelCharcoal\"\
-                    \r\n      }, {\r\n        \"member_id\" : 0,\r\n        \"nickname\"\
+                    \n      \"title\" : \"study group\"\r\n    },\r\n    \"schedules\"\
+                    \ : [ {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\"\
+                    \ : \"2024-04-27T11:00:00\",\r\n      \"end_date\" : \"2024-04-28T13:00:00\"\
+                    ,\r\n      \"member_count\" : 1,\r\n      \"title\" : \"테니스 가기\
+                    \",\r\n      \"category\" : \"MEMBER\",\r\n      \"members\" :\
+                    \ [ {\r\n        \"member_id\" : 0,\r\n        \"nickname\" :\
+                    \ \"좌랑둥이\",\r\n        \"color\" : \"labelCharcoal\"\r\n     \
+                    \ } ]\r\n    }, {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\"\
+                    \ : \"2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-27T12:00:00\"\
+                    ,\r\n      \"member_count\" : 2,\r\n      \"title\" : \"알고르즘 스\
+                    터디\",\r\n      \"category\" : \"GROUP\",\r\n      \"members\"\
+                    \ : [ {\r\n        \"member_id\" : 0,\r\n        \"nickname\"\
+                    \ : \"좌랑둥이\",\r\n        \"color\" : \"labelCharcoal\"\r\n   \
+                    \   }, {\r\n        \"member_id\" : 0,\r\n        \"nickname\"\
                     \ : \"댬니\",\r\n        \"color\" : \"labelBlue\"\r\n      } ]\r\
                     \n    } ]\r\n  }\r\n}"
                 calendar/group_date:
                   value: "{\r\n  \"message\" : \"그룹 페이지 달력 조회 성공\",\r\n  \"body\"\
                     \ : {\r\n    \"schedule_count\" : 2,\r\n    \"group\" : {\r\n\
                     \      \"group_id\" : 0,\r\n      \"color\" : \"labelBlue\",\r\
-                    \n      \"title\" : \"study group\",\r\n      \"description\"\
-                    \ : \"신나는 스터디 모임\"\r\n    },\r\n    \"schedules\" : [ {\r\n  \
-                    \    \"schedule_id\" : 0,\r\n      \"start_date\" : \"2024-04-26T11:00:00\"\
-                    ,\r\n      \"end_date\" : \"2024-04-28T13:00:00\",\r\n      \"\
-                    member_count\" : 1,\r\n      \"title\" : \"테니스 가기\",\r\n     \
-                    \ \"description\" : \"장소 : 신촌 테니스\",\r\n      \"category\" : \"\
-                    MEMBER\",\r\n      \"members\" : [ {\r\n        \"member_id\"\
-                    \ : 0,\r\n        \"nickname\" : \"좌랑둥이\",\r\n        \"color\"\
-                    \ : \"labelCharcoal\"\r\n      } ]\r\n    }, {\r\n      \"schedule_id\"\
-                    \ : 0,\r\n      \"start_date\" : \"2024-04-27T11:00:00\",\r\n\
-                    \      \"end_date\" : \"2024-04-27T12:00:00\",\r\n      \"member_count\"\
-                    \ : 2,\r\n      \"title\" : \"알고르즘 스터디\",\r\n      \"description\"\
-                    \ : \"하루에 한문제씩 풀기\",\r\n      \"category\" : \"GROUP\",\r\n  \
-                    \    \"members\" : [ {\r\n        \"member_id\" : 0,\r\n     \
-                    \   \"nickname\" : \"좌랑둥이\",\r\n        \"color\" : \"labelCharcoal\"\
-                    \r\n      }, {\r\n        \"member_id\" : 0,\r\n        \"nickname\"\
+                    \n      \"title\" : \"study group\"\r\n    },\r\n    \"schedules\"\
+                    \ : [ {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\"\
+                    \ : \"2024-04-27T11:00:00\",\r\n      \"end_date\" : \"2024-04-28T13:00:00\"\
+                    ,\r\n      \"member_count\" : 1,\r\n      \"title\" : \"테니스 가기\
+                    \",\r\n      \"category\" : \"MEMBER\",\r\n      \"members\" :\
+                    \ [ {\r\n        \"member_id\" : 0,\r\n        \"nickname\" :\
+                    \ \"좌랑둥이\",\r\n        \"color\" : \"labelCharcoal\"\r\n     \
+                    \ } ]\r\n    }, {\r\n      \"schedule_id\" : 0,\r\n      \"start_date\"\
+                    \ : \"2024-04-26T11:00:00\",\r\n      \"end_date\" : \"2024-04-27T12:00:00\"\
+                    ,\r\n      \"member_count\" : 2,\r\n      \"title\" : \"알고르즘 스\
+                    터디\",\r\n      \"category\" : \"GROUP\",\r\n      \"members\"\
+                    \ : [ {\r\n        \"member_id\" : 0,\r\n        \"nickname\"\
+                    \ : \"좌랑둥이\",\r\n        \"color\" : \"labelCharcoal\"\r\n   \
+                    \   }, {\r\n        \"member_id\" : 0,\r\n        \"nickname\"\
                     \ : \"댬니\",\r\n        \"color\" : \"labelBlue\"\r\n      } ]\r\
                     \n    } ]\r\n  }\r\n}"
   /file/v1/images:
@@ -310,22 +304,23 @@ paths:
         content:
           application/json;charset=UTF-8:
             schema:
-              $ref: '#/components/schemas/group-v1-groups-2004366272'
+              $ref: '#/components/schemas/group-v1-groups-2118240443'
             examples:
               group/create-group:
                 value: "{\r\n  \"member_id_list\" : [ 2, 3 ],\r\n  \"name\" : \"group1\"\
-                  ,\r\n  \"description\" : \"group1 description\"\r\n}"
+                  ,\r\n  \"color\" : \"labelNavy\"\r\n}"
       responses:
         "201":
           description: "201"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-members-invitation-2048567868'
+                $ref: '#/components/schemas/group-v1-groups-groupId-2021476588'
               examples:
                 group/create-group:
                   value: "{\r\n  \"message\" : \"그룹 등록에 성공했습니다.\",\r\n  \"body\" :\
-                    \ {\r\n    \"group_id\" : 1\r\n  }\r\n}"
+                    \ {\r\n    \"id\" : 1,\r\n    \"name\" : \"group1\",\r\n    \"\
+                    color\" : \"labelNavy\"\r\n  }\r\n}"
   /group/v1/groups/members:
     get:
       tags:
@@ -337,34 +332,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-members-1210465305'
+                $ref: '#/components/schemas/group-v1-groups-members-1943332542'
               examples:
                 group/get-groups-by-member-id:
                   value: "{\r\n  \"message\" : \"회원의 그룹 전체 조회에 성공했습니다.\",\r\n  \"\
-                    body\" : {\r\n    \"member_id\" : 1,\r\n    \"group_count\" :\
-                    \ 2,\r\n    \"nickname\" : \"지롱이\",\r\n    \"email\" : \"jiwons0803@naver.com\"\
-                    ,\r\n    \"groups\" : [ {\r\n      \"group_id\" : 0,\r\n     \
-                    \ \"member_count\" : 3,\r\n      \"name\" : \"study group\",\r\
-                    \n      \"description\" : \"신나는 스터디 모임\",\r\n      \"owner\" :\
-                    \ {\r\n        \"member_id\" : 1,\r\n        \"email\" : \"jiwons0803@naver.com\"\
-                    ,\r\n        \"nickname\" : \"지롱이\"\r\n      },\r\n      \"members\"\
-                    \ : [ {\r\n        \"member_id\" : 1,\r\n        \"email\" : \"\
-                    jiwons0803@naver.com\",\r\n        \"nickname\" : \"지롱이\"\r\n\
-                    \      }, {\r\n        \"member_id\" : 2,\r\n        \"email\"\
-                    \ : \"workju1124@gmail.com\",\r\n        \"nickname\" : \"김세이\"\
-                    \r\n      }, {\r\n        \"member_id\" : 3,\r\n        \"email\"\
-                    \ : \"thdus981005@naver.com\",\r\n        \"nickname\" : \"좌랑둥\
-                    이\"\r\n      } ]\r\n    }, {\r\n      \"group_id\" : 0,\r\n  \
-                    \    \"member_count\" : 2,\r\n      \"name\" : \"work group\"\
-                    ,\r\n      \"description\" : \"일하기 위한 모임\",\r\n      \"owner\"\
-                    \ : {\r\n        \"member_id\" : 1,\r\n        \"email\" : \"\
-                    jiwons0803@naver.com\",\r\n        \"nickname\" : \"지롱이\"\r\n\
-                    \      },\r\n      \"members\" : [ {\r\n        \"member_id\"\
-                    \ : 1,\r\n        \"email\" : \"jiwons0803@naver.com\",\r\n  \
-                    \      \"nickname\" : \"지롱이\"\r\n      }, {\r\n        \"member_id\"\
-                    \ : 3,\r\n        \"email\" : \"thdus981005@naver.com\",\r\n \
-                    \       \"nickname\" : \"좌랑둥이\"\r\n      } ]\r\n    } ]\r\n  }\r\
-                    \n}"
+                    body\" : {\r\n    \"group_count\" : 1,\r\n    \"invited_group_count\"\
+                    \ : 1,\r\n    \"invited_groups\" : [ {\r\n      \"id\" : 0,\r\n\
+                    \      \"name\" : \"work group\",\r\n      \"color\" : \"labelYellow\"\
+                    ,\r\n      \"is_owner\" : true\r\n    } ],\r\n    \"groups\" :\
+                    \ [ {\r\n      \"id\" : 0,\r\n      \"name\" : \"study group\"\
+                    ,\r\n      \"color\" : \"labelYellow\",\r\n      \"is_owner\"\
+                    \ : true\r\n    } ]\r\n  }\r\n}"
   /group/v1/groups/{groupId}:
     get:
       tags:
@@ -383,17 +361,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-1682511205'
+                $ref: '#/components/schemas/group-v1-groups-groupId-1709623646'
               examples:
                 group/get-detail-group:
                   value: "{\r\n  \"message\" : \"그룹 조회에 성공했습니다.\",\r\n  \"body\" :\
-                    \ {\r\n    \"group_id\" : 0,\r\n    \"member_count\" : 0,\r\n\
-                    \    \"name\" : \"study group\",\r\n    \"description\" : \"신나\
-                    는 스터디 모임\",\r\n    \"owner\" : {\r\n      \"member_id\" : 0,\r\
-                    \n      \"email\" : \"jiwons0803@naver.com\",\r\n      \"nickname\"\
-                    \ : \"지롱이\"\r\n    },\r\n    \"members\" : [ {\r\n      \"member_id\"\
-                    \ : 0,\r\n      \"email\" : \"jiwons0803@naver.com\",\r\n    \
-                    \  \"nickname\" : \"지롱이\"\r\n    } ]\r\n  }\r\n}"
+                    \ {\r\n    \"member_count\" : 3,\r\n    \"members\" : [ {\r\n\
+                    \      \"is_accepted\" : false,\r\n      \"id\" : 1,\r\n     \
+                    \ \"email\" : \"jiwons0803@naver.com\",\r\n      \"nickname\"\
+                    \ : \"지롱이\"\r\n    }, {\r\n      \"profile_image\" : \"new.profile.image\"\
+                    ,\r\n      \"is_accepted\" : false,\r\n      \"id\" : 2,\r\n \
+                    \     \"email\" : \"workju1124@gmail.com\",\r\n      \"nickname\"\
+                    \ : \"김세이\"\r\n    }, {\r\n      \"is_accepted\" : true,\r\n \
+                    \     \"id\" : 3,\r\n      \"email\" : \"thdus981005@naver.com\"\
+                    ,\r\n      \"nickname\" : \"좌랑둥이\"\r\n    } ],\r\n    \"color\"\
+                    \ : \"labelBrown\"\r\n  }\r\n}"
     delete:
       tags:
       - group
@@ -430,22 +411,23 @@ paths:
         content:
           application/json;charset=UTF-8:
             schema:
-              $ref: '#/components/schemas/group-v1-groups-groupId267726025'
+              $ref: '#/components/schemas/group-v1-groups-groupId2024631656'
             examples:
               group/update-group:
-                value: "{\r\n  \"name\" : \"업데이트 할 그룹명\",\r\n  \"description\" : \"\
-                  다시 시작 해 보자구 ~\"\r\n}"
+                value: "{\r\n  \"name\" : \"업데이트 할 그룹명\",\r\n  \"color\" : \"labelBrown\"\
+                  \r\n}"
       responses:
         "200":
           description: "200"
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-members-invitation-2048567868'
+                $ref: '#/components/schemas/group-v1-groups-groupId-2021476588'
               examples:
                 group/update-group:
                   value: "{\r\n  \"message\" : \"그룹 수정에 성공했습니다.\",\r\n  \"body\" :\
-                    \ {\r\n    \"group_id\" : 1\r\n  }\r\n}"
+                    \ {\r\n    \"id\" : 1,\r\n    \"name\" : \"업데이트 할 그룹명\",\r\n \
+                    \   \"color\" : \"labelBrown\"\r\n  }\r\n}"
   /group/v1/groups/{groupId}/members:
     delete:
       tags:
@@ -500,7 +482,7 @@ paths:
                   value: "{\r\n  \"message\" : \"그룹 개인화 색상 변경에 성공했습니다.\",\r\n  \"\
                     body\" : {\r\n    \"color\" : \"labelNavy\"\r\n  }\r\n}"
   /group/v1/groups/{groupId}/members/force-out:
-    delete:
+    patch:
       tags:
       - group
       operationId: group/group-member/force-out
@@ -1010,13 +992,14 @@ paths:
             examples:
               review/create:
                 value: "{\r\n  \"schedule_id\" : 0,\r\n  \"title\" : \"공부하기 싫다\",\r\
-                  \n  \"contents\" : [ {\r\n    \"description\" : \"피곤해요\",\r\n  \
-                  \  \"blockType\" : \"emotion\",\r\n    \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
-                  \r\n  }, {\r\n    \"description\" : \"날씨 너무 좋음\",\r\n    \"blockType\"\
-                  \ : \"4f\",\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
-                  \r\n  }, {\r\n    \"facts\" : \"팩트\",\r\n    \"future\" : \"향후 헹\
-                  동\",\r\n    \"finding\" : \"교훈\",\r\n    \"blockType\" : \"4f\"\
-                  ,\r\n    \"feelings\" : \"느낌\"\r\n  } ]\r\n}"
+                  \n  \"contents\" : [ {\r\n    \"blockType\" : \"emotion\",\r\n \
+                  \   \"emoji\" : \"/src/assets/icons/emoji/tired.svg\",\r\n    \"\
+                  description\" : \"피곤해요\"\r\n  }, {\r\n    \"blockType\" : \"4f\"\
+                  ,\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\",\r\n\
+                  \    \"description\" : \"날씨 너무 좋음\"\r\n  }, {\r\n    \"finding\"\
+                  \ : \"교훈\",\r\n    \"blockType\" : \"4f\",\r\n    \"feelings\" :\
+                  \ \"느낌\",\r\n    \"facts\" : \"팩트\",\r\n    \"future\" : \"향후 헹동\
+                  \"\r\n  } ]\r\n}"
       responses:
         "201":
           description: "201"
@@ -1070,13 +1053,14 @@ paths:
             examples:
               review/update:
                 value: "{\r\n  \"schedule_id\" : 0,\r\n  \"title\" : \"공부하기 싫다\",\r\
-                  \n  \"contents\" : [ {\r\n    \"description\" : \"피곤해요\",\r\n  \
-                  \  \"blockType\" : \"emotion\",\r\n    \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
-                  \r\n  }, {\r\n    \"description\" : \"날씨 너무 좋음\",\r\n    \"blockType\"\
-                  \ : \"4f\",\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
-                  \r\n  }, {\r\n    \"facts\" : \"팩트\",\r\n    \"future\" : \"향후 헹\
-                  동\",\r\n    \"finding\" : \"교훈\",\r\n    \"blockType\" : \"4f\"\
-                  ,\r\n    \"feelings\" : \"느낌\"\r\n  } ]\r\n}"
+                  \n  \"contents\" : [ {\r\n    \"blockType\" : \"emotion\",\r\n \
+                  \   \"emoji\" : \"/src/assets/icons/emoji/tired.svg\",\r\n    \"\
+                  description\" : \"피곤해요\"\r\n  }, {\r\n    \"blockType\" : \"4f\"\
+                  ,\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\",\r\n\
+                  \    \"description\" : \"날씨 너무 좋음\"\r\n  }, {\r\n    \"finding\"\
+                  \ : \"교훈\",\r\n    \"blockType\" : \"4f\",\r\n    \"feelings\" :\
+                  \ \"느낌\",\r\n    \"facts\" : \"팩트\",\r\n    \"future\" : \"향후 헹동\
+                  \"\r\n  } ]\r\n}"
       responses:
         "200":
           description: "200"
@@ -1135,17 +1119,16 @@ paths:
                 review/getReviewsByMember:
                   value: "{\r\n  \"message\" : \"리뷰 목록 조회에 성공했습니다.\",\r\n  \"body\"\
                     \ : {\r\n    \"review_count\" : 2,\r\n    \"reviews\" : [ {\r\n\
-                    \      \"review_id\" : 0,\r\n      \"created_at\" : \"2024-05-16T01:06:12.109694\"\
-                    ,\r\n      \"thumbnail_content\" : {\r\n        \"description\"\
-                    \ : \"피곤해요\",\r\n        \"blockType\" : \"emotion\",\r\n    \
-                    \    \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\r\n   \
-                    \   },\r\n      \"title\" : \"공부하기 싫다\"\r\n    }, {\r\n      \"\
-                    review_id\" : 0,\r\n      \"created_at\" : \"2024-05-16T01:06:12.109694\"\
-                    ,\r\n      \"thumbnail_content\" : {\r\n        \"description\"\
-                    \ : \"날씨 너무 좋음\",\r\n        \"blockType\" : \"4f\",\r\n     \
-                    \   \"weather\" : \"/src/assets/icons/weather/sun.svg\"\r\n  \
-                    \    },\r\n      \"title\" : \"오늘도 공부하기 싫다\"\r\n    } ]\r\n  }\r\
-                    \n}"
+                    \      \"review_id\" : 0,\r\n      \"created_at\" : \"2024-05-16T03:08:15.1849468\"\
+                    ,\r\n      \"thumbnail_content\" : {\r\n        \"blockType\"\
+                    \ : \"emotion\",\r\n        \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
+                    ,\r\n        \"description\" : \"피곤해요\"\r\n      },\r\n      \"\
+                    title\" : \"공부하기 싫다\"\r\n    }, {\r\n      \"review_id\" : 0,\r\
+                    \n      \"created_at\" : \"2024-05-16T03:08:15.1849468\",\r\n\
+                    \      \"thumbnail_content\" : {\r\n        \"blockType\" : \"\
+                    4f\",\r\n        \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
+                    ,\r\n        \"description\" : \"날씨 너무 좋음\"\r\n      },\r\n  \
+                    \    \"title\" : \"오늘도 공부하기 싫다\"\r\n    } ]\r\n  }\r\n}"
   /review/v1/reviews/detail/{reviewId}:
     get:
       tags:
@@ -1171,21 +1154,20 @@ paths:
                     \ : {\r\n    \"review_id\" : 0,\r\n    \"title\" : \"공부하기 싫다\"\
                     ,\r\n    \"schedule\" : {\r\n      \"schedule_id\" : 0,\r\n  \
                     \    \"start_date\" : \"2024-04-26T11:00:00\",\r\n      \"end_date\"\
-                    \ : \"2024-04-26T13:00:00\",\r\n      \"group_id\" : null,\r\n\
+                    \ : \"2024-04-27T13:00:00\",\r\n      \"group_id\" : null,\r\n\
                     \      \"label\" : null,\r\n      \"member_count\" : 1,\r\n  \
                     \    \"title\" : \"테니스 가기\",\r\n      \"description\" : \"장소 :\
                     \ 신촌 테니스\",\r\n      \"category\" : \"MEMBER\",\r\n      \"members\"\
                     \ : [ {\r\n        \"member_id\" : 0,\r\n        \"profile_image\"\
                     \ : null,\r\n        \"nickname\" : \"좌랑둥이\"\r\n      } ]\r\n\
-                    \    },\r\n    \"contents\" : [ {\r\n      \"description\" : \"\
-                    피곤해요\",\r\n      \"blockType\" : \"emotion\",\r\n      \"emoji\"\
-                    \ : \"/src/assets/icons/emoji/tired.svg\"\r\n    }, {\r\n    \
-                    \  \"description\" : \"날씨 너무 좋음\",\r\n      \"blockType\" : \"\
-                    4f\",\r\n      \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
-                    \r\n    }, {\r\n      \"facts\" : \"팩트\",\r\n      \"future\"\
-                    \ : \"향후 헹동\",\r\n      \"finding\" : \"교훈\",\r\n      \"blockType\"\
-                    \ : \"4f\",\r\n      \"feelings\" : \"느낌\"\r\n    } ]\r\n  }\r\
-                    \n}"
+                    \    },\r\n    \"contents\" : [ {\r\n      \"blockType\" : \"\
+                    emotion\",\r\n      \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
+                    ,\r\n      \"description\" : \"피곤해요\"\r\n    }, {\r\n      \"\
+                    blockType\" : \"4f\",\r\n      \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
+                    ,\r\n      \"description\" : \"날씨 너무 좋음\"\r\n    }, {\r\n    \
+                    \  \"finding\" : \"교훈\",\r\n      \"blockType\" : \"4f\",\r\n\
+                    \      \"feelings\" : \"느낌\",\r\n      \"facts\" : \"팩트\",\r\n\
+                    \      \"future\" : \"향후 헹동\"\r\n    } ]\r\n  }\r\n}"
   /schedule/v1/schedules:
     post:
       tags:
@@ -1212,7 +1194,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/schedule-v1-schedules-scheduleId1157950338'
+                $ref: '#/components/schemas/schedule-v1-schedules1157950338'
               examples:
                 schedule/createSchedule:
                   value: "{\r\n  \"message\" : \"일정 생성 성공\",\r\n  \"body\" : {\r\n\
@@ -1252,7 +1234,7 @@ paths:
               examples:
                 schedule/getSchedule:
                   value: "{\r\n  \"message\" : \"간략 일정 조회 성공\",\r\n  \"body\" : {\r\
-                    \n    \"schedule_id\" : 0,\r\n    \"start_date\" : \"2024-04-27T11:00:00\"\
+                    \n    \"schedule_id\" : 0,\r\n    \"start_date\" : \"2024-04-26T11:00:00\"\
                     ,\r\n    \"end_date\" : \"2024-04-27T12:00:00\",\r\n    \"group_id\"\
                     \ : 1,\r\n    \"label\" : {\r\n      \"label_id\" : 0,\r\n   \
                     \   \"member_id\" : 1,\r\n      \"title\" : \"알고리즘 스터디\",\r\n\
@@ -1281,7 +1263,7 @@ paths:
               $ref: '#/components/schemas/schedule-v1-schedules-scheduleId-971847230'
             examples:
               schedule/updateSchedule:
-                value: "{\r\n  \"start_date\" : \"2024-04-26T11:00:00\",\r\n  \"end_date\"\
+                value: "{\r\n  \"start_date\" : \"2024-04-27T11:00:00\",\r\n  \"end_date\"\
                   \ : \"2024-04-28T13:00:00\",\r\n  \"group_id\" : null,\r\n  \"label_id\"\
                   \ : 0,\r\n  \"title\" : \"테니스 가기\",\r\n  \"description\" : \"장소\
                   \ : 신촌 테니스\",\r\n  \"category\" : \"MEMBER\",\r\n  \"repetition\"\
@@ -1293,11 +1275,11 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/schedule-v1-schedules-scheduleId1157950338'
+                $ref: '#/components/schemas/schedule-v1-schedules1157950338'
               examples:
                 schedule/updateSchedule:
                   value: "{\r\n  \"message\" : \"일정 수정 성공\",\r\n  \"body\" : {\r\n\
-                    \    \"schedule_id\" : 0,\r\n    \"start_date\" : \"2024-04-26T11:00:00\"\
+                    \    \"schedule_id\" : 0,\r\n    \"start_date\" : \"2024-04-27T11:00:00\"\
                     ,\r\n    \"end_date\" : \"2024-04-28T13:00:00\",\r\n    \"group_id\"\
                     \ : null,\r\n    \"label\" : {\r\n      \"label_id\" : 0,\r\n\
                     \      \"member_id\" : 1,\r\n      \"title\" : \"알고리즘 스터디\",\r\
@@ -1803,22 +1785,6 @@ components:
         message:
           type: string
           description: 응답 메시지
-    review-v1-reviews-1465059799:
-      required:
-      - message
-      type: object
-      properties:
-        body:
-          required:
-          - review_id
-          type: object
-          properties:
-            review_id:
-              type: number
-              description: 생성한 리뷰의 엔덱스
-        message:
-          type: string
-          description: 응답 메세지
     member-v1-members-nickname-139893332:
       required:
       - message
@@ -1835,7 +1801,23 @@ components:
         message:
           type: string
           description: 응답 메시지
-    schedule-v1-schedules-scheduleId1157950338:
+    review-v1-reviews-1465059799:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - review_id
+          type: object
+          properties:
+            review_id:
+              type: number
+              description: 생성한 리뷰의 엔덱스
+        message:
+          type: string
+          description: 응답 메세지
+    schedule-v1-schedules1157950338:
       required:
       - message
       type: object
@@ -2157,6 +2139,34 @@ components:
         message:
           type: string
           description: 응답 메세지
+    side-v1-d-day-d_day_id387027713:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - d_day
+          - date
+          - local_date
+          - title
+          type: object
+          properties:
+            date:
+              type: string
+              description: 수정한 디데이 날짜
+            d_day:
+              type: string
+              description: 수정한 디데이
+            title:
+              type: string
+              description: 수정한 디데이 제목
+            local_date:
+              type: string
+              description: 수정한 디데이 포멧
+        message:
+          type: string
+          description: 응답 메시지
     calendar-v1-calendars-type1726915710:
       required:
       - message
@@ -2243,34 +2253,6 @@ components:
         message:
           type: string
           description: 응답 메세지
-    side-v1-d-day-d_day_id387027713:
-      required:
-      - message
-      type: object
-      properties:
-        body:
-          required:
-          - d_day
-          - date
-          - local_date
-          - title
-          type: object
-          properties:
-            date:
-              type: string
-              description: 수정한 디데이 날짜
-            d_day:
-              type: string
-              description: 수정한 디데이
-            title:
-              type: string
-              description: 수정한 디데이 제목
-            local_date:
-              type: string
-              description: 수정한 디데이 포멧
-        message:
-          type: string
-          description: 응답 메시지
     member-v1-members-colors710220484:
       required:
       - message
@@ -2329,6 +2311,30 @@ components:
         message:
           type: string
           description: 응답 메세지
+    group-v1-groups-groupId-2021476588:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - color
+          - id
+          - name
+          type: object
+          properties:
+            color:
+              type: string
+              description: 그룹 대표 색상
+            name:
+              type: string
+              description: 그룹 이름
+            id:
+              type: number
+              description: 그룹 식별자
+        message:
+          type: string
+          description: 응답 메시지
     label-v1-labels-664349313:
       required:
       - message
@@ -2773,80 +2779,6 @@ components:
         title:
           type: string
           description: 수정 요청한 디데이 제목
-    group-v1-groups-groupId-1682511205:
-      required:
-      - message
-      type: object
-      properties:
-        body:
-          required:
-          - description
-          - group_id
-          - member_count
-          - members
-          - name
-          - owner
-          type: object
-          properties:
-            owner:
-              required:
-              - email
-              - member_id
-              - nickname
-              type: object
-              properties:
-                member_id:
-                  type: number
-                  description: 그룹 소유자 식별자
-                profile_image:
-                  type: string
-                  description: 그룹 소유자 프로필 이미지
-                  nullable: true
-                nickname:
-                  type: string
-                  description: 그룹 소유자 닉네임
-                email:
-                  type: string
-                  description: 그룹 소유자 이메일
-              description: 그룹 소유자 정보
-            group_id:
-              type: number
-              description: 그룹 식별자
-            members:
-              type: array
-              description: 그룹 멤버 리스트
-              items:
-                required:
-                - email
-                - member_id
-                - nickname
-                type: object
-                properties:
-                  member_id:
-                    type: number
-                    description: 그룹 멤버 식별자
-                  profile_image:
-                    type: string
-                    description: 그룹 멤버 프로필 이미지
-                    nullable: true
-                  nickname:
-                    type: string
-                    description: 그룹 멤버 닉네임
-                  email:
-                    type: string
-                    description: 그룹 멤버 이메일
-            name:
-              type: string
-              description: 그룹 이름
-            description:
-              type: string
-              description: 그룹 설명
-            member_count:
-              type: number
-              description: 그룹 멤버 수
-        message:
-          type: string
-          description: 응답 메시지
     file-v1-images-843780732:
       required:
       - message
@@ -2903,108 +2835,51 @@ components:
         birthday:
           type: string
           description: 변경 요청한 사용자의 생일
-    group-v1-groups-groupId267726025:
-      required:
-      - description
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: 수정할 그룹 이름
-        description:
-          type: string
-          description: 수정할 그룹 설명
-    group-v1-groups-members-1210465305:
+    group-v1-groups-groupId-1709623646:
       required:
       - message
       type: object
       properties:
         body:
           required:
-          - email
-          - group_count
-          - groups
-          - member_id
-          - nickname
+          - color
+          - member_count
+          - members
           type: object
           properties:
-            member_id:
-              type: number
-              description: 회원 식별자
-            group_count:
-              type: number
-              description: 그룹 수
-            nickname:
+            color:
               type: string
-              description: 회원 닉네임
-            groups:
+              description: 회원의 그룹 컬러
+            members:
               type: array
-              description: 그룹 목록
+              description: 조회한 그룹 회원 목록
               items:
+                required:
+                - email
+                - id
+                - is_accepted
+                - nickname
                 type: object
                 properties:
-                  owner:
-                    type: object
-                    properties:
-                      member_id:
-                        type: number
-                        description: 그룹 소유자 식별자
-                        nullable: true
-                      profile_image:
-                        type: string
-                        description: 그룹 소유자 프로필 이미지
-                        nullable: true
-                      nickname:
-                        type: string
-                        description: 그룹 소유자 닉네임
-                        nullable: true
-                      email:
-                        type: string
-                        description: 그룹 소유자 이메일
-                        nullable: true
-                    description: 그룹 소유자 정보
-                  group_id:
-                    type: number
-                    description: 그룹 식별자
-                    nullable: true
-                  members:
-                    type: array
-                    description: 그룹 멤버 리스트
-                    items:
-                      type: object
-                      properties:
-                        member_id:
-                          type: number
-                          description: 그룹 멤버 식별자
-                          nullable: true
-                        profile_image:
-                          type: string
-                          description: 그룹 멤버 프로필 이미지
-                          nullable: true
-                        nickname:
-                          type: string
-                          description: 그룹 멤버 닉네임
-                          nullable: true
-                        email:
-                          type: string
-                          description: 그룹 멤버 이메일
-                          nullable: true
-                  name:
+                  is_accepted:
+                    type: boolean
+                    description: 가입 유무
+                  profile_image:
                     type: string
-                    description: 그룹 이름
+                    description: 회원 프로필 이미지
                     nullable: true
-                  description:
+                  nickname:
                     type: string
-                    description: 그룹 설명
-                    nullable: true
-                  member_count:
+                    description: 회원 닉네임
+                  id:
                     type: number
-                    description: 그룹 멤버 수
-                    nullable: true
-            email:
-              type: string
-              description: 회원 이메일
+                    description: 회원 식별자
+                  email:
+                    type: string
+                    description: 회원 이메일
+            member_count:
+              type: number
+              description: 조회한 그룹 회원수
         message:
           type: string
           description: 응답 메시지
@@ -3016,6 +2891,18 @@ components:
         content:
           type: string
           description: 수정 요청한 목표 내용
+    group-v1-groups-groupId2024631656:
+      required:
+      - color
+      - name
+      type: object
+      properties:
+        color:
+          type: string
+          description: 수정할 그룹 색상
+        name:
+          type: string
+          description: 수정할 그룹 이름
     notification-v1-notifications-872507205:
       required:
       - message
@@ -3082,28 +2969,6 @@ components:
         message:
           type: string
           description: 응답 메시지
-    group-v1-groups-2004366272:
-      required:
-      - description
-      - member_id_list
-      - name
-      type: object
-      properties:
-        name:
-          type: string
-          description: 그룹 이름
-        description:
-          type: string
-          description: 그룹 설명
-        member_id_list:
-          type: array
-          description: 그룹 멤버 식별자 리스트
-          items:
-            oneOf:
-            - type: object
-            - type: boolean
-            - type: string
-            - type: number
     group-v1-groups-groupId-members-colors-1393652192:
       required:
       - message
@@ -3244,6 +3109,86 @@ components:
             - type: boolean
             - type: string
             - type: number
+    calendar-v1-calendars-type-groupId1204135838:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - schedule_count
+          type: object
+          properties:
+            schedule_count:
+              type: number
+              description: 일정 개수
+            schedules:
+              type: array
+              items:
+                required:
+                - category
+                - end_date
+                - member_count
+                - schedule_id
+                - start_date
+                - title
+                type: object
+                properties:
+                  end_date:
+                    type: string
+                    description: "일정 끝 날짜, 시간"
+                  members:
+                    type: array
+                    items:
+                      required:
+                      - color
+                      - member_id
+                      - nickname
+                      type: object
+                      properties:
+                        member_id:
+                          type: number
+                          description: 일정의 속한 멤버 인덱스
+                        color:
+                          type: string
+                          description: 일정의 속한 멤버의 기본 색상
+                        nickname:
+                          type: string
+                          description: 일정의 속한 멤버의 닉네임
+                  member_count:
+                    type: number
+                    description: 일정의 속한 멤버 수
+                  category:
+                    type: string
+                    description: 일정 종류
+                  title:
+                    type: string
+                    description: 일정 제목
+                  schedule_id:
+                    type: number
+                    description: 일정 인덱스
+                  start_date:
+                    type: string
+                    description: "일정 시작 날짜, 시간"
+            group:
+              required:
+              - color
+              - group_id
+              - title
+              type: object
+              properties:
+                color:
+                  type: string
+                  description: 그룹의 그룹 색상
+                group_id:
+                  type: number
+                  description: 그룹의 그룹 id
+                title:
+                  type: string
+                  description: 그룹의 그룹 이름
+        message:
+          type: string
+          description: 응답 메세지
     side-v1-goals-goal_id-2136424074:
       required:
       - message
@@ -3368,6 +3313,74 @@ components:
         message:
           type: string
           description: 응답 메시지
+    group-v1-groups-members-1943332542:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - group_count
+          - groups
+          - invited_group_count
+          - invited_groups
+          type: object
+          properties:
+            group_count:
+              type: number
+              description: 가입한 그룹의 개수
+            invited_groups:
+              type: array
+              description: 가입한 그룹
+              items:
+                required:
+                - color
+                - id
+                - is_owner
+                - name
+                type: object
+                properties:
+                  color:
+                    type: string
+                    description: 그룹 라벨 색상
+                  is_owner:
+                    type: boolean
+                    description: 그룹 주인 유무
+                  name:
+                    type: string
+                    description: 그룹 이름
+                  id:
+                    type: number
+                    description: 그룹 식별자
+            groups:
+              type: array
+              description: 가입한 그룹
+              items:
+                required:
+                - color
+                - id
+                - is_owner
+                - name
+                type: object
+                properties:
+                  color:
+                    type: string
+                    description: 그룹 라벨 색상
+                  is_owner:
+                    type: boolean
+                    description: 그룹 주인 유무
+                  name:
+                    type: string
+                    description: 그룹 이름
+                  id:
+                    type: number
+                    description: 그룹 식별자
+            invited_group_count:
+              type: number
+              description: 가입 대기중인 그룹의 개수
+        message:
+          type: string
+          description: 응답 메시지
     member-v1-members-colors807170801:
       required:
       - message
@@ -3466,94 +3479,28 @@ components:
         message:
           type: string
           description: 응답 메세지
-    calendar-v1-calendars-type-groupId-1606921404:
+    group-v1-groups-2118240443:
       required:
-      - message
+      - color
+      - member_id_list
+      - name
       type: object
       properties:
-        body:
-          required:
-          - schedule_count
-          type: object
-          properties:
-            schedule_count:
-              type: number
-              description: 일정 개수
-            schedules:
-              type: array
-              items:
-                required:
-                - category
-                - description
-                - end_date
-                - member_count
-                - schedule_id
-                - start_date
-                - title
-                type: object
-                properties:
-                  end_date:
-                    type: string
-                    description: "일정 끝 날짜, 시간"
-                  members:
-                    type: array
-                    items:
-                      required:
-                      - color
-                      - member_id
-                      - nickname
-                      type: object
-                      properties:
-                        member_id:
-                          type: number
-                          description: 일정의 속한 멤버 인덱스
-                        color:
-                          type: string
-                          description: 일정의 속한 멤버의 기본 색상
-                        nickname:
-                          type: string
-                          description: 일정의 속한 멤버의 닉네임
-                  description:
-                    type: string
-                    description: 일정 설명
-                  member_count:
-                    type: number
-                    description: 일정의 속한 멤버 수
-                  category:
-                    type: string
-                    description: 일정 종류
-                  title:
-                    type: string
-                    description: 일정 제목
-                  schedule_id:
-                    type: number
-                    description: 일정 인덱스
-                  start_date:
-                    type: string
-                    description: "일정 시작 날짜, 시간"
-            group:
-              required:
-              - color
-              - description
-              - group_id
-              - title
-              type: object
-              properties:
-                color:
-                  type: string
-                  description: 그룹의 그룹 색상
-                group_id:
-                  type: number
-                  description: 그룹의 그룹 id
-                description:
-                  type: string
-                  description: 그룹의 설명
-                title:
-                  type: string
-                  description: 그룹의 그룹 이름
-        message:
+        color:
           type: string
-          description: 응답 메세지
+          description: 그룹 메인 컬러
+        name:
+          type: string
+          description: 그룹 이름
+        member_id_list:
+          type: array
+          description: 그룹 멤버 식별자 리스트
+          items:
+            oneOf:
+            - type: object
+            - type: boolean
+            - type: string
+            - type: number
     member-v1-members-colors667278139:
       required:
       - color

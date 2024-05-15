@@ -36,7 +36,7 @@ public class ReviewRepositoryTest {
 
 	@Autowired
 	public ReviewRepositoryTest(ReviewRepository reviewRepository, MemberScheduleRepository memberScheduleRepository,
-		ScheduleRepository scheduleRepository, MemberRepository memberRepository) {
+			ScheduleRepository scheduleRepository, MemberRepository memberRepository) {
 		this.reviewRepository = reviewRepository;
 		this.memberScheduleRepository = memberScheduleRepository;
 		this.scheduleRepository = scheduleRepository;
@@ -102,9 +102,9 @@ public class ReviewRepositoryTest {
 			);
 
 			reviewRepository.save(
-				ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
+					ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
 			reviewRepository.save(
-				ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
+					ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
 
 			// When
 			List<Review> reviews = reviewRepository.getReviewsByMemberScheduleOrderByCreatedAt(memberSchedule);
@@ -126,9 +126,9 @@ public class ReviewRepositoryTest {
 			);
 
 			reviewRepository.save(
-				ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
+					ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
 			reviewRepository.save(
-				ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
+					ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
 
 			// When
 			List<Review> reviews = reviewRepository.getReviewsByMemberScheduleOrderByCreatedAtDesc(memberSchedule);
@@ -161,9 +161,9 @@ public class ReviewRepositoryTest {
 			);
 
 			review1 = reviewRepository.save(
-				ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
+					ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
 			review2 = reviewRepository.save(
-				ReviewFixture.STUDY_REVIEW_2.toReviewWithMemberSchedule(memberSchedule));
+					ReviewFixture.STUDY_REVIEW_2.toReviewWithMemberSchedule(memberSchedule));
 		}
 
 		@Test
@@ -221,8 +221,8 @@ public class ReviewRepositoryTest {
 
 			// When
 			List<Review> reviews = reviewRepository.getReviewsOldest(member.getId(), 0,
-				LocalDateTime.now().minusDays(1),
-				LocalDateTime.now().plusDays(1));
+					LocalDateTime.now().minusDays(1),
+					LocalDateTime.now().plusDays(1));
 
 			// Then
 			assertThat(reviews.size()).isEqualTo(2);
@@ -236,8 +236,8 @@ public class ReviewRepositoryTest {
 
 			// When
 			List<Review> reviews = reviewRepository.getReviewsOldest(member.getId(), review1.getReviewId(),
-				LocalDateTime.now().minusDays(1),
-				LocalDateTime.now().plusDays(1));
+					LocalDateTime.now().minusDays(1),
+					LocalDateTime.now().plusDays(1));
 
 			// Then
 			assertThat(reviews.size()).isEqualTo(1);
@@ -251,7 +251,7 @@ public class ReviewRepositoryTest {
 
 			// When
 			List<Review> reviews = reviewRepository.getReviewsNewest(member.getId(), LocalDateTime.now().minusDays(1),
-				LocalDateTime.now().plusDays(1));
+					LocalDateTime.now().plusDays(1));
 
 			// Then
 			assertThat(reviews.size()).isEqualTo(2);
@@ -266,8 +266,8 @@ public class ReviewRepositoryTest {
 
 			// When
 			List<Review> reviews = reviewRepository.getReviewsNewestAfter(member.getId(), review2.getReviewId(),
-				LocalDateTime.now().minusDays(1),
-				LocalDateTime.now().plusDays(1));
+					LocalDateTime.now().minusDays(1),
+					LocalDateTime.now().plusDays(1));
 
 			// Then
 			assertThat(reviews.size()).isEqualTo(1);

@@ -44,12 +44,12 @@ public class Repetition extends BaseEntity {
 
 	private int week;
 
-	@Column(name = "day_of_week", columnDefinition = "BINARY(7)")
-	private Byte dayOfWeek;
+	@Column(name = "day_of_week")
+	private int dayOfWeek;
 
 	@Builder
 	public Repetition(int repetitionId, RepetitionCycle repetitionCycle, LocalDate repetitionStartDate,
-		LocalDate repetitionEndDate, int week, Byte dayOfWeek) {
+		LocalDate repetitionEndDate, int week, int dayOfWeek) {
 		dayOfWeekValidation(dayOfWeek);
 		durationValidation(repetitionStartDate, repetitionEndDate);
 
@@ -61,8 +61,8 @@ public class Repetition extends BaseEntity {
 		this.dayOfWeek = dayOfWeek;
 	}
 
-	private void dayOfWeekValidation(byte dayOfWeek) {
-		if (Byte.toUnsignedInt(dayOfWeek) > 127) {
+	private void dayOfWeekValidation(int dayOfWeek) {
+		if (dayOfWeek > 127) {
 			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_DAY_OF_WEEK);
 		}
 	}

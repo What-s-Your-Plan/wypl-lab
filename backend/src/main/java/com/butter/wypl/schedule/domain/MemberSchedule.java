@@ -45,6 +45,12 @@ public class MemberSchedule extends BaseEntity {
 	@JoinColumn(name = "schedule_id", nullable = false)
 	private Schedule schedule;
 
+	@Column(name = "write_review",nullable = false)
+	private boolean writeReview;
+
+	public void writeReview() {
+		writeReview = true;
+	}
 	@OneToMany(mappedBy = "memberSchedule", fetch = FetchType.LAZY)
 	private List<Review> reviews;
 

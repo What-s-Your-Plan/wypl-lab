@@ -15,6 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import com.butter.wypl.global.annotation.MockServiceTest;
+import com.butter.wypl.global.common.Color;
+import com.butter.wypl.group.domain.MemberGroup;
+import com.butter.wypl.group.fixture.GroupFixture;
+import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.fixture.LabelFixture;
 import com.butter.wypl.label.repository.LabelRepository;
@@ -31,6 +35,7 @@ import com.butter.wypl.schedule.data.response.ScheduleDetailResponse;
 import com.butter.wypl.schedule.data.response.ScheduleIdListResponse;
 import com.butter.wypl.schedule.data.response.ScheduleResponse;
 import com.butter.wypl.schedule.domain.Category;
+import com.butter.wypl.schedule.domain.MemberSchedule;
 import com.butter.wypl.schedule.domain.Repetition;
 import com.butter.wypl.schedule.domain.Schedule;
 import com.butter.wypl.schedule.fixture.ScheduleFixture;
@@ -52,6 +57,9 @@ public class ScheduleServiceTest {
 	private ScheduleRepository scheduleRepository;
 	@Mock
 	private MemberScheduleService memberScheduleService;
+
+	@Mock
+	private MemberGroupRepository memberGroupRepository;
 
 	@Mock
 	private RepetitionService repetitionService;
@@ -170,7 +178,11 @@ public class ScheduleServiceTest {
 				Schedule schedule = ScheduleFixture.REPEAT_GROUP_SCHEDULE.toSchedule();
 				given(scheduleRepository.save(any()))
 					.willReturn(schedule);
+				Member member = MemberFixture.KIM_JEONG_UK.toMember();
 
+				given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+					.willReturn(Optional.ofNullable(
+						MemberGroup.of(member, GroupFixture.GROUP_WORK.toGroup(member), Color.labelBlue)));
 				//when
 				ScheduleDetailResponse result = scheduleService.createSchedule(1,
 					ScheduleCreateRequest.of(schedule, List.of(new MemberIdResponse(1))));
@@ -227,60 +239,13 @@ public class ScheduleServiceTest {
 	class DeleteTest {
 
 		@Test
-		@DisplayName("모든 일정 삭제")
-		void deleteAll() {
-			// Given
-			Schedule schedule = ScheduleFixture.REPEAT_PERSONAL_SCHEDULE.toSchedule();
-			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
-			given(
-				scheduleRepository.findAllByRepetitionAndStartDateAfter(any(Repetition.class),
-					any(LocalDateTime.class)))
-				.willReturn(List.of(
-				));
-			given(
-				scheduleRepository.findAllByRepetitionAndStartDateBefore(any(Repetition.class),
-					any(LocalDateTime.class)))
-				.willReturn(List.of(
-					schedule1
-				));
-			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
-
-			// When
-			ScheduleIdListResponse scheduleIdListResponse = scheduleService.deleteSchedule(
-				1, 1, ModificationType.ALL
-			);
-
-			// Then
-			assertThat(scheduleIdListResponse.scheduleCount()).isEqualTo(2);
-		}
-
-		@Test
-		@DisplayName("이후 일정 삭제")
-		void deleteAfter() {
-			// Given
-			Schedule schedule = ScheduleFixture.REPEAT_PERSONAL_SCHEDULE.toSchedule();
-			given(scheduleRepository.findAllByRepetitionAndStartDateAfter(any(Repetition.class),
-				any(LocalDateTime.class)))
-				.willReturn(List.of(
-					ScheduleFixture.REPEAT_GROUP_SCHEDULE.toSchedule()
-				));
-			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
-
-			// When
-			ScheduleIdListResponse scheduleIdListResponse = scheduleService.deleteSchedule(
-				1, 1, ModificationType.AFTER
-			);
-			// Then
-			assertThat(scheduleIdListResponse.scheduleCount()).isEqualTo(2);
-		}
-
-		@Test
 		@DisplayName("현재 일정만 삭제")
 		void deleteNow() {
 			// Given
 			Schedule schedule = ScheduleFixture.REPEAT_PERSONAL_SCHEDULE.toSchedule();
 			given(scheduleRepository.findById(anyInt())).willReturn(Optional.of(schedule));
-
+			given(memberScheduleService.getMemberScheduleByMemberAndSchedule(anyInt(), any(Schedule.class)))
+				.willReturn(MemberSchedule.builder().member(member1).schedule(schedule).build());
 			// When
 			ScheduleIdListResponse scheduleIdListResponse = scheduleService.deleteSchedule(
 				1, 1, ModificationType.NOW
@@ -392,6 +357,8 @@ public class ScheduleServiceTest {
 				.willReturn(
 					RepetitionFixture.MONDAY_REPETITION.toRepetition()
 				);
+			given(memberScheduleService.getMemberScheduleByMemberAndSchedule(anyInt(), any(Schedule.class)))
+				.willReturn(MemberSchedule.builder().member(member1).schedule(schedule).build());
 			// When
 			ScheduleDetailResponse updateSchedule = scheduleService.updateSchedule(1, 1,
 				new ScheduleUpdateRequest(

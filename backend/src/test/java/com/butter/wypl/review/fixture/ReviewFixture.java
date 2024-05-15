@@ -18,7 +18,7 @@ public enum ReviewFixture {
 
 	private final String title;
 
-	private MemberSchedule memberSchedule;
+	private final MemberSchedule memberSchedule;
 
 	ReviewFixture(String title, MemberSchedule memberSchedule) {
 		this.title = title;

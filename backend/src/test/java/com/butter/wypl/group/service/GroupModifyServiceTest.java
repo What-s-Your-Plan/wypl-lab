@@ -66,21 +66,20 @@ class GroupModifyServiceTest {
 		@Test
 		@DisplayName("그룹 생성 성공")
 		void createGroupSuccess() {
-
 			/* Given */
 			Group newGroup = GROUP_STUDY.toGroup(owner);
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest(newGroup.getName(),
-				newGroup.getDescription(), Set.of(member1.getId(), member2.getId()));
+					newGroup.getColor(), Set.of(member1.getId(), member2.getId()));
 			List<Member> members = List.of(owner, member1, member2);
 
 			given(memberRepository.findAllById(anySet()))
-				.willReturn(members);
+					.willReturn(members);
 
 			given(groupRepository.save(any(Group.class)))
-				.willReturn(newGroup);
+					.willReturn(newGroup);
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
+					.willReturn(Optional.of(owner));
 
 			/* When, Then */
 			assertThatCode(() -> {
@@ -91,19 +90,22 @@ class GroupModifyServiceTest {
 		@Test
 		@DisplayName("그룹 생성 실패: 최대 인원 초과")
 		void createGroupFailOfExceedMaxNumberCount() {
-
 			/* Given */
 			HashSet<Integer> memberIdList = new HashSet<>();
 			for (int i = 1; i <= 51; i++) {
 				memberIdList.add(i);
 			}
-			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description", memberIdList);
+			GroupCreateRequest givenGroupCreateRequest =
+					new GroupCreateRequest("name", Color.labelBrown, memberIdList);
+
+			given(memberRepository.findById(anyInt()))
+					.willReturn(Optional.of(owner));
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
-				}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(GroupErrorCode.EXCEED_MAX_MEMBER_COUNT.getMessage());
+						groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
+					}).isInstanceOf(GroupException.class)
+					.hasMessageContaining(GroupErrorCode.EXCEED_MAX_MEMBER_COUNT.getMessage());
 		}
 
 		@Test
@@ -111,20 +113,22 @@ class GroupModifyServiceTest {
 		void createGroupFailOfExistsNotInvalidMemberId() {
 			/* Given */
 			int givenMemberId = 1;
-			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
-				new HashSet<>(Arrays.asList(2, 3)));
+			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", Color.labelBrown,
+					new HashSet<>(Arrays.asList(2, 3)));
+
+			given(memberRepository.findById(anyInt()))
+					.willReturn(Optional.of(owner));
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
-				}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(EXISTS_INVALID_MEMBER.getMessage());
+						groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
+					}).isInstanceOf(GroupException.class)
+					.hasMessageContaining(EXISTS_INVALID_MEMBER.getMessage());
 		}
 
 		@Test
 		@DisplayName("그룹 생성 실패: 그룹 인원 중 그룹 갯수 초과 회원 존재")
 		void createGroupFailOfExistsMemberExceedingGroupCountLimit() {
-
 			/* Given */
 			Member member3 = MemberFixture.JWA_SO_YEON.toMemberWithId(4);
 			for (int i = 1; i <= 50; i++) {
@@ -132,24 +136,25 @@ class GroupModifyServiceTest {
 			}
 			List<Member> members = List.of(owner, member1, member2, member3);
 
-			Set<Integer> memberIdList = new HashSet<>(
-				Arrays.asList(member1.getId(), member2.getId(), member3.getId()));
-			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", "description",
-				memberIdList);
+			Set<Integer> memberIdList = Set.of(member1.getId(), member2.getId(), member3.getId());
+			GroupCreateRequest givenGroupCreateRequest =
+					new GroupCreateRequest("name", Color.labelBrown, memberIdList);
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
+					.willReturn(Optional.of(owner));
 
 			given(memberRepository.findAllById(anySet()))
-				.willReturn(members);
+					.willReturn(members);
+
+			Group savedGroup = GROUP_STUDY.toGroup(owner);
+			given(groupRepository.save(any(Group.class))).willReturn(savedGroup);
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
-				}).isInstanceOf(CustomException.class)
-				.hasMessageContaining("해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다.");
+						groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
+					}).isInstanceOf(CustomException.class)
+					.hasMessageContaining("해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다.");
 		}
-
 	}
 
 	@Nested
@@ -166,23 +171,23 @@ class GroupModifyServiceTest {
 			Member member = HAN_JI_WON.toMemberWithId(memberId);
 			Group group = GROUP_STUDY.toGroup(HAN_JI_WON.toMemberWithId(memberId));
 			given(groupRepository.findById(anyInt()))
-				.willReturn(Optional.of(group));
+					.willReturn(Optional.of(group));
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(member));
+					.willReturn(Optional.of(member));
 
 			MemberGroup memberGroup = MemberGroup.of(member, group, Color.labelBrown);
 			List<MemberGroup> memberGroups = List.of(memberGroup);
 			given(memberGroupRepository.findAcceptedMemberGroups(groupId))
-				.willReturn(memberGroups);
+					.willReturn(memberGroups);
 
 			/* When */
 			groupModifyService.deleteGroup(memberId, groupId);
 
 			/* Then */
 			assertAll(
-				() -> assertThat(group.isDeleted()).isTrue(),
-				() -> memberGroups.forEach(mg -> assertThat(mg.isDeleted()).isTrue())
+					() -> assertThat(group.isDeleted()).isTrue(),
+					() -> memberGroups.forEach(mg -> assertThat(mg.isDeleted()).isTrue())
 			);
 		}
 	}
@@ -203,13 +208,13 @@ class GroupModifyServiceTest {
 
 			/* Given */
 			GroupMemberInviteRequest inviteRequest = new GroupMemberInviteRequest(
-				Set.of(member1.getId(), member2.getId()));
+					Set.of(member1.getId(), member2.getId()));
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
+					.willReturn(Optional.of(owner));
 
 			given(groupRepository.findById(anyInt()))
-				.willReturn(Optional.of(group));
+					.willReturn(Optional.of(group));
 
 			List<Member> memberIdList = List.of(member1, member2);
 			given(memberRepository.findAllById(anySet())).willReturn(memberIdList);
@@ -226,25 +231,22 @@ class GroupModifyServiceTest {
 		@Test
 		@DisplayName("그룹 멤버 초대 실패: 그룹 소유자가 아닌 경우")
 		void whenFailOfHasNotInvitePermission() {
-
 			/* Given */
 			GroupMemberInviteRequest inviteRequest = new GroupMemberInviteRequest(
-				Set.of(member2.getId()));
+					Set.of(member2.getId()));
 
 			given(memberRepository.findById(member1.getId()))
-				.willReturn(Optional.of(member1));
+					.willReturn(Optional.of(member1));
 
 			given(groupRepository.findById(anyInt()))
-				.willReturn(Optional.of(group));
+					.willReturn(Optional.of(group));
 
 			/* When, Then */
 			assertThatThrownBy(() -> {
 				groupModifyService.inviteGroupMember(member1.getId(), group.getId(), inviteRequest);
 			}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(HAS_NOT_INVITE_PERMISSION.getMessage());
-
+					.hasMessageContaining(HAS_NOT_INVITE_PERMISSION.getMessage());
 		}
-
 	}
 
 	@Nested
@@ -259,23 +261,21 @@ class GroupModifyServiceTest {
 		@Test
 		@DisplayName("그룹 회원 초대 수락 성공")
 		void whenSuccess() {
-
 			/* Given */
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(member1));
+					.willReturn(Optional.of(member1));
 
 			given(groupRepository.findById(anyInt()))
-				.willReturn(Optional.of(group));
+					.willReturn(Optional.of(group));
 
 			MemberGroup memberGroup = MemberGroup.of(member1, group);
 			given(memberGroupRepository.findPendingMemberGroup(anyInt(), anyInt()))
-				.willReturn(Optional.of(memberGroup));
+					.willReturn(Optional.of(memberGroup));
 
 			/* When, Then */
 			assertThatCode(() -> {
 				groupModifyService.acceptGroupInvitation(member1.getId(), group.getId());
 			}).doesNotThrowAnyException();
-
 		}
 	}
 }
