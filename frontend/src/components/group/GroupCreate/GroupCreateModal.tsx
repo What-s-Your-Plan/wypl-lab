@@ -1,7 +1,11 @@
-import postGroupRegister from '@/services/group/postGroupRegister';
 import Modal from '@/components/common/Modal';
+import GroupCreatePanel from '@/components/group/GroupCreate/GroupCreatePanel';
+
+import postGroupRegister from '@/services/group/postGroupRegister';
+
 import useForm from '@/hooks/useForm';
-import GroupCreatePanel from '@/components/group/GroupCreatePanel/GroupCreatePanel';
+
+import * as S from './GroupCreateModal.styled';
 
 type GroupCreateModalProps = {
   isOpen: boolean;
@@ -26,12 +30,21 @@ function GroupCreateModal({
     handleConfirm();
   };
 
+  const CreateGroupHeader = () => {
+    return (
+      <S.TitleContainer>
+        <S.Title>새로운 그룹을 생성해보세요!</S.Title>
+        <hr />
+      </S.TitleContainer>
+    );
+  };
+
   return (
     <Modal
       isOpen={isOpen}
       cancel="취소"
       confirm={{ content: '저장', handleConfirm: handleConfirmClick }}
-      title={<></>}
+      title={CreateGroupHeader()}
       contents={
         <GroupCreatePanel
           states={form}
