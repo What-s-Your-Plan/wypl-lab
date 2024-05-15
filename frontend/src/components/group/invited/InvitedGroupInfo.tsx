@@ -11,15 +11,14 @@ import * as S from './InvitedGroupInfo.styled';
 
 type InvitedGroupInfoProps = {
   group: Group;
-  fetchList: () => void;
+  acceptedEvent: (groupId: number) => void;
 };
 
-function InvitedGroupInfo({ group, fetchList }: InvitedGroupInfoProps) {
+function InvitedGroupInfo({ group, acceptedEvent }: InvitedGroupInfoProps) {
   const handleAccept = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     patchGroupInvite(group.id);
-    fetchList();
-    window.location.reload();
+    acceptedEvent(group.id);
   };
 
   const handleReject = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -27,7 +26,6 @@ function InvitedGroupInfo({ group, fetchList }: InvitedGroupInfoProps) {
     if (window.confirm('그룹 초대를 거절하시겠습니까?')) {
       deleteGroupInvite(group.id);
     }
-    fetchList();
   };
 
   const actionButtons = () => {

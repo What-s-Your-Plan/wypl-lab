@@ -39,6 +39,29 @@ function GroupList() {
     }
   };
 
+  const handleMoveAcceptedGroupById = (acceptedGroupId: number) => {
+    setMemberGroups((prevState) => {
+      const acceptedGroup: MemberGroup | undefined =
+        prevState.invited_groups.find((group) => group.id === acceptedGroupId);
+      if (acceptedGroup === undefined) {
+        return prevState;
+      }
+
+      const updatedInvitedGroups = prevState.invited_groups.filter(
+        (group) => group.id !== acceptedGroupId,
+      );
+
+      const updatedGroups = [...prevState.groups, acceptedGroup];
+
+      return {
+        groups: updatedGroups,
+        group_count: updatedGroups.length,
+        invited_groups: updatedInvitedGroups,
+        invited_group_count: updatedInvitedGroups.length,
+      };
+    });
+  };
+
   const [groupCreateInit] = useState<GroupInfo>({
     name: '',
     color: 'labelBrown',
@@ -67,7 +90,7 @@ function GroupList() {
         <InvitedGroupInfo
           key={group.id}
           group={group}
-          fetchList={fetchMemberGroups}
+          acceptedEvent={handleMoveAcceptedGroupById}
         />
       );
     });
