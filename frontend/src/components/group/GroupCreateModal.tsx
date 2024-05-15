@@ -1,7 +1,7 @@
 import postGroupRegister from '@/services/group/postGroupRegister';
 import Modal from '@/components/common/Modal';
 import useForm from '@/hooks/useForm';
-import GroupCreatePanel from '@/components/group/GroupCreatePanel';
+import GroupCreatePanel from '@/components/group/GroupCreatePanel/GroupCreatePanel';
 
 type GroupCreateModalProps = {
   isOpen: boolean;

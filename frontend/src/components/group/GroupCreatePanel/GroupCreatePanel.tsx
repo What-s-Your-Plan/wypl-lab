@@ -1,14 +1,16 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-import getMemberbyEmail from '@/services/member/getMemberbyEmail';
+import getMemberByEmail, {
+  FindMemberByEmailResponse,
+  FindMemberProfile,
+} from '@/services/member/getMemberByEmail';
 
-import { InputDefault } from '../common/InputText';
-import PopOver from '../common/PopOver';
-import ColorCircle from '../common/ColorCircle';
-import PalettePanel from '../color/PalettePanel';
-import Button from '../common/Button';
+import { InputDefault } from '../../common/InputText';
+import PopOver from '../../common/PopOver';
+import ColorCircle from '../../common/ColorCircle';
+import PalettePanel from '../../color/PalettePanel';
+import Button from '../../common/Button';
 
-import { FindMemberProfileResponse } from '@/@types/Member';
 import X from '@/assets/icons/x.svg';
 import DefaultImage from '@/assets/icons/user.svg';
 import { BgColors, LabelColorsType } from '@/assets/styles/colorThemes';
@@ -29,12 +31,12 @@ function GroupCreatePanel({
   setStates,
 }: GroupCreatePanelProps) {
   const [color, setColor] = useState<LabelColorsType>('labelRed');
-  const [selectedMembers, setSelectedMembers] = useState<
-    FindMemberProfileResponse[]
-  >([]);
+  const [selectedMembers, setSelectedMembers] = useState<FindMemberProfile[]>(
+    [],
+  );
   const [searchMember, setSearchMember] = useState<string>('');
   const [searchedMemberList, setSearchMemberList] = useState<
-    FindMemberProfileResponse[]
+    FindMemberProfile[]
   >([]);
 
   const handleSearchMemberChange = async (
@@ -42,14 +44,17 @@ function GroupCreatePanel({
   ) => {
     setSearchMember(e.target.value);
     if (e.target.value.length >= 2) {
-      const response = await getMemberbyEmail(e.target.value, 49);
-      setSearchMemberList(response);
+      const response: FindMemberByEmailResponse = await getMemberByEmail(
+        e.target.value,
+        49,
+      );
+      setSearchMemberList(response.members);
     } else {
       setSearchMemberList([]);
     }
   };
 
-  const handleMemberCancle = (member_id: number) => {
+  const handleMemberCancel = (member_id: number) => {
     setSelectedMembers(
       selectedMembers.filter((member) => member.id !== member_id),
     );
@@ -94,7 +99,7 @@ function GroupCreatePanel({
             className="w-8 h-8 rounded-full border-2"
           />
           <span>{member.nickname}</span>
-          <Button $size="none" onClick={() => handleMemberCancle(member.id)}>
+          <Button $size="none" onClick={() => handleMemberCancel(member.id)}>
             <img src={X} alt="선택 취소" />
           </Button>
         </div>
@@ -162,6 +167,7 @@ function GroupCreatePanel({
             disabled={selectedMembers.length > 10}
             value={searchMember}
             onChange={handleSearchMemberChange}
+            placeholder={'이메일 사용자 검색'}
           />
           {renderSearchedMembers()}
           {renderSelectedMembers()}
