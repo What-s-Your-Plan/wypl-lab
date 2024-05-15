@@ -28,9 +28,11 @@ function GroupCreateModal({
     init,
     postGroupRegister,
   );
+
   const handleConfirmClick = async () => {
     await handleSubmit();
     handleConfirm();
+    setForm(init);
   };
 
   const [color, setColor] = useState<LabelColorsType>('labelRed');

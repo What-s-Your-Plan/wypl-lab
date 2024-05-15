@@ -64,6 +64,27 @@ function GroupCreatePanel({
     );
   };
 
+  useEffect(() => {
+    setStates((prev) => {
+      return {
+        ...prev,
+        color: color,
+      };
+    });
+  }, [color]);
+
+  useEffect(() => {
+    const newMemberList = selectedMembers.map((member) => {
+      return member.id;
+    });
+    setStates((prev) => {
+      return {
+        ...prev,
+        member_id_list: newMemberList,
+      };
+    });
+  }, [selectedMembers]);
+
   const renderSearchedMembers = () => {
     return searchedMemberList.map((member: FindMemberProfile, idx: number) => {
       return (
@@ -111,27 +132,6 @@ function GroupCreatePanel({
       );
     });
   };
-
-  useEffect(() => {
-    setStates((prev) => {
-      return {
-        ...prev,
-        color: color,
-      };
-    });
-  }, [color]);
-
-  useEffect(() => {
-    const newMemberList = selectedMembers.map((member) => {
-      return member.id;
-    });
-    setStates((prev) => {
-      return {
-        ...prev,
-        member_id_list: newMemberList,
-      };
-    });
-  }, [selectedMembers]);
 
   return (
     <S.CreateGroupForm
