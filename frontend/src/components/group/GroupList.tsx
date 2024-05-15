@@ -116,6 +116,7 @@ function GroupList() {
   const openModal = () => {
     setIsModalOpen(true);
   };
+  useEffect(() => {}, [isModalOpen]);
 
   const renderInvitedGroupList = () => {
     if (memberGroups.invited_group_count === 0) {
@@ -151,8 +152,6 @@ function GroupList() {
   useEffect(() => {
     fetchMemberGroups();
   }, []);
-
-  useEffect(() => {}, [isModalOpen]);
 
   return (
     <>

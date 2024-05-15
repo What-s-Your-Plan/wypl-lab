@@ -1,13 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 
-import ColorCircle from '../../common/ColorCircle';
-import { Divider } from '../../common/Divider';
-import GroupMemberList from '../member/GroupMemberList';
-import PalettePanel from '@/components/color/PalettePanel';
 import PopOver from '@/components/common/PopOver';
 import Tooltip from '@/components/tooltip/Tooltip';
+import PalettePanel from '@/components/color/PalettePanel';
+import ColorCircle from '../../common/ColorCircle';
+import { Divider } from '../../common/Divider';
+import GroupUpdateModal from '../update/GroupUpdateModal';
+import GroupMemberList from '../member/GroupMemberList';
 
 import patchPersonalGroupColor from '@/services/group/patchGroupColor';
 
@@ -35,16 +36,30 @@ function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
     setColor(updateColor);
   };
 
-  const handleOpenSettings = (event: React.MouseEvent<HTMLDivElement>) => {
-    event.preventDefault();
-  };
-
   const gotoGroupPage = (open: boolean) => {
     if (open || groupId === group.id.toString()) {
       return;
     }
     navigate(`/group/${group.id}`);
   };
+
+  const [groupCreateInit] = useState<GroupUpdateInfo>({
+    id: group.id,
+    name: group.name,
+    color: group.color,
+    member_id_list: [],
+  });
+
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+  useEffect(() => {}, [isModalOpen]);
+
+  const handleUpdateGroup = () => {};
 
   const groupDetail = (isOpen: boolean) => {
     return (
@@ -58,7 +73,10 @@ function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
                   <img
                     src={Setting}
                     alt="설정"
-                    onClick={handleOpenSettings}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openModal();
+                    }}
                     className="w-5"
                   />
                 }
@@ -78,6 +96,12 @@ function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
 
   return (
     <S.Container>
+      <GroupUpdateModal
+        isOpen={isModalOpen}
+        init={groupCreateInit}
+        handleClose={closeModal}
+        handleConfirm={handleUpdateGroup}
+      />
       <S.PopOverWrapper>
         <PopOver
           panelPosition="bottom-8"

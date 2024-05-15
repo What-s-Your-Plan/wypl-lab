@@ -18,3 +18,10 @@ type GroupInfo = {
   color: string;
   member_id_list: Array<number>;
 };
+
+type GroupUpdateInfo = {
+  id: number;
+  name: string;
+  color: string;
+  member_id_list: Array<number>;
+};

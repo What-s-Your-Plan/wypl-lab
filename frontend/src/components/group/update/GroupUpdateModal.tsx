@@ -16,7 +16,7 @@ import * as S from '@/components/group/create/GroupCreateModal.styled';
 
 type GroupUpdateModalProps = {
   isOpen: boolean;
-  init: GroupInfo;
+  init: GroupUpdateInfo;
   handleClose: (() => void) | (() => Promise<void>);
   handleConfirm: (memberGroup: MemberGroup) => void;
 };
@@ -41,7 +41,7 @@ function GroupUpdateModal({
   const CreateGroupHeader = () => {
     return (
       <S.TitleContainer>
-        <S.Title>새로운 그룹을 생성해보세요!</S.Title>
+        <S.Title>그룹을 수정해보세요!</S.Title>
         <S.Bar $color={color} />
       </S.TitleContainer>
     );
