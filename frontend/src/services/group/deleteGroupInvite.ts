@@ -1,8 +1,9 @@
 import { axiosWithAccessToken } from '../axios';
+import { API_PATH } from '@/constants/Path';
 
 async function deleteGroupInvite(groupId: number) {
   return await axiosWithAccessToken.delete(
-    `/group/v1/groups/${groupId}/members/invitation`,
+    API_PATH.GROUP.INVITE.replace(':groupId', groupId.toString()),
   );
 }
 
