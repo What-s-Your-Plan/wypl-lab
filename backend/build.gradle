@@ -198,11 +198,3 @@ build {
     dependsOn 'copyOasToSwagger'
 }
 /* API Docs End */
-
-sourceSets {
-    main {
-        resources {
-            exclude '**/*.sh'  // 모든 .sh 파일 제외
-        }
-    }
-}
