@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.butter.wypl.file.exception.FileErrorCode;
@@ -18,6 +19,7 @@ import com.butter.wypl.file.exception.FileException;
 import com.butter.wypl.global.annotation.InfraComponent;
 import com.butter.wypl.global.exception.CustomException;
 import com.butter.wypl.global.exception.GlobalErrorCode;
+import com.butter.wypl.global.exception.GlobalException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,7 +45,14 @@ public class S3ImageProvider {
 		PutObjectRequest putObjectRequest = new PutObjectRequest(bucket, fileName, uploadFile)
 				.withCannedAcl(CannedAccessControlList.PublicRead);
 
-		amazonS3Client.putObject(putObjectRequest);
+		try {
+			amazonS3Client.putObject(putObjectRequest);
+		} catch (AmazonS3Exception e) {
+			if (e.getMessage().contains("Access Denied")) {
+				throw new FileException(FileErrorCode.INVALID_FILE);
+			}
+			throw new GlobalException(GlobalErrorCode.INTERNAL_SERVER_ERROR);
+		}
 		uploadFile.delete();
 
 		return amazonS3Client.getUrl(bucket, fileName).toString();
