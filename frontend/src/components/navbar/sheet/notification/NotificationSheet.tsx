@@ -12,7 +12,12 @@ import Bell from '@/assets/icons/bell.svg';
 import Button from '@/components/common/Button';
 import * as S from './NotificationSheet.styled';
 
+import useLoading from '@/hooks/useLoading';
+import useToastStore from '@/stores/ToastStore';
+
 function NotificationSheet() {
+  const { addToast } = useToastStore();
+  const { canStartLoading, endLoading } = useLoading();
   const [notifications, setNotifications] = useState<WYPLNotificationResponse>({
     notification: [],
     last_id: '',
@@ -39,6 +44,31 @@ function NotificationSheet() {
         </div>
       );
     });
+  };
+
+  const handleRemoveAll = async () => {
+    if (canStartLoading()) {
+      return;
+    }
+    await deleteNotification()
+      .then(() => {
+        setNotifications((prev: WYPLNotificationResponse) => {
+          return {
+            ...prev,
+            has_next: false,
+            last_id: '',
+            notification: [],
+          };
+        });
+        addToast({
+          duration: 300,
+          message: '전체 알림을 삭제하였습니다.',
+          type: 'NOTIFICATION',
+        });
+      })
+      .finally(() => {
+        endLoading();
+      });
   };
 
   const fetchNotifications = async () => {
@@ -79,9 +109,7 @@ function NotificationSheet() {
           $size="lg"
           $width="120px"
           $border="black"
-          onClick={() => {
-            deleteNotification();
-          }}
+          onClick={() => handleRemoveAll()}
         >
           알림함 비우기
         </Button>

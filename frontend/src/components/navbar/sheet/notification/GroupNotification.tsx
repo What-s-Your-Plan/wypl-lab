@@ -23,6 +23,7 @@ function GroupNotification({ notification }: GroupNotificationProps) {
 
   const handleAccept = async () => {
     await patchGroupInviteAccepted(groupId);
+    await window.location.reload;
     navigate(BROWSER_PATH.GROUP.BASE + `/${groupId}`);
   };
 
