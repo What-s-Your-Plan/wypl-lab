@@ -3,7 +3,10 @@ import { useState } from 'react';
 import Modal from '@/components/common/Modal';
 import GroupCreatePanel from '@/components/group/create/GroupCreatePanel';
 
-import postGroupRegister from '@/services/group/postGroupRegister';
+import postGroupRegister, {
+  GroupResponse as CreateGroup,
+} from '@/services/group/postGroupRegister';
+import { FindGroupResponse as MemberGroup } from '@/services/group/getMemberGroupList';
 
 import useForm from '@/hooks/useForm';
 
@@ -15,22 +18,23 @@ type GroupUpdateModalProps = {
   isOpen: boolean;
   init: GroupInfo;
   handleClose: (() => void) | (() => Promise<void>);
-  handleConfirm: (() => void) | (() => Promise<void>);
+  handleConfirm: (memberGroup: MemberGroup) => void;
 };
 
 function GroupUpdateModal({
   isOpen,
   init,
   handleClose,
-  handleConfirm,
+  // handleConfirm,
 }: GroupUpdateModalProps) {
-  const { form, setForm, handleChange, handleSubmit } = useForm<GroupInfo>(
-    init,
-    postGroupRegister,
-  );
+  const { form, setForm, handleChange, handleSubmit } = useForm<
+    GroupInfo,
+    CreateGroup
+  >(init, postGroupRegister);
+
   const handleConfirmClick = async () => {
     await handleSubmit();
-    handleConfirm();
+    // handleConfirm();
   };
 
   const [color, setColor] = useState<LabelColorsType>('labelRed');

@@ -40,6 +40,17 @@ function GroupList() {
     }
   };
 
+  const handleCreateGroup = (newGroup: MemberGroup) => {
+    setMemberGroups((prev: MemberGroups) => {
+      const updatedGroups: MemberGroup[] = [newGroup, ...prev.groups];
+      return {
+        ...prev,
+        groups: updatedGroups,
+        group_count: updatedGroups.length,
+      };
+    });
+  };
+
   const handleMoveAcceptedGroupById = (acceptedGroupId: number) => {
     setMemberGroups((prev: MemberGroups) => {
       const acceptedGroup: MemberGroup | undefined = prev.invited_groups.find(
@@ -97,9 +108,6 @@ function GroupList() {
     color: 'labelBrown',
     member_id_list: [],
   });
-  const handleGroupCreate = () => {
-    console.log('새로운 그룹 생성');
-  };
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const closeModal = () => {
@@ -203,7 +211,7 @@ function GroupList() {
         isOpen={isModalOpen}
         init={groupCreateInit}
         handleClose={closeModal}
-        handleConfirm={handleGroupCreate}
+        handleConfirm={handleCreateGroup}
       />
     </>
   );

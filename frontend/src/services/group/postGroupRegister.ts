@@ -1,12 +1,23 @@
 import { axiosWithAccessToken } from '../axios';
+import { API_PATH } from '@/constants/Path';
+import { BgColors } from '@/assets/styles/colorThemes';
+
+export type GroupResponse = {
+  id: number;
+  name: string;
+  color: BgColors;
+};
 
 async function postGroupRegister(body: {
   name: string;
   member_id_list: Array<number>;
   color: string;
 }) {
-  const response = await axiosWithAccessToken.post('/group/v1/groups', body);
-  return response.data.body.group_id;
+  return await axiosWithAccessToken
+    .post<BaseResponse<GroupResponse>>(API_PATH.GROUP.BASE, body)
+    .then((res) => {
+      return res.data.body!;
+    });
 }
 
 export default postGroupRegister;

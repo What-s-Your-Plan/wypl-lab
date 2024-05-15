@@ -3,7 +3,10 @@ import { useState } from 'react';
 import Modal from '@/components/common/Modal';
 import GroupCreatePanel from '@/components/group/create/GroupCreatePanel';
 
-import postGroupRegister from '@/services/group/postGroupRegister';
+import postGroupRegister, {
+  GroupResponse as CreateGroup,
+} from '@/services/group/postGroupRegister';
+import { FindGroupResponse as MemberGroup } from '@/services/group/getMemberGroupList';
 
 import useForm from '@/hooks/useForm';
 
@@ -15,7 +18,7 @@ type GroupCreateModalProps = {
   isOpen: boolean;
   init: GroupInfo;
   handleClose: (() => void) | (() => Promise<void>);
-  handleConfirm: (() => void) | (() => Promise<void>);
+  handleConfirm: (memberGroup: MemberGroup) => void;
 };
 
 function GroupCreateModal({
@@ -24,14 +27,23 @@ function GroupCreateModal({
   handleClose,
   handleConfirm,
 }: GroupCreateModalProps) {
-  const { form, setForm, handleChange, handleSubmit } = useForm<GroupInfo>(
-    init,
-    postGroupRegister,
-  );
+  const { form, setForm, handleChange, handleSubmit } = useForm<
+    GroupInfo,
+    CreateGroup
+  >(init, postGroupRegister);
 
   const handleConfirmClick = async () => {
-    await handleSubmit();
-    handleConfirm();
+    const response = await handleSubmit();
+    if (response === null) {
+      return;
+    }
+    const memberGroup: MemberGroup = {
+      id: response.id,
+      color: response.color,
+      name: response.name,
+      is_owner: true,
+    };
+    handleConfirm(memberGroup);
     setForm(init);
   };
 
