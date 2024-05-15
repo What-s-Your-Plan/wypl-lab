@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import getMemberByEmail, {
   FindMemberByEmailResponse,
@@ -11,29 +11,19 @@ import ColorCircle from '../../common/ColorCircle';
 import PalettePanel from '../../color/PalettePanel';
 
 import { getMemberProfileImageOrDefault } from '@/utils/ImageUtils';
-import { BgColors, LabelColorsType } from '@/assets/styles/colorThemes';
+import { BgColors } from '@/assets/styles/colorThemes';
 import noContent from '@/assets/lottie/noContent.json';
 
 import * as S from '@/components/group/create/GroupCreatePanel.styled';
 
 type GroupUpdatePanelProps = {
-  states: GroupInfo;
-  handleChange: (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>,
-  ) => void;
-  setStates: Dispatch<SetStateAction<GroupInfo>>;
-  color: BgColors;
-  setColor: Dispatch<SetStateAction<LabelColorsType>>;
+  groupUpdateInfo: GroupUpdateInfo;
+  groupUpdateInfoEvent: (newName: string, newColor: BgColors) => void;
 };
 
 function GroupUpdatePanel({
-  states,
-  handleChange,
-  setStates,
-  color,
-  setColor,
+  groupUpdateInfo,
+  groupUpdateInfoEvent,
 }: GroupUpdatePanelProps) {
   const [selectedMembers, setSelectedMembers] = useState<FindMemberProfile[]>(
     [],
@@ -63,6 +53,15 @@ function GroupUpdatePanel({
       selectedMembers.filter((member) => member.id !== member_id),
     );
   };
+
+  const [color, setColor] = useState<BgColors>(
+    groupUpdateInfo.color as BgColors,
+  );
+  const [name, setName] = useState<string>(groupUpdateInfo.name);
+
+  useEffect(() => {
+    groupUpdateInfoEvent(name, color);
+  }, [color, name]);
 
   const renderSearchedMembers = () => {
     return searchedMemberList.map((member: FindMemberProfile, idx: number) => {
@@ -97,7 +96,9 @@ function GroupUpdatePanel({
     return selectedMembers.map((member) => {
       return (
         <S.MemberContainer onClick={() => handleMemberCancel(member.id)}>
-          <S.SelectMemberProfileWrapper $color={color}>
+          <S.SelectMemberProfileWrapper
+            $color={groupUpdateInfo.color as BgColors}
+          >
             <S.MemberProfileImg
               src={getMemberProfileImageOrDefault(member.profile_image_url)}
               alt={member.nickname}
@@ -111,27 +112,6 @@ function GroupUpdatePanel({
       );
     });
   };
-
-  useEffect(() => {
-    setStates((prev) => {
-      return {
-        ...prev,
-        color: color,
-      };
-    });
-  }, [color]);
-
-  useEffect(() => {
-    const newMemberList = selectedMembers.map((member) => {
-      return member.id;
-    });
-    setStates((prev) => {
-      return {
-        ...prev,
-        member_id_list: newMemberList,
-      };
-    });
-  }, [selectedMembers]);
 
   return (
     <S.CreateGroupForm
@@ -148,15 +128,15 @@ function GroupUpdatePanel({
               id="groupName"
               name="name"
               maxLength={10}
-              value={states.name}
-              onChange={handleChange}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
             <PopOver
               panelPosition="top-8"
               button={
                 <ColorCircle
                   as="button"
-                  $bgColor={color as BgColors}
+                  $bgColor={color}
                   $cursor="pointer"
                   className="!rounded-md"
                 />

@@ -17,13 +17,21 @@ import ChevronDown from '@/assets/icons/chevronDown.svg';
 import Setting from '@/assets/icons/settings.svg';
 
 import * as S from './GroupDetailList.styled';
+import patchGroupInfo, {
+  UpdateGroupInfoRequest,
+} from '@/services/group/patchGroupInfo';
 
 type GroupInfoProps = {
   group: Group;
-  groupWithdrawEvent: (groupId: number) => void;
+  groupDeleteEvent: (groupId: number) => void;
+  groupUpdateEvent: (updateGroup: GroupUpdateInfo) => void;
 };
 
-function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
+function GroupDetailList({
+  group,
+  groupDeleteEvent,
+  groupUpdateEvent,
+}: GroupInfoProps) {
   const navigate = useNavigate();
   const { groupId } = useParams();
   const [color, setColor] = useState<BgColors>(group.color as BgColors);
@@ -43,11 +51,10 @@ function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
     navigate(`/group/${group.id}`);
   };
 
-  const [groupCreateInit] = useState<GroupUpdateInfo>({
+  const [groupUpdateInit] = useState<GroupUpdateInfo>({
     id: group.id,
     name: group.name,
     color: group.color,
-    member_id_list: [],
   });
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
@@ -59,7 +66,20 @@ function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
   };
   useEffect(() => {}, [isModalOpen]);
 
-  const handleUpdateGroup = () => {};
+  const handleUpdateGroup = async (newName: string, newColor: BgColors) => {
+    const request: UpdateGroupInfoRequest = {
+      name: newName,
+      color: newColor,
+    };
+    await patchGroupInfo(group.id, request).then((res) => {
+      const body = res.data.body!;
+      groupUpdateEvent({
+        id: group.id,
+        name: body.name,
+        color: body.color,
+      });
+    });
+  };
 
   const groupDetail = (isOpen: boolean) => {
     return (
@@ -98,9 +118,9 @@ function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
     <S.Container>
       <GroupUpdateModal
         isOpen={isModalOpen}
-        init={groupCreateInit}
+        init={groupUpdateInit}
         handleClose={closeModal}
-        handleConfirm={handleUpdateGroup}
+        groupUpdateEvent={handleUpdateGroup}
       />
       <S.PopOverWrapper>
         <PopOver
@@ -129,7 +149,7 @@ function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
                   groupId={group.id}
                   color={color}
                   isOwner={group.is_owner}
-                  groupWithdrawEvent={groupWithdrawEvent}
+                  groupDeleteEvent={groupDeleteEvent}
                 />
               </Disclosure.Panel>
             </S.Wrapper>

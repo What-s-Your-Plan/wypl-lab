@@ -1,48 +1,49 @@
 import { useState } from 'react';
 
 import Modal from '@/components/common/Modal';
-import GroupCreatePanel from '@/components/group/create/GroupCreatePanel';
+import GroupUpdatePanel from './GroupUpdatePanel';
 
-import postGroupRegister, {
-  GroupResponse as CreateGroup,
-} from '@/services/group/postGroupRegister';
-import { FindGroupResponse as MemberGroup } from '@/services/group/getMemberGroupList';
-
-import useForm from '@/hooks/useForm';
-
-import { LabelColorsType } from '@/assets/styles/colorThemes';
+import { BgColors } from '@/assets/styles/colorThemes';
 
 import * as S from '@/components/group/create/GroupCreateModal.styled';
 
 type GroupUpdateModalProps = {
   isOpen: boolean;
   init: GroupUpdateInfo;
+  groupUpdateEvent: (newName: string, newColor: BgColors) => void;
   handleClose: (() => void) | (() => Promise<void>);
-  handleConfirm: (memberGroup: MemberGroup) => void;
 };
 
 function GroupUpdateModal({
   isOpen,
   init,
   handleClose,
-  // handleConfirm,
+  groupUpdateEvent,
 }: GroupUpdateModalProps) {
-  const { form, setForm, handleChange, handleSubmit } = useForm<
-    GroupInfo,
-    CreateGroup
-  >(init, postGroupRegister);
+  const [groupUpdateInfo, setGroupUpdateInfo] = useState<GroupUpdateInfo>(init);
 
-  const handleConfirmClick = async () => {
-    await handleSubmit();
-    // handleConfirm();
+  const handleGroupUpdateInfo = (newName: string, newColor: BgColors) => {
+    setGroupUpdateInfo((prev) => {
+      return {
+        ...prev,
+        name: newName,
+        color: newColor,
+      };
+    });
   };
 
-  const [color, setColor] = useState<LabelColorsType>('labelRed');
+  const handleConfirmClick = async () => {
+    await groupUpdateEvent(
+      groupUpdateInfo.name,
+      groupUpdateInfo.color as BgColors,
+    );
+  };
+
   const CreateGroupHeader = () => {
     return (
       <S.TitleContainer>
         <S.Title>그룹을 수정해보세요!</S.Title>
-        <S.Bar $color={color} />
+        <S.Bar $color={groupUpdateInfo.color as BgColors} />
       </S.TitleContainer>
     );
   };
@@ -51,15 +52,15 @@ function GroupUpdateModal({
     <Modal
       isOpen={isOpen}
       cancel="취소"
-      confirm={{ content: '저장', handleConfirm: handleConfirmClick }}
+      confirm={{
+        content: '저장',
+        handleConfirm: handleConfirmClick,
+      }}
       title={CreateGroupHeader()}
       contents={
-        <GroupCreatePanel
-          color={color}
-          setColor={setColor}
-          states={form}
-          handleChange={handleChange}
-          setStates={setForm}
+        <GroupUpdatePanel
+          groupUpdateInfoEvent={handleGroupUpdateInfo}
+          groupUpdateInfo={groupUpdateInfo}
         />
       }
       handleClose={handleClose}

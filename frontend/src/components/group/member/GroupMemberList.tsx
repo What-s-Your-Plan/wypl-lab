@@ -26,14 +26,14 @@ type GroupMemberProps = {
   groupId: number;
   color: BgColors;
   isOwner: boolean;
-  groupWithdrawEvent: (groupId: number) => void;
+  groupDeleteEvent: (groupId: number) => void;
 };
 
 function GroupMemberList({
   groupId,
   color,
   isOwner,
-  groupWithdrawEvent,
+  groupDeleteEvent,
 }: GroupMemberProps) {
   const { memberId } = useMemberStore();
 
@@ -72,7 +72,7 @@ function GroupMemberList({
 
   const requestWithdraw = async () => {
     await deleteGroupWithdraw(groupId).then(() => {
-      groupWithdrawEvent(groupId);
+      groupDeleteEvent(groupId);
     });
   };
 

@@ -20,6 +20,8 @@ import Users from '@/assets/icons/users.svg';
 import Plus from '@/assets/icons/plus.svg';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
 import { BROWSER_PATH } from '@/constants/Path';
+import { UpdateGroupInfoRequest } from '@/services/group/patchGroupInfo';
+import { BgColors } from '@/assets/styles/colorThemes';
 
 // import * as S from './GroupList.styled';
 
@@ -89,15 +91,41 @@ function GroupList() {
     });
   };
 
-  const handleWithdrawGroupById = (withdrawGroupId: number) => {
+  /**
+   * 그룹에서 삭제 및 탈퇴할때 그룹의 리스트에서 제거하는 핸들러
+   *
+   * @param deleteGroupId 삭제 및 탈퇴하는 그룹의 식별자
+   */
+  const handleDeleteGroupById = (deleteGroupId: number) => {
     setMemberGroups((prev: MemberGroups) => {
       const updateGroups = prev.groups.filter(
-        (group: MemberGroup) => group.id !== withdrawGroupId,
+        (group: MemberGroup) => group.id !== deleteGroupId,
       );
 
       return {
         ...prev,
         group_count: updateGroups.length,
+        groups: updateGroups,
+      };
+    });
+  };
+
+  // TODO: 그룹 수정 핸들러 (정보 및 색상)
+  const handleUpdateGroupById = (updateGroup: GroupUpdateInfo) => {
+    setMemberGroups((prev: MemberGroups) => {
+      const updateGroups = prev.groups.map((group: MemberGroup) => {
+        if (group.id === updateGroup.id) {
+          const newMemberGroup: MemberGroup = {
+            ...group,
+            name: updateGroup.name,
+            color: updateGroup.color as BgColors,
+          };
+          return newMemberGroup;
+        }
+        return group;
+      });
+      return {
+        ...prev,
         groups: updateGroups,
       };
     });
@@ -143,7 +171,8 @@ function GroupList() {
         <GroupDetailList
           key={group.id}
           group={group}
-          groupWithdrawEvent={handleWithdrawGroupById}
+          groupDeleteEvent={handleDeleteGroupById}
+          groupUpdateEvent={handleUpdateGroupById}
         />
       );
     });
