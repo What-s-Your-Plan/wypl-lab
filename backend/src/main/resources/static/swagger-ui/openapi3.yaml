@@ -470,14 +470,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-2048567868'
+                $ref: '#/components/schemas/group-v1-groups-groupId-2021476588'
               examples:
                 group/create-group:
                   value: |-
                     {
                       "message" : "그룹 등록에 성공했습니다.",
                       "body" : {
-                        "group_id" : 1
+                        "id" : 1,
+                        "name" : "group1",
+                        "color" : "labelNavy"
                       }
                     }
   /group/v1/groups/members:
@@ -613,14 +615,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-2048567868'
+                $ref: '#/components/schemas/group-v1-groups-groupId-2021476588'
               examples:
                 group/update-group:
                   value: |-
                     {
                       "message" : "그룹 수정에 성공했습니다.",
                       "body" : {
-                        "group_id" : 1
+                        "id" : 1,
+                        "name" : "업데이트 할 그룹명",
+                        "color" : "labelBrown"
                       }
                     }
   /group/v1/groups/{groupId}/members:
@@ -747,7 +751,7 @@ paths:
               group/invite-group-member:
                 value: |-
                   {
-                    "member_id_list" : [ 3, 2 ]
+                    "member_id_list" : [ 2, 3 ]
                   }
       responses:
         "201":
@@ -755,7 +759,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/group-v1-groups-groupId-2048567868'
+                $ref: '#/components/schemas/group-v1-groups-groupId-members-invitation-2048567868'
               examples:
                 group/invite-group-member:
                   value: |-
@@ -1362,18 +1366,18 @@ paths:
                     "schedule_id" : 0,
                     "title" : "공부하기 싫다",
                     "contents" : [ {
-                      "blockType" : "emotion",
                       "emoji" : "/src/assets/icons/emoji/tired.svg",
+                      "blockType" : "emotion",
                       "description" : "피곤해요"
                     }, {
-                      "blockType" : "4f",
                       "weather" : "/src/assets/icons/weather/sun.svg",
+                      "blockType" : "4f",
                       "description" : "날씨 너무 좋음"
                     }, {
-                      "future" : "향후 헹동",
-                      "finding" : "교훈",
-                      "blockType" : "4f",
                       "feelings" : "느낌",
+                      "blockType" : "4f",
+                      "finding" : "교훈",
+                      "future" : "향후 헹동",
                       "facts" : "팩트"
                     } ]
                   }
@@ -1444,18 +1448,18 @@ paths:
                     "schedule_id" : 0,
                     "title" : "공부하기 싫다",
                     "contents" : [ {
-                      "blockType" : "emotion",
                       "emoji" : "/src/assets/icons/emoji/tired.svg",
+                      "blockType" : "emotion",
                       "description" : "피곤해요"
                     }, {
-                      "blockType" : "4f",
                       "weather" : "/src/assets/icons/weather/sun.svg",
+                      "blockType" : "4f",
                       "description" : "날씨 너무 좋음"
                     }, {
-                      "future" : "향후 헹동",
-                      "finding" : "교훈",
-                      "blockType" : "4f",
                       "feelings" : "느낌",
+                      "blockType" : "4f",
+                      "finding" : "교훈",
+                      "future" : "향후 헹동",
                       "facts" : "팩트"
                     } ]
                   }
@@ -1527,19 +1531,19 @@ paths:
                         "review_count" : 2,
                         "reviews" : [ {
                           "review_id" : 0,
-                          "created_at" : "2024-05-15T20:54:34.863704",
+                          "created_at" : "2024-05-15T21:41:09.713303",
                           "thumbnail_content" : {
-                            "blockType" : "emotion",
                             "emoji" : "/src/assets/icons/emoji/tired.svg",
+                            "blockType" : "emotion",
                             "description" : "피곤해요"
                           },
                           "title" : "공부하기 싫다"
                         }, {
                           "review_id" : 0,
-                          "created_at" : "2024-05-15T20:54:34.863713",
+                          "created_at" : "2024-05-15T21:41:09.713317",
                           "thumbnail_content" : {
-                            "blockType" : "4f",
                             "weather" : "/src/assets/icons/weather/sun.svg",
+                            "blockType" : "4f",
                             "description" : "날씨 너무 좋음"
                           },
                           "title" : "오늘도 공부하기 싫다"
@@ -1590,18 +1594,18 @@ paths:
                           } ]
                         },
                         "contents" : [ {
-                          "blockType" : "emotion",
                           "emoji" : "/src/assets/icons/emoji/tired.svg",
+                          "blockType" : "emotion",
                           "description" : "피곤해요"
                         }, {
-                          "blockType" : "4f",
                           "weather" : "/src/assets/icons/weather/sun.svg",
+                          "blockType" : "4f",
                           "description" : "날씨 너무 좋음"
                         }, {
-                          "future" : "향후 헹동",
-                          "finding" : "교훈",
-                          "blockType" : "4f",
                           "feelings" : "느낌",
+                          "blockType" : "4f",
+                          "finding" : "교훈",
+                          "future" : "향후 헹동",
                           "facts" : "팩트"
                         } ]
                       }
@@ -2398,22 +2402,6 @@ components:
         message:
           type: string
           description: 응답 메시지
-    review-v1-reviews-1465059799:
-      required:
-      - message
-      type: object
-      properties:
-        body:
-          required:
-          - review_id
-          type: object
-          properties:
-            review_id:
-              type: number
-              description: 생성한 리뷰의 엔덱스
-        message:
-          type: string
-          description: 응답 메세지
     member-v1-members-nickname-139893332:
       required:
       - message
@@ -2430,6 +2418,22 @@ components:
         message:
           type: string
           description: 응답 메시지
+    review-v1-reviews-1465059799:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - review_id
+          type: object
+          properties:
+            review_id:
+              type: number
+              description: 생성한 리뷰의 엔덱스
+        message:
+          type: string
+          description: 응답 메세지
     schedule-v1-schedules-scheduleId1157950338:
       required:
       - message
@@ -2838,6 +2842,30 @@ components:
         message:
           type: string
           description: 응답 메세지
+    group-v1-groups-groupId-2021476588:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - color
+          - id
+          - name
+          type: object
+          properties:
+            color:
+              type: string
+              description: 그룹 대표 색상
+            name:
+              type: string
+              description: 그룹 이름
+            id:
+              type: number
+              description: 그룹 식별자
+        message:
+          type: string
+          description: 응답 메시지
     label-v1-labels-664349313:
       required:
       - message
@@ -2972,7 +3000,7 @@ components:
         nickname:
           type: string
           description: 변경 요청한 닉네임
-    group-v1-groups-groupId-2048567868:
+    group-v1-groups-groupId-members-invitation-2048567868:
       required:
       - message
       type: object
@@ -3394,18 +3422,6 @@ components:
         content:
           type: string
           description: 수정 요청한 목표 내용
-    group-v1-groups-groupId2024631656:
-      required:
-      - color
-      - name
-      type: object
-      properties:
-        color:
-          type: string
-          description: 수정할 그룹 색상
-        name:
-          type: string
-          description: 수정할 그룹 이름
     notification-v1-notifications-872507205:
       required:
       - message
@@ -3472,6 +3488,18 @@ components:
         message:
           type: string
           description: 응답 메시지
+    group-v1-groups-groupId2024631656:
+      required:
+      - color
+      - name
+      type: object
+      properties:
+        color:
+          type: string
+          description: 수정할 그룹 색상
+        name:
+          type: string
+          description: 수정할 그룹 이름
     calendar-v1-calendars-type1395031786:
       required:
       - message
