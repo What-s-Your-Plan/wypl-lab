@@ -13,7 +13,7 @@ import Envelope from '@/assets/icons/envelope.svg';
 import Users from '@/assets/icons/users.svg';
 import Plus from '@/assets/icons/plus.svg';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
-import GroupCreateModal from './GroupCreate/GroupCreateModal';
+import GroupCreateModal from './groupCreate/GroupCreateModal';
 
 function GroupList() {
   const [groupList, setGroupList] = useState<Group[]>([]);

@@ -1,11 +1,13 @@
+import { useNavigate } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
+
 import GroupMemberList from './GroupMemberList';
 import { Divider } from '../common/Divider';
 import ColorCircle from '../common/ColorCircle';
+
 import { BgColors } from '@/assets/styles/colorThemes';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
 import Setting from '@/assets/icons/settings.svg';
-import { useNavigate } from 'react-router-dom';
 
 type GroupInfoProps = {
   group: Group;

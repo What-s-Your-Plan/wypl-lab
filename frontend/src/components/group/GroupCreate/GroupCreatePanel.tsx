@@ -12,8 +12,9 @@ import PalettePanel from '../../color/PalettePanel';
 
 import { getMemberProfileImageOrDefault } from '@/utils/ImageUtils';
 import { BgColors, LabelColorsType } from '@/assets/styles/colorThemes';
+import noContent from '@/assets/lottie/noContent.json';
 
-import * as S from './GroupCreatePanel.styled';
+import * as S from '@/components/group/groupCreate/GroupCreatePanel.styled';
 
 type GroupCreatePanelProps = {
   states: GroupInfo;
@@ -166,7 +167,7 @@ function GroupCreatePanel({
         </S.InputWrapper>
         <S.MemberWrapper>
           <S.InputWrapper>
-            <S.InputLabel>그룹 멤버</S.InputLabel>
+            <S.InputLabel>그룹 멤버 추가</S.InputLabel>
             <InputDefault
               disabled={selectedMembers.length > 10}
               value={searchMember}
@@ -176,6 +177,17 @@ function GroupCreatePanel({
           </S.InputWrapper>
         </S.MemberWrapper>
       </S.InputContainer>
+      {searchMember.length >= 2 && searchedMemberList.length === 0 && (
+        <>
+          <S.Bar $color={color} />
+          <S.InputLabel>
+            "{searchMember}"와 일치하는 사용자가 없습니다.
+          </S.InputLabel>
+          <S.AnimationBox>
+            <S.Animation animationData={noContent} />
+          </S.AnimationBox>
+        </>
+      )}
       {searchedMemberList.length !== 0 && (
         <>
           <S.Bar $color={color} />

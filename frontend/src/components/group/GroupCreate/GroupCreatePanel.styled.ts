@@ -1,4 +1,5 @@
 import { BgColors, BgTheme, BorderTheme } from '@/assets/styles/colorThemes';
+import Lottie from 'lottie-react';
 import styled from 'styled-components';
 import tw from 'twin.macro';
 
@@ -138,10 +139,26 @@ type BarProps = {
 const Bar = styled.div<BarProps>`
   ${tw`
       h-[0.5px]
+      w-full
+
       mt-5
       mb-3
     `}
   ${(props) => BgTheme[props.$color]}
+`;
+
+const AnimationBox = styled.div`
+  ${tw`
+    flex
+    justify-center
+    items-center
+  `}
+`;
+
+const Animation = styled(Lottie)`
+  ${tw`
+    h-[200px]
+  `}
 `;
 
 export {
@@ -158,4 +175,6 @@ export {
   MemberProfileImg,
   MemberProfileSpan,
   Bar,
+  AnimationBox,
+  Animation,
 };
