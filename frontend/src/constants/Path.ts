@@ -36,6 +36,7 @@ const API_PATH = {
     WITHDRAW: '/group/v1/groups/:groupId/members',
     FORCE_OUT: '/group/v1/groups/:groupId/members/force-out',
     PERSONAL_COLOR: '/group/v1/groups/:groupId/members/colors',
+    INVITE: '/group/v1/groups/:groupId/members/invitation',
   },
 };
 

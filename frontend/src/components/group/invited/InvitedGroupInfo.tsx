@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { BgColors } from '@/assets/styles/colorThemes';
 import Check from '@/assets/icons/check.svg';
 import X from '@/assets/icons/x.svg';
-import patchGroupInvite from '@/services/group/patchGroupInvite';
+import patchGroupInviteAccepted from '@/services/group/patchGroupInviteAccepted';
 import deleteGroupInvite from '@/services/group/deleteGroupInvite';
 
 import * as S from './InvitedGroupInfo.styled';
@@ -23,7 +23,7 @@ function InvitedGroupInfo({
 }: InvitedGroupInfoProps) {
   const handleAccept = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    patchGroupInvite(group.id).then(() => {
+    patchGroupInviteAccepted(group.id).then(() => {
       acceptedEvent(group.id);
     });
   };
