@@ -8,7 +8,7 @@ const style = {
 
 function NoContentAnimation() {
   return (
-    <div className="flex justify-center items-center h-[100vh] w-full">
+    <div className={'flex justify-center items-center h-[100%] w-[100%]'}>
       <Lottie animationData={noContent} style={style}></Lottie>
     </div>
   );
