@@ -1,10 +1,12 @@
 package com.butter.wypl.group.service;
 
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupMemberColorUpdateRequest;
 import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.request.MemberIdRequest;
 import com.butter.wypl.group.data.response.GroupIdResponse;
+import com.butter.wypl.group.data.response.GroupMemberColorUpdateResponse;
 import com.butter.wypl.group.data.response.MemberIdResponse;
 
 public interface GroupModifyService {
@@ -24,4 +26,6 @@ public interface GroupModifyService {
 	void rejectGroupInvitation(int memberId, int groupId);
 
 	void leaveGroup(int memberId, int groupId);
+
+	GroupMemberColorUpdateResponse updateGroupColor(int id, int groupId, GroupMemberColorUpdateRequest request);
 }
