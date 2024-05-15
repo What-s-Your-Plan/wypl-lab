@@ -62,23 +62,21 @@ function GroupUpdatePanel({
       }
       return prev;
     });
-    await inviteMemberIdsEvent(
-      selectedMembers.map((m: FindMemberProfile) => {
-        return m.id;
-      }),
-    );
   };
 
   const handleMemberCancel = async (memberId: number) => {
     await setSelectedMembers(
       selectedMembers.filter((member) => member.id !== memberId),
     );
-    await inviteMemberIdsEvent(
+  };
+
+  useEffect(() => {
+    inviteMemberIdsEvent(
       selectedMembers.map((m: FindMemberProfile) => {
         return m.id;
       }),
     );
-  };
+  }, [selectedMembers]);
 
   const [color, setColor] = useState<BgColors>(
     groupUpdateInfo.color as BgColors,

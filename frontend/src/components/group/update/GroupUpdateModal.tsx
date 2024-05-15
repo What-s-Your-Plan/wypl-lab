@@ -4,11 +4,13 @@ import Button from '@/components/common/Button';
 import Modal from '@/components/common/Modal';
 import GroupUpdatePanel from './GroupUpdatePanel';
 
+import deleteGroup from '@/services/group/deleteGroup';
+
+import useToastStore from '@/stores/ToastStore';
+
 import { BgColors } from '@/assets/styles/colorThemes';
 
 import * as S from './GroupUpdateModal.styled';
-import useToastStore from '@/stores/ToastStore';
-import deleteGroup from '@/services/group/deleteGroup';
 
 type GroupUpdateModalProps = {
   isOpen: boolean;
@@ -41,16 +43,16 @@ function GroupUpdateModal({
     });
   };
 
-  const [memberIds, setMemberIds] = useState<Array<number>>([]);
+  const [inviteMemberIds, setInviteMemberIds] = useState<Array<number>>([]);
   const handleInviteMemberIds = async (newMemberIds: Array<number>) => {
-    await setMemberIds(newMemberIds);
+    await setInviteMemberIds(newMemberIds);
   };
 
   const handleConfirmClick = async () => {
     await groupUpdateEvent(
       groupUpdateInfo.name,
       groupUpdateInfo.color as BgColors,
-      memberIds,
+      inviteMemberIds,
     );
   };
 
