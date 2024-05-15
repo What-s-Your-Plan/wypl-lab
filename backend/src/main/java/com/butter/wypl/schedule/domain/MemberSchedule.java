@@ -1,9 +1,12 @@
 package com.butter.wypl.schedule.domain;
 
+import java.util.List;
+
 import org.hibernate.annotations.SQLRestriction;
 
 import com.butter.wypl.global.common.BaseEntity;
 import com.butter.wypl.member.domain.Member;
+import com.butter.wypl.review.domain.Review;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,5 +44,8 @@ public class MemberSchedule extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "schedule_id", nullable = false)
 	private Schedule schedule;
+
+	@OneToMany(mappedBy = "memberSchedule", fetch = FetchType.LAZY)
+	private List<Review> reviews;
 
 }
