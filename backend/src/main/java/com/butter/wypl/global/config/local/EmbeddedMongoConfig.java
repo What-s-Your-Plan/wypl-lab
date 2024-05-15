@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Profile;
 
 import de.flapdoodle.embed.mongo.spring.autoconfigure.EmbeddedMongoAutoConfiguration;
 
-@Profile({"default", "dev", "jenkins", "prod1", "prod2"})
+@Profile({"default", "dev", "jenkins", "blue", "green"})
 @EnableAutoConfiguration(exclude = {EmbeddedMongoAutoConfiguration.class})
 @Configuration
 public class EmbeddedMongoConfig {
