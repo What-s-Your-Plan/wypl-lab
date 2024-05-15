@@ -8,6 +8,7 @@ import RSchedule from './RSchedule';
 import ReviewWrite from './ReviewWrite';
 import Button from '@/components/common/Button';
 import { Divider, DividerLabel } from '@/components/common/Divider';
+import useToastStore from '@/stores/ToastStore';
 
 import * as S from '@/components/common/Container';
 import Cancel from '@/assets/icons/x.svg';
@@ -15,6 +16,7 @@ import Save from '@/assets/icons/save.svg';
 import { useEffect } from 'react';
 
 function WriteBlockList() {
+  const { addToast } = useToastStore();
   const reviewStore = useReviewStore();
   const navigator = useNavigate();
 
@@ -52,16 +54,28 @@ function WriteBlockList() {
       contents: reviewStore.contents,
     };
     if (body.title === '') {
-      alert('제목을 입력해주세요');
+      addToast({
+        duration: 300,
+        message: '회고 제목은 필수입니다.',
+        type: 'ERROR',
+      });
       return;
     }
     if (body.contents.length === 0) {
-      alert('회고록에 내용을 추가해주세요');
+      addToast({
+        duration: 300,
+        message: '회고 내용은 필수입니다.',
+        type: 'ERROR',
+      });
       return;
     } else {
       for (var i = 0; i < body.contents.length; i++) {
         if (!reviewStore.isContentComplete(i)) {
-          alert('내용이 빈 회고 블록이 있습니다');
+          addToast({
+            duration: 300,
+            message: `${i + 1}번째 블록이 비어있습니다.`,
+            type: 'ERROR',
+          });
           reviewStore.setFocusIndex(i);
           return;
         }

@@ -16,6 +16,7 @@ import useJsonWebTokensStore from '@/stores/TokenStore';
 import { BROWSER_PATH } from '@/constants/Path';
 
 import * as S from './Navbar.styled';
+import useToastStore from '@/stores/ToastStore';
 
 interface CustomEventMap {
   sse: MessageEvent;
@@ -38,6 +39,7 @@ type SheetComponent = {
 
 function Navbar() {
   const navigate = useNavigate();
+  const { addToast } = useToastStore();
   const { accessToken } = useJsonWebTokensStore();
   const { memberId } = useMemberStore();
   const { requestMemberProfile } = useMemberProfile();
@@ -59,27 +61,33 @@ function Navbar() {
         },
       ) as ExtendedEventSource;
 
-      source.onopen = function (event) {
-        console.log(event);
-      };
-
       source.onmessage = function (event) {
         console.log(event);
       };
 
       source.onerror = function (event) {
-        console.log('연결 끊김');
         console.error(event);
         if (source) {
           source.close();
         }
       };
 
+      // Connection
+      source.onopen = function () {};
+
+      // Heart Beat
       source.addEventListener('sse', function (event) {
         setLastEventId(event.lastEventId);
       });
 
       source.addEventListener('notification', function (event) {
+        const jsonAsString: string = event.data as string;
+        const body: WYPLNotification = JSON.parse(jsonAsString);
+        addToast({
+          duration: 300,
+          type: 'NOTIFICATION',
+          message: body.message,
+        });
         setLastEventId(event.lastEventId);
       });
     }
