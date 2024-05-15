@@ -7,7 +7,7 @@ import { Divider } from '../common/Divider';
 import Button from '../common/Button';
 import GroupCreateModal from './create/GroupCreateModal';
 import InvitedGroupInfo from './invited/InvitedGroupInfo';
-import GroupDetail from './list/GroupDetailList';
+import GroupDetailList from './list/GroupDetailList';
 
 import getMemberGroupList, {
   FindMemberGroupsResponse as MemberGroups,
@@ -130,7 +130,7 @@ function GroupList() {
     }
     return memberGroups.groups.map((group: MemberGroup) => {
       return (
-        <GroupDetail
+        <GroupDetailList
           key={group.id}
           group={group}
           groupWithdrawEvent={handleWithdrawGroupById}

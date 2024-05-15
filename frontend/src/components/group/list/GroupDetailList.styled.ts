@@ -1,11 +1,28 @@
 import styled from 'styled-components';
 import tw from 'twin.macro';
 
-const Container = styled.div``;
+const Container = styled.div`
+  ${tw`
+    flex
+    flex-col
+    justify-between
+    
+  `}
+`;
 
-const GroupContainer = styled.div``;
+const PopOverWrapper = styled.div`
+  ${tw`
+    h-6
+    w-6
 
-const GroupWrapper = styled.div`
+    fixed
+    mt-2
+  `}
+`;
+
+const Wrapper = styled.div``;
+
+const GroupContainer = styled.div`
   ${tw`
     flex 
     justify-between
@@ -13,11 +30,28 @@ const GroupWrapper = styled.div`
     `}
 `;
 
-const Box = styled.div`
+const GroupWrapper = styled.div`
   ${tw`
     flex 
-    gap-4
+    justify-between
+    items-center
+    h-full
+    w-full
+    pl-2
     `}
 `;
 
-export { Container, GroupContainer, GroupWrapper, Box };
+const Box = styled.div`
+  ${tw`
+    flex 
+    `}
+`;
+
+export {
+  Container,
+  PopOverWrapper,
+  Wrapper,
+  GroupContainer,
+  GroupWrapper,
+  Box,
+};

@@ -1,9 +1,14 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 
-import GroupMemberList from '../member/GroupMemberList';
-import { Divider } from '../../common/Divider';
 import ColorCircle from '../../common/ColorCircle';
+import { Divider } from '../../common/Divider';
+import GroupMemberList from '../member/GroupMemberList';
+import PalettePanel from '@/components/color/PalettePanel';
+import PopOver from '@/components/common/PopOver';
+
+import patchPersonalGroupColor from '@/services/group/patchGroupColor';
 
 import { BgColors } from '@/assets/styles/colorThemes';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
@@ -16,9 +21,18 @@ type GroupInfoProps = {
   groupWithdrawEvent: (groupId: number) => void;
 };
 
-function GroupDetail({ group, groupWithdrawEvent }: GroupInfoProps) {
+function GroupDetailList({ group, groupWithdrawEvent }: GroupInfoProps) {
   const navigate = useNavigate();
   const { groupId } = useParams();
+  const [color, setColor] = useState<BgColors>(group.color as BgColors);
+
+  const handleChangeColor = async (color: BgColors) => {
+    const updateColor: BgColors = await patchPersonalGroupColor(
+      group.id,
+      color,
+    );
+    setColor(updateColor);
+  };
 
   const handleOpenSettings = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -33,55 +47,67 @@ function GroupDetail({ group, groupWithdrawEvent }: GroupInfoProps) {
 
   const groupDetail = (isOpen: boolean) => {
     return (
-      <S.GroupWrapper>
-        <S.Box className="flex gap-4">
-          <ColorCircle
-            $bgColor={group.color as BgColors}
-            className="!rounded-lg"
-          />
-          {group.name}
-        </S.Box>
-        <S.Box className="flex gap-4">
-          {group.is_owner && (
+      <S.GroupContainer>
+        <S.GroupWrapper onClick={() => gotoGroupPage(isOpen)}>
+          <S.Box className="pl-6">{group.name}</S.Box>
+          <S.Box className="gap-4">
+            {group.is_owner && (
+              <img
+                src={Setting}
+                alt="설정"
+                onClick={handleOpenSettings}
+                className="w-5"
+              />
+            )}
             <img
-              src={Setting}
-              alt="설정"
-              onClick={handleOpenSettings}
-              className="w-5"
+              src={ChevronDown}
+              alt="펼치기"
+              className={isOpen ? 'rotate-180 transform w-6' : 'w-6'}
             />
-          )}
-          <img
-            src={ChevronDown}
-            alt="펼치기"
-            className={isOpen ? 'rotate-180 transform w-6' : 'w-6'}
-          />
-        </S.Box>
-      </S.GroupWrapper>
+          </S.Box>
+        </S.GroupWrapper>
+      </S.GroupContainer>
     );
   };
 
   return (
     <S.Container>
-      <Disclosure>
-        {({ open }) => (
-          <S.GroupContainer onClick={() => gotoGroupPage(open)}>
-            <Disclosure.Button className="pt-2 pb-4 w-full border-none">
-              {groupDetail(open)}
-            </Disclosure.Button>
-            <Divider />
-            <Disclosure.Panel>
-              <GroupMemberList
-                groupId={group.id}
-                color={group.color as BgColors}
-                isOwner={group.is_owner}
-                groupWithdrawEvent={groupWithdrawEvent}
-              />
-            </Disclosure.Panel>
-          </S.GroupContainer>
-        )}
-      </Disclosure>
+      <S.PopOverWrapper>
+        <PopOver
+          panelPosition="bottom-8"
+          button={
+            <ColorCircle
+              as="button"
+              $bgColor={color as BgColors}
+              $cursor="pointer"
+              className="!rounded-md"
+            />
+          }
+          panel={<PalettePanel setColor={handleChangeColor} isRounded={true} />}
+        />
+      </S.PopOverWrapper>
+      <div>
+        <Disclosure>
+          {({ open }) => (
+            <S.Wrapper>
+              <Disclosure.Button className="pt-2 pb-4 w-full border-none">
+                {groupDetail(open)}
+              </Disclosure.Button>
+              <Divider />
+              <Disclosure.Panel>
+                <GroupMemberList
+                  groupId={group.id}
+                  color={color}
+                  isOwner={group.is_owner}
+                  groupWithdrawEvent={groupWithdrawEvent}
+                />
+              </Disclosure.Panel>
+            </S.Wrapper>
+          )}
+        </Disclosure>
+      </div>
     </S.Container>
   );
 }
 
-export default GroupDetail;
+export default GroupDetailList;
