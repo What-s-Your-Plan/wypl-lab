@@ -5,9 +5,14 @@ import X from '@/assets/icons/x.svg';
 
 import * as S from './Toast.styled';
 
-function Toast({ type, message, duration: initialTime }: ToastType) {
+type ToastProps = {
+  content: ToastContent;
+  removeEvent: (id: number) => void;
+};
+
+function Toast({ content, removeEvent }: ToastProps) {
   const changeColor = (): BgColors => {
-    if (type === 'NOTIFICATION') {
+    if (content.type === 'NOTIFICATION') {
       return 'labelGreen';
     }
     return 'labelRed';
@@ -16,12 +21,16 @@ function Toast({ type, message, duration: initialTime }: ToastType) {
   return (
     <S.Container $bgColor={changeColor()} $textColor={'white'}>
       <S.HeaderWrapper>
-        <S.Icon src={X} className={'whiteImg'} />
+        <S.Icon
+          src={X}
+          className={'whiteImg'}
+          onClick={() => removeEvent(content.id)}
+        />
       </S.HeaderWrapper>
       <S.MessageWrapper>
-        <S.Message>{message}</S.Message>
+        <S.Message>{content.message}</S.Message>
       </S.MessageWrapper>
-      <LoadingBar initialTime={initialTime} />
+      <LoadingBar initialTime={content.duration} />
     </S.Container>
   );
 }

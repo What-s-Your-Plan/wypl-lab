@@ -12,7 +12,6 @@ const Container = styled.div`
     h-[350px]
     w-[300px]
 
-    z-10
     right-10
     bottom-10
   `}

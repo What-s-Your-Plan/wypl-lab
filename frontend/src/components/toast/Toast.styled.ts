@@ -28,7 +28,6 @@ const Container = styled.div<ContainerProps>`
         items-center
         justify-between
         flex-col
-
         w-[300px]
         h-[60px]
         mt-4

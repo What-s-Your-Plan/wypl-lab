@@ -1,16 +1,16 @@
 import Toast from '../toast/Toast';
 
-import useToast from '@/hooks/useToast';
+import useToastStore from '@/stores/ToastStore';
 
 import * as S from './Notification.styled';
 
 function Notification() {
-  const { toasts } = useToast();
+  const { toasts, removeToast } = useToastStore();
 
   return (
     <S.Container>
-      {toasts.map((value: ToastType) => (
-        <Toast {...value} key={value.id} />
+      {toasts.map((toast: ToastContent) => (
+        <Toast content={toast} removeEvent={removeToast} key={toast.id} />
       ))}
     </S.Container>
   );
