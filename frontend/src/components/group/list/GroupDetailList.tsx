@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 
-import GroupMemberList from '../GroupMemberList';
+import GroupMemberList from '../member/GroupMemberList';
 import { Divider } from '../../common/Divider';
 import ColorCircle from '../../common/ColorCircle';
 
@@ -9,13 +9,13 @@ import { BgColors } from '@/assets/styles/colorThemes';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
 import Setting from '@/assets/icons/settings.svg';
 
-import * as S from './GroupInfo.styled';
+import * as S from './GroupDetailList.styled';
 
 type GroupInfoProps = {
   group: Group;
 };
 
-function GroupInfo({ group }: GroupInfoProps) {
+function GroupDetail({ group }: GroupInfoProps) {
   const navigator = useNavigate();
 
   const handleOpenSettings = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -33,11 +33,6 @@ function GroupInfo({ group }: GroupInfoProps) {
           {group.name}
         </S.Box>
         <S.Box className="flex gap-4">
-          <img
-            src={ChevronDown}
-            alt="펼치기"
-            className={isOpen ? 'rotate-180 transform w-6' : 'w-6'}
-          />
           {group.is_owner && (
             <img
               src={Setting}
@@ -46,6 +41,11 @@ function GroupInfo({ group }: GroupInfoProps) {
               className="w-5"
             />
           )}
+          <img
+            src={ChevronDown}
+            alt="펼치기"
+            className={isOpen ? 'rotate-180 transform w-6' : 'w-6'}
+          />
         </S.Box>
       </S.GroupWrapper>
     );
@@ -61,7 +61,11 @@ function GroupInfo({ group }: GroupInfoProps) {
             </Disclosure.Button>
             <Divider />
             <Disclosure.Panel>
-              <GroupMemberList groupId={group.id} />
+              <GroupMemberList
+                groupId={group.id}
+                color={group.color as BgColors}
+                isOwner={group.is_owner}
+              />
             </Disclosure.Panel>
           </S.GroupContainer>
         )}
@@ -70,4 +74,4 @@ function GroupInfo({ group }: GroupInfoProps) {
   );
 }
 
-export default GroupInfo;
+export default GroupDetail;

@@ -1,26 +1,44 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-import getMemberGroupList from '@/services/group/getMemberGroupList';
+import { Disclosure } from '@headlessui/react';
 
 import { Container } from '../common/Container';
 import { Divider } from '../common/Divider';
 import Button from '../common/Button';
-import InvitedGroupInfo from './InvitedGroupInfo';
-import GroupInfo from './groupInfo/GroupInfo';
-import { Disclosure } from '@headlessui/react';
+import GroupCreateModal from './create/GroupCreateModal';
+import InvitedGroupInfo from './invited/InvitedGroupInfo';
+import GroupDetail from './list/GroupDetailList';
+
+import getMemberGroupList, {
+  FindMemberGroupsResponse as MemberGroups,
+  FindGroupResponse as MemberGroup,
+} from '@/services/group/getMemberGroupList';
 
 import Envelope from '@/assets/icons/envelope.svg';
 import Users from '@/assets/icons/users.svg';
 import Plus from '@/assets/icons/plus.svg';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
-import GroupCreateModal from './groupCreate/GroupCreateModal';
 import { BROWSER_PATH } from '@/constants/Path';
+
+// import * as S from './GroupList.styled';
 
 function GroupList() {
   const navigate = useNavigate();
-  const [groupList, setGroupList] = useState<Group[]>([]);
-  const [invitedGroupList, setInvitedGroupList] = useState<Group[]>([]);
+  const [memberGroups, setMemberGroups] = useState<MemberGroups>({
+    group_count: 0,
+    groups: [],
+    invited_group_count: 0,
+    invited_groups: [],
+  });
+
+  const fetchMemberGroups = async () => {
+    const newMemberGroups: MemberGroups = await getMemberGroupList();
+    await setMemberGroups(newMemberGroups);
+    if (newMemberGroups.group_count > 0) {
+      navigate(BROWSER_PATH.GROUP.BASE + '/' + newMemberGroups.groups[0].id);
+    }
+  };
+
   const [groupCreateInit] = useState<GroupInfo>({
     name: '',
     color: 'labelBrown',
@@ -41,49 +59,38 @@ function GroupList() {
   };
 
   const renderInvitedGroupList = () => {
-    if (!invitedGroupList || invitedGroupList?.length === 0) {
+    if (memberGroups.invited_group_count === 0) {
       return <div>새로운 초대가 없어요</div>;
     }
-    return invitedGroupList?.map((group) => {
+    return memberGroups.invited_groups.map((group: MemberGroup) => {
       return (
         <InvitedGroupInfo
           key={group.id}
           group={group}
-          fetchList={fetchGroupList}
+          fetchList={fetchMemberGroups}
         />
       );
     });
   };
 
   const renderGroupList = () => {
-    if (groupList?.length === 0) {
+    if (memberGroups.group_count === 0) {
       return <div>속해있는 그룹이 없어요</div>;
     }
-    return groupList?.map((group) => {
-      return <GroupInfo key={group.id} group={group} />;
+    return memberGroups.groups.map((group: MemberGroup) => {
+      return <GroupDetail key={group.id} group={group} />;
     });
   };
 
-  const fetchGroupList = async () => {
-    const response = await getMemberGroupList();
-    await setGroupList(response.groups);
-    await setInvitedGroupList(response.invited_groups);
-    if (response.group_count > 0) {
-      navigate(BROWSER_PATH.GROUP.BASE + '/' + response.groups[0].id);
-    }
-  };
-
   useEffect(() => {
-    fetchGroupList();
+    fetchMemberGroups();
   }, []);
 
-  useEffect(() => {
-    fetchGroupList();
-  }, [isModalOpen]);
+  useEffect(() => {}, [isModalOpen]);
 
   return (
     <>
-      <Container $width="left" className="flex flex-col gap-4">
+      <Container $width="left" className="scrollBar flex flex-col gap-4">
         <Disclosure>
           {({ open }) => (
             <>
@@ -91,8 +98,8 @@ function GroupList() {
                 <div className="flex gap-2 cursor-pointer">
                   <img src={Envelope} alt="초대" className="w-4" />
                   <span>초대받은 그룹</span>
-                  {invitedGroupList && (
-                    <span>(+{invitedGroupList.length})</span>
+                  {memberGroups.invited_group_count !== 0 && (
+                    <span>(+{memberGroups.invited_group_count})</span>
                   )}
                 </div>
                 <Button className="!bg-transparent" $size="none">
@@ -108,7 +115,7 @@ function GroupList() {
           )}
         </Disclosure>
         <Divider />
-        <div className="scrollBar flex flex-col gap-2 h-[70%]">
+        <div className="flex flex-col gap-4">
           <div className="flex justify-between">
             <div className="flex gap-2">
               <img src={Users} alt="그룹" className="w-4" />

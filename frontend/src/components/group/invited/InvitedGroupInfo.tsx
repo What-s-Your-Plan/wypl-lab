@@ -1,5 +1,4 @@
-import { Divider } from '../common/Divider';
-import ColorCircle from '../common/ColorCircle';
+import ColorCircle from '@/components/common/ColorCircle';
 
 import styled from 'styled-components';
 import { BgColors } from '@/assets/styles/colorThemes';
@@ -7,6 +6,8 @@ import Check from '@/assets/icons/check.svg';
 import X from '@/assets/icons/x.svg';
 import patchGroupInvite from '@/services/group/patchGroupInvite';
 import deleteGroupInvite from '@/services/group/deleteGroupInvite';
+
+import * as S from './InvitedGroupInfo.styled';
 
 type InvitedGroupInfoProps = {
   group: Group;
@@ -29,35 +30,38 @@ function InvitedGroupInfo({ group, fetchList }: InvitedGroupInfoProps) {
     fetchList();
   };
 
+  const actionButtons = () => {
+    return (
+      <S.Box className="flex gap-4">
+        <GreenImg
+          src={Check}
+          alt="수락"
+          onClick={handleAccept}
+          className="cursor-pointer"
+        />
+        <RedImg
+          src={X}
+          alt="거부"
+          onClick={handleReject}
+          className="cursor-pointer"
+        />
+      </S.Box>
+    );
+  };
+
   return (
-    <div>
-      <Divider />
-      <div className="pt-2 pb-4 w-full border-none">
-        <div className="flex justify-between items-center">
-          <div className="flex gap-4">
-            <ColorCircle
-              $bgColor={group.color as BgColors}
-              className="!rounded-lg"
-            />
-            {group.name}
-          </div>
-          <div className="flex gap-4">
-            <GreenImg
-              src={Check}
-              alt="수락"
-              onClick={handleAccept}
-              className="cursor-pointer"
-            />
-            <RedImg
-              src={X}
-              alt="거부"
-              onClick={handleReject}
-              className="cursor-pointer"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+    <S.Container>
+      <S.Wrapper>
+        <S.Box>
+          <ColorCircle
+            $bgColor={group.color as BgColors}
+            className="!rounded-lg"
+          />
+          {group.name}
+        </S.Box>
+        {actionButtons()}
+      </S.Wrapper>
+    </S.Container>
   );
 }
 

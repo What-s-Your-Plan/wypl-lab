@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 function GroupPage() {
   const { groupId } = useParams();
-  console.log(groupId);
+
   return (
     <div className="container flex items-center justify-around ss:max-sm:block h-dvh">
       <GroupList />

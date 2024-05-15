@@ -9,7 +9,6 @@ const Container = styled.div`
     flex-col
     justify-end
 
-    h-[350px]
     w-[300px]
 
     right-10

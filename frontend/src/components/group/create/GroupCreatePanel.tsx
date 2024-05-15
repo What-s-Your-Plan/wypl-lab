@@ -14,7 +14,7 @@ import { getMemberProfileImageOrDefault } from '@/utils/ImageUtils';
 import { BgColors, LabelColorsType } from '@/assets/styles/colorThemes';
 import noContent from '@/assets/lottie/noContent.json';
 
-import * as S from '@/components/group/groupCreate/GroupCreatePanel.styled';
+import * as S from '@/components/group/create/GroupCreatePanel.styled';
 
 type GroupCreatePanelProps = {
   states: GroupInfo;

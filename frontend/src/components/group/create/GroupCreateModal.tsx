@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import Modal from '@/components/common/Modal';
-import GroupCreatePanel from '@/components/group/groupCreate/GroupCreatePanel';
+import GroupCreatePanel from '@/components/group/create/GroupCreatePanel';
 
 import postGroupRegister from '@/services/group/postGroupRegister';
 
@@ -9,7 +9,7 @@ import useForm from '@/hooks/useForm';
 
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 
-import * as S from '@/components/group/groupCreate/GroupCreateModal.styled';
+import * as S from '@/components/group/create/GroupCreateModal.styled';
 
 type GroupCreateModalProps = {
   isOpen: boolean;

@@ -5,7 +5,6 @@ type GroupCalendarProps = {
 };
 
 function GroupCalendar({ groupId }: GroupCalendarProps) {
-  console.log(groupId);
   return <Container $width="right">GroupCalendar</Container>;
 }
 

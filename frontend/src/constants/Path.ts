@@ -1,3 +1,5 @@
+import { Group } from '@/pages/Pages';
+
 const BROWSER_PATH = {
   OAUTH: {
     GOOGLE: '/login/oauth2/code/google',
@@ -29,6 +31,10 @@ const API_PATH = {
     COLOR: '/member/v1/members/colors',
     NICKNAME: '/member/v1/members/nickname',
     PROFILE_IMAGE: '/member/v1/members/profile-image',
+  },
+  GROUP: {
+    BASE: '/group/v1/groups',
+    MEMBER: '/group/v1/groups/members',
   },
 };
 
