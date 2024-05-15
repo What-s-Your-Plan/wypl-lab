@@ -1,63 +1,84 @@
-import { Divider } from '../common/Divider';
-import ColorCircle from '../common/ColorCircle';
+import ColorCircle from '@/components/common/ColorCircle';
+import Tooltip from '@/components/tooltip/Tooltip';
 
 import styled from 'styled-components';
 import { BgColors } from '@/assets/styles/colorThemes';
 import Check from '@/assets/icons/check.svg';
 import X from '@/assets/icons/x.svg';
-import patchGroupInvite from '@/services/group/patchGroupInvite';
+import patchGroupInviteAccepted from '@/services/group/patchGroupInviteAccepted';
 import deleteGroupInvite from '@/services/group/deleteGroupInvite';
+
+import * as S from './InvitedGroupInfo.styled';
 
 type InvitedGroupInfoProps = {
   group: Group;
-  fetchList: () => void;
+  acceptedEvent: (groupId: number) => void;
+  refusedEvent: (groupId: number) => void;
 };
 
-function InvitedGroupInfo({ group, fetchList }: InvitedGroupInfoProps) {
+function InvitedGroupInfo({
+  group,
+  acceptedEvent,
+  refusedEvent,
+}: InvitedGroupInfoProps) {
   const handleAccept = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
-    patchGroupInvite(group.id);
-    fetchList();
-    window.location.reload();
+    patchGroupInviteAccepted(group.id).then(() => {
+      acceptedEvent(group.id);
+    });
   };
 
   const handleReject = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
     if (window.confirm('그룹 초대를 거절하시겠습니까?')) {
-      deleteGroupInvite(group.id);
+      deleteGroupInvite(group.id).then(() => {
+        refusedEvent(group.id);
+      });
     }
-    fetchList();
   };
 
-  return (
-    <div>
-      <Divider />
-      <div className="pt-2 pb-4 w-full border-none">
-        <div className="flex justify-between items-center">
-          <div className="flex gap-4">
-            <ColorCircle
-              $bgColor={group.color as BgColors}
-              className="!rounded-lg"
-            />
-            {group.name}
-          </div>
-          <div className="flex gap-4">
+  const actionButtons = () => {
+    return (
+      <S.Box className="flex gap-4">
+        <Tooltip
+          children={
             <GreenImg
               src={Check}
               alt="수락"
               onClick={handleAccept}
               className="cursor-pointer"
             />
+          }
+          text={'초대 수락'}
+        />
+        <Tooltip
+          children={
             <RedImg
               src={X}
               alt="거부"
               onClick={handleReject}
               className="cursor-pointer"
             />
-          </div>
-        </div>
-      </div>
-    </div>
+          }
+          text={'초대 거부'}
+        />
+      </S.Box>
+    );
+  };
+
+  return (
+    <S.Container>
+      <S.Wrapper>
+        <S.Box>
+          <ColorCircle
+            $bgColor={group.color as BgColors}
+            className="!rounded-lg"
+          />
+          {group.name}
+        </S.Box>
+        {actionButtons()}
+      </S.Wrapper>
+    </S.Container>
   );
 }
 
