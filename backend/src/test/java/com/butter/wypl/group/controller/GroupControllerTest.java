@@ -74,43 +74,43 @@ class GroupControllerTest extends ControllerTest {
 
 		/* Given */
 		GroupCreateRequest createRequest = new GroupCreateRequest("group1", labelNavy,
-				new HashSet<>(Arrays.asList(2, 3)));
+			new HashSet<>(Arrays.asList(2, 3)));
 
 		GroupIdResponse createResponse = new GroupIdResponse(1);
 		given(groupModifyService.createGroup(anyInt(), any(GroupCreateRequest.class)))
-				.willReturn(createResponse);
+			.willReturn(createResponse);
 
 		givenMockLoginMember();
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/group/v1/groups")
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(convertToJson(createRequest))
+			RestDocumentationRequestBuilders.post("/group/v1/groups")
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(createRequest))
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/create-group",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						requestFields(
-								fieldWithPath("name").type(JsonFieldType.STRING)
-										.description("그룹 이름"),
-								fieldWithPath("color").type(JsonFieldType.STRING)
-										.description("그룹 메인 컬러"),
-								fieldWithPath("member_id_list[]").type(JsonFieldType.ARRAY)
-										.description("그룹 멤버 식별자 리스트")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지"),
-								fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
-										.description("그룹 식별자")
-						)
-				))
-				.andExpect(status().isCreated());
+			.andDo(document("group/create-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				requestFields(
+					fieldWithPath("name").type(JsonFieldType.STRING)
+						.description("그룹 이름"),
+					fieldWithPath("color").type(JsonFieldType.STRING)
+						.description("그룹 메인 컬러"),
+					fieldWithPath("member_id_list[]").type(JsonFieldType.ARRAY)
+						.description("그룹 멤버 식별자 리스트")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
+						.description("그룹 식별자")
+				)
+			))
+			.andExpect(status().isCreated());
 	}
 
 	@Test
@@ -140,49 +140,49 @@ class GroupControllerTest extends ControllerTest {
 		member3.getMemberGroups().add(member1Group);
 
 		given(groupLoadService.getDetailById(anyInt(), anyInt()))
-				.willReturn(FindGroupMembersResponse.of(Stream.of(member1Group, member2Group, member3Group)
-						.map(FindGroupMembersResponse.FindGroupMember::from)
-						.toList(), group.getColor()));
+			.willReturn(FindGroupMembersResponse.of(Stream.of(member1Group, member2Group, member3Group)
+				.map(FindGroupMembersResponse.FindGroupMember::from)
+				.toList(), group.getColor()));
 
 		givenMockLoginMember();
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.get("/group/v1/groups/{groupId}", groupId)
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
+			RestDocumentationRequestBuilders.get("/group/v1/groups/{groupId}", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/get-detail-group",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						pathParameters(
-								parameterWithName("groupId").description("그룹 식별자")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지"),
-								fieldWithPath("body.member_count").type(JsonFieldType.NUMBER)
-										.description("조회한 그룹 회원수"),
-								fieldWithPath("body.color").type(JsonFieldType.STRING)
-										.description("회원의 그룹 컬러"),
-								fieldWithPath("body.members[]").type(JsonFieldType.ARRAY)
-										.description("조회한 그룹 회원 목록"),
-								fieldWithPath("body.members[].id").type(JsonFieldType.NUMBER)
-										.description("회원 식별자"),
-								fieldWithPath("body.members[].email").type(JsonFieldType.STRING)
-										.description("회원 이메일"),
-								fieldWithPath("body.members[].nickname").type(JsonFieldType.STRING)
-										.description("회원 닉네임"),
-								fieldWithPath("body.members[].profile_image").type(JsonFieldType.STRING).optional()
-										.description("회원 프로필 이미지"),
-								fieldWithPath("body.members[].is_accepted").type(JsonFieldType.BOOLEAN)
-										.description("가입 유무")
-						)
-				))
-				.andExpect(status().isOk());
+			.andDo(document("group/get-detail-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.member_count").type(JsonFieldType.NUMBER)
+						.description("조회한 그룹 회원수"),
+					fieldWithPath("body.color").type(JsonFieldType.STRING)
+						.description("회원의 그룹 컬러"),
+					fieldWithPath("body.members[]").type(JsonFieldType.ARRAY)
+						.description("조회한 그룹 회원 목록"),
+					fieldWithPath("body.members[].id").type(JsonFieldType.NUMBER)
+						.description("회원 식별자"),
+					fieldWithPath("body.members[].email").type(JsonFieldType.STRING)
+						.description("회원 이메일"),
+					fieldWithPath("body.members[].nickname").type(JsonFieldType.STRING)
+						.description("회원 닉네임"),
+					fieldWithPath("body.members[].profile_image").type(JsonFieldType.STRING).optional()
+						.description("회원 프로필 이미지"),
+					fieldWithPath("body.members[].is_accepted").type(JsonFieldType.BOOLEAN)
+						.description("가입 유무")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -193,39 +193,39 @@ class GroupControllerTest extends ControllerTest {
 		GroupUpdateRequest updateRequest = new GroupUpdateRequest("업데이트 할 그룹명", labelBrown);
 		GroupIdResponse groupIdResponse = new GroupIdResponse(1);
 		given(groupModifyService.updateGroup(anyInt(), anyInt(), any(GroupUpdateRequest.class)))
-				.willReturn(groupIdResponse);
+			.willReturn(groupIdResponse);
 		givenMockLoginMember();
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.patch("/group/v1/groups/{groupId}", 1)
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(convertToJson(updateRequest))
+			RestDocumentationRequestBuilders.patch("/group/v1/groups/{groupId}", 1)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(updateRequest))
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/update-group",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						pathParameters(
-								parameterWithName("groupId").description("그룹 식별자")
-						),
-						requestFields(
-								fieldWithPath("name").type(JsonFieldType.STRING)
-										.description("수정할 그룹 이름"),
-								fieldWithPath("color").type(JsonFieldType.STRING)
-										.description("수정할 그룹 색상")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지"),
-								fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
-										.description("그룹 식별자")
-						)
-				))
-				.andExpect(status().isOk());
+			.andDo(document("group/update-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				requestFields(
+					fieldWithPath("name").type(JsonFieldType.STRING)
+						.description("수정할 그룹 이름"),
+					fieldWithPath("color").type(JsonFieldType.STRING)
+						.description("수정할 그룹 색상")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
+						.description("그룹 식별자")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -236,25 +236,25 @@ class GroupControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}", 1)
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
+			RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}", 1)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/delete-group",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						pathParameters(
-								parameterWithName("groupId").description("그룹 식별자")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지")
-						)
-				))
-				.andExpect(status().isOk());
+			.andDo(document("group/delete-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -277,59 +277,59 @@ class GroupControllerTest extends ControllerTest {
 		member.getMemberGroups().add(member1Group2);
 
 		List<FindGroupsResponse.FindGroup> groups = new ArrayList<>(
-				List.of(FindGroupsResponse.FindGroup.from(member1Group1)));
+			List.of(FindGroupsResponse.FindGroup.from(member1Group1)));
 		List<FindGroupsResponse.FindGroup> invitedGroups = new ArrayList<>(
-				List.of(FindGroupsResponse.FindGroup.from(member1Group2)));
+			List.of(FindGroupsResponse.FindGroup.from(member1Group2)));
 		FindGroupsResponse response = FindGroupsResponse.of(groups, invitedGroups);
 
 		given(groupLoadService.getGroupsByMemberId(anyInt()))
-				.willReturn(response);
+			.willReturn(response);
 
 		givenMockLoginMember();
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.get("/group/v1/groups/members")
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
+			RestDocumentationRequestBuilders.get("/group/v1/groups/members")
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
 
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/get-groups-by-member-id",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지"),
-								fieldWithPath("body.group_count").type(JsonFieldType.NUMBER)
-										.description("가입한 그룹의 개수"),
-								fieldWithPath("body.groups[]").type(JsonFieldType.ARRAY)
-										.description("가입한 그룹"),
-								fieldWithPath("body.groups[].id").type(JsonFieldType.NUMBER)
-										.description("그룹 식별자"),
-								fieldWithPath("body.groups[].name").type(JsonFieldType.STRING)
-										.description("그룹 이름"),
-								fieldWithPath("body.groups[].color").type(JsonFieldType.STRING)
-										.description("그룹 라벨 색상"),
-								fieldWithPath("body.groups[].is_owner").type(JsonFieldType.BOOLEAN)
-										.description("그룹 주인 유무"),
-								fieldWithPath("body.invited_group_count").type(JsonFieldType.NUMBER)
-										.description("가입 대기중인 그룹의 개수"),
-								fieldWithPath("body.invited_groups[]").type(JsonFieldType.ARRAY)
-										.description("가입한 그룹"),
-								fieldWithPath("body.invited_groups[].id").type(JsonFieldType.NUMBER)
-										.description("그룹 식별자"),
-								fieldWithPath("body.invited_groups[].name").type(JsonFieldType.STRING)
-										.description("그룹 이름"),
-								fieldWithPath("body.invited_groups[].color").type(JsonFieldType.STRING)
-										.description("그룹 라벨 색상"),
-								fieldWithPath("body.invited_groups[].is_owner").type(JsonFieldType.BOOLEAN)
-										.description("그룹 주인 유무")
-						)
-				))
-				.andExpect(status().isOk());
+			.andDo(document("group/get-groups-by-member-id",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.group_count").type(JsonFieldType.NUMBER)
+						.description("가입한 그룹의 개수"),
+					fieldWithPath("body.groups[]").type(JsonFieldType.ARRAY)
+						.description("가입한 그룹"),
+					fieldWithPath("body.groups[].id").type(JsonFieldType.NUMBER)
+						.description("그룹 식별자"),
+					fieldWithPath("body.groups[].name").type(JsonFieldType.STRING)
+						.description("그룹 이름"),
+					fieldWithPath("body.groups[].color").type(JsonFieldType.STRING)
+						.description("그룹 라벨 색상"),
+					fieldWithPath("body.groups[].is_owner").type(JsonFieldType.BOOLEAN)
+						.description("그룹 주인 유무"),
+					fieldWithPath("body.invited_group_count").type(JsonFieldType.NUMBER)
+						.description("가입 대기중인 그룹의 개수"),
+					fieldWithPath("body.invited_groups[]").type(JsonFieldType.ARRAY)
+						.description("가입한 그룹"),
+					fieldWithPath("body.invited_groups[].id").type(JsonFieldType.NUMBER)
+						.description("그룹 식별자"),
+					fieldWithPath("body.invited_groups[].name").type(JsonFieldType.STRING)
+						.description("그룹 이름"),
+					fieldWithPath("body.invited_groups[].color").type(JsonFieldType.STRING)
+						.description("그룹 라벨 색상"),
+					fieldWithPath("body.invited_groups[].is_owner").type(JsonFieldType.BOOLEAN)
+						.description("그룹 주인 유무")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -343,37 +343,37 @@ class GroupControllerTest extends ControllerTest {
 		GroupIdResponse createResponse = new GroupIdResponse(1);
 
 		given(groupModifyService.inviteGroupMember(anyInt(), anyInt(), any(GroupMemberInviteRequest.class)))
-				.willReturn(createResponse);
+			.willReturn(createResponse);
 		givenMockLoginMember();
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.post("/group/v1/groups/{groupId}/members/invitation", 1)
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(convertToJson(inviteRequest))
+			RestDocumentationRequestBuilders.post("/group/v1/groups/{groupId}/members/invitation", 1)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(inviteRequest))
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/invite-group-member",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						pathParameters(
-								parameterWithName("groupId").description("그룹 식별자")
-						),
-						requestFields(
-								fieldWithPath("member_id_list[]").type(JsonFieldType.ARRAY)
-										.description("초대할 그룹 멤버 식별자 리스트")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지"),
-								fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
-										.description("그룹 식별자")
-						)
-				))
-				.andExpect(status().isCreated());
+			.andDo(document("group/invite-group-member",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				requestFields(
+					fieldWithPath("member_id_list[]").type(JsonFieldType.ARRAY)
+						.description("초대할 그룹 멤버 식별자 리스트")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.group_id").type(JsonFieldType.NUMBER)
+						.description("그룹 식별자")
+				)
+			))
+			.andExpect(status().isCreated());
 	}
 
 	@Test
@@ -386,37 +386,37 @@ class GroupControllerTest extends ControllerTest {
 		MemberIdResponse memberIdResponse = new MemberIdResponse(member.getId());
 
 		BDDMockito.given(groupModifyService.forceOutGroupMember(
-						anyInt(), anyInt(), any(MemberIdRequest.class)))
-				.willReturn(memberIdResponse);
+				anyInt(), anyInt(), any(MemberIdRequest.class)))
+			.willReturn(memberIdResponse);
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}/members/force-out", groupId)
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
-						.content(convertToJson(memberIdRequest))
+			RestDocumentationRequestBuilders.patch("/group/v1/groups/{groupId}/members/force-out", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(memberIdRequest))
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/group-member/force-out",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						pathParameters(
-								parameterWithName("groupId").description("그룹 식별자")
-						),
-						requestFields(
-								fieldWithPath("member_id").type(JsonFieldType.NUMBER)
-										.description("강제 퇴장할 그룹 멤버 식별자")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지"),
-								fieldWithPath("body.member_id").type(JsonFieldType.NUMBER)
-										.description("강제 퇴장된 그룹 멤버 식별자")
-						)
-				))
-				.andExpect(status().isOk());
+			.andDo(document("group/group-member/force-out",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				requestFields(
+					fieldWithPath("member_id").type(JsonFieldType.NUMBER)
+						.description("강제 퇴장할 그룹 멤버 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.member_id").type(JsonFieldType.NUMBER)
+						.description("강제 퇴장된 그룹 멤버 식별자")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -429,25 +429,25 @@ class GroupControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.patch("/group/v1/groups/{groupId}/members/invitation", groupId)
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
+			RestDocumentationRequestBuilders.patch("/group/v1/groups/{groupId}/members/invitation", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/accept-group-invitation",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						pathParameters(
-								parameterWithName("groupId").description("그룹 식별자")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지")
-						)
-				))
-				.andExpect(status().isOk());
+			.andDo(document("group/accept-group-invitation",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -460,25 +460,25 @@ class GroupControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}/members/invitation", groupId)
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
+			RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}/members/invitation", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/accept-group-invitation",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						pathParameters(
-								parameterWithName("groupId").description("그룹 식별자")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지")
-						)
-				))
-				.andExpect(status().isOk());
+			.andDo(document("group/accept-group-invitation",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -491,24 +491,24 @@ class GroupControllerTest extends ControllerTest {
 
 		/* When */
 		ResultActions actions = mockMvc.perform(
-				RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}/members", groupId)
-						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-						.contentType(MediaType.APPLICATION_JSON)
+			RestDocumentationRequestBuilders.delete("/group/v1/groups/{groupId}/members", groupId)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
 		);
 
 		/* Then */
 		actions.andDo(print())
-				.andDo(document("group/leave-group",
-						preprocessRequest(prettyPrint()),
-						preprocessResponse(prettyPrint()),
-						pathParameters(
-								parameterWithName("groupId").description("그룹 식별자")
-						),
-						responseFields(
-								fieldWithPath("message").type(JsonFieldType.STRING)
-										.description("응답 메시지")
-						)
-				))
-				.andExpect(status().isOk());
+			.andDo(document("group/leave-group",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지")
+				)
+			))
+			.andExpect(status().isOk());
 	}
 }
