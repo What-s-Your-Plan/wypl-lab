@@ -1,5 +1,6 @@
 package com.butter.wypl.schedule.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.SQLRestriction;
@@ -45,12 +46,9 @@ public class MemberSchedule extends BaseEntity {
 	@JoinColumn(name = "schedule_id", nullable = false)
 	private Schedule schedule;
 
-	@Column(name = "write_review",nullable = false)
+	@Column(name = "write_review", nullable = false)
 	private boolean writeReview;
 
-	public void writeReview() {
-		writeReview = true;
-	}
 	@OneToMany(mappedBy = "memberSchedule", fetch = FetchType.LAZY)
 	private List<Review> reviews;
 
@@ -59,6 +57,8 @@ public class MemberSchedule extends BaseEntity {
 			.memberScheduleId(memberScheduleId)
 			.member(memberWithId)
 			.schedule(schedule)
+			.reviews(new ArrayList<>())
+			.writeReview(false)
 			.build();
 	}
 
@@ -66,7 +66,13 @@ public class MemberSchedule extends BaseEntity {
 		return MemberSchedule.builder()
 			.member(member)
 			.schedule(schedule)
+			.reviews(new ArrayList<>())
+			.writeReview(false)
 			.build();
+	}
+
+	public void writeReview() {
+		writeReview = true;
 	}
 
 }
