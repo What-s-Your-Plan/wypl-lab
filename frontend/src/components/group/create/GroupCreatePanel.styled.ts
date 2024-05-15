@@ -10,7 +10,6 @@ const CreateGroupForm = styled.form`
     justify-start
 
     w-[580px] 
-    
     `}
 `;
 
@@ -64,6 +63,10 @@ const MemberContainer = styled.div`
     items-center
 
     cursor-pointer
+    w-[22vw]
+    mt-1
+    mb-1
+    shadow-md
     `}
 `;
 
@@ -138,9 +141,8 @@ type BarProps = {
 
 const Bar = styled.div<BarProps>`
   ${tw`
-      h-[0.5px]
       w-full
-
+      p-[0.5px]
       mt-5
       mb-3
     `}

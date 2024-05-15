@@ -135,7 +135,7 @@ function GroupCreatePanel({
 
   return (
     <S.CreateGroupForm
-      className="w-[580px] h-[60vh] flex flex-col justify-center"
+      className="w-[580px] h-[60vh] flex flex-col justify-center scrollBar"
       onSubmit={(e) => {
         e.preventDefault();
       }}

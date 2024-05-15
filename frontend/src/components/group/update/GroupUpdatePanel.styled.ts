@@ -138,7 +138,7 @@ type BarProps = {
 
 const Bar = styled.div<BarProps>`
   ${tw`
-      h-[0.5px]
+      p-[0.5px]
       w-full
 
       mt-5
