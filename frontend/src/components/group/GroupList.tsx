@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import getMemberGroupList from '@/services/group/getMemberGroupList';
 
@@ -6,7 +7,7 @@ import { Container } from '../common/Container';
 import { Divider } from '../common/Divider';
 import Button from '../common/Button';
 import InvitedGroupInfo from './InvitedGroupInfo';
-import GroupInfo from './GroupInfo';
+import GroupInfo from './groupInfo/GroupInfo';
 import { Disclosure } from '@headlessui/react';
 
 import Envelope from '@/assets/icons/envelope.svg';
@@ -14,8 +15,10 @@ import Users from '@/assets/icons/users.svg';
 import Plus from '@/assets/icons/plus.svg';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
 import GroupCreateModal from './groupCreate/GroupCreateModal';
+import { BROWSER_PATH } from '@/constants/Path';
 
 function GroupList() {
+  const navigate = useNavigate();
   const [groupList, setGroupList] = useState<Group[]>([]);
   const [invitedGroupList, setInvitedGroupList] = useState<Group[]>([]);
   const [groupCreateInit] = useState<GroupInfo>({
@@ -63,9 +66,11 @@ function GroupList() {
 
   const fetchGroupList = async () => {
     const response = await getMemberGroupList();
-    console.log(response);
-    setGroupList(response.groups);
-    setInvitedGroupList(response.invited_groups);
+    await setGroupList(response.groups);
+    await setInvitedGroupList(response.invited_groups);
+    if (response.group_count > 0) {
+      navigate(BROWSER_PATH.GROUP.BASE + '/' + response.groups[0].id);
+    }
   };
 
   useEffect(() => {
