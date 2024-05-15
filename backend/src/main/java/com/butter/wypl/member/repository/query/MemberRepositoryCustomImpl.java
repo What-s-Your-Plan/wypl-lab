@@ -17,10 +17,17 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
 	@Override
 	public List<Member> findBySearchCond(MemberSearchCond cond) {
 		return query.selectFrom(member)
-				.where(member.email.like("%" + cond.query() + "%")
-						.and(member.deletedAt.isNull())
-				)
-				.limit(cond.size())
-				.fetch();
+			.where(member.email.like("%" + cond.query() + "%")
+				.and(member.deletedAt.isNull())
+			)
+			.limit(cond.size())
+			.fetch();
+	}
+
+	@Override
+	public List<Member> findAllActiveMembers() {
+		return query.selectFrom(member)
+			.where(member.deletedAt.isNull())
+			.fetch();
 	}
 }
