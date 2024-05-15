@@ -7,13 +7,14 @@ import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.request.MemberIdRequest;
 import com.butter.wypl.group.data.response.GroupIdResponse;
 import com.butter.wypl.group.data.response.GroupMemberColorUpdateResponse;
+import com.butter.wypl.group.data.response.GroupResponse;
 import com.butter.wypl.group.data.response.MemberIdResponse;
 
 public interface GroupModifyService {
 
-	GroupIdResponse createGroup(int memberId, GroupCreateRequest createRequest);
+	GroupResponse createGroup(int memberId, GroupCreateRequest createRequest);
 
-	GroupIdResponse updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest);
+	GroupResponse updateGroup(int memberId, int groupId, GroupUpdateRequest updateRequest);
 
 	void deleteGroup(int memberId, int groupId);
 
