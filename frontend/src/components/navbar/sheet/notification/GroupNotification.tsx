@@ -1,4 +1,10 @@
+import { useNavigate } from 'react-router-dom';
+
+import patchGroupInviteAccepted from '@/services/group/patchGroupInviteAccepted';
+import deleteGroupInvite from '@/services/group/deleteGroupInvite';
+
 import Button from '@/components/common/Button';
+import { BROWSER_PATH } from '@/constants/Path';
 
 import Check from '@/assets/icons/check.svg';
 import X from '@/assets/icons/x.svg';
@@ -8,12 +14,16 @@ type GroupNotificationProps = {
 };
 
 function GroupNotification({ notification }: GroupNotificationProps) {
-  const handleReject = () => {
-    console.log('reject');
+  const navigate = useNavigate();
+  const groupId: number = notification.target_id;
+
+  const handleReject = async () => {
+    await deleteGroupInvite(groupId);
   };
 
-  const handleAccept = () => {
-    console.log('accept');
+  const handleAccept = async () => {
+    await patchGroupInviteAccepted(groupId);
+    navigate(BROWSER_PATH.GROUP.BASE + `/${groupId}`);
   };
 
   return (
