@@ -35,6 +35,7 @@ const API_PATH = {
   GROUP: {
     BASE: '/group/v1/groups',
     MEMBER: '/group/v1/groups/members',
+    FORCE_OUT: '/group/v1/groups/:groupId/members/force-out',
   },
 };
 

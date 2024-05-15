@@ -14,6 +14,10 @@ import { BgColors } from '@/assets/styles/colorThemes';
 import X from '@/assets/icons/x.svg';
 
 import * as S from './GroupMemberList.styled';
+import deleteGroupMemberForceOut, {
+  DeleteGroupMemberForceOutRequest,
+  DeleteGroupMemberForceOutResponse,
+} from '@/services/group/deleteGroupMemberForceOut';
 
 type GroupMemberProps = {
   groupId: number;
@@ -39,9 +43,22 @@ function GroupMemberList({ groupId, color, isOwner }: GroupMemberProps) {
     fetchGroupMember();
   }, []);
 
-  const requestDeleteMember = (deleteMemberId: number) => {
-    // TODO: 회원 삭제 로직 구현
-    console.log(deleteMemberId);
+  const requestDeleteMember = async (deleteMemberId: number) => {
+    const request: DeleteGroupMemberForceOutRequest = {
+      member_id: deleteMemberId,
+    };
+    const response: DeleteGroupMemberForceOutResponse =
+      await deleteGroupMemberForceOut(groupId, request);
+    setGroupMembers((prev) => {
+      const updatedGroupMembers = prev.members.filter(
+        (member) => member.id !== response.member_id,
+      );
+      return {
+        ...prev,
+        member_count: updatedGroupMembers.length,
+        members: updatedGroupMembers,
+      };
+    });
   };
 
   return (
@@ -58,7 +75,7 @@ function GroupMemberList({ groupId, color, isOwner }: GroupMemberProps) {
             </S.Box>
             <S.Box>
               {isOwner && member.id !== memberId && (
-                <RedImg
+                <ForceOutImg
                   src={X}
                   onClick={() => requestDeleteMember(member.id)}
                 />
@@ -75,7 +92,7 @@ function GroupMemberList({ groupId, color, isOwner }: GroupMemberProps) {
   );
 }
 
-const RedImg = styled.img`
+const ForceOutImg = styled.img`
   filter: brightness(0) saturate(100%) invert(58%) sepia(92%) saturate(4683%)
     hue-rotate(335deg) brightness(109%) contrast(90%);
   cursor: pointer;
