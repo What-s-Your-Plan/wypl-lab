@@ -32,12 +32,14 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.group.data.request.GroupCreateRequest;
+import com.butter.wypl.group.data.request.GroupMemberColorUpdateRequest;
 import com.butter.wypl.group.data.request.GroupMemberInviteRequest;
 import com.butter.wypl.group.data.request.GroupUpdateRequest;
 import com.butter.wypl.group.data.request.MemberIdRequest;
 import com.butter.wypl.group.data.response.FindGroupMembersResponse;
 import com.butter.wypl.group.data.response.FindGroupsResponse;
 import com.butter.wypl.group.data.response.GroupIdResponse;
+import com.butter.wypl.group.data.response.GroupMemberColorUpdateResponse;
 import com.butter.wypl.group.data.response.MemberIdResponse;
 import com.butter.wypl.group.domain.Group;
 import com.butter.wypl.group.domain.MemberGroup;
@@ -511,4 +513,87 @@ class GroupControllerTest extends ControllerTest {
 			))
 			.andExpect(status().isOk());
 	}
+
+	@Test
+	@DisplayName("회원 그룹 색상 변경")
+	void updateGroupColorTest() throws Exception {
+		/* Given */
+		GroupMemberColorUpdateRequest request = new GroupMemberColorUpdateRequest(labelNavy);
+		GroupMemberColorUpdateResponse response = new GroupMemberColorUpdateResponse(labelNavy);
+
+		given(groupModifyService.updateGroupColor(anyInt(), anyInt(), any(GroupMemberColorUpdateRequest.class))
+		).willReturn(response);
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.patch("/group/v1/groups/{groupId}/members/colors", 1)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(request))
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/member-group/update-color",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				requestFields(
+					fieldWithPath("color").type(JsonFieldType.STRING)
+						.description("변경할 그룹 색상")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.color").type(JsonFieldType.STRING)
+						.description("변경된 그룹 색상")
+				)
+			))
+			.andExpect(status().isOk());
+	}
+
+	@Test
+	@DisplayName("회원 그룹 색상 변경 실패")
+	void updateGroupColorTestFail() throws Exception {
+		/* Given */
+		GroupMemberColorUpdateRequest request = new GroupMemberColorUpdateRequest(labelNavy);
+		GroupMemberColorUpdateResponse response = new GroupMemberColorUpdateResponse(labelNavy);
+
+		given(groupModifyService.updateGroupColor(anyInt(), anyInt(), any(GroupMemberColorUpdateRequest.class))
+		).willReturn(response);
+		givenMockLoginMember();
+
+		/* When */
+		ResultActions actions = mockMvc.perform(
+			RestDocumentationRequestBuilders.patch("/group/v1/groups/{groupId}/members/colors", 1)
+				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(convertToJson(request))
+		);
+
+		/* Then */
+		actions.andDo(print())
+			.andDo(document("group/member-group/update-color",
+				preprocessRequest(prettyPrint()),
+				preprocessResponse(prettyPrint()),
+				pathParameters(
+					parameterWithName("groupId").description("그룹 식별자")
+				),
+				requestFields(
+					fieldWithPath("color").type(JsonFieldType.STRING)
+						.description("변경할 그룹 색상")
+				),
+				responseFields(
+					fieldWithPath("message").type(JsonFieldType.STRING)
+						.description("응답 메시지"),
+					fieldWithPath("body.color").type(JsonFieldType.STRING)
+						.description("변경된 그룹 색상")
+				)
+			))
+			.andExpect(status().isOk());
+	}
+
 }
