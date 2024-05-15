@@ -48,4 +48,19 @@ public class MemberSchedule extends BaseEntity {
 	@OneToMany(mappedBy = "memberSchedule", fetch = FetchType.LAZY)
 	private List<Review> reviews;
 
+	public static MemberSchedule of(int memberScheduleId, Member memberWithId, Schedule schedule) {
+		return MemberSchedule.builder()
+			.memberScheduleId(memberScheduleId)
+			.member(memberWithId)
+			.schedule(schedule)
+			.build();
+	}
+
+	public static MemberSchedule of(Member member, Schedule schedule) {
+		return MemberSchedule.builder()
+			.member(member)
+			.schedule(schedule)
+			.build();
+	}
+
 }
