@@ -6,6 +6,8 @@ import { InputDefault } from '@/components/common/InputText';
 import postCreateLabel from '@/services/label/postCreateLabel';
 import useToastStore from '@/stores/ToastStore';
 
+import useLoading from '@/hooks/useLoading';
+
 type CreateLabelProps = {
   color: LabelColorsType;
   setColor: Dispatch<SetStateAction<LabelColorsType>>;
@@ -13,6 +15,7 @@ type CreateLabelProps = {
 };
 
 function CreateLabel({ color, setColor, handleKeyDown }: CreateLabelProps) {
+  const { canStartLoading, endLoading } = useLoading();
   const { addToast } = useToastStore();
   const inputRef = useRef<HTMLInputElement>(null);
   const handleCreate = async () => {
@@ -28,7 +31,12 @@ function CreateLabel({ color, setColor, handleKeyDown }: CreateLabelProps) {
           e.stopPropagation();
           if (e.key === 'Enter') {
             if (inputRef.current) {
-              postCreateLabel(color, inputRef.current.value);
+              if (canStartLoading()) {
+                return;
+              }
+              postCreateLabel(color, inputRef.current.value).finally(() =>
+                endLoading(),
+              );
               handleCreate();
             } else {
               addToast({
