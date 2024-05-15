@@ -34,6 +34,7 @@ function GroupMemberList({ groupId }: GroupMemberProps) {
   useEffect(() => {
     fetchGroupMember();
   }, []);
+
   return (
     <div className="flex flex-col gap-2 my-2">{renderGroupMemberList()}</div>
   );
