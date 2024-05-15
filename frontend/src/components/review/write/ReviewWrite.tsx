@@ -25,7 +25,6 @@ type ReviewWriteProps = {
   content: Content;
 };
 
-//type에 맞는 컴포넌트를 생성하기 위한 블록
 function ReviewWrite({ index, content }: ReviewWriteProps) {
   const reviewStore = useReviewStore();
 
@@ -51,7 +50,7 @@ function ReviewWrite({ index, content }: ReviewWriteProps) {
           index + dropDirection >= reviewStore.contents.length
             ? index
             : index + dropDirection;
-        // Move the item in the reviewStore
+
         reviewStore.moveContent(Number(itemIndex), toIndex);
       }
     }
