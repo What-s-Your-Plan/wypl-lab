@@ -146,10 +146,10 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 		 * */
 		switch (typeCode) {
 			case GROUP -> {
-				return String.format("'[%s]' 그룹 초대가 왔어요.", teamName);
+				return String.format("%s그룹 초대가 왔어요.", teamName);
 			}
 			case REVIEW -> {
-				return String.format("%s님, '[%s]' 일정은 잘 마치셨나요?", nickname, scheduleTitle);
+				return String.format("%s님, %s일정은 잘 마치셨나요?", nickname, scheduleTitle);
 			}
 			default -> throw new NotificationException(NotificationErrorCode.NOTIFICATION_TYPE_ERROR);
 		}
