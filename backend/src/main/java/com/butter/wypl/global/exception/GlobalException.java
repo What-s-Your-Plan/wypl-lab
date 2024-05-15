@@ -11,12 +11,10 @@ public class GlobalException extends RuntimeException {
 	private final String message;
 
 	public GlobalException(
-			final HttpStatus httpStatus,
-			final int statusCode,
-			final String message
+			ErrorCode errorCode
 	) {
-		this.httpStatus = httpStatus;
-		this.statusCode = statusCode;
-		this.message = message;
+		this.httpStatus = errorCode.getHttpStatus();
+		this.statusCode = errorCode.getStatusCode();
+		this.message = errorCode.getMessage();
 	}
 }
