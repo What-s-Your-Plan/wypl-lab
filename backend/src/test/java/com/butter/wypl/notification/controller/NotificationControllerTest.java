@@ -86,7 +86,8 @@ class NotificationControllerTest extends ControllerTest {
 
 		//when
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.get(URI_PATH + "/{lastId}", lastId)
+			RestDocumentationRequestBuilders.get(URI_PATH)
+				.queryParam("lastId", lastId)
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
@@ -96,7 +97,6 @@ class NotificationControllerTest extends ControllerTest {
 			.andDo(document("notification",
 				preprocessRequest(prettyPrint()),
 				preprocessResponse(prettyPrint()),
-
 				responseFields(
 					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
 					fieldWithPath("body.last_id").type(JsonFieldType.STRING).description("마지막조회알림ID"),
@@ -104,7 +104,8 @@ class NotificationControllerTest extends ControllerTest {
 					fieldWithPath("body.notifications[].member_id").type(JsonFieldType.NUMBER).description("회원ID"),
 					fieldWithPath("body.notifications[].message").type(JsonFieldType.STRING).description("메시지"),
 					fieldWithPath("body.notifications[].is_read").type(JsonFieldType.BOOLEAN).description("알림읽음 여부"),
-					fieldWithPath("body.notifications[].is_acted").type(JsonFieldType.BOOLEAN).description("회원 action 처리여부"),
+					fieldWithPath("body.notifications[].is_acted").type(JsonFieldType.BOOLEAN)
+						.description("회원 action 처리여부"),
 					fieldWithPath("body.notifications[].type_code").type(JsonFieldType.STRING).description("알림 타입 코드"),
 					fieldWithPath("body.notifications[].target_id").type(JsonFieldType.NUMBER).description("알림 대상 ID"),
 					fieldWithPath("body.total_notification_count").type(JsonFieldType.NUMBER).description("총 알림개수"),
