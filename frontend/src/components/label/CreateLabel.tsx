@@ -4,6 +4,7 @@ import ColorSelectButton from '@/components/color/ColorSelectButton';
 import { CreateDiv } from '@/components/label/Styled';
 import { InputDefault } from '@/components/common/InputText';
 import postCreateLabel from '@/services/label/postCreateLabel';
+import useToastStore from '@/stores/ToastStore';
 
 type CreateLabelProps = {
   color: LabelColorsType;
@@ -12,6 +13,7 @@ type CreateLabelProps = {
 };
 
 function CreateLabel({ color, setColor, handleKeyDown }: CreateLabelProps) {
+  const { addToast } = useToastStore();
   const inputRef = useRef<HTMLInputElement>(null);
   const handleCreate = async () => {
     handleKeyDown ? await handleKeyDown() : null;
@@ -22,14 +24,18 @@ function CreateLabel({ color, setColor, handleKeyDown }: CreateLabelProps) {
       <InputDefault
         maxLength={15}
         placeholder="라벨명을 입력하세요"
-        onKeyDown={(e) => {
-          e.stopPropagation()
+        onKeyUp={(e) => {
+          e.stopPropagation();
           if (e.key === 'Enter') {
-            if (inputRef.current){
+            if (inputRef.current) {
               postCreateLabel(color, inputRef.current.value);
-              handleCreate()
+              handleCreate();
             } else {
-              window.alert('라벨을 입력해 주세요')
+              addToast({
+                duration: 300,
+                message: '라벨을 입력해 주세요',
+                type: 'ERROR',
+              });
             }
           }
         }}
