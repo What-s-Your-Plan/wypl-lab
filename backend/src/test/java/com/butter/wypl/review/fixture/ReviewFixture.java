@@ -8,11 +8,11 @@ import com.butter.wypl.schedule.fixture.ScheduleFixture;
 public enum ReviewFixture {
 
 	STUDY_REVIEW("공부하기 싫다",
-		new MemberSchedule(1, MemberFixture.KIM_JEONG_UK.toMemberWithId(1),
+		MemberSchedule.of(1, MemberFixture.KIM_JEONG_UK.toMemberWithId(1),
 			ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
 	),
 	STUDY_REVIEW_2("오늘도 공부하기 싫다",
-		new MemberSchedule(2, MemberFixture.JWA_SO_YEON.toMemberWithId(1),
+		MemberSchedule.of(2, MemberFixture.KIM_JEONG_UK.toMemberWithId(1),
 			ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
 	);
 
