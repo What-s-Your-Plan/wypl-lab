@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Disclosure } from '@headlessui/react';
 
 import GroupMemberList from '../member/GroupMemberList';
@@ -16,10 +16,18 @@ type GroupInfoProps = {
 };
 
 function GroupDetail({ group }: GroupInfoProps) {
-  const navigator = useNavigate();
+  const navigate = useNavigate();
+  const { groupId } = useParams();
 
   const handleOpenSettings = (event: React.MouseEvent<HTMLDivElement>) => {
     event.preventDefault();
+  };
+
+  const gotoGroupPage = (open: boolean) => {
+    if (open || groupId === group.id.toString()) {
+      return;
+    }
+    navigate(`/group/${group.id}`);
   };
 
   const groupDetail = (isOpen: boolean) => {
@@ -52,10 +60,10 @@ function GroupDetail({ group }: GroupInfoProps) {
   };
 
   return (
-    <S.Container onClick={() => navigator(`/group/${group.id}`)}>
+    <S.Container>
       <Disclosure>
         {({ open }) => (
-          <S.GroupContainer>
+          <S.GroupContainer onClick={() => gotoGroupPage(open)}>
             <Disclosure.Button className="pt-2 pb-4 w-full border-none">
               {groupDetail(open)}
             </Disclosure.Button>
