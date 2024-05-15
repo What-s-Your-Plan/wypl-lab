@@ -82,7 +82,7 @@ public class GroupController {
 				groupModifyService.inviteGroupMember(authMember.getId(), groupId, inviteRequest)));
 	}
 
-	@DeleteMapping("/v1/groups/{groupId}/members/force-out")
+	@PatchMapping("/v1/groups/{groupId}/members/force-out")
 	public ResponseEntity<Message<MemberIdResponse>> forceOutGroupMember(@Authenticated AuthMember authMember,
 			@PathVariable int groupId,
 			@RequestBody MemberIdRequest memberIdRequest) {
