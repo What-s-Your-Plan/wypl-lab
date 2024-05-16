@@ -6,12 +6,10 @@ import { useEffect, useState } from 'react';
 
 function GroupPage() {
   const { groupId } = useParams();
-
   const [id, setId] = useState<number | undefined>(undefined);
-
   useEffect(() => {
     setId(Number(groupId));
-  }, [window.location.href]);
+  }, [groupId]);
 
   return (
     <div className="container flex items-center justify-around ss:max-sm:block h-dvh">
