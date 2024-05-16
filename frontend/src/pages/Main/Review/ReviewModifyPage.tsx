@@ -36,7 +36,7 @@ function ReviewModifyPage() {
     <>
       <div className="container flex items-center ss:max-sm:block h-dvh">
         <ViewBlockList />
-        <WriteBlockList />
+        <WriteBlockList reviewId={Number(reviewId)} />
       </div>
     </>
   );
