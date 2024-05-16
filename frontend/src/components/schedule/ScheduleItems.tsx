@@ -239,7 +239,9 @@ function Label({ states, setStates }: SetProps) {
           height="h-[44px]"
           list={[
             null,
-            ...labels
+            ...labels.filter((label) => {
+              return label.category === 'MEMBER'
+            })
           ]}
           selected={states.label}
           setSelected={handleLabel}

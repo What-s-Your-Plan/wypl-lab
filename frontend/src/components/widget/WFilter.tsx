@@ -9,8 +9,8 @@ function WFilter() {
   const dateStore = useDateStore();
 
   const renderLabels = () => {
-    return dateStore.labels.map((label: LabelResponse) => {
-      const isSelected = dateStore.selectedLabels.includes(label.label_id);
+    return dateStore.labels.map((label: FilterResponse) => {
+      const isSelected = dateStore.selectedLabels.includes(label);
       const labelBgColor =
         isSelected ? label.color : 'coolGray';
       const labelClassName =
@@ -19,13 +19,13 @@ function WFilter() {
         <LabelButton
           $bgColor={labelBgColor as LabelColorsType}
           className={labelClassName}
-          key={label.label_id}
+          key={label.id}
           onClick={() => {
             if (isSelected) {
-              dateStore.removeSelectedLabels(label.label_id);
+              dateStore.removeSelectedLabels(label);
               return;
             }
-            dateStore.addSelectedLabels(label.label_id);
+            dateStore.addSelectedLabels(label);
           }}
         >
           {label.title}

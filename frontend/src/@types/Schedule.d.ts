@@ -9,10 +9,10 @@ interface Repeat {
 }
 
 type Label = {
-  label_id: number;
-  title: string;
-  color: string;
-  member_id: number;
+  category: string,
+  id: number,
+  title: string,
+  color: string
 };
 
 type LabelResponse = {
@@ -101,4 +101,11 @@ type RepetitionResponse = {
 	repetition_end_date : string,
 	day_of_week : number,
 	week : number
+}
+
+type FilterResponse = {
+  category: string,
+  id: number,
+  title: string,
+  color: string
 }

@@ -5,7 +5,7 @@ function CalendarPage() {
   return (
     <div className="container flex items-center justify-around ss:max-sm:block h-dvh">
       <WidgetList />
-      <CalendarContent />
+      <CalendarContent category='MEMBER' />
     </div>
   );
 }
