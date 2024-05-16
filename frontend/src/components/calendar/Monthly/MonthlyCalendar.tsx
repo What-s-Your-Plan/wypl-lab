@@ -9,6 +9,7 @@ import {
 import { labelFilter } from '@/utils/FilterUtils';
 import useDateStore from '@/stores/DateStore';
 import getCalendars from '@/services/calendar/getCalendars';
+import getGroupCalendars from '@/services/calendar/getGroupCalendars';
 import { Chevrons } from '../DatePicker.styled';
 
 import ChevronRight from '@/assets/icons/chevronRight.svg';
@@ -17,12 +18,20 @@ import ChevronLeft from '@/assets/icons/chevronLeft.svg';
 export type DateSchedule = Array<Array<CalendarSchedule>>;
 
 type MonthlyProps = {
+  category: 'MEMBER' | 'GROUP';
+  groupId?: number;
   needUpdate: boolean;
   setUpdateFalse: () => void;
-  handleSkedClick: (id:number) => void;
+  handleSkedClick: (id: number) => void;
 };
 
-function MonthlyCalender({ needUpdate, setUpdateFalse, handleSkedClick }: MonthlyProps) {
+function MonthlyCalender({
+  category,
+  groupId,
+  needUpdate,
+  setUpdateFalse,
+  handleSkedClick,
+}: MonthlyProps) {
   const createInit = (): Array<DateSchedule> => {
     const init = [];
 
@@ -66,10 +75,22 @@ function MonthlyCalender({ needUpdate, setUpdateFalse, handleSkedClick }: Monthl
   };
 
   const updateInfo = useCallback(async () => {
-    const response = await getCalendars('MONTH', dateToString(selectedDate));
+    if (category === 'MEMBER') {
+      const response = await getCalendars('MONTH', dateToString(selectedDate));
 
-    if (response) {
-      setOriginSked(response.schedules);
+      if (response) {
+        setOriginSked(response.schedules);
+      }
+    } else if (category === 'GROUP' && groupId) {
+      const response = await getGroupCalendars(
+        'MONTH',
+        groupId,
+        dateToString(selectedDate),
+      );
+
+      if (response) {
+        setOriginSked(response.schedules);
+      }
     }
   }, [selectedDate]);
 
@@ -80,10 +101,10 @@ function MonthlyCalender({ needUpdate, setUpdateFalse, handleSkedClick }: Monthl
       for (const sked of labelFilter(originSked, selectedLabels)) {
         let idx = getDateDiff(firstDay, sked.start_date);
         let period = getDateDiff(sked.start_date, sked.end_date);
-        console.log(idx)
+        console.log(idx);
         if (idx < 0) {
           period += idx;
-          idx = 0
+          idx = 0;
         }
 
         let row: number | null = null;

@@ -11,7 +11,7 @@ async function postSchedule(schedule: Schedule & Repeat) {
     body.group_id = schedule.groupId;
   } else if (schedule.category === 'MEMBER') {
     if (schedule.label) {
-      body.labelId = schedule.label.label_id;
+      body.labelId = schedule.label.id;
     }
   }
 

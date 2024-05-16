@@ -16,7 +16,12 @@ import useMemberStore from '@/stores/MemberStore';
 import Todo from './Todo';
 import DailyCalendar from './Daily/DailyCalendar';
 
-function CalendarContent() {
+type CalendarProps = {
+  category: 'MEMBER' | 'GROUP';
+  groupId?: number;
+};
+
+function CalendarContent({ category, groupId }: CalendarProps) {
   const { selectedDate } = useDateStore();
   const { memberId } = useMemberStore();
   const [calendarType, setCalendarType] = useState<CalenderType>('MONTH');
@@ -59,6 +64,8 @@ function CalendarContent() {
       case 'MONTH':
         return (
           <MonthlyCalender
+            category={category}
+            groupId={groupId}
             handleSkedClick={openDetail}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
@@ -67,6 +74,8 @@ function CalendarContent() {
       case 'WEEK':
         return (
           <WeeklyCalendar
+            category={category}
+            groupId={groupId}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
           />
@@ -74,6 +83,8 @@ function CalendarContent() {
       case 'DAY':
         return (
           <DailyCalendar
+            category={category}
+            groupId={groupId}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
           />
@@ -93,7 +104,7 @@ function CalendarContent() {
               <Containers.WhiteContainer $width="1300" $height="one">
                 <DatePicker />
               </Containers.WhiteContainer>
-              <Todo/>
+              <Todo />
               <Button
                 className="py-2"
                 $size="lg"

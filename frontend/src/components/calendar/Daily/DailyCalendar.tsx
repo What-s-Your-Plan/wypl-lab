@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import getGroupCalendars from '@/services/calendar/getGroupCalendars';
 import getCalendars from '@/services/calendar/getCalendars';
 import useDateStore from '@/stores/DateStore';
 import { dateToString, getTime } from '@/utils/DateUtils';
@@ -8,20 +9,29 @@ import useMemberStore from '@/stores/MemberStore';
 import { labelFilter } from '@/utils/FilterUtils';
 
 type DailyProps = {
+  category: 'MEMBER' | 'GROUP';
+  groupId?: number;
   needUpdate: boolean;
   setUpdateFalse: () => void;
 };
 
-function DailyCalendar({ needUpdate, setUpdateFalse }: DailyProps) {
+function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse }: DailyProps) {
   const { selectedDate, selectedLabels } = useDateStore();
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
   const { mainColor } = useMemberStore();
 
   const updateInfo = useCallback(async () => {
-    const response = await getCalendars('DAY', dateToString(selectedDate));
-    if (response) {
-      setOriginSked(response.schedules);
+    if (category === 'MEMBER') {
+      const response = await getCalendars('DAY', dateToString(selectedDate));
+      if (response) {
+        setOriginSked(response.schedules);
+      }
+    } else if (category === 'GROUP' && groupId) {
+      const response = await getGroupCalendars('Day', groupId, dateToString(selectedDate));
+      if (response) {
+        setOriginSked(response.schedules);
+      }
     }
   }, [selectedDate]);
 

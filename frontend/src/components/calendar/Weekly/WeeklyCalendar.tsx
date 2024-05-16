@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import getCalendars from '@/services/calendar/getCalendars';
+import getGroupCalendars from '@/services/calendar/getGroupCalendars';
 import useDateStore from '@/stores/DateStore';
 import {
   dateToString,
@@ -29,11 +30,18 @@ export type LongSchedule = {
 };
 
 type WeeklyProps = {
+  category: 'MEMBER' | 'GROUP';
+  groupId?: number;
   needUpdate: boolean;
   setUpdateFalse: () => void;
 };
 
-function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
+function WeeklyCalendar({
+  category,
+  groupId,
+  needUpdate,
+  setUpdateFalse,
+}: WeeklyProps) {
   const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
   const [firstDay, setFirstDay] = useState<Date | null>(null);
   const [height, setHeight] = useState<number>(0);
@@ -62,10 +70,21 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
   };
 
   const updateInfo = useCallback(async () => {
-    const response = await getCalendars('WEEK', dateToString(selectedDate));
+    if (category === 'MEMBER') {
+      const response = await getCalendars('WEEK', dateToString(selectedDate));
 
-    if (response) {
-      setOriginSked(response.schedules);
+      if (response) {
+        setOriginSked(response.schedules);
+      }
+    } else if (category === 'GROUP' && groupId) {
+      const response = await getGroupCalendars(
+        'WEEK',
+        groupId,
+        dateToString(selectedDate),
+      );
+      if (response) {
+        setOriginSked(response.schedules);
+      }
     }
   }, [selectedDate]);
 
