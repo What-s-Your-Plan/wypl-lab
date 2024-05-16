@@ -2,7 +2,6 @@ package com.butter.wypl.schedule.domain;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 import org.hibernate.annotations.SQLRestriction;
 
@@ -133,21 +132,19 @@ public class Schedule extends BaseEntity {
 			return;
 		}
 
-		if (repetition.getRepetitionStartDate() == null) {
-			throw new ScheduleException(ScheduleErrorCode.NOT_EXIST_REPETITION_START_DATE);
-		}
-
-		LocalDateTime repetitionStartDate = LocalDateTime.of(repetition.getRepetitionStartDate(), LocalTime.of(0, 0));
-		LocalDateTime repetitionEndDate;
-
-		if (repetition.getRepetitionEndDate() == null) {
-			repetitionEndDate = repetitionStartDate.plusYears(3);
-		} else {
-			repetitionEndDate = LocalDateTime.of(repetition.getRepetitionEndDate(), LocalTime.of(0, 0));
-		}
-
 		long scheduleDuration = Duration.between(startDate, endDate).toMinutes();
-		long repetitionDuration = Duration.between(repetitionStartDate, repetitionEndDate).toMinutes();
+
+		long repetitionDuration = switch (repetition.getRepetitionCycle()) {
+			case WEEK -> {
+				yield 7 * 24 * 60;
+			}
+			case MONTH -> {
+				yield 31 * 24 * 60;
+			}
+			case YEAR -> {
+				yield 365 * 24 * 60;
+			}
+		};
 
 		if (scheduleDuration > repetitionDuration) {
 			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_REPETITION_DURATION);
