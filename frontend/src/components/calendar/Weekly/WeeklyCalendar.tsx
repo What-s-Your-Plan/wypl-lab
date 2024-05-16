@@ -35,6 +35,7 @@ type WeeklyProps = {
   groupId?: number;
   needUpdate: boolean;
   setUpdateFalse: () => void;
+  handleSkedClick: (id: number) => void;
 };
 
 function WeeklyCalendar({
@@ -42,6 +43,7 @@ function WeeklyCalendar({
   groupId,
   needUpdate,
   setUpdateFalse,
+  handleSkedClick,
 }: WeeklyProps) {
   const { canStartLoading, endLoading } = useLoading();
   const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
@@ -232,7 +234,11 @@ function WeeklyCalendar({
             <WeeklyDays firstDay={firstDay} />
             <LScheduleContainer $height={height + 1}>
               <WeeklyVertical />
-              <WeeklyLSchedules lSchedules={longSchedules} row={height + 1} />
+              <WeeklyLSchedules
+                lSchedules={longSchedules}
+                row={height + 1}
+                handleSkedClick={handleSkedClick}
+              />
             </LScheduleContainer>
           </div>
           <div className="flex flex-auto">
@@ -245,7 +251,10 @@ function WeeklyCalendar({
               <WeeklyHorizontal />
 
               {/* Schedules */}
-              <WeeklySchedules schedules={schedules} />
+              <WeeklySchedules
+                schedules={schedules}
+                handleSkedClick={handleSkedClick}
+              />
 
               {/* LongSchedules */}
             </div>

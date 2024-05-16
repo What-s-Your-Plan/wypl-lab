@@ -255,7 +255,7 @@ function Label({ states, setStates }: SetProps) {
             );
           }}
           topList={
-            <div className="">
+            <div>
               {create ? (
                 <CreateLabel
                   color={color}

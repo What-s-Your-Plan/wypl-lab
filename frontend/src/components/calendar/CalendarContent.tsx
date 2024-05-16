@@ -85,6 +85,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
             groupId={groupId}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
+            handleSkedClick={openDetail}
           />
         );
       case 'DAY':
@@ -94,6 +95,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
             groupId={groupId}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
+            handleSkedClick={openDetail}
           />
         );
       default:
@@ -142,7 +144,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
         isOpen={isDetailOpen}
         scheduleId={detailId as number}
         handleClose={closeDetail}
-        handleConfirm={() => {}}
+        setUpdateTrue={setUpdateTrue}
       />
     </>
   );

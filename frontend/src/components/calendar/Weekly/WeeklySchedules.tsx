@@ -5,9 +5,10 @@ import useMemberStore from '@/stores/MemberStore';
 
 type WSchedulesProps = {
   schedules: Array<CalendarSchedule>;
+  handleSkedClick: (id: number) => void;
 };
 
-function WeeklySchedules({ schedules }: WSchedulesProps) {
+function WeeklySchedules({ schedules, handleSkedClick }: WSchedulesProps) {
   const { mainColor } = useMemberStore();
   const renderSchedules = () => {
     return schedules.map((schedule, index) => {
@@ -42,6 +43,7 @@ function WeeklySchedules({ schedules }: WSchedulesProps) {
                 schedule.group?.color ||
                 mainColor) as LabelColorsType
             }
+            onClick={() => {handleSkedClick(schedule.schedule_id)}}
           >
             <p className="order-1 font-semibold text-default-white text-left">
               {schedule.title}

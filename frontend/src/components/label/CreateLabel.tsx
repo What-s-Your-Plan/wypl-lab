@@ -27,14 +27,14 @@ function CreateLabel({ color, setColor, handleKeyDown }: CreateLabelProps) {
       <InputDefault
         maxLength={15}
         placeholder="라벨명을 입력하세요"
-        onKeyUp={(e) => {
+        onKeyDown={async (e) => {
           e.stopPropagation();
           if (e.key === 'Enter') {
             if (inputRef.current) {
               if (canStartLoading()) {
                 return;
               }
-              postCreateLabel(color, inputRef.current.value).finally(() =>
+              await postCreateLabel(color, inputRef.current.value).finally(() =>
                 endLoading(),
               );
               handleCreate();

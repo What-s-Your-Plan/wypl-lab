@@ -168,7 +168,7 @@ function MonthlyCalender({
     filteredSked();
   }, [filteredSked]);
 
-  const renderMonthly = () => {
+  const renderMonthly = useCallback(() => {
     const calendar: Array<JSX.Element> = [];
 
     if (firstDay) {
@@ -193,7 +193,7 @@ function MonthlyCalender({
       }
     }
     return calendar;
-  };
+  }, [firstDay, monthSchedules]);
 
   return (
     <div className="flex h-full flex-col">

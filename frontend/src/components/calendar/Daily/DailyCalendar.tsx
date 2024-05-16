@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Fragment } from 'react';
 import getGroupCalendars from '@/services/calendar/getGroupCalendars';
 import getCalendars from '@/services/calendar/getCalendars';
 import useDateStore from '@/stores/DateStore';
@@ -15,6 +15,7 @@ type DailyProps = {
   groupId?: number;
   needUpdate: boolean;
   setUpdateFalse: () => void;
+  handleSkedClick: (id: number) => void;
 };
 
 function DailyCalendar({
@@ -22,6 +23,7 @@ function DailyCalendar({
   groupId,
   needUpdate,
   setUpdateFalse,
+  handleSkedClick
 }: DailyProps) {
   const { canStartLoading, endLoading } = useLoading();
   const { selectedDate, selectedLabels } = useDateStore();
@@ -77,7 +79,7 @@ function DailyCalendar({
   const renderSchedule = () => {
     return schedules.map((schedule, idx) => {
       return (
-        <>
+        <Fragment key={idx}>
           {idx !== 0 && (
             <>
               <div className="w-8 h-10 flex justify-center" key={`line${idx}`}>
@@ -85,7 +87,9 @@ function DailyCalendar({
               </div>
             </>
           )}
-          <S.ScheduleContainer key={schedule.schedule_id}>
+          <S.ScheduleContainer key={schedule.schedule_id}
+          onClick={() => {handleSkedClick(schedule.schedule_id)}}
+          >
             <S.LabelDiv
               $bgColor={
                 (schedule.label?.color ||
@@ -101,7 +105,7 @@ function DailyCalendar({
               <p className="flex">{schedule.description}</p>
             </S.ScheduleContents>
           </S.ScheduleContainer>
-        </>
+        </Fragment>
       );
     });
   };

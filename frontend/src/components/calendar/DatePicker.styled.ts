@@ -24,7 +24,7 @@ const DateButton = styled.button<DButtonProps>`
     text-xs
   `}
   ${(props) => props.$isSelected && tw`text-default-white`}
-  ${(props) => !props.$isSelected && props.$isToday && tw`text-indigo-600`}
+  ${(props) => !props.$isSelected && props.$isToday && tw`text-indigo-600 border border-indigo-600`}
   ${(props) =>
     !props.$isSelected &&
     props.$isToday &&
@@ -40,7 +40,6 @@ const DateButton = styled.button<DButtonProps>`
     !props.$isToday &&
     !props.$isCurrentMonth &&
     tw`text-gray-400`}
-  /* ${(props) => props.$isSelected && props.$isToday && tw`bg-indigo-600`} */
   ${(props) => props.$isSelected && tw`bg-label-brown`}
   ${(props) => !props.$isSelected && tw`hover:bg-gray-200`}
   ${(props) => (!props.$isSelected || props.$isToday) && tw`font-semibold`}
