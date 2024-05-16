@@ -18,11 +18,9 @@ function SkedDetailModal({
     <Modal
       isOpen={isOpen}
       handleClose={handleClose}
-      confirm={{ content: '저장', handleConfirm:handleConfirm}}
+      confirm={{ content: '저장', handleConfirm: handleConfirm }}
       title={<></>}
-      contents={
-        <SkedDetailPanel scheduleId={scheduleId} />
-      }
+      contents={<SkedDetailPanel scheduleId={scheduleId} />}
     />
   );
 }

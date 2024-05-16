@@ -21,6 +21,7 @@ import deleteGroupMemberForceOut, {
   DeleteGroupMemberForceOutResponse,
 } from '@/services/group/deleteGroupMemberForceOut';
 import deleteGroupWithdraw from '@/services/group/deleteGroupWithdraw';
+import useLoading from '@/hooks/useLoading';
 
 type GroupMemberProps = {
   groupId: number;
@@ -36,6 +37,7 @@ function GroupMemberList({
   groupDeleteEvent,
 }: GroupMemberProps) {
   const { memberId } = useMemberStore();
+  const { canStartLoading, endLoading } = useLoading();
 
   const [groupMembers, setGroupMembers] = useState<GroupMembers>({
     color,
@@ -44,7 +46,14 @@ function GroupMemberList({
   });
 
   const fetchGroupMember = async () => {
-    const newGroupMembers: GroupMembers = await getGroupMember(groupId);
+    if (canStartLoading()) {
+      return;
+    }
+    const newGroupMembers: GroupMembers = await getGroupMember(groupId).finally(
+      () => {
+        endLoading();
+      },
+    );
     setGroupMembers(newGroupMembers);
   };
 

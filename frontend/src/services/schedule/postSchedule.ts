@@ -2,7 +2,7 @@ import { axiosWithAccessToken } from '@/services/axios';
 import { dateTimeToString } from '@/utils/DateUtils';
 
 async function postSchedule(schedule: Schedule & Repeat) {
-  console.log(schedule)
+  console.log(schedule);
   const body: any = {
     title: schedule.title,
     category: schedule.category,

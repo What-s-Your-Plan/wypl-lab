@@ -15,6 +15,7 @@ import useDateStore from '@/stores/DateStore';
 import useMemberStore from '@/stores/MemberStore';
 import Todo from './Todo';
 import DailyCalendar from './Daily/DailyCalendar';
+import { useParams } from 'react-router-dom';
 
 type CalendarProps = {
   category: 'MEMBER' | 'GROUP';
@@ -22,6 +23,17 @@ type CalendarProps = {
 };
 
 function CalendarContent({ category, groupId }: CalendarProps) {
+  const getGroupId = (): number | null => {
+    if (groupId !== undefined) {
+      return groupId;
+    }
+    const { groupId: newGroupId } = useParams();
+    if (newGroupId !== undefined) {
+      return Number(newGroupId);
+    }
+    return null;
+  };
+
   const { selectedDate } = useDateStore();
   const { memberId } = useMemberStore();
   const [calendarType, setCalendarType] = useState<CalenderType>('MONTH');
@@ -33,6 +45,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
     ...initialSchedule,
     category,
     members: [{ member_id: memberId as number }],
+    groupId: getGroupId(),
   });
 
   const closeCreate = () => {
