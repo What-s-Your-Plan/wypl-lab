@@ -59,6 +59,8 @@ function CalendarContent({ category, groupId }: CalendarProps) {
 
   const closeDetail = () => {
     setDetailOpen(false);
+    setNeedUpdate(true);
+    renderCalender();
   };
 
   const renderCalender = () => {
