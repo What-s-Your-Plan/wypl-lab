@@ -90,7 +90,7 @@ public class CalendarService {
 			schedules.stream().map(
 				schedule -> CalendarResponse.of(schedule,
 					(schedule.getGroupId() == null) ? null :
-						MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId,
+						MemberGroupServiceUtils.getAcceptMemberGroup(memberGroupRepository, memberId,
 							schedule.getScheduleId()))
 			).toList()
 		);
@@ -100,7 +100,7 @@ public class CalendarService {
 		LocalDate startDate, int groupId) {
 		//그룹에 속한 멤버인지 확인
 		//그룹의 존재 여부 확인
-		MemberGroup memberGroup = MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId,
+		MemberGroup memberGroup = MemberGroupServiceUtils.getAcceptMemberGroup(memberGroupRepository, memberId,
 			GroupServiceUtils.findById(groupRepository, groupId).getId());
 
 		if (startDate == null) {

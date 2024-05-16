@@ -11,8 +11,10 @@ import org.springframework.data.repository.query.Param;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.schedule.domain.MemberSchedule;
 import com.butter.wypl.schedule.domain.Schedule;
+import com.butter.wypl.schedule.respository.query.MemberScheduleRepositoryCustom;
 
-public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, Integer> {
+public interface MemberScheduleRepository extends JpaRepository<MemberSchedule, Integer>,
+	MemberScheduleRepositoryCustom {
 
 	Optional<MemberSchedule> findByScheduleAndMember(Schedule schedule, Member member);
 

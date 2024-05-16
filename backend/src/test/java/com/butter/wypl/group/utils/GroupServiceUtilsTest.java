@@ -45,7 +45,7 @@ class GroupServiceUtilsTest {
 			Member savedMember = memberRepository.save(HAN_JI_WON.toMember());
 			Group savedGroup = groupRepository.save(GROUP_STUDY.toGroup(savedMember));
 			memberGroupRepository.save(MemberGroup.of(savedMember, savedGroup, labelYellow, GroupInviteState.ACCEPTED));
-			List<Member> memberList = MemberGroupServiceUtils.getMembersByGroupId(memberGroupRepository,
+			List<Member> memberList = MemberGroupServiceUtils.getAcceptedMembersOfGroup(memberGroupRepository,
 				savedGroup.getId());
 
 			/* When, Then */
