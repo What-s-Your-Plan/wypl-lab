@@ -1,10 +1,12 @@
-import { axiosWithAccessToken } from '@/services/axios';
+import { axiosWithAccessToken } from "../axios";
 import { dateTimeToString } from '@/utils/DateUtils';
 
-async function postSchedule(schedule: Schedule & Repeat) {
+async function putSchedule(schedule: Schedule & Repeat) {
+  console.log(schedule)
   const body: any = {
     title: schedule.title,
     category: schedule.category,
+    modification_type: 'NOW',
   };
 
   if (schedule.category === 'GROUP') {
@@ -79,20 +81,17 @@ async function postSchedule(schedule: Schedule & Repeat) {
       body.repetition.repetition_end_date = schedule.endRDate;
     }
   }
-
   try {
-    const response = await axiosWithAccessToken.post(
-      '/schedule/v1/schedules',
-      body,
-    );
+    console.log(body)
+    const response = await axiosWithAccessToken.put(`/schedule/v1/schedules/${schedule.scheduleId}`, body);
     if (response.status !== 201) {
       console.log(response.status);
     } else {
       console.log(response);
     }
   } catch (err) {
-    throw err;
+    console.log(err)
   }
 }
 
-export default postSchedule;
+export default putSchedule;

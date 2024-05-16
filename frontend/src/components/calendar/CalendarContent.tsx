@@ -54,7 +54,6 @@ function CalendarContent({ category, groupId }: CalendarProps) {
   const openDetail = (id: number) => {
     setDetailId(id);
     setDetailOpen(true);
-    console.log('asdafsfd')
   };
 
   const closeDetail = () => {
@@ -140,7 +139,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
         isOpen={isDetailOpen}
         scheduleId={detailId as number}
         handleClose={closeDetail}
-        handleConfirm={() => {}}
+        setUpdateTrue={setUpdateTrue}
       />
     </>
   );

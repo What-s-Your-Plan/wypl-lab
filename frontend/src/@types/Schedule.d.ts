@@ -34,10 +34,11 @@ type GroupResponse = {
 };
 
 interface Schedule {
+  scheduleId?: number;
   title: string; // 필수
   description: string; // 선택
-  startDate: string; // 날짜 + 시간, 필수
-  endDate: string; // 날짜 + 시간, 필수
+  startDate: string; 
+  endDate: string; 
   isAllday: boolean;
   startAMPM: string;
   endAMPM: string;
@@ -46,7 +47,7 @@ interface Schedule {
   startMinute: number;
   endMinute: number;
   category: 'MEMBER' | 'GROUP'; // 개인: Member, 그룹: Group, 필수
-  groupId: number;
+  groupId: number | null;
   label: Label | null;
   members: Array<{member_id: number}>; // 개인 일정은 한명만
   isRepetition: boolean; // 선택
@@ -76,7 +77,7 @@ type ScheduleResponse = {
   category: string;
   description: string;
   group_id: number | null;
-  repetition: Repetition | null;
+  repetition: RepetitionResponse | null;
   label: LabelResponse | null;
   member_count: number;
   members: Member[]; //개인 일정일 경우 1명의 정보만 들어

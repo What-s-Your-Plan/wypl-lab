@@ -77,6 +77,7 @@ const ScheduleButton = styled.button<{ $bgColor: LabelColorsType }>`
     text-default-white
     leading-5
     transition-all
+    border
   `}
   ${(props) => BgTheme[props.$bgColor as BgColors]}
   &:hover {
