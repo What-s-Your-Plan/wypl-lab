@@ -36,13 +36,6 @@ function CalendarContent({ category, groupId }: CalendarProps) {
     groupId: groupId ?? null,
   });
 
-  useEffect(() => {
-    setSkedInit((prev) => ({
-      ...prev,
-      groupId: groupId ?? null,
-    }));
-  }, [groupId]);
-
   const closeCreate = () => {
     setIsCreateOpen(false);
   };
@@ -78,7 +71,9 @@ function CalendarContent({ category, groupId }: CalendarProps) {
             handleSkedClick={openDetail}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
-            goDay={() => {setCalendarType('DAY')}}
+            goDay={() => {
+              setCalendarType('DAY');
+            }}
           />
         );
       case 'WEEK':

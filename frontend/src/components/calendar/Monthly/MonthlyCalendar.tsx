@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+
 import MonthlyDay from './MonthlyDay';
 import {
   isSameDay,
@@ -14,6 +15,7 @@ import { Chevrons } from '../DatePicker.styled';
 
 import ChevronRight from '@/assets/icons/chevronRight.svg';
 import ChevronLeft from '@/assets/icons/chevronLeft.svg';
+import useLoading from '@/hooks/useLoading';
 
 export type DateSchedule = Array<Array<CalendarSchedule>>;
 
@@ -32,18 +34,16 @@ function MonthlyCalender({
   needUpdate,
   setUpdateFalse,
   handleSkedClick,
-  goDay
+  goDay,
 }: MonthlyProps) {
   const createInit = (): Array<DateSchedule> => {
     const init = [];
-
     for (let i = 0; i < 42; i++) {
       init.push([[], [], []]);
     }
-
     return init;
   };
-
+  const { canStartLoading, endLoading } = useLoading();
   const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [monthSchedules, setMonthSchedules] =
@@ -77,8 +77,16 @@ function MonthlyCalender({
   };
 
   const updateInfo = useCallback(async () => {
+    if (canStartLoading()) {
+      return;
+    }
     if (category === 'MEMBER') {
-      const response = await getCalendars('MONTH', dateToString(selectedDate));
+      const response = await getCalendars(
+        'MONTH',
+        dateToString(selectedDate),
+      ).finally(() => {
+        endLoading();
+      });
 
       if (response) {
         setOriginSked(response.schedules);
@@ -86,15 +94,21 @@ function MonthlyCalender({
     } else if (category === 'GROUP' && groupId) {
       const response = await getGroupCalendars(
         'MONTH',
-        groupId,
+        Number(groupId),
         dateToString(selectedDate),
-      );
+      ).finally(() => {
+        endLoading();
+      });
 
       if (response) {
         setOriginSked(response.schedules);
       }
     }
   }, [selectedDate, groupId]);
+
+  useEffect(() => {
+    updateInfo();
+  }, [groupId]);
 
   const filteredSked = useCallback(() => {
     if (firstDay) {
@@ -103,7 +117,6 @@ function MonthlyCalender({
       for (const sked of labelFilter(originSked, selectedLabels)) {
         let idx = getDateDiff(firstDay, sked.start_date);
         let period = getDateDiff(sked.start_date, sked.end_date);
-        console.log(idx);
         if (idx < 0) {
           period += idx;
           idx = 0;

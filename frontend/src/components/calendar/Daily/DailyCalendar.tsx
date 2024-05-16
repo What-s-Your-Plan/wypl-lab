@@ -8,6 +8,7 @@ import useMemberStore from '@/stores/MemberStore';
 import { labelFilter } from '@/utils/FilterUtils';
 
 import * as S from './DailyCalendar.styled';
+import useLoading from '@/hooks/useLoading';
 
 type DailyProps = {
   category: 'MEMBER' | 'GROUP';
@@ -22,14 +23,23 @@ function DailyCalendar({
   needUpdate,
   setUpdateFalse,
 }: DailyProps) {
+  const { canStartLoading, endLoading } = useLoading();
   const { selectedDate, selectedLabels } = useDateStore();
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
   const { mainColor } = useMemberStore();
 
   const updateInfo = useCallback(async () => {
+    if (canStartLoading()) {
+      return;
+    }
     if (category === 'MEMBER') {
-      const response = await getCalendars('DAY', dateToString(selectedDate));
+      const response = await getCalendars(
+        'DAY',
+        dateToString(selectedDate),
+      ).finally(() => {
+        endLoading();
+      });
       if (response) {
         setOriginSked(response.schedules);
       }
@@ -38,12 +48,18 @@ function DailyCalendar({
         'DAY',
         groupId,
         dateToString(selectedDate),
-      );
+      ).finally(() => {
+        endLoading();
+      });
       if (response) {
         setOriginSked(response.schedules);
       }
     }
   }, [selectedDate, groupId]);
+
+  useEffect(() => {
+    updateInfo();
+  }, [groupId]);
 
   const filteredSked = useCallback(() => {
     setSchedules(labelFilter(originSked, selectedLabels));
