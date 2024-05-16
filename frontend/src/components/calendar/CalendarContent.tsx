@@ -31,6 +31,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
   const [needUpdate, setNeedUpdate] = useState<boolean>(false);
   const [skedInit, setSkedInit] = useState<Schedule & Repeat>({
     ...initialSchedule,
+    category,
     members: [{ member_id: memberId as number }],
   });
 
