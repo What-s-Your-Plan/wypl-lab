@@ -23,4 +23,11 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
 				.limit(cond.size())
 				.fetch();
 	}
+
+	@Override
+	public List<Member> findAllActiveMembers() {
+		return query.selectFrom(member)
+			.where(member.deletedAt.isNull())
+			.fetch();
+	}
 }

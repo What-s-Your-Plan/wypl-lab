@@ -87,7 +87,7 @@ class NotificationControllerTest extends ControllerTest {
 		//when
 		ResultActions actions = mockMvc.perform(
 			RestDocumentationRequestBuilders.get(URI_PATH)
-				.queryParam("lastId", "test1234")
+				.queryParam("lastId", lastId)
 				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 				.contentType(MediaType.APPLICATION_JSON)
 		);
