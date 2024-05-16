@@ -31,7 +31,7 @@ public class SocialMember {
 	private Member member;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "oauth_providder", nullable = false)
+	@Column(name = "oauth_provider", nullable = false)
 	private OauthProvider oauthProvider;
 
 	@Column(name = "oauth_id", nullable = false)

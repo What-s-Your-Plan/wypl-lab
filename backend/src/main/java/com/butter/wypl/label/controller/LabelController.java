@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +14,7 @@ import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Message;
 import com.butter.wypl.label.data.request.LabelRequest;
+import com.butter.wypl.label.data.response.AllLabelListResponse;
 import com.butter.wypl.label.data.response.LabelIdResponse;
 import com.butter.wypl.label.data.response.LabelListResponse;
 import com.butter.wypl.label.data.response.LabelResponse;
@@ -74,14 +74,23 @@ public class LabelController {
 			);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{labelId}")
 	public ResponseEntity<Message<LabelIdResponse>> deleteLabel(
 		@Authenticated AuthMember authMember,
-		@RequestHeader("labelId") int labelId
+		@PathVariable("labelId") int labelId
 	) {
 		return ResponseEntity
 			.ok().body(
 				Message.withBody("라벨 삭제 성공", labelModifyService.deleteLabel(labelId, authMember.getId()))
 			);
+	}
+
+	@GetMapping("/main")
+	public ResponseEntity<Message<AllLabelListResponse>> getAllLabelByMember(
+		@Authenticated AuthMember authMember
+	) {
+		return ResponseEntity.ok(
+			Message.withBody("라벨+그룹 조회 성공", labelReadService.getAllLabelsByMemberId(authMember.getId()))
+		);
 	}
 }

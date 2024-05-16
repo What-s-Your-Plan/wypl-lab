@@ -12,6 +12,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import com.butter.wypl.global.common.Color;
+import com.butter.wypl.infrastructure.weather.WeatherRegion;
 import com.butter.wypl.member.exception.MemberErrorCode;
 import com.butter.wypl.member.exception.MemberException;
 import com.butter.wypl.member.fixture.MemberFixture;
@@ -30,6 +32,47 @@ class MemberTest {
 
 		/* Then */
 		assertThat(member.getTimeZone()).isEqualTo(timezone);
+	}
+
+	@DisplayName("프로필 이미지 수정에 성공한다.")
+	@Test
+	void updateProfileImageTest() {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+		String newProfileImageUrl = "aws.image.url";
+
+		/* When */
+		member.changeProfileImage(newProfileImageUrl);
+
+		/* Then */
+		assertThat(member.getProfileImage()).isEqualTo(newProfileImageUrl);
+	}
+
+	@DisplayName("날씨 지역 조회에 성공한다.")
+	@Test
+	void getWeatherRegionSuccess() {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+
+		/* When */
+		WeatherRegion weatherRegion = member.getWeatherRegion();
+
+		/* Then */
+		assertThat(weatherRegion).isEqualTo(WeatherRegion.KOREA);
+	}
+
+	@DisplayName("회원의 메인 컬러 수정에 성공한다.")
+	@ParameterizedTest
+	@EnumSource(Color.class)
+	void updateColorSuccessTest(Color color) {
+		/* Given */
+		Member member = KIM_JEONG_UK.toMember();
+
+		/* When */
+		member.changeColor(color);
+
+		/* Then */
+		assertThat(member.getColor()).isEqualTo(color);
 	}
 
 	@DisplayName("닉네임 Test")

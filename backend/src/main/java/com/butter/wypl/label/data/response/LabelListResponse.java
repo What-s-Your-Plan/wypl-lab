@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.butter.wypl.label.domain.Label;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record LabelListResponse(
+	@JsonProperty("label_count")
 	int labelCount,
 	List<LabelResponse> labels
 ) {

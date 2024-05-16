@@ -1,6 +1,9 @@
 spring:
-  data:
+  config:
+    activate:
+      on-profile: test
+de:
+  flapdoodle:
     mongodb:
-      host: 127.0.0.1
-      port: 27017
-      database: test
+      embedded:
+        version: 4.0.2

@@ -15,6 +15,7 @@ import com.butter.wypl.infrastructure.ouath.OAuthMember;
 import com.butter.wypl.infrastructure.ouath.OAuthMemberProvider;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
+import com.butter.wypl.member.utils.MemberServiceUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +41,24 @@ public class AuthService {
 		Member member = getMember(provider, oAuthMember);
 		JsonWebTokens tokens = generateJsonWebTokens(member);
 		return AuthTokensResponse.of(member, tokens);
+	}
+
+	@Transactional
+	public AuthTokensResponse reissueTokens(
+			final String refreshToken
+	) {
+		int memberId = jwtProvider.getPayloadByRefreshToken(refreshToken);
+
+		Member findMember = MemberServiceUtils.findById(memberRepository, memberId);
+		RefreshToken token = refreshTokenRepository.findById(memberId)
+				.orElseThrow(() -> new AuthException(AuthErrorCode.NON_EXISTED_TOKEN));
+
+		if (token.isEqualsToken(refreshToken)) {
+			JsonWebTokens tokens = generateJsonWebTokens(findMember);
+			return AuthTokensResponse.of(findMember, tokens);
+		}
+
+		throw new AuthException(AuthErrorCode.INVALID_JWT);
 	}
 
 	private Member getMember(String provider, OAuthMember oAuthMember) {
