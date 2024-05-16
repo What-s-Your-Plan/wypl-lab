@@ -68,7 +68,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		//멤버-일정 테이블 업데이트
 		List<Member> memberResponses = memberScheduleService.createMemberSchedule(schedule,
-				scheduleCreateRequest.members());
+				memberIdResponses);
 
 		//반복이 있을 경우 반복 일정 추가
 		if (scheduleCreateRequest.repetition() != null) {
