@@ -53,12 +53,6 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	private final MemberGroupRepository memberGroupRepository;
 	private final GroupNotificationService groupNotificationService;
 
-	private static void validateOwnerPermission(Member owner, Group group, GroupErrorCode errorCode) {
-		if (!isGroupOwner(owner, group)) {
-			throw new GroupException(errorCode);
-		}
-	}
-
 	@Override
 	public GroupResponse createGroup(int ownerId, GroupCreateRequest createRequest) {
 		Member findOwnerMember = findById(memberRepository, ownerId);
@@ -70,7 +64,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		validateAllMembersExist(members, memberIds);
 
 		Group savedGroup = groupRepository.save(
-				Group.of(createRequest.name(), createRequest.color(), getMember(ownerId)));
+			Group.of(createRequest.name(), createRequest.color(), getMember(ownerId)));
 		saveAllMemberGroup(members, savedGroup);
 
 		members.forEach(member -> {
@@ -78,7 +72,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 			if (member.getId() == ownerId)
 				return;
 			groupNotificationService.createGroupNotification(
-					member.getId(), member.getNickname(), savedGroup.getName(), savedGroup.getId()
+				member.getId(), member.getNickname(), savedGroup.getName(), savedGroup.getId()
 			);
 		});
 
@@ -125,7 +119,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		members.forEach(member -> {
 			/* 그룹 초대 알림 전송 */
 			groupNotificationService.createGroupNotification(
-					member.getId(), owner.getNickname(), group.getName(), group.getId()
+				member.getId(), owner.getNickname(), group.getName(), group.getId()
 			);
 		});
 
@@ -157,49 +151,59 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	@Override
 	public void leaveGroup(int memberId, int groupId) {
+		MemberGroup memberGroup = findAndValidMemberGroup(memberId, groupId);
 
-		Member foundMember = getMember(memberId);
-		Group foundGroup = getGroup(groupId);
-
-		if (isGroupOwner(foundMember, foundGroup)
-				&& getMemberGroupsByGroupId(memberGroupRepository, groupId).size() > 1) {
+		if (isGroupOwner(memberId, memberGroup.getGroup().getOwner())
+			&& hasMultipleGroupMembers(groupId)) {
 			throw new GroupException(NOT_ACCEPTED_LEAVE_GROUP);
 		}
-
-		MemberGroup memberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(
-						foundMember.getId(), foundGroup.getId())
-				.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
-
 		memberGroupRepository.delete(memberGroup);
-
-		/* TODO 그룹장이면 그룹도 삭제해야함 */
 	}
 
 	@Override
 	public GroupMemberColorUpdateResponse updateGroupColor(int memberId, int groupId,
-			GroupMemberColorUpdateRequest request) {
+		GroupMemberColorUpdateRequest request) {
 		Color color = request.color();
 		MemberGroup foundMemberGroup = getMemberGroup(memberId, groupId);
 		foundMemberGroup.updateColor(color);
 		return new GroupMemberColorUpdateResponse(color);
 	}
 
+	private static void validateOwnerPermission(Member member, Group group, GroupErrorCode errorCode) {
+		if (!isGroupOwner(member.getId(), group.getOwner())) {
+			throw new GroupException(errorCode);
+		}
+	}
+
+	private MemberGroup findAndValidMemberGroup(int memberId, int groupId) {
+		return memberGroupRepository.findAcceptedWithGroupAndOwner(memberId, groupId)
+			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
+	}
+
+	private boolean hasMultipleGroupMembers(int groupId) {
+		return memberGroupRepository.getSizeOfGroupMembers(groupId) > 1;
+	}
+
+	private static boolean isGroupOwner(int memberId, Member owner) {
+		return owner.getId() == memberId;
+	}
+
 	private MemberGroup getMemberGroup(int memberId, int groupId) {
-		return MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId, groupId);
+		return MemberGroupServiceUtils.getAcceptMemberGroup(memberGroupRepository, memberId, groupId);
 	}
 
 	private void saveAllMemberGroup(List<Member> members, Group group) {
 		List<MemberGroup> memberGroups = new ArrayList<>();
 		members.forEach(member -> {
-					if (member.getMemberGroups().size() >= 50) {
-						throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
-								member.getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
-					}
-					MemberGroup memberGroup = MemberGroup.of(member, group, group.getColor());
-					if (GroupServiceUtils.isGroupOwner(member, group))
-						memberGroup.setGroupInviteStateAccepted();
-					memberGroups.add(memberGroup);
+				if (member.getMemberGroups().size() >= 50) {
+					throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
+						member.getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
 				}
+				MemberGroup memberGroup = MemberGroup.of(member, group, group.getColor());
+				if (GroupServiceUtils.isGroupOwner(member, group))
+					memberGroup.setGroupInviteStateAccepted();
+				memberGroups.add(memberGroup);
+			}
 		);
 		memberGroupRepository.saveAll(memberGroups);
 	}
@@ -218,8 +222,8 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	private MemberGroup getPendingMemberGroup(Member foundMember, Group foundGroup) {
 		return memberGroupRepository.findPendingMemberGroup(foundMember.getId(),
-						foundGroup.getId())
-				.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
+				foundGroup.getId())
+			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
 	}
 
 	private Member getMember(int ownerId) {
