@@ -65,7 +65,7 @@ class MemberGroupRepositoryTest {
 			em.clear();
 
 			assertThatCode(() -> {
-				MemberGroup findMemberGroup = memberGroupRepository.findMemberGroupByMemberIdAndGroupId(owner.getId(),
+				MemberGroup findMemberGroup = memberGroupRepository.findPendingMemberGroup(owner.getId(),
 					group.getId()).orElseThrow();
 				assertThat(findMemberGroup.getGroup().getName()).isNotNull().isEqualTo(group.getName());
 				assertThat(findMemberGroup.getMember().getEmail()).isNotNull().isEqualTo(owner.getEmail());
@@ -88,7 +88,7 @@ class MemberGroupRepositoryTest {
 		memberGroupRepository.save(MemberGroup.of(savedMember3, savedGroup, labelRed));
 
 		/* When */
-		List<MemberGroup> foundMemberGroups = memberGroupRepository.findAllMemberGroups(savedGroup.getId());
+		List<MemberGroup> foundMemberGroups = memberGroupRepository.findAll(savedGroup.getId());
 
 		/* Then */
 		assertThatCode(() -> {

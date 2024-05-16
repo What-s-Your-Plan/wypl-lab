@@ -180,7 +180,7 @@ public class ScheduleServiceTest {
 					.willReturn(schedule);
 				Member member = MemberFixture.KIM_JEONG_UK.toMember();
 
-				given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+				given(memberGroupRepository.findAcceptMemberGroup(anyInt(), anyInt()))
 					.willReturn(Optional.ofNullable(
 						MemberGroup.of(member, GroupFixture.GROUP_WORK.toGroup(member), Color.labelBlue)));
 				//when

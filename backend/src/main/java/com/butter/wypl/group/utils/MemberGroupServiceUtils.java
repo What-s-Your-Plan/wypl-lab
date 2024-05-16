@@ -20,26 +20,26 @@ public class MemberGroupServiceUtils {
 		throw new CallConstructorException();
 	}
 
-	public static MemberGroup getMemberGroup(
+	public static MemberGroup getAcceptMemberGroup(
 		MemberGroupRepository memberGroupRepository,
 		int memberId,
 		int groupId
 	) {
-		return memberGroupRepository.findMemberGroupByMemberIdAndGroupId(memberId, groupId)
+		return memberGroupRepository.findAcceptMemberGroup(memberId, groupId)
 			.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_MEMBER_GROUP));
 	}
 
-	public static List<MemberGroup> getMemberGroupsByGroupId(MemberGroupRepository memberGroupRepository,
+	public static List<MemberGroup> getAcceptedMemberGroupsOfGroup(MemberGroupRepository memberGroupRepository,
 		int groupId) {
-		return memberGroupRepository.findAcceptedMemberGroups(groupId);
+		return memberGroupRepository.findAllAccepted(groupId);
 	}
 
-	public static List<Member> getMembersByGroupId(MemberGroupRepository memberGroupRepository,
+	public static List<Member> getAcceptedMembersOfGroup(MemberGroupRepository memberGroupRepository,
 		int groupId) {
-		return getMemberGroupsByGroupId(memberGroupRepository, groupId)
+		return getAcceptedMemberGroupsOfGroup(memberGroupRepository, groupId)
 			.stream()
 			.map(MemberGroup::getMember)
 			.toList();
 	}
-	
+
 }
