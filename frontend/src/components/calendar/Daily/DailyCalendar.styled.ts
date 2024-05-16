@@ -17,6 +17,7 @@ const ScheduleContainer = styled.div`
     flex
     gap-4
     content-center
+    cursor-pointer
   `}
 `;
 
