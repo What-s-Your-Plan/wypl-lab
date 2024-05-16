@@ -88,7 +88,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 		Member foundMember = getMember(memberId);
 		Group foundGroup = getGroup(groupId);
-		isGroupMember(foundMember.getId(), getMembersByGroupId(memberGroupRepository, foundGroup.getId()));
+		isGroupMember(foundMember.getId(), getAcceptedMembersOfGroup(memberGroupRepository, foundGroup.getId()));
 
 		foundGroup.updateGroupInfo(updateRequest.name(), updateRequest.color());
 		return new GroupResponse(foundGroup.getId(), foundGroup.getName(), foundGroup.getColor());
@@ -101,7 +101,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		Member foundMember = getMember(memberId);
 		validateOwnerPermission(foundMember, foundGroup, HAS_NOT_DELETE_PERMISSION);
 
-		List<MemberGroup> findMemberGroups = getMemberGroupsByGroupId(memberGroupRepository, groupId);
+		List<MemberGroup> findMemberGroups = getAcceptedMemberGroupsOfGroup(memberGroupRepository, groupId);
 		findMemberGroups.forEach(BaseEntity::delete);
 		foundGroup.delete();
 	}

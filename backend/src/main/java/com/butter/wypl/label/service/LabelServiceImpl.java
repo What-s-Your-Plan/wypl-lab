@@ -80,7 +80,7 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 	@Override
 	public AllLabelListResponse getAllLabelsByMemberId(int memberId) {
 		List<Label> labels = labelRepository.findByMemberId(memberId);
-		List<MemberGroup> memberGroups = memberGroupRepository.findMemberGroupsByMemberId(memberId);
+		List<MemberGroup> memberGroups = memberGroupRepository.findAllWithMemberAndGroupByMemberId(memberId);
 
 		List<AllLabelResponse> allLabelResponseList = new ArrayList<>();
 		for (Label label : labels) {

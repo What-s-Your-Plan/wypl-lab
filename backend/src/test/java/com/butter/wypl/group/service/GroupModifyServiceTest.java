@@ -178,8 +178,8 @@ class GroupModifyServiceTest {
 
 			MemberGroup memberGroup = MemberGroup.of(member, group, Color.labelBrown);
 			List<MemberGroup> memberGroups = List.of(memberGroup);
-			given(memberGroupRepository.findAcceptedMemberGroups(groupId))
-					.willReturn(memberGroups);
+			given(memberGroupRepository.findAllAccepted(groupId))
+				.willReturn(memberGroups);
 
 			/* When */
 			groupModifyService.deleteGroup(memberId, groupId);

@@ -56,7 +56,7 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		//그룹일 경우 멤버가 포함되었는지 확인
 		if (schedule.getGroupId() != null) {
-			MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId, schedule.getScheduleId());
+			MemberGroupServiceUtils.getAcceptMemberGroup(memberGroupRepository, memberId, schedule.getScheduleId());
 		}
 
 		//멤버-일정 테이블 업데이트

@@ -46,7 +46,7 @@ public class LabelMockServiceTest {
 		given(labelRepository.findByMemberId(anyInt()))
 			.willReturn(List.of(label));
 
-		given(memberGroupRepository.findMemberGroupsByMemberId(anyInt()))
+		given(memberGroupRepository.findAllWithMemberAndGroupByMemberId(anyInt()))
 			.willReturn(List.of(memberGroup));
 
 		// When

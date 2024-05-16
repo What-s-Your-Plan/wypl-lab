@@ -3,9 +3,11 @@ package com.butter.wypl.group.service;
 import static com.butter.wypl.global.common.Color.*;
 import static com.butter.wypl.group.fixture.GroupFixture.*;
 import static com.butter.wypl.member.fixture.MemberFixture.*;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -56,7 +58,7 @@ class GroupModifyServiceJpaTest {
 			/* Given */
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
 			Group group = groupRepository.save(
-					Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
+				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
 			memberGroupRepository.save(MemberGroup.of(member, group, labelYellow, GroupInviteState.ACCEPTED));
 
 			em.flush();
@@ -66,7 +68,7 @@ class GroupModifyServiceJpaTest {
 			Color modifyGroupColor = labelPink;
 
 			GroupUpdateRequest updateRequest = new GroupUpdateRequest(modifyGroupName,
-					modifyGroupColor);
+				modifyGroupColor);
 
 			/* When */
 			groupModifyService.updateGroup(member.getId(), group.getId(), updateRequest);
@@ -86,7 +88,7 @@ class GroupModifyServiceJpaTest {
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
 			Member otherMember = memberRepository.save(KIM_JEONG_UK.toMember());
 			Group group = groupRepository.save(
-					Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
+				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
 
 			em.flush();
 			em.clear();
@@ -96,9 +98,45 @@ class GroupModifyServiceJpaTest {
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-						groupModifyService.updateGroup(otherMember.getId(), group.getId(), updateRequest);
-					}).isInstanceOf(GroupException.class)
-					.hasMessageContaining(GroupErrorCode.IS_NOT_GROUP_MEMBER.getMessage());
+					groupModifyService.updateGroup(otherMember.getId(), group.getId(), updateRequest);
+				}).isInstanceOf(GroupException.class)
+				.hasMessageContaining(GroupErrorCode.IS_NOT_GROUP_MEMBER.getMessage());
+		}
+	}
+
+	@Nested
+	@DisplayName("그룹 탈퇴 테스트")
+	class leaveGroupTest {
+
+		private Member owner;
+		private Member member1;
+		private Group group;
+		private MemberGroup memberGroup1;
+		private MemberGroup memberGroup2;
+
+		@BeforeEach
+		void setUp() {
+			owner = memberRepository.save(HAN_JI_WON.toMemberWithId(1));
+			member1 = memberRepository.save(KIM_JEONG_UK.toMemberWithId(2));
+			group = groupRepository.save(GROUP_STUDY.toGroup(owner));
+			memberGroup1 = memberGroupRepository.save(MemberGroup.of(member1, group));
+			memberGroup2 = memberGroupRepository.save(MemberGroup.of(owner, group));
+			memberGroup2.setGroupInviteStateAccepted();
+			memberGroup1.setGroupInviteStateAccepted();
+			em.flush();
+			em.clear();
+		}
+
+		@Test
+		@DisplayName("그룹 탈퇴 성공")
+		void whenSuccess() {
+			System.out.println("================");
+			assertThatCode(() -> {
+				groupModifyService.leaveGroup(member1.getId(), group.getId());
+			}).doesNotThrowAnyException();
+			em.flush();
+			em.clear();
+
 		}
 	}
 }

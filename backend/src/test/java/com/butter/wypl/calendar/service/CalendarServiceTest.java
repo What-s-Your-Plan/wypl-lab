@@ -65,7 +65,7 @@ public class CalendarServiceTest {
 			Member member = MemberFixture.JWA_SO_YEON.toMember();
 			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
 
-			lenient().when(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+			lenient().when(memberGroupRepository.findAcceptMemberGroup(anyInt(), anyInt()))
 				.thenReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 		}
 
@@ -232,7 +232,7 @@ public class CalendarServiceTest {
 			given(groupRepository.findById(anyInt()))
 				.willReturn(Optional.of(group));
 
-			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+			given(memberGroupRepository.findAcceptMemberGroup(anyInt(), anyInt()))
 				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 
 			// When
@@ -265,7 +265,7 @@ public class CalendarServiceTest {
 			given(groupRepository.findById(anyInt()))
 				.willReturn(Optional.of(group));
 
-			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+			given(memberGroupRepository.findAcceptMemberGroup(anyInt(), anyInt()))
 				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 
 			// When
@@ -298,7 +298,7 @@ public class CalendarServiceTest {
 			given(groupRepository.findById(anyInt()))
 				.willReturn(Optional.of(group));
 
-			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+			given(memberGroupRepository.findAcceptMemberGroup(anyInt(), anyInt()))
 				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 
 			// When
@@ -331,7 +331,7 @@ public class CalendarServiceTest {
 			given(groupRepository.findById(anyInt()))
 				.willReturn(Optional.of(group));
 
-			given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
+			given(memberGroupRepository.findAcceptMemberGroup(anyInt(), anyInt()))
 				.willReturn(Optional.ofNullable(MemberGroup.of(member, group, Color.labelBlue)));
 
 			// When
