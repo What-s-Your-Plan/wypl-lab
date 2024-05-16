@@ -19,6 +19,7 @@ public enum ScheduleErrorCode implements ErrorCode {
 	NOT_APPROPRIATE_DURATION(HttpStatus.BAD_REQUEST, "SCHEDULE_007", "일정 기간이 적절하지 않습니다."),
 	NOT_APPROPRIATE_DAY_OF_WEEK(HttpStatus.BAD_REQUEST, "SCHEDULE_008", "일정 반복의 dayOfWeek 값이 잘못되었습니다."),
 	NOT_APPROPRIATE_REPETITION_DURATION(HttpStatus.BAD_REQUEST, "SCHEDULE_009", "일정 반복의 기간이 적절하지 않습니다."),
+	NOT_EXIST_REPETITION_START_DATE(HttpStatus.BAD_REQUEST, "SCHEDULE_010", "일정 반복의 시작 시간이 없습니다."),
 	;
 	private final HttpStatus httpStatus;
 	private final String errorCode;
