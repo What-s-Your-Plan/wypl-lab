@@ -33,6 +33,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
     ...initialSchedule,
     category,
     members: [{ member_id: memberId as number }],
+    groupId: groupId ?? null,
   });
 
   const closeCreate = () => {
@@ -58,6 +59,8 @@ function CalendarContent({ category, groupId }: CalendarProps) {
 
   const closeDetail = () => {
     setDetailOpen(false);
+    setNeedUpdate(true);
+    renderCalender();
   };
 
   const renderCalender = () => {
@@ -70,7 +73,9 @@ function CalendarContent({ category, groupId }: CalendarProps) {
             handleSkedClick={openDetail}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
-            goDay={() => {setCalendarType('DAY')}}
+            goDay={() => {
+              setCalendarType('DAY');
+            }}
           />
         );
       case 'WEEK':

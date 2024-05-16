@@ -127,6 +127,7 @@ function SkedDetailModal({
           handleChange={handleChange}
           setStates={setForm}
           schedule={schedule}
+          handleClose={handleClose}
         />
       }
     />

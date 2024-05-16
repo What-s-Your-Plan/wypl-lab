@@ -218,7 +218,7 @@ function Description({ states, handleChange }: ChangeProps) {
 }
 
 function Label({ states, setStates }: SetProps) {
-  const { labels, setLabels } = useDateStore()
+  const { labels, setLabels } = useDateStore();
   const [color, setColor] = useState<LabelColorsType>('labelRed');
   const [create, setCreate] = useState<boolean>(false);
   const handleLabel = (value: Label) => {
@@ -240,8 +240,8 @@ function Label({ states, setStates }: SetProps) {
           list={[
             null,
             ...labels.filter((label) => {
-              return label.category === 'MEMBER'
-            })
+              return label.category === 'MEMBER';
+            }),
           ]}
           selected={states.label}
           setSelected={handleLabel}
@@ -260,9 +260,9 @@ function Label({ states, setStates }: SetProps) {
                 <CreateLabel
                   color={color}
                   setColor={setColor}
-                  handleKeyDown={async() => {
-                    const newLabel = await getLabelList()
-                    setLabels(newLabel)
+                  handleKeyDown={async () => {
+                    const newLabel = await getLabelList();
+                    setLabels(newLabel);
                     setCreate(false);
                   }}
                 />
@@ -285,7 +285,7 @@ function Label({ states, setStates }: SetProps) {
 }
 
 function Users({ states, setStates }: SetProps) {
-  // 추후 수정 예정
+  // TODO: 추후 수정 예정
   const handleSelected = (value: Member) => {
     setStates((prev) => {
       return {

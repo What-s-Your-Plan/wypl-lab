@@ -21,6 +21,7 @@ import { Chevrons } from '../DatePicker.styled';
 
 import ChevronRight from '@/assets/icons/chevronRight.svg';
 import ChevronLeft from '@/assets/icons/chevronLeft.svg';
+import useLoading from '@/hooks/useLoading';
 
 export type LongSchedule = {
   schedule: CalendarSchedule;
@@ -44,6 +45,7 @@ function WeeklyCalendar({
   setUpdateFalse,
   handleSkedClick,
 }: WeeklyProps) {
+  const { canStartLoading, endLoading } = useLoading();
   const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
   const [firstDay, setFirstDay] = useState<Date | null>(null);
   const [height, setHeight] = useState<number>(0);
@@ -72,8 +74,16 @@ function WeeklyCalendar({
   };
 
   const updateInfo = useCallback(async () => {
+    if (canStartLoading()) {
+      return;
+    }
     if (category === 'MEMBER') {
-      const response = await getCalendars('WEEK', dateToString(selectedDate));
+      const response = await getCalendars(
+        'WEEK',
+        dateToString(selectedDate),
+      ).finally(() => {
+        endLoading();
+      });
 
       if (response) {
         setOriginSked(response.schedules);
@@ -83,12 +93,18 @@ function WeeklyCalendar({
         'WEEK',
         groupId,
         dateToString(selectedDate),
-      );
+      ).finally(() => {
+        endLoading();
+      });
       if (response) {
         setOriginSked(response.schedules);
       }
     }
-  }, [selectedDate]);
+  }, [selectedDate, groupId]);
+
+  useEffect(() => {
+    updateInfo();
+  }, [groupId]);
 
   const filteredSked = useCallback(() => {
     if (firstDay) {

@@ -1,12 +1,14 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, Fragment } from 'react';
 import getGroupCalendars from '@/services/calendar/getGroupCalendars';
 import getCalendars from '@/services/calendar/getCalendars';
 import useDateStore from '@/stores/DateStore';
 import { dateToString, getTime } from '@/utils/DateUtils';
-import * as S from './DailyCalendar.styled';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 import useMemberStore from '@/stores/MemberStore';
 import { labelFilter } from '@/utils/FilterUtils';
+
+import * as S from './DailyCalendar.styled';
+import useLoading from '@/hooks/useLoading';
 
 type DailyProps = {
   category: 'MEMBER' | 'GROUP';
@@ -16,29 +18,54 @@ type DailyProps = {
   handleSkedClick: (id: number) => void;
 };
 
-function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse, handleSkedClick }: DailyProps) {
+function DailyCalendar({
+  category,
+  groupId,
+  needUpdate,
+  setUpdateFalse,
+  handleSkedClick
+}: DailyProps) {
+  const { canStartLoading, endLoading } = useLoading();
   const { selectedDate, selectedLabels } = useDateStore();
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
   const { mainColor } = useMemberStore();
 
   const updateInfo = useCallback(async () => {
+    if (canStartLoading()) {
+      return;
+    }
     if (category === 'MEMBER') {
-      const response = await getCalendars('DAY', dateToString(selectedDate));
+      const response = await getCalendars(
+        'DAY',
+        dateToString(selectedDate),
+      ).finally(() => {
+        endLoading();
+      });
       if (response) {
         setOriginSked(response.schedules);
       }
     } else if (category === 'GROUP' && groupId) {
-      const response = await getGroupCalendars('Day', groupId, dateToString(selectedDate));
+      const response = await getGroupCalendars(
+        'DAY',
+        groupId,
+        dateToString(selectedDate),
+      ).finally(() => {
+        endLoading();
+      });
       if (response) {
         setOriginSked(response.schedules);
       }
     }
-  }, [selectedDate]);
+  }, [selectedDate, groupId]);
+
+  useEffect(() => {
+    updateInfo();
+  }, [groupId]);
 
   const filteredSked = useCallback(() => {
-    setSchedules(labelFilter(originSked, selectedLabels))
-  }, [originSked, selectedLabels])
+    setSchedules(labelFilter(originSked, selectedLabels));
+  }, [originSked, selectedLabels]);
 
   useEffect(() => {
     updateInfo();
@@ -46,13 +73,13 @@ function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse, handleSk
   }, [selectedDate, needUpdate]);
 
   useEffect(() => {
-    filteredSked()
-  }, [filteredSked])
+    filteredSked();
+  }, [filteredSked]);
 
   const renderSchedule = () => {
     return schedules.map((schedule, idx) => {
       return (
-        <>
+        <Fragment key={idx}>
           {idx !== 0 && (
             <>
               <div className="w-8 h-10 flex justify-center" key={`line${idx}`}>
@@ -78,7 +105,7 @@ function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse, handleSk
               <p className="flex">{schedule.description}</p>
             </S.ScheduleContents>
           </S.ScheduleContainer>
-        </>
+        </Fragment>
       );
     });
   };
