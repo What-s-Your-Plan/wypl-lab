@@ -55,8 +55,15 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 		Schedule schedule = scheduleRepository.save(scheduleCreateRequest.toEntity(label)); //반복이 없다는 가정하에 저장
 
 		//그룹일 경우 멤버가 포함되었는지 확인
+		List<MemberIdResponse> memberIdResponses = new ArrayList<>();
+
 		if (schedule.getGroupId() != null) {
-			MemberGroupServiceUtils.getAcceptMemberGroup(memberGroupRepository, memberId, schedule.getGroupId());
+			memberIdResponses.addAll(
+				MemberGroupServiceUtils.getAcceptedMembersOfGroup(memberGroupRepository, schedule.getGroupId())
+					.stream()
+					.map(member -> new MemberIdResponse(member.getId())).toList());
+		} else {
+			memberIdResponses.add(new MemberIdResponse(memberId));
 		}
 
 		//멤버-일정 테이블 업데이트

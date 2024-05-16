@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @SQLRestriction("deleted_at is null")
-public class  	Schedule extends BaseEntity {
+public class Schedule extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -122,6 +122,7 @@ public class  	Schedule extends BaseEntity {
 	}
 
 	private void durationValidation(LocalDateTime startDate, LocalDateTime endDate) {
+		dateValidation(startDate, endDate);
 		if (startDate.isAfter(endDate) || startDate.isEqual(endDate)) {
 			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_DURATION);
 		}
@@ -131,6 +132,8 @@ public class  	Schedule extends BaseEntity {
 		if (repetition == null) {
 			return;
 		}
+
+		weekValidation(repetition.getWeek());
 
 		long scheduleDuration = Duration.between(startDate, endDate).toMinutes();
 
@@ -148,6 +151,30 @@ public class  	Schedule extends BaseEntity {
 
 		if (scheduleDuration > repetitionDuration) {
 			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_REPETITION_DURATION);
+		}
+	}
+
+	private void dateValidation(LocalDateTime startDate, LocalDateTime endDate) {
+		if (startDate == null || endDate == null) {
+			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_DATE);
+		}
+
+		if (startDate.isBefore(LocalDateTime.of(1970, 1, 1, 0, 0))) {
+			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_DATE);
+		}
+
+		if (endDate.isAfter(LocalDateTime.of(2050, 12, 31, 11, 59))) {
+			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_DATE);
+		}
+	}
+
+	private void weekValidation(Integer week) {
+		if (week == null) {
+			return;
+		}
+
+		if (week <= 0 || week > 100) {
+			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_WEEK);
 		}
 	}
 }
