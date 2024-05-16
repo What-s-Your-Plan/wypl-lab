@@ -43,7 +43,7 @@ public class CustomExceptionHandler {
 	protected ResponseEntity<Message<String>> asyncRequestTimeoutExceptionHandler(AsyncRequestTimeoutException e,
 		WebRequest request) {
 		String errorMessage = "비동기 요청 Timeout";
-		log.error("\n 에러 발생 정보 => {} \n 에러유형 => {} \n 메시지 => {}"
+		log.warn("\n 경고 정보 => {} \n 경고 유형 => {} \n 메시지 => {}"
 			, request.getDescription(false)
 			, e.getClass().getSimpleName()
 			, errorMessage, e
