@@ -2,6 +2,8 @@ import Modal from '@/components/common/Modal';
 import useForm from '@/hooks/useForm';
 import SchedulePanel from '@/components/schedule/SchedulePanel';
 import postSchedule from '@/services/schedule/postSchedule';
+import { useParams } from 'react-router-dom';
+import { useEffect } from 'react';
 
 type ScheduleModalProps = {
   isOpen: boolean;
@@ -20,6 +22,17 @@ function ScheduleModal({
     Schedule & Repeat,
     void
   >(init, postSchedule);
+
+  const { groupId } = useParams();
+
+  useEffect(() => {
+    setForm((prev) => {
+      return {
+        ...prev,
+        groupId: Number(groupId),
+      };
+    });
+  }, [isOpen]);
 
   const handleConfirmClick = async () => {
     await handleSubmit();
