@@ -52,6 +52,8 @@ function CalendarContent() {
 
   const closeDetail = () => {
     setDetailOpen(false);
+    setNeedUpdate(true);
+    renderCalender();
   };
 
   const renderCalender = () => {

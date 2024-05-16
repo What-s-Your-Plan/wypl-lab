@@ -21,7 +21,7 @@ function SkedDetailModal({
       confirm={{ content: '저장', handleConfirm:handleConfirm}}
       title={<></>}
       contents={
-        <SkedDetailPanel scheduleId={scheduleId} />
+        <SkedDetailPanel scheduleId={scheduleId} handleClose = {handleClose}/>
       }
     />
   );
