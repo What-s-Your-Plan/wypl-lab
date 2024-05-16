@@ -1,0 +1,27 @@
+const initialSchedule: Schedule & Repeat = {
+  title: '',
+  description: '',
+  startDate: '',
+  endDate: '',
+  isAllday: false,
+  startAMPM: 'AM',
+  endAMPM: 'AM',
+  startHour: 12,
+  endHour: 12,
+  startMinute: 0,
+  endMinute: 0,
+  category: 'MEMBER',
+  groupId: null,
+  label: null,
+  members: [],
+  isRepetition: false,
+  repetitionCycle: '매일',
+  week: 1,
+  dayOfWeek: 0,
+  day: 1,
+  month: 1,
+  period: '계속 반복',
+  endRDate: '',
+};
+
+export default initialSchedule;

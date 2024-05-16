@@ -1,0 +1,162 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 900;
+  font-display: auto;
+  src:
+    url('$/fonts/Pretendard-Black.woff2') format('font-woff2'),
+    url('$/fonts/Pretendard-Black.woff') format('font-woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 800;
+  font-display: auto;
+  src:
+    url('$/fonts/Pretendard-ExtraBold.woff2') format('font-woff2'),
+    url('$/fonts/Pretendard-ExtraBold.woff') format('font-woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 700;
+  font-display: auto;
+  src:
+    url('$/fonts/Pretendard-Bold.woff2') format('font-woff2'),
+    url('$/fonts/Pretendard-Bold.woff') format('font-woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 600;
+  font-display: auto;
+  src:
+    url('$/fonts/Pretendard-SemiBold.woff2') format('font-woff2'),
+    url('$/fonts/Pretendard-SemiBold.woff') format('font-woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 500;
+  font-display: auto;
+  src:
+    url('$/fonts/Pretendard-Medium.woff2') format('font-woff2'),
+    url('$/fonts/Pretendard-Medium.woff') format('font-woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 400;
+  font-display: auto;
+  src:
+    url('$/fonts/Pretendard-Regular.woff2') format('font-woff2'),
+    url('$/fonts/Pretendard-Regular.woff') format('font-woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 300;
+  font-display: auto;
+  src:
+    url('$/fonts/Pretendard-Light.woff2') format('font-woff2'),
+    url('$/fonts/Pretendard-Light.woff') format('font-woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 200;
+  font-display: auto;
+  src:
+    url('$/fonts/Pretendard-ExtraLight.woff2') format('font-woff2'),
+    url('$/fonts/Pretendard-ExtraLight.woff') format('font-woff');
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  font-weight: 100;
+  font-display: auto;
+  src:
+    url('$/fonts/Pretendard-Thin.woff2') format('font-woff2'),
+    url('$/fonts/Pretendard-Thin.woff') format('font-woff');
+}
+
+:root {
+  font-family: 'Pretendard', Inter, system-ui, Avenir, Helvetica, Arial,
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #2a2e34;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 임의의 영역 생성 */
+.scrollBar {
+  overflow-y: scroll;
+}
+
+/* 아래의 모든 코드는 영역::코드로 사용 */
+.scrollBar::-webkit-scrollbar {
+  width: 10px; /* 스크롤바의 너비 */
+}
+
+.scrollBar::-webkit-scrollbar-thumb {
+  height: 10%; /* 스크롤바의 길이 */
+  background: rgba(202, 150, 92, 0.4); /* 스크롤바의 색상 */
+
+  border-radius: 10px;
+}
+
+.scrollBar::-webkit-scrollbar-track {
+  background: rgba(250, 250, 249, 0.1); /*스크롤바 뒷 배경 색상*/
+  border-radius: 10px; /* 스크롤바 배경 모서리 둥글게 */
+}
+
+.scrollBar::-webkit-scrollbar-button:vertical:start:decrement,
+.sidebar.close
+  > .copy-sub
+  > .sub-menu::-webkit-scrollbar-button:vertical:start:increment {
+  display: block;
+  height: 15px;
+}
+
+.scrollBar::-webkit-scrollbar-button:vertical:end:decrement {
+  display: block;
+  width: 10px;
+}
+
+.whiteImg {
+  filter: invert(87%) sepia(40%) saturate(0%) hue-rotate(154deg)
+    brightness(111%) contrast(96%);
+}
+
+.shaking {
+  animation: vibration 0.3s infinite;
+}
+
+@keyframes vibration {
+  0%,
+  100% {
+    transform: rotate(0.5deg);
+  }
+  50% {
+    transform: rotate(-0.5deg);
+  }
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox  */
+input[type='number'] {
+  -moz-appearance: textfield;
+}
