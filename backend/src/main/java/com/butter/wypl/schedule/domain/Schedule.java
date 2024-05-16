@@ -1,6 +1,8 @@
 package com.butter.wypl.schedule.domain;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 import org.hibernate.annotations.SQLRestriction;
 
@@ -68,6 +70,7 @@ public class  	Schedule extends BaseEntity {
 		LocalDateTime startDate, LocalDateTime endDate, Label label, Repetition repetition) {
 		titleValidation(title);
 		durationValidation(startDate, endDate);
+		repetitionValidation(startDate, endDate, repetition);
 
 		this.scheduleId = scheduleId;
 		this.title = title;
@@ -95,6 +98,8 @@ public class  	Schedule extends BaseEntity {
 	}
 
 	public void updateRepetition(Repetition repetition) {
+		repetitionValidation(startDate, endDate, repetition);
+
 		this.repetition = repetition;
 	}
 
@@ -120,6 +125,32 @@ public class  	Schedule extends BaseEntity {
 	private void durationValidation(LocalDateTime startDate, LocalDateTime endDate) {
 		if (startDate.isAfter(endDate) || startDate.isEqual(endDate)) {
 			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_DURATION);
+		}
+	}
+
+	private void repetitionValidation(LocalDateTime startDate, LocalDateTime endDate, Repetition repetition) {
+		if (repetition == null) {
+			return;
+		}
+
+		if (repetition.getRepetitionStartDate() == null) {
+			throw new ScheduleException(ScheduleErrorCode.NOT_EXIST_REPETITION_START_DATE);
+		}
+
+		LocalDateTime repetitionStartDate = LocalDateTime.of(repetition.getRepetitionStartDate(), LocalTime.of(0, 0));
+		LocalDateTime repetitionEndDate;
+
+		if (repetition.getRepetitionEndDate() == null) {
+			repetitionEndDate = repetitionStartDate.plusYears(3);
+		} else {
+			repetitionEndDate = LocalDateTime.of(repetition.getRepetitionEndDate(), LocalTime.of(0, 0));
+		}
+
+		long scheduleDuration = Duration.between(startDate, endDate).toMinutes();
+		long repetitionDuration = Duration.between(repetitionStartDate, repetitionEndDate).toMinutes();
+
+		if (scheduleDuration > repetitionDuration) {
+			throw new ScheduleException(ScheduleErrorCode.NOT_APPROPRIATE_REPETITION_DURATION);
 		}
 	}
 }
