@@ -1,8 +1,8 @@
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
 
 import GroupList from '@/components/group/GroupList';
 import CalendarContent from '@/components/calendar/CalendarContent';
+import { useEffect, useState } from 'react';
 
 function GroupPage() {
   const { groupId } = useParams();
@@ -10,12 +10,8 @@ function GroupPage() {
   const [id, setId] = useState<number | undefined>(undefined);
 
   useEffect(() => {
-    if (groupId !== undefined) {
-      setId(Number(groupId));
-    } else {
-      setId(undefined);
-    }
-  }, [groupId]);
+    setId(Number(groupId));
+  }, [window.location.href]);
 
   return (
     <div className="container flex items-center justify-around ss:max-sm:block h-dvh">
