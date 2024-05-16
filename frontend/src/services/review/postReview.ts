@@ -1,19 +1,14 @@
 import { Content } from '@/objects/Content';
-// import { axiosWithAccessToken } from '../axios';
+import { axiosWithAccessToken } from '../axios';
 
-const postReview = (body: {
+async function postReview(body: {
   title: string;
-  scheduleId: number;
+  schedule_id: number;
   contents: Content[];
-}) => {
-  // const response = axiosWithAccessToken.post('/review/v1/reviews', body);
-  // console.log(response);
-  console.log(body);
-  return {
-    body: {
-      review_id: 1,
-    },
-  };
-};
+}): Promise<number> {
+  const response = await axiosWithAccessToken.post('/review/v1/reviews', body);
+  console.log(response);
+  return response.data.body.review_id;
+}
 
 export default postReview;

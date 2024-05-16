@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useDateStore from '@/stores/DateStore';
 import {
   padding0,
@@ -17,6 +17,17 @@ import ChevronRight from '@/assets/icons/chevronRight.svg';
 function DatePicker() {
   const { today, selectedDate, setSelectedDate } = useDateStore();
   const [currCalendar, setCurrCalendar] = useState<Date>(selectedDate);
+
+  useEffect(() => {
+    if (currCalendar.getMonth() !== selectedDate.getMonth()) {
+      const newMonth = new Date(
+        selectedDate.getFullYear(),
+        selectedDate.getMonth(),
+        1,
+      );
+      setCurrCalendar(newMonth);
+    }
+  }, [selectedDate]);
 
   const handlePrevMonth = () => {
     const prevMonth = new Date(
@@ -89,7 +100,7 @@ function DatePicker() {
       </h2>
       <div className="flex items-center justify-between mt-1">
         <button
-          className="text-xs size-6 rounded-md border font-medium border-gray-500"
+          className="text-xs w-fit h-fit p-1 rounded-md border font-medium border-gray-500"
           onClick={() => {
             goToday();
           }}

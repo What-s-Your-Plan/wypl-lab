@@ -9,10 +9,16 @@ import GroupSvg from '@/assets/icons/users.svg';
 import NotepadSvg from '@/assets/icons/notePad.svg';
 import NotificationSvg from '@/assets/icons/bell.svg';
 import { BROWSER_PATH } from '@/constants/Path';
+import useMemberStore from '@/stores/MemberStore';
 
-function NavEventBar() {
+type NavEventBarProps = {
+  changeSheetEvent: (sheet: SheetType) => void;
+};
+
+function NavEventBar({ changeSheetEvent }: NavEventBarProps) {
+  const { profileImage } = useMemberStore();
+
   const navigate = useNavigate();
-
   const gotoPages = (url: string): void => {
     navigate(url);
   };
@@ -39,13 +45,12 @@ function NavEventBar() {
     {
       imageUrl: NotificationSvg,
       alt: '알림',
-      event: () => console.log('회원 알림'),
+      event: () => changeSheetEvent('NOTIFICATION'),
     },
     {
-      // TODO: imageUrl은 추후 사용자의 이미지로 수정
-      imageUrl: NotificationSvg,
+      imageUrl: profileImage,
       alt: '회원',
-      event: () => console.log('회원 프로필'),
+      event: () => changeSheetEvent('MEMBER'),
     },
   ];
 

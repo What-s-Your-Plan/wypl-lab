@@ -12,29 +12,29 @@ import * as DS from './DummyOAuthButton.styled';
 function DummyOAuthButton() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<string>('');
-  const changeEmail = (e: any) => {
-    setEmail(e.target.value);
+  const [dummyEmail, setDummyEmail] = useState<string>('');
+  const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDummyEmail(e.target.value);
   };
 
   const { setAccessToken, setRefreshToken } = useJsonWebTokensStore();
-  const { setMemberId } = useMemberStore();
+  const { setId: setMemberId } = useMemberStore();
 
   const fetchMockJsonWebTokens = async () => {
-    if (email.length < 8 || email.length > 16) {
+    if (dummyEmail.length < 8 || dummyEmail.length > 16) {
       console.warn(
-        `이메일(${email}, ${email.length})의 길이가 8자 미만, 16자 이상입니다.`,
+        `이메일(${dummyEmail}, ${dummyEmail.length})의 길이가 8자 미만, 16자 이상입니다.`,
       );
       return;
     }
 
-    const params: MockIssueTokenParams = { email };
+    const params: MockIssueTokenParams = { email: dummyEmail };
     const body = await mockIssueTokens(params);
     if (body === null) {
       navigate(BROWSER_PATH.LANDING);
       return;
     }
-    updateStores(body);
+    await updateStores(body);
     navigate(BROWSER_PATH.CALENDAR);
   };
 

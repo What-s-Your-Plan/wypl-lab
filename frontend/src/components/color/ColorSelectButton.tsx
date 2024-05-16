@@ -15,9 +15,9 @@ function ColorSelectButton({ color, setColor }: ColorSelectProps) {
   };
   return (
     <PopOver
+      panelPosition='top-8'
       button={
         <ColorCircle
-          as="button"
           $bgColor={color as BgColors}
           $cursor="pointer"
         />

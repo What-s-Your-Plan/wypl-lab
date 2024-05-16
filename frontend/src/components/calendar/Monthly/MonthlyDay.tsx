@@ -3,41 +3,66 @@ import { LabelColorsType } from '@/assets/styles/colorThemes';
 import { DateSchedule } from './MonthlyCalendar';
 import { isSameDay, stringToDate, getDateDiff } from '@/utils/DateUtils';
 import useDateStore from '@/stores/DateStore';
+import useMemberStore from '@/stores/MemberStore';
 
 type MDayProps = {
   date: Date;
+  Gcolor: string | null;
+  firstDay: Date;
   schedules: DateSchedule;
   isCurrentMonth: boolean;
+  handleSkedClick: (id: number) => void;
+  goDay: () => void;
 };
 
-function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
-  const { selectedDate } = useDateStore();
+function MonthlyDay({
+  date,
+  Gcolor,
+  firstDay,
+  schedules,
+  isCurrentMonth,
+  handleSkedClick,
+  goDay
+}: MDayProps) {
+  const { selectedDate, setSelectedDate } = useDateStore();
+  const { mainColor } = useMemberStore();
 
   const renderSchedule = () => {
     return schedules.map((schedule, idx) => {
-      if (idx < 3) {
+      if (idx < 2) {
         if (schedule.length > 0) {
           const start = stringToDate(schedule[0].start_date);
           const end = stringToDate(schedule[0].end_date);
 
-          if (isSameDay(start, date) || date.getDay() === 0) {
+          if (
+            isSameDay(firstDay, date) ||
+            isSameDay(start, date) ||
+            date.getDay() === 0
+          ) {
             const width = Math.min(
               7 - date.getDay(),
               getDateDiff(date, end) + 1,
             );
-            const color = schedule[0].label
-              ? (schedule[0].label!.color as LabelColorsType)
-              : 'labelBrown';
+            const color =
+              Gcolor || schedule[0].label?.color || schedule[0].group?.color || mainColor;
 
             return (
-              <S.ScheduleSpan $color={color} $top={idx} $width={width}>
-                <span className="w-full truncate">{schedule[0].title}</span>
-              </S.ScheduleSpan>
+              <S.ScheduleButton
+                key={idx}
+                $color={color as LabelColorsType}
+                $top={idx}
+                $width={width}
+                onClick={() => {
+                  handleSkedClick(schedule[0].schedule_id);
+                }}
+              >
+                <span className="truncate">{schedule[0].title}</span>
+              </S.ScheduleButton>
             );
           }
         } else {
           return (
-            <S.NoSchedule $top={idx} aria-hidden="true">
+            <S.NoSchedule key={idx} $top={idx} aria-hidden="true">
               no schedule
             </S.NoSchedule>
           );
@@ -45,15 +70,22 @@ function MonthlyDay({ date, schedules, isCurrentMonth }: MDayProps) {
       } else if (idx === 2) {
         if (schedule.length === 0) {
           return (
-            <S.NoSchedule $top={idx} aria-hidden="true">
+            <S.NoSchedule key={idx} $top={idx} aria-hidden="true">
               no schedule
             </S.NoSchedule>
           );
         } else if (schedule.length > 0) {
           return (
-            <span className="truncate h-4 absolute top-12">
-              + {schedule.length}
-            </span>
+            <button
+              key={idx}
+              className="flex items-center h-4 absolute top-8 pl-1 hover:bg-default-coolgray w-full transition-all"
+              onClick={() => {
+                goDay()
+                setSelectedDate(date)
+              }}
+            >
+              <span className="truncate">+ {schedule.length}</span>
+            </button>
           );
         }
       }

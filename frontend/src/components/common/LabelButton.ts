@@ -12,9 +12,12 @@ const LabelButton = styled.button<LabelProps>`
     justify-center
     items-center
     w-fit
+    h-9
+    min-w-14
     px-3
     py-1
     text-default-white
+    font-semibold
   `}
   ${(props) => BgTheme[props.$bgColor]}
 `;

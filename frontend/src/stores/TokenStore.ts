@@ -6,6 +6,7 @@ type JsonWebTokensState = {
   refreshToken: string | null;
   setAccessToken: (newAccessToken: string) => void;
   setRefreshToken: (newRefreshToken: string) => void;
+  resetTokens: () => void;
 };
 
 const useJsonWebTokensStore = create<JsonWebTokensState>()(
@@ -18,6 +19,9 @@ const useJsonWebTokensStore = create<JsonWebTokensState>()(
       },
       setRefreshToken: (newRefreshToken: string) => {
         set(() => ({ refreshToken: newRefreshToken }));
+      },
+      resetTokens: () => {
+        set(() => ({ accessToken: null, refreshToken: null }));
       },
     }),
     {

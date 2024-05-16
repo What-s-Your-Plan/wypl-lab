@@ -1,26 +1,41 @@
-import {
-  LabelColors,
-  LabelColorsType,
-  BgColors,
-} from '@/assets/styles/colorThemes';
+import { LabelColorsType, BgColors } from '@/assets/styles/colorThemes';
 import * as S from '@/components/color/PalettePanelStyle';
 import ColorCircle from '@/components/common/ColorCircle';
 
 type PalettePanelProps = {
   setColor: (color: LabelColorsType) => void;
+  isRounded?: boolean;
 };
 
-function PalettePanel({ setColor }: PalettePanelProps) {
+const palette = [
+  'labelRed',
+  'labelPink',
+  'labelOrange',
+  'labelYellow',
+  'labelGreen',
+  'labelLeaf',
+  'labelBlue',
+  'labelSky',
+  'labelNavy',
+  'labelIndigo',
+  'labelPurple',
+  'labelLavender',
+  'labelCharcoal',
+  'labelBrown',
+];
+
+function PalettePanel({ setColor, isRounded }: PalettePanelProps) {
   const renderColors = () => {
-    return LabelColors.map((color) => {
+    return palette.map((color) => {
       return (
         <S.Element key={color}>
           <ColorCircle
             $bgColor={color as BgColors}
             $cursor="pointer"
             onClick={() => {
-              setColor(color);
+              setColor(color as LabelColorsType);
             }}
+            className={isRounded ? '!rounded-md' : ''}
           />
         </S.Element>
       );

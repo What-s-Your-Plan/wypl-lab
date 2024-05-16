@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Responsive, WidthProvider } from 'react-grid-layout';
 
 import * as S from '@/components/common/Container';
@@ -42,7 +42,7 @@ function WidgetList() {
 
   const handleLongPress = () => {
     pressTimer.current = setTimeout(() => {
-      setIsModifying(true);
+      setIsModifying(false); // 추후 이동하고 싶으면 해당 함수를 `true`로 수정합니다.
     }, 1500);
   };
 
@@ -71,12 +71,8 @@ function WidgetList() {
     }
   };
 
-  useEffect(() => {
-    console.log('isModifying is now', isModifying);
-  }, [isModifying]);
-
   return (
-    <S.Container $width="300" className="!p-2">
+    <S.Container $width="left" className="!p-2">
       <div className="flex justify-end z-50 sticky float-right">
         {isModifying && (
           <Button

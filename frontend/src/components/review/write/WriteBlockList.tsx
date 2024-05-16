@@ -8,13 +8,20 @@ import RSchedule from './RSchedule';
 import ReviewWrite from './ReviewWrite';
 import Button from '@/components/common/Button';
 import { Divider, DividerLabel } from '@/components/common/Divider';
+import useToastStore from '@/stores/ToastStore';
 
 import * as S from '@/components/common/Container';
 import Cancel from '@/assets/icons/x.svg';
 import Save from '@/assets/icons/save.svg';
 import { useEffect } from 'react';
+import patchReview from '@/services/review/patchReview';
 
-function WriteBlockList() {
+type WriteBlockListProps = {
+  reviewId?: number;
+};
+
+function WriteBlockList({ reviewId }: WriteBlockListProps) {
+  const { addToast } = useToastStore();
   const reviewStore = useReviewStore();
   const navigator = useNavigate();
 
@@ -27,8 +34,11 @@ function WriteBlockList() {
 
   const handleDropItem = (event: React.DragEvent) => {
     event.preventDefault();
+    if (reviewStore.contents.length > 100) {
+      alert('회고 블록은 100개까지 추가할 수 있습니다!');
+      return;
+    }
     const dragItem = event.dataTransfer.getData('blockType');
-    console.log(event.dataTransfer.getData('blockType'));
     if (dragItem) {
       reviewStore.addContent(
         reviewStore.contents.length - 1,
@@ -38,17 +48,59 @@ function WriteBlockList() {
   };
 
   const handleCancelClick = () => {
+    reviewStore.resetReview();
     navigator(-1);
   };
 
-  const handleSaveClick = () => {
+  const handleSaveClick = async () => {
     const body = {
       title: reviewStore.title,
-      scheduleId: reviewStore.scheduleId,
+      schedule_id: reviewStore.scheduleId,
       contents: reviewStore.contents,
     };
-    const response = postReview(body);
-    navigator(`/review/${response.body.review_id}`);
+    if (body.title === '') {
+      addToast({
+        duration: 300,
+        message: '회고 제목은 필수입니다.',
+        type: 'ERROR',
+      });
+      return;
+    }
+    if (body.contents.length === 0) {
+      addToast({
+        duration: 300,
+        message: '회고 내용은 필수입니다.',
+        type: 'ERROR',
+      });
+      return;
+    } else {
+      for (var i = 0; i < body.contents.length; i++) {
+        if (!reviewStore.isContentComplete(i)) {
+          addToast({
+            duration: 300,
+            message: `${i + 1}번째 블록이 비어있습니다.`,
+            type: 'ERROR',
+          });
+          reviewStore.setFocusIndex(i);
+          return;
+        }
+      }
+    }
+
+    if (reviewId) {
+      const response = await patchReview(reviewId, body);
+      if (response) {
+        reviewStore.resetReview();
+        navigator(`/review/${response}`);
+      }
+    } else {
+      const response = await postReview(body);
+      console.log(response);
+      if (response) {
+        reviewStore.resetReview();
+        navigator(`/review/${response}`);
+      }
+    }
   };
 
   const preventClose = (e: BeforeUnloadEvent) => {
@@ -64,7 +116,7 @@ function WriteBlockList() {
   }, []);
 
   return (
-    <S.Container $width="800" className="scrollBar flex flex-col gap-4">
+    <S.Container $width="right" className="scrollBar flex flex-col gap-4">
       <div>
         <span className="float-end flex gap-2">
           <Button
@@ -84,7 +136,7 @@ function WriteBlockList() {
         </span>
         <div>
           <RTitle $title={reviewStore.title} $setTitle={reviewStore.setTitle} />
-          <RSchedule $scheduleId={reviewStore.scheduleId} />
+          <RSchedule scheduleId={reviewStore.scheduleId} />
         </div>
       </div>
       <Divider />
@@ -93,10 +145,13 @@ function WriteBlockList() {
           event.preventDefault();
         }}
         onDrop={handleDropItem}
+        className="h-[50vh]"
       >
         {reviewStore.contents.length === 0 ? (
           <S.WhiteContainer $width="900">
-            <DividerLabel>블록을 추가해주세요</DividerLabel>
+            <DividerLabel>
+              좌측 블록 드래그&드랍으로 블록을 추가해주세요
+            </DividerLabel>
           </S.WhiteContainer>
         ) : (
           renderBlockList()

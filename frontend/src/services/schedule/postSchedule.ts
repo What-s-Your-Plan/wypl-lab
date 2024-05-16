@@ -1,4 +1,5 @@
-// import { axiosWithAccessToken } from '@/services/axios';
+import { axiosWithAccessToken } from '@/services/axios';
+import { dateTimeToString } from '@/utils/DateUtils';
 
 async function postSchedule(schedule: Schedule & Repeat) {
   const body: any = {
@@ -6,17 +7,17 @@ async function postSchedule(schedule: Schedule & Repeat) {
     category: schedule.category,
   };
 
-  if (schedule.category === 'Group') {
-    body.groupId = schedule.groupId;
-  } else if (schedule.category === 'Member') {
+  if (schedule.category === 'GROUP') {
+    body.group_id = schedule.groupId;
+  } else if (schedule.category === 'MEMBER') {
     if (schedule.label) {
-      body.labelId = schedule.label.label_id;
+      body.label_id = schedule.label.id;
     }
   }
 
   body.members = schedule.members.map((member) => {
     return {
-      memberId: member.member_id,
+      member_id: member.member_id,
     };
   });
 
@@ -24,56 +25,73 @@ async function postSchedule(schedule: Schedule & Repeat) {
     ? (body.description = schedule.description)
     : null;
 
+  const startDate = new Date(schedule.startDate);
+  const endDate = new Date(schedule.endDate);
   if (schedule.isAllday === true) {
-    body.startDate = new Date(schedule.startDate);
-    body.startDate.setHour(0);
-    body.startDate.setMinutes(0);
-    body.endDate = new Date(schedule.endDate);
-    body.endDate.setHour(24);
-    body.endDate.setMinutes(0);
+    startDate.setHours(0);
+    startDate.setMinutes(0);
+    endDate.setHours(23);
+    endDate.setMinutes(59);
   } else if (schedule.isAllday === false) {
-    let startHour = schedule.startHour === 12 ? 0 : schedule.startHour;
+    let startHour = schedule.startHour === 12 ? 0 : Number(schedule.startHour);
     let startMinute = schedule.startMinute;
-    let endHour = schedule.endHour === 12 ? 0 : schedule.endHour;
+    let endHour = schedule.endHour === 12 ? 0 : Number(schedule.endHour);
     let endMinute = schedule.endMinute;
 
-    schedule.startAMPM === 'PM' ? startHour + 12 : null;
-    schedule.endAMPM === 'PM' ? endHour + 12 : null;
+    schedule.startAMPM === 'PM' ? (startHour += 12) : null;
+    schedule.endAMPM === 'PM' ? (endHour += 12) : null;
 
-    body.startDate = new Date(schedule.startDate);
-    body.startDate.setHour(startHour);
-    body.startDate.setMinutes(startMinute);
-    body.endDate = new Date(schedule.endDate);
-    body.endDate.setHour(endHour);
-    body.endDate.setMinutes(endMinute);
+    startDate.setHours(startHour);
+    startDate.setMinutes(startMinute);
+    endDate.setHours(endHour);
+    endDate.setMinutes(endMinute);
   }
+
+  body.start_date = dateTimeToString(startDate);
+  body.end_date = dateTimeToString(endDate);
 
   if (schedule.isRepetition) {
     body.repetition = {};
-    body.repetition.startDate = schedule.startDate;
+    body.repetition.repetition_start_date = schedule.startDate;
     switch (schedule.repetitionCycle) {
       case '매일':
-        body.repetition.repetitionCycle = 'week';
-        body.week = 1;
-        body.dayOfWeek = 1111111;
+        body.repetition.repetition_cycle = 'WEEK';
+        body.repetition.week = 1;
+        body.repetition.day_of_week = 2 ** 7 - 1;
         break;
       case '매 주':
-        body.repetition.repetitionCycle = 'week';
-        body.week = schedule.week;
-        body.dayOfWeek = schedule.dayOfWeek;
+        body.repetition.repetition_cycle = 'WEEK';
+        body.repetition.week = schedule.week;
+        body.repetition.day_of_week = schedule.dayOfWeek;
         break;
       case '매 달':
-        body.repetition.repetitionCycle = 'month';
+        body.repetition.repetition_cycle = 'MONTH';
+        body.repetition.day_of_week = 0;
         break;
       case '매 년':
-        body.repetition.repetitionCycle = 'year';
+        body.repetition.repetition_cycle = 'YEAR';
+        body.repetition.day_of_week = 0;
         break;
       default:
         break;
     }
-    if (schedule.period === '종료일') {
-      body.repetition.endDate = schedule.endRDate;
+    if (schedule.period === '종료 날짜') {
+      body.repetition.repetition_end_date = schedule.endRDate;
     }
+  }
+
+  try {
+    const response = await axiosWithAccessToken.post(
+      '/schedule/v1/schedules',
+      body,
+    );
+    if (response.status !== 201) {
+      console.log(response.status);
+    } else {
+      console.log(response);
+    }
+  } catch (err) {
+    throw err;
   }
 }
 

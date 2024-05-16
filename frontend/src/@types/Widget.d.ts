@@ -10,3 +10,15 @@ interface Widget {
   widgetType: string;
   layout: Layout;
 }
+
+type Weather = {
+  city: string;
+  weather_id: number;
+  temp: number;
+  min_temp: number;
+  max_temp: number;
+  update_time: string;
+  main: string;
+  desc: string;
+  is_sunrise: boolean;
+};

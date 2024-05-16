@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction, useState } from 'react';
-import * as S from './Styled';
+import * as S from './Schedule.styled';
 import {
   InputDefault,
   InputTitle,
@@ -9,6 +9,7 @@ import LabelButton from '@/components/common/LabelButton';
 import ListBox from '@/components/common/ListBox';
 import Toggle from '@/components/common/Toggle';
 import CreateLabel from '@/components/label/CreateLabel';
+import useDateStore from '@/stores/DateStore';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 import CalendarAddIcon from '@/assets/icons/calendarAdd.svg';
 import ClockIcon from '@/assets/icons/clock.svg';
@@ -18,6 +19,7 @@ import LabelIcon from '@/assets/icons/tag.svg';
 import UsersIcon from '@/assets/icons/users.svg';
 import RepeatIcon from '@/assets/icons/repeat.svg';
 import Plus from '@/assets/icons/plus.svg';
+import getLabelList from '@/services/label/getLabelList';
 
 type ChangeProps = {
   states: Schedule & Repeat;
@@ -52,23 +54,23 @@ function Title({ states, handleChange }: ChangeProps) {
 function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
   const ampm = ['AM', 'PM'];
 
-  const onInputHour = (e: any) => {
-    e.target.value = Math.floor(e.target.value);
-    if (e.target.value < 1) {
-      e.target.value = 1;
-    } else if (e.target.value > 12) {
-      e.target.value = 12;
-    }
-  };
+  // const onInputHour = (e: any) => {
+  //   e.target.value = Math.floor(e.target.value);
+  //   if (e.target.value < 1) {
+  //     e.target.value = 1;
+  //   } else if (e.target.value > 12) {
+  //     e.target.value = 12;
+  //   }
+  // };
 
-  const onInputMinute = (e: any) => {
-    e.target.value = Math.floor(e.target.value);
-    if (e.target.value < 0) {
-      e.target.value = 0;
-    } else if (e.target.value > 59) {
-      e.target.value = 59;
-    }
-  };
+  // const onInputMinute = (e: any) => {
+  //   e.target.value = Math.floor(e.target.value);
+  //   if (e.target.value < 0) {
+  //     e.target.value = 0;
+  //   } else if (e.target.value > 59) {
+  //     e.target.value = 59;
+  //   }
+  // };
 
   const handleAllday = (value: boolean) => {
     setStates((prev) => {
@@ -133,7 +135,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   max="12"
                   value={states.startHour}
                   name="startHour"
-                  onInput={onInputHour}
+                  // onInput={onInputHour}
                   onChange={handleChange}
                 />
                 <span>:</span>
@@ -144,7 +146,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   max="59"
                   value={states.startMinute}
                   name="startMinute"
-                  onInput={onInputMinute}
+                  // onInput={onInputMinute}
                   onChange={handleChange}
                 />
               </S.TimeContainer>
@@ -175,7 +177,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   max="12"
                   value={states.endHour}
                   name="endHour"
-                  onInput={onInputHour}
+                  // onInput={onInputHour}
                   onChange={handleChange}
                 />
                 <span>:</span>
@@ -186,7 +188,7 @@ function Time({ states, handleChange, setStates }: ChangeProps & SetProps) {
                   max="59"
                   value={states.endMinute}
                   name="endMinute"
-                  onInput={onInputMinute}
+                  // onInput={onInputMinute}
                   onChange={handleChange}
                 />
               </S.TimeContainer>
@@ -216,6 +218,7 @@ function Description({ states, handleChange }: ChangeProps) {
 }
 
 function Label({ states, setStates }: SetProps) {
+  const { labels, setLabels } = useDateStore();
   const [color, setColor] = useState<LabelColorsType>('labelRed');
   const [create, setCreate] = useState<boolean>(false);
   const handleLabel = (value: Label) => {
@@ -236,24 +239,9 @@ function Label({ states, setStates }: SetProps) {
           height="h-[44px]"
           list={[
             null,
-            {
-              label_id: 0,
-              title: 'hihi',
-              color: 'labelRed',
-              member_id: 1,
-            },
-            {
-              label_id: 2,
-              title: '123123',
-              color: 'labelGreen',
-              member_id: 1,
-            },
-            {
-              label_id: 3,
-              title: 'hihi',
-              color: 'labelBlue',
-              member_id: 1,
-            },
+            ...labels.filter((label) => {
+              return label.category === 'MEMBER';
+            }),
           ]}
           selected={states.label}
           setSelected={handleLabel}
@@ -267,18 +255,20 @@ function Label({ states, setStates }: SetProps) {
             );
           }}
           topList={
-            <div className="px-3">
+            <div>
               {create ? (
                 <CreateLabel
                   color={color}
                   setColor={setColor}
-                  handleKeyDown={() => {
+                  handleKeyDown={async () => {
+                    const newLabel = await getLabelList();
+                    setLabels(newLabel);
                     setCreate(false);
                   }}
                 />
               ) : (
                 <div
-                  className="w-full h-9 flex justify-center items-center"
+                  className="w-full h-9 flex justify-center items-center hover:bg-main/20"
                   onClick={() => {
                     setCreate(true);
                   }}
@@ -295,7 +285,7 @@ function Label({ states, setStates }: SetProps) {
 }
 
 function Users({ states, setStates }: SetProps) {
-  // 추후 수정 예정
+  // TODO: 추후 수정 예정
   const handleSelected = (value: Member) => {
     setStates((prev) => {
       return {
@@ -346,7 +336,7 @@ function Users({ states, setStates }: SetProps) {
 }
 
 function Repeat({ states, handleChange, setStates }: ChangeProps & SetProps) {
-  const cycle = ['매일', '매 주', '매 달', '매 달 마지막', '매 년'];
+  const cycle = ['매일', '매 주', '매 달', '매 년'];
   const period = ['계속 반복', '종료 날짜'];
 
   const setRepetition = (value: boolean) => {

@@ -18,7 +18,7 @@ function SchedulePanel({
 }: SchedulePanelProps) {
   return (
     <form
-      className="w-[580px] flex flex-col justify-center border-2"
+      className="w-[580px] flex flex-col justify-center"
       onSubmit={(e) => {
         e.preventDefault();
       }}
@@ -30,10 +30,13 @@ function SchedulePanel({
         setStates={setStates}
       />
       <Items.Description states={states} handleChange={handleChange} />
-      <Items.Label states={states} setStates={setStates} />
-      {states.category === 'Member' ? null : (
-        <Items.Users states={states} setStates={setStates} />
+      {states.category === 'MEMBER' && (
+        <Items.Label states={states} setStates={setStates} />
       )}
+      {/* TODO: 추후 회원별로 저장 기능 구현 */}
+      {/* {states.category === 'GROUP' && (
+        <Items.Users states={states} setStates={setStates} />
+      )} */}
       <Items.Repeat
         states={states}
         setStates={setStates}

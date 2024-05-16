@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect } from 'react';
 
-function useForm<S>(
+function useForm<S, R>(
   initialState: S | (() => S), // Object
-  onSubmit: (state: S) => Promise<void>,
+  onSubmit: (state: S) => Promise<R>,
   validate?: (values: S) => Array<boolean>,
 ): {
   form: S;
@@ -12,15 +12,19 @@ function useForm<S>(
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLTextAreaElement>,
   ) => void;
-  handleSubmit: () => Promise<void>;
+  handleSubmit: () => Promise<R | null>;
   setForm: Dispatch<SetStateAction<S>>;
 } {
-  const [form, setForm] = useState<S>({ ...(initialState as S) });
+  const [form, setForm] = useState({ ...initialState } as S);
   const [errors, setErrors] = useState<Array<boolean>>(
     Object.keys(initialState as object).map(() => {
       return true;
     }),
   );
+
+  useEffect(() => {
+    setForm({ ...initialState } as S);
+  }, [initialState]);
 
   const handleChange = (
     event:
@@ -36,15 +40,15 @@ function useForm<S>(
     });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (): Promise<R | null> => {
     if (validate) {
       const result = validate(form);
       setErrors(result);
       if (result.includes(false)) {
-        return;
+        return null;
       }
     }
-    await onSubmit(form);
+    return await onSubmit(form);
   };
 
   return { form, errors, handleChange, handleSubmit, setForm };

@@ -2,14 +2,18 @@ import { Dialog, Transition } from '@headlessui/react';
 import React, { Fragment } from 'react';
 import Button from '@/components/common/Button';
 
+type Confirm = {
+  content: string;
+  handleConfirm: (() => void) | (() => Promise<void>);
+};
+
 type ModalProps = {
   isOpen: boolean;
   cancel?: string;
-  confirm?: string;
+  confirm?: Confirm;
   title: React.ReactNode;
   contents: React.ReactNode;
   handleClose: (() => void) | (() => Promise<void>);
-  handleConfirm?: (() => void) | (() => Promise<void>);
 };
 
 function Modal({
@@ -19,7 +23,6 @@ function Modal({
   title,
   contents,
   handleClose,
-  handleConfirm,
 }: ModalProps) {
   return (
     <>
@@ -54,7 +57,7 @@ function Modal({
                 leaveFrom="opacity-100 scale-100"
                 leaveTo="opacity-0 scale-95"
               >
-                <Dialog.Panel className="max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
+                <Dialog.Panel className="transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                   <Dialog.Title as="div">
                     {/* 타이틀 */}
                     {title}
@@ -83,12 +86,13 @@ function Modal({
                         $width="60px"
                         $bgColor="labelBrown"
                         $textColor="white"
-                        onClick={() => {
-                          handleConfirm ? handleConfirm() : null;
+                        $hover={true}
+                        onClick={async () => {
+                          await confirm.handleConfirm();
                           handleClose();
                         }}
                       >
-                        {confirm}
+                        {confirm.content}
                       </Button>
                     ) : null}
                   </div>
