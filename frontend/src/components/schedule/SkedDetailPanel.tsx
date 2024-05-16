@@ -109,10 +109,12 @@ function SkedDetailPanel({ scheduleId, handleClose}: DetailProps) {
           ) : (
             <Items.Member member={schedule.members} />
           )}
-          {schedule.repetition && (
-            <Items.Repeat repeat={schedule.repetition}/>
-          )}
-          <Items.WriteReview handleClick={() => {navigator(`/review/write/${scheduleId}`)}}/>
+          {schedule.repetition && <Items.Repeat repeat={schedule.repetition} />}
+          <Items.WriteReview
+            handleClick={() => {
+              navigator(`/review/write/${scheduleId}`);
+            }}
+          />
         </>
       )}
     </div>

@@ -2,6 +2,7 @@ import { axiosWithAccessToken } from '@/services/axios';
 import { dateTimeToString } from '@/utils/DateUtils';
 
 async function postSchedule(schedule: Schedule & Repeat) {
+  console.log(schedule);
   const body: any = {
     title: schedule.title,
     category: schedule.category,
@@ -11,7 +12,7 @@ async function postSchedule(schedule: Schedule & Repeat) {
     body.group_id = schedule.groupId;
   } else if (schedule.category === 'MEMBER') {
     if (schedule.label) {
-      body.labelId = schedule.label.label_id;
+      body.label_id = schedule.label.id;
     }
   }
 

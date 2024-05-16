@@ -36,6 +36,8 @@ function GroupList() {
     await setMemberGroups(newMemberGroups);
     if (newMemberGroups.group_count > 0) {
       navigate(BROWSER_PATH.GROUP.BASE + '/' + newMemberGroups.groups[0].id);
+    } else {
+      navigate(BROWSER_PATH.GROUP.BASE);
     }
   };
 

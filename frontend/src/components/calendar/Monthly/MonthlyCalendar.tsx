@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+
 import MonthlyDay from './MonthlyDay';
 import {
   isSameDay,
@@ -9,30 +10,40 @@ import {
 import { labelFilter } from '@/utils/FilterUtils';
 import useDateStore from '@/stores/DateStore';
 import getCalendars from '@/services/calendar/getCalendars';
+import getGroupCalendars from '@/services/calendar/getGroupCalendars';
 import { Chevrons } from '../DatePicker.styled';
 
 import ChevronRight from '@/assets/icons/chevronRight.svg';
 import ChevronLeft from '@/assets/icons/chevronLeft.svg';
+import useLoading from '@/hooks/useLoading';
 
 export type DateSchedule = Array<Array<CalendarSchedule>>;
 
 type MonthlyProps = {
+  category: 'MEMBER' | 'GROUP';
+  groupId?: number;
   needUpdate: boolean;
   setUpdateFalse: () => void;
-  handleSkedClick: (id:number) => void;
+  handleSkedClick: (id: number) => void;
+  goDay: () => void;
 };
 
-function MonthlyCalender({ needUpdate, setUpdateFalse, handleSkedClick }: MonthlyProps) {
+function MonthlyCalender({
+  category,
+  groupId,
+  needUpdate,
+  setUpdateFalse,
+  handleSkedClick,
+  goDay,
+}: MonthlyProps) {
   const createInit = (): Array<DateSchedule> => {
     const init = [];
-
     for (let i = 0; i < 42; i++) {
       init.push([[], [], []]);
     }
-
     return init;
   };
-
+  const { canStartLoading, endLoading } = useLoading();
   const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [monthSchedules, setMonthSchedules] =
@@ -66,12 +77,38 @@ function MonthlyCalender({ needUpdate, setUpdateFalse, handleSkedClick }: Monthl
   };
 
   const updateInfo = useCallback(async () => {
-    const response = await getCalendars('MONTH', dateToString(selectedDate));
-
-    if (response) {
-      setOriginSked(response.schedules);
+    if (canStartLoading()) {
+      return;
     }
-  }, [selectedDate]);
+    if (category === 'MEMBER') {
+      const response = await getCalendars(
+        'MONTH',
+        dateToString(selectedDate),
+      ).finally(() => {
+        endLoading();
+      });
+
+      if (response) {
+        setOriginSked(response.schedules);
+      }
+    } else if (category === 'GROUP' && groupId) {
+      const response = await getGroupCalendars(
+        'MONTH',
+        Number(groupId),
+        dateToString(selectedDate),
+      ).finally(() => {
+        endLoading();
+      });
+
+      if (response) {
+        setOriginSked(response.schedules);
+      }
+    }
+  }, [selectedDate, groupId]);
+
+  useEffect(() => {
+    updateInfo();
+  }, [groupId]);
 
   const filteredSked = useCallback(() => {
     if (firstDay) {
@@ -80,10 +117,9 @@ function MonthlyCalender({ needUpdate, setUpdateFalse, handleSkedClick }: Monthl
       for (const sked of labelFilter(originSked, selectedLabels)) {
         let idx = getDateDiff(firstDay, sked.start_date);
         let period = getDateDiff(sked.start_date, sked.end_date);
-        console.log(idx)
         if (idx < 0) {
           period += idx;
-          idx = 0
+          idx = 0;
         }
 
         let row: number | null = null;
@@ -151,6 +187,7 @@ function MonthlyCalender({ needUpdate, setUpdateFalse, handleSkedClick }: Monthl
             firstDay={firstDay}
             schedules={monthSchedules[i]}
             isCurrentMonth={isCurrentMonth(date, selectedDate.getMonth())}
+            goDay={goDay}
           />,
         );
       }

@@ -11,7 +11,7 @@ const initialSchedule: Schedule & Repeat = {
   startMinute: 0,
   endMinute: 0,
   category: 'MEMBER',
-  groupId: 0,
+  groupId: null,
   label: null,
   members: [],
   isRepetition: false,

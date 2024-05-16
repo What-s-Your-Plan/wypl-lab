@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import getCalendars from '@/services/calendar/getCalendars';
+import getGroupCalendars from '@/services/calendar/getGroupCalendars';
 import useDateStore from '@/stores/DateStore';
 import {
   dateToString,
@@ -20,6 +21,7 @@ import { Chevrons } from '../DatePicker.styled';
 
 import ChevronRight from '@/assets/icons/chevronRight.svg';
 import ChevronLeft from '@/assets/icons/chevronLeft.svg';
+import useLoading from '@/hooks/useLoading';
 
 export type LongSchedule = {
   schedule: CalendarSchedule;
@@ -29,11 +31,19 @@ export type LongSchedule = {
 };
 
 type WeeklyProps = {
+  category: 'MEMBER' | 'GROUP';
+  groupId?: number;
   needUpdate: boolean;
   setUpdateFalse: () => void;
 };
 
-function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
+function WeeklyCalendar({
+  category,
+  groupId,
+  needUpdate,
+  setUpdateFalse,
+}: WeeklyProps) {
+  const { canStartLoading, endLoading } = useLoading();
   const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
   const [firstDay, setFirstDay] = useState<Date | null>(null);
   const [height, setHeight] = useState<number>(0);
@@ -62,12 +72,37 @@ function WeeklyCalendar({ needUpdate, setUpdateFalse }: WeeklyProps) {
   };
 
   const updateInfo = useCallback(async () => {
-    const response = await getCalendars('WEEK', dateToString(selectedDate));
-
-    if (response) {
-      setOriginSked(response.schedules);
+    if (canStartLoading()) {
+      return;
     }
-  }, [selectedDate]);
+    if (category === 'MEMBER') {
+      const response = await getCalendars(
+        'WEEK',
+        dateToString(selectedDate),
+      ).finally(() => {
+        endLoading();
+      });
+
+      if (response) {
+        setOriginSked(response.schedules);
+      }
+    } else if (category === 'GROUP' && groupId) {
+      const response = await getGroupCalendars(
+        'WEEK',
+        groupId,
+        dateToString(selectedDate),
+      ).finally(() => {
+        endLoading();
+      });
+      if (response) {
+        setOriginSked(response.schedules);
+      }
+    }
+  }, [selectedDate, groupId]);
+
+  useEffect(() => {
+    updateInfo();
+  }, [groupId]);
 
   const filteredSked = useCallback(() => {
     if (firstDay) {
