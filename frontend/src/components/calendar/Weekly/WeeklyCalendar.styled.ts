@@ -97,12 +97,9 @@ const LScheduleContainer = styled.div<{ $height: number }>`
     relative
     ml-14
     transition-all
+    overflow-x-hidden
     `}
   height: ${(props) => `${props.$height}rem`};
-  &:hover {
-    scale: 103%;
-    z-index: 10;
-  }
 `;
 
 const LScheduleGrid = styled.div<{ $row: number }>`
@@ -128,11 +125,16 @@ const LScheduleButton = styled.button<LScheduleButtonProps>`
     border-x
     border-b
     cursor-pointer
+    transition-all
   `}
   ${(props) => BgTheme[props.$bgColor]}
   grid-column: ${(props) =>
     `${props.$startDay + 1} / span ${props.$period + 1}`};
   grid-row-start: ${(props) => `${props.$row + 1}`};
+  &:hover {
+    scale: 103%;
+    z-index: 10;
+  }
 `;
 
 export {

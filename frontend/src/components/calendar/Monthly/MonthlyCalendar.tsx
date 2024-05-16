@@ -49,6 +49,7 @@ function MonthlyCalender({
   const [monthSchedules, setMonthSchedules] =
     useState<Array<DateSchedule>>(createInit());
   const [firstDay, setFirstDay] = useState<Date | null>(null);
+  const [color, setColor] = useState<string | null>(null);
 
   const handleNextMonth = () => {
     const nextMonth = new Date(
@@ -77,6 +78,7 @@ function MonthlyCalender({
   };
 
   const updateInfo = useCallback(async () => {
+    console.log('sadfasdf')
     if (canStartLoading()) {
       return;
     }
@@ -96,12 +98,13 @@ function MonthlyCalender({
         'MONTH',
         Number(groupId),
         dateToString(selectedDate),
-      ).finally(() => {
-        endLoading();
-      });
-
-      if (response) {
-        setOriginSked(response.schedules);
+        ).finally(() => {
+          endLoading();
+        });
+        
+        if (response) {
+          setOriginSked(response.schedules);
+          setColor(response.group.color)
       }
     }
   }, [selectedDate, groupId]);
@@ -183,6 +186,7 @@ function MonthlyCalender({
           <MonthlyDay
             key={i}
             handleSkedClick={handleSkedClick}
+            Gcolor={color}
             date={date}
             firstDay={firstDay}
             schedules={monthSchedules[i]}
