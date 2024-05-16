@@ -9,6 +9,7 @@ import { labelFilter } from '@/utils/FilterUtils';
 
 import * as S from './DailyCalendar.styled';
 import useLoading from '@/hooks/useLoading';
+import NoContentAnimation from '@/components/animation/NoContent';
 
 type DailyProps = {
   category: 'MEMBER' | 'GROUP';
@@ -23,7 +24,7 @@ function DailyCalendar({
   groupId,
   needUpdate,
   setUpdateFalse,
-  handleSkedClick
+  handleSkedClick,
 }: DailyProps) {
   const { canStartLoading, endLoading } = useLoading();
   const { selectedDate, selectedLabels } = useDateStore();
@@ -87,8 +88,11 @@ function DailyCalendar({
               </div>
             </>
           )}
-          <S.ScheduleContainer key={schedule.schedule_id}
-          onClick={() => {handleSkedClick(schedule.schedule_id)}}
+          <S.ScheduleContainer
+            key={schedule.schedule_id}
+            onClick={() => {
+              handleSkedClick(schedule.schedule_id);
+            }}
           >
             <S.LabelDiv
               $bgColor={
@@ -113,7 +117,7 @@ function DailyCalendar({
   return (
     <>
       {schedules.length === 0 ? (
-        <div>일정을 추가해 주세요</div>
+        <NoContentAnimation />
       ) : (
         <div className="overflow-y-auto h-full scrollBar flex">
           <div className="w-full h-fit p-4 m-auto">{renderSchedule()}</div>
