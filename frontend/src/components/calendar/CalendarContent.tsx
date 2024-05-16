@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as Containers from '@/components/common/Container';
 import DatePicker from '@/components/calendar/DatePicker';
 import MonthlyCalender from '@/components/calendar/Monthly/MonthlyCalendar';
