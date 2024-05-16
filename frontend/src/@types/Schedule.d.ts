@@ -9,10 +9,10 @@ interface Repeat {
 }
 
 type Label = {
-  category: string,
-  id: number,
-  title: string,
-  color: string
+  category: string;
+  id: number;
+  title: string;
+  color: string;
 };
 
 type LabelResponse = {
@@ -46,9 +46,9 @@ interface Schedule {
   startMinute: number;
   endMinute: number;
   category: 'MEMBER' | 'GROUP'; // 개인: Member, 그룹: Group, 필수
-  groupId: number;
+  groupId: number | null;
   label: Label | null;
-  members: Array<{member_id: number}>; // 개인 일정은 한명만
+  members: Array<{ member_id: number }>; // 개인 일정은 한명만
   isRepetition: boolean; // 선택
 }
 
@@ -95,17 +95,17 @@ type ScheduleSimpleResponse = {
 };
 
 type RepetitionResponse = {
-  repetition_id : number
-	repetition_cycle : string,
-	repetition_start_date : string,
-	repetition_end_date : string,
-	day_of_week : number,
-	week : number
-}
+  repetition_id: number;
+  repetition_cycle: string;
+  repetition_start_date: string;
+  repetition_end_date: string;
+  day_of_week: number;
+  week: number;
+};
 
 type FilterResponse = {
-  category: string,
-  id: number,
-  title: string,
-  color: string
-}
+  category: string;
+  id: number;
+  title: string;
+  color: string;
+};

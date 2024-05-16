@@ -3,10 +3,11 @@ import getGroupCalendars from '@/services/calendar/getGroupCalendars';
 import getCalendars from '@/services/calendar/getCalendars';
 import useDateStore from '@/stores/DateStore';
 import { dateToString, getTime } from '@/utils/DateUtils';
-import * as S from './DailyCalendar.styled';
 import { LabelColorsType } from '@/assets/styles/colorThemes';
 import useMemberStore from '@/stores/MemberStore';
 import { labelFilter } from '@/utils/FilterUtils';
+
+import * as S from './DailyCalendar.styled';
 
 type DailyProps = {
   category: 'MEMBER' | 'GROUP';
@@ -15,7 +16,12 @@ type DailyProps = {
   setUpdateFalse: () => void;
 };
 
-function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse }: DailyProps) {
+function DailyCalendar({
+  category,
+  groupId,
+  needUpdate,
+  setUpdateFalse,
+}: DailyProps) {
   const { selectedDate, selectedLabels } = useDateStore();
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
@@ -28,16 +34,20 @@ function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse }: DailyP
         setOriginSked(response.schedules);
       }
     } else if (category === 'GROUP' && groupId) {
-      const response = await getGroupCalendars('Day', groupId, dateToString(selectedDate));
+      const response = await getGroupCalendars(
+        'DAY',
+        groupId,
+        dateToString(selectedDate),
+      );
       if (response) {
         setOriginSked(response.schedules);
       }
     }
-  }, [selectedDate]);
+  }, [selectedDate, groupId]);
 
   const filteredSked = useCallback(() => {
-    setSchedules(labelFilter(originSked, selectedLabels))
-  }, [originSked, selectedLabels])
+    setSchedules(labelFilter(originSked, selectedLabels));
+  }, [originSked, selectedLabels]);
 
   useEffect(() => {
     updateInfo();
@@ -45,8 +55,8 @@ function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse }: DailyP
   }, [selectedDate, needUpdate]);
 
   useEffect(() => {
-    filteredSked()
-  }, [filteredSked])
+    filteredSked();
+  }, [filteredSked]);
 
   const renderSchedule = () => {
     return schedules.map((schedule, idx) => {

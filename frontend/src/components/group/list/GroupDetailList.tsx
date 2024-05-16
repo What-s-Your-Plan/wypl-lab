@@ -66,7 +66,6 @@ function GroupDetailList({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const closeModal = () => {
     setIsModalOpen(false);
-    // TODO: 회원 관리를 여기서 해야겠는데?
   };
   const openModal = () => {
     setIsModalOpen(true);

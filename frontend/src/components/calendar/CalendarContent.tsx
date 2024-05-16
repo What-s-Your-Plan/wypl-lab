@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Containers from '@/components/common/Container';
 import DatePicker from '@/components/calendar/DatePicker';
 import MonthlyCalender from '@/components/calendar/Monthly/MonthlyCalendar';
@@ -33,7 +33,15 @@ function CalendarContent({ category, groupId }: CalendarProps) {
     ...initialSchedule,
     category,
     members: [{ member_id: memberId as number }],
+    groupId: groupId ?? null,
   });
+
+  useEffect(() => {
+    setSkedInit((prev) => ({
+      ...prev,
+      groupId: groupId ?? null,
+    }));
+  }, [groupId]);
 
   const closeCreate = () => {
     setIsCreateOpen(false);

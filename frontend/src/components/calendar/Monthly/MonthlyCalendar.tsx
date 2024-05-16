@@ -94,7 +94,7 @@ function MonthlyCalender({
         setOriginSked(response.schedules);
       }
     }
-  }, [selectedDate]);
+  }, [selectedDate, groupId]);
 
   const filteredSked = useCallback(() => {
     if (firstDay) {
