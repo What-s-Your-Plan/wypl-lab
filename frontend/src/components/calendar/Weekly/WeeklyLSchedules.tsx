@@ -6,9 +6,14 @@ import useMemberStore from '@/stores/MemberStore';
 type LSchedulesProps = {
   lSchedules: Array<LongSchedule>;
   row: number;
+  handleSkedClick: (id: number) => void;
 };
 
-function WeeklyLSchedules({ lSchedules, row }: LSchedulesProps) {
+function WeeklyLSchedules({
+  lSchedules,
+  row,
+  handleSkedClick,
+}: LSchedulesProps) {
   const gridRow = Math.max(2, row);
   const { mainColor } = useMemberStore();
 
@@ -20,15 +25,18 @@ function WeeklyLSchedules({ lSchedules, row }: LSchedulesProps) {
         mainColor;
 
       return (
-        <S.LScheduleSpan
+        <S.LScheduleButton
           key={index}
           $bgColor={bgColor as LabelColorsType}
           $startDay={schedule.startDay}
           $row={schedule.row}
           $period={schedule.period}
+          onClick={() => {
+            handleSkedClick(schedule.schedule.schedule_id);
+          }}
         >
           {schedule.schedule.title}
-        </S.LScheduleSpan>
+        </S.LScheduleButton>
       );
     });
   };

@@ -13,9 +13,10 @@ type DailyProps = {
   groupId?: number;
   needUpdate: boolean;
   setUpdateFalse: () => void;
+  handleSkedClick: (id: number) => void;
 };
 
-function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse }: DailyProps) {
+function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse, handleSkedClick }: DailyProps) {
   const { selectedDate, selectedLabels } = useDateStore();
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
@@ -59,7 +60,9 @@ function DailyCalendar({ category, groupId, needUpdate, setUpdateFalse }: DailyP
               </div>
             </>
           )}
-          <S.ScheduleContainer key={schedule.schedule_id}>
+          <S.ScheduleContainer key={schedule.schedule_id}
+          onClick={() => {handleSkedClick(schedule.schedule_id)}}
+          >
             <S.LabelDiv
               $bgColor={
                 (schedule.label?.color ||

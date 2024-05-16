@@ -54,6 +54,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
   const openDetail = (id: number) => {
     setDetailId(id);
     setDetailOpen(true);
+    console.log('asdafsfd')
   };
 
   const closeDetail = () => {
@@ -80,6 +81,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
             groupId={groupId}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
+            handleSkedClick={openDetail}
           />
         );
       case 'DAY':
@@ -89,6 +91,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
             groupId={groupId}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
+            handleSkedClick={openDetail}
           />
         );
       default:

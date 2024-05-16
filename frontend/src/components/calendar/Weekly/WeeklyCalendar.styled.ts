@@ -18,7 +18,7 @@ type ScheduleListProps = {
   $length: number;
 };
 
-type LScheduleSpanProps = {
+type LScheduleButtonProps = {
   $bgColor: LabelColorsType;
   $startDay: number;
   $row: number;
@@ -76,8 +76,13 @@ const ScheduleButton = styled.button<{ $bgColor: LabelColorsType }>`
     text-xs 
     text-default-white
     leading-5
+    transition-all
   `}
   ${(props) => BgTheme[props.$bgColor as BgColors]}
+  &:hover {
+    scale: 103%;
+    z-index: 10;
+  }
 `;
 
 const LScheduleContainer = styled.div<{ $height: number }>`
@@ -90,8 +95,13 @@ const LScheduleContainer = styled.div<{ $height: number }>`
     grid 
     relative
     ml-14
+    transition-all
     `}
   height: ${(props) => `${props.$height}rem`};
+  &:hover {
+    scale: 103%;
+    z-index: 10;
+  }
 `;
 
 const LScheduleGrid = styled.div<{ $row: number }>`
@@ -105,7 +115,7 @@ const LScheduleGrid = styled.div<{ $row: number }>`
   grid-template-rows: repeat(${(props) => `${props.$row}`}, 1rem);
 `;
 
-const LScheduleSpan = styled.span<LScheduleSpanProps>`
+const LScheduleButton = styled.button<LScheduleButtonProps>`
   ${tw`
     text-default-white
     px-1
@@ -116,6 +126,7 @@ const LScheduleSpan = styled.span<LScheduleSpanProps>`
     z-[5]
     border-x
     border-b
+    cursor-pointer
   `}
   ${(props) => BgTheme[props.$bgColor]}
   grid-column: ${(props) =>
@@ -132,5 +143,5 @@ export {
   ScheduleButton,
   LScheduleContainer,
   LScheduleGrid,
-  LScheduleSpan,
+  LScheduleButton,
 };
