@@ -15,9 +15,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import com.butter.wypl.global.annotation.MockServiceTest;
-import com.butter.wypl.global.common.Color;
-import com.butter.wypl.group.domain.MemberGroup;
-import com.butter.wypl.group.fixture.GroupFixture;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.fixture.LabelFixture;
@@ -180,9 +177,6 @@ public class ScheduleServiceTest {
 					.willReturn(schedule);
 				Member member = MemberFixture.KIM_JEONG_UK.toMember();
 
-				given(memberGroupRepository.findMemberGroupByMemberIdAndGroupId(anyInt(), anyInt()))
-					.willReturn(Optional.ofNullable(
-						MemberGroup.of(member, GroupFixture.GROUP_WORK.toGroup(member), Color.labelBlue)));
 				//when
 				ScheduleDetailResponse result = scheduleService.createSchedule(1,
 					ScheduleCreateRequest.of(schedule, List.of(new MemberIdResponse(1))));

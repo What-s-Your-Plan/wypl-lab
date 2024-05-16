@@ -53,7 +53,7 @@ public class CalendarService {
 	private final GroupRepository groupRepository;
 
 	public CalendarListResponse getCalendarSchedules(int memberId, CalendarType calendarType, Integer labelId,
-		LocalDate startDate) {
+			LocalDate startDate) {
 		if (startDate == null) {
 			startDate = LocalDate.now();
 		}
@@ -75,33 +75,33 @@ public class CalendarService {
 		List<Schedule> schedules;
 		if (labelId == null) {
 			schedules = memberScheduleRepository.getCalendarSchedules(memberId,
-				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-				LocalDateTime.of(endDate, LocalTime.of(23, 59)));
+					LocalDateTime.of(startDate, LocalTime.of(0, 0)),
+					LocalDateTime.of(endDate, LocalTime.of(23, 59)));
 		} else {
 			Label label = LabelServiceUtils.getLabelByLabelId(labelRepository, labelId);
 
 			schedules = memberScheduleRepository.getCalendarSchedulesWithLabel(memberId,
-				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-				LocalDateTime.of(endDate, LocalTime.of(23, 59)),
-				label.getLabelId());
+					LocalDateTime.of(startDate, LocalTime.of(0, 0)),
+					LocalDateTime.of(endDate, LocalTime.of(23, 59)),
+					label.getLabelId());
 		}
 
 		return CalendarListResponse.from(
-			schedules.stream().map(
-				schedule -> CalendarResponse.of(schedule,
-					(schedule.getGroupId() == null) ? null :
-						MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId,
-							schedule.getScheduleId()))
-			).toList()
+				schedules.stream().map(
+						schedule -> CalendarResponse.of(schedule,
+								(schedule.getGroupId() == null) ? null :
+										MemberGroupServiceUtils.getAcceptMemberGroup(memberGroupRepository, memberId,
+												schedule.getGroupId()))
+				).toList()
 		);
 	}
 
 	public GroupCalendarListResponse getGroupCalendarSchedule(int memberId, CalendarType calendarType,
-		LocalDate startDate, int groupId) {
+			LocalDate startDate, int groupId) {
 		//그룹에 속한 멤버인지 확인
 		//그룹의 존재 여부 확인
-		MemberGroup memberGroup = MemberGroupServiceUtils.getMemberGroup(memberGroupRepository, memberId,
-			GroupServiceUtils.findById(groupRepository, groupId).getId());
+		MemberGroup memberGroup = MemberGroupServiceUtils.getAcceptMemberGroup(memberGroupRepository, memberId,
+				GroupServiceUtils.findById(groupRepository, groupId).getId());
 
 		if (startDate == null) {
 			startDate = LocalDate.now();
@@ -122,15 +122,15 @@ public class CalendarService {
 		}
 
 		List<Schedule> schedules = scheduleRepository.findAllByGroupIdAndStartDateBetween(groupId,
-			LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-			LocalDateTime.of(endDate, LocalTime.of(23, 59)));
+				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
+				LocalDateTime.of(endDate, LocalTime.of(23, 59)));
 
 		return GroupCalendarListResponse.of(
-			schedules.stream()
-				.map(schedule -> GroupCalendarResponse.of(schedule,
-					memberScheduleRepository.getMemberWithSchedule(schedule.getScheduleId())))
-				.toList(),
-			memberGroup
+				schedules.stream()
+						.map(schedule -> GroupCalendarResponse.of(schedule,
+								memberScheduleRepository.getMemberWithSchedule(schedule.getScheduleId())))
+						.toList(),
+				memberGroup
 		);
 	}
 
@@ -145,8 +145,8 @@ public class CalendarService {
 		HashMap<LocalDate, Long> yearBlocks = new HashMap<>();
 
 		List<Schedule> schedules = memberScheduleRepository.getCalendarSchedules(memberId,
-			LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-			LocalDateTime.of(endDate, LocalTime.of(0, 0)));
+				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
+				LocalDateTime.of(endDate, LocalTime.of(0, 0)));
 
 		for (Schedule schedule : schedules) {
 			LocalDate scheduleStartDate = schedule.getStartDate().toLocalDate();
@@ -161,10 +161,10 @@ public class CalendarService {
 					diffTime = Duration.between(schedule.getStartDate(), schedule.getEndDate()).toMinutes();
 				} else if (date.isEqual(scheduleStartDate)) {
 					diffTime = Duration.between(schedule.getStartDate(),
-						LocalDateTime.of(scheduleStartDate, LocalTime.of(23, 59))).toMinutes();
+							LocalDateTime.of(scheduleStartDate, LocalTime.of(23, 59))).toMinutes();
 				} else if (date.isEqual(scheduleEndDate)) {
 					diffTime = Duration.between(
-						LocalDateTime.of(scheduleEndDate, LocalTime.of(0, 0)), schedule.getEndDate()).toMinutes();
+							LocalDateTime.of(scheduleEndDate, LocalTime.of(0, 0)), schedule.getEndDate()).toMinutes();
 				} else {
 					diffTime = 24 * 60;
 				}

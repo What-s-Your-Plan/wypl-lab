@@ -988,18 +988,17 @@ paths:
         content:
           application/json;charset=UTF-8:
             schema:
-              $ref: '#/components/schemas/review-v1-reviews-reviewId-1576008846'
+              $ref: '#/components/schemas/review-v1-reviews-1576008846'
             examples:
               review/create:
                 value: "{\r\n  \"schedule_id\" : 0,\r\n  \"title\" : \"공부하기 싫다\",\r\
-                  \n  \"contents\" : [ {\r\n    \"blockType\" : \"emotion\",\r\n \
-                  \   \"emoji\" : \"/src/assets/icons/emoji/tired.svg\",\r\n    \"\
-                  description\" : \"피곤해요\"\r\n  }, {\r\n    \"blockType\" : \"4f\"\
-                  ,\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\",\r\n\
-                  \    \"description\" : \"날씨 너무 좋음\"\r\n  }, {\r\n    \"finding\"\
-                  \ : \"교훈\",\r\n    \"blockType\" : \"4f\",\r\n    \"feelings\" :\
-                  \ \"느낌\",\r\n    \"facts\" : \"팩트\",\r\n    \"future\" : \"향후 헹동\
-                  \"\r\n  } ]\r\n}"
+                  \n  \"contents\" : [ {\r\n    \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
+                  ,\r\n    \"description\" : \"피곤해요\",\r\n    \"blockType\" : \"emotion\"\
+                  \r\n  }, {\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
+                  ,\r\n    \"description\" : \"날씨 너무 좋음\",\r\n    \"blockType\" :\
+                  \ \"4f\"\r\n  }, {\r\n    \"finding\" : \"교훈\",\r\n    \"blockType\"\
+                  \ : \"4f\",\r\n    \"feelings\" : \"느낌\",\r\n    \"facts\" : \"팩\
+                  트\",\r\n    \"future\" : \"향후 헹동\"\r\n  } ]\r\n}"
       responses:
         "201":
           description: "201"
@@ -1049,18 +1048,17 @@ paths:
         content:
           application/json;charset=UTF-8:
             schema:
-              $ref: '#/components/schemas/review-v1-reviews-reviewId-1576008846'
+              $ref: '#/components/schemas/review-v1-reviews-1576008846'
             examples:
               review/update:
                 value: "{\r\n  \"schedule_id\" : 0,\r\n  \"title\" : \"공부하기 싫다\",\r\
-                  \n  \"contents\" : [ {\r\n    \"blockType\" : \"emotion\",\r\n \
-                  \   \"emoji\" : \"/src/assets/icons/emoji/tired.svg\",\r\n    \"\
-                  description\" : \"피곤해요\"\r\n  }, {\r\n    \"blockType\" : \"4f\"\
-                  ,\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\",\r\n\
-                  \    \"description\" : \"날씨 너무 좋음\"\r\n  }, {\r\n    \"finding\"\
-                  \ : \"교훈\",\r\n    \"blockType\" : \"4f\",\r\n    \"feelings\" :\
-                  \ \"느낌\",\r\n    \"facts\" : \"팩트\",\r\n    \"future\" : \"향후 헹동\
-                  \"\r\n  } ]\r\n}"
+                  \n  \"contents\" : [ {\r\n    \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
+                  ,\r\n    \"description\" : \"피곤해요\",\r\n    \"blockType\" : \"emotion\"\
+                  \r\n  }, {\r\n    \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
+                  ,\r\n    \"description\" : \"날씨 너무 좋음\",\r\n    \"blockType\" :\
+                  \ \"4f\"\r\n  }, {\r\n    \"finding\" : \"교훈\",\r\n    \"blockType\"\
+                  \ : \"4f\",\r\n    \"feelings\" : \"느낌\",\r\n    \"facts\" : \"팩\
+                  트\",\r\n    \"future\" : \"향후 헹동\"\r\n  } ]\r\n}"
       responses:
         "200":
           description: "200"
@@ -1119,16 +1117,16 @@ paths:
                 review/getReviewsByMember:
                   value: "{\r\n  \"message\" : \"리뷰 목록 조회에 성공했습니다.\",\r\n  \"body\"\
                     \ : {\r\n    \"review_count\" : 2,\r\n    \"reviews\" : [ {\r\n\
-                    \      \"review_id\" : 0,\r\n      \"created_at\" : \"2024-05-16T03:08:15.1849468\"\
-                    ,\r\n      \"thumbnail_content\" : {\r\n        \"blockType\"\
-                    \ : \"emotion\",\r\n        \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
-                    ,\r\n        \"description\" : \"피곤해요\"\r\n      },\r\n      \"\
-                    title\" : \"공부하기 싫다\"\r\n    }, {\r\n      \"review_id\" : 0,\r\
-                    \n      \"created_at\" : \"2024-05-16T03:08:15.1849468\",\r\n\
-                    \      \"thumbnail_content\" : {\r\n        \"blockType\" : \"\
-                    4f\",\r\n        \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
-                    ,\r\n        \"description\" : \"날씨 너무 좋음\"\r\n      },\r\n  \
-                    \    \"title\" : \"오늘도 공부하기 싫다\"\r\n    } ]\r\n  }\r\n}"
+                    \      \"review_id\" : 0,\r\n      \"created_at\" : \"2024-05-16T11:24:04.0916779\"\
+                    ,\r\n      \"thumbnail_content\" : {\r\n        \"emoji\" : \"\
+                    /src/assets/icons/emoji/tired.svg\",\r\n        \"description\"\
+                    \ : \"피곤해요\",\r\n        \"blockType\" : \"emotion\"\r\n     \
+                    \ },\r\n      \"title\" : \"공부하기 싫다\"\r\n    }, {\r\n      \"\
+                    review_id\" : 0,\r\n      \"created_at\" : \"2024-05-16T11:24:04.0916779\"\
+                    ,\r\n      \"thumbnail_content\" : {\r\n        \"weather\" :\
+                    \ \"/src/assets/icons/weather/sun.svg\",\r\n        \"description\"\
+                    \ : \"날씨 너무 좋음\",\r\n        \"blockType\" : \"4f\"\r\n      },\r\
+                    \n      \"title\" : \"오늘도 공부하기 싫다\"\r\n    } ]\r\n  }\r\n}"
   /review/v1/reviews/detail/{reviewId}:
     get:
       tags:
@@ -1160,14 +1158,14 @@ paths:
                     \ 신촌 테니스\",\r\n      \"category\" : \"MEMBER\",\r\n      \"members\"\
                     \ : [ {\r\n        \"member_id\" : 0,\r\n        \"profile_image\"\
                     \ : null,\r\n        \"nickname\" : \"좌랑둥이\"\r\n      } ]\r\n\
-                    \    },\r\n    \"contents\" : [ {\r\n      \"blockType\" : \"\
-                    emotion\",\r\n      \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
-                    ,\r\n      \"description\" : \"피곤해요\"\r\n    }, {\r\n      \"\
-                    blockType\" : \"4f\",\r\n      \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
-                    ,\r\n      \"description\" : \"날씨 너무 좋음\"\r\n    }, {\r\n    \
-                    \  \"finding\" : \"교훈\",\r\n      \"blockType\" : \"4f\",\r\n\
-                    \      \"feelings\" : \"느낌\",\r\n      \"facts\" : \"팩트\",\r\n\
-                    \      \"future\" : \"향후 헹동\"\r\n    } ]\r\n  }\r\n}"
+                    \    },\r\n    \"contents\" : [ {\r\n      \"emoji\" : \"/src/assets/icons/emoji/tired.svg\"\
+                    ,\r\n      \"description\" : \"피곤해요\",\r\n      \"blockType\"\
+                    \ : \"emotion\"\r\n    }, {\r\n      \"weather\" : \"/src/assets/icons/weather/sun.svg\"\
+                    ,\r\n      \"description\" : \"날씨 너무 좋음\",\r\n      \"blockType\"\
+                    \ : \"4f\"\r\n    }, {\r\n      \"finding\" : \"교훈\",\r\n    \
+                    \  \"blockType\" : \"4f\",\r\n      \"feelings\" : \"느낌\",\r\n\
+                    \      \"facts\" : \"팩트\",\r\n      \"future\" : \"향후 헹동\"\r\n\
+                    \    } ]\r\n  }\r\n}"
   /schedule/v1/schedules:
     post:
       tags:
@@ -1785,22 +1783,6 @@ components:
         message:
           type: string
           description: 응답 메시지
-    member-v1-members-nickname-139893332:
-      required:
-      - message
-      type: object
-      properties:
-        body:
-          required:
-          - nickname
-          type: object
-          properties:
-            nickname:
-              type: string
-              description: 변경한 닉네임
-        message:
-          type: string
-          description: 응답 메시지
     review-v1-reviews-1465059799:
       required:
       - message
@@ -1817,6 +1799,22 @@ components:
         message:
           type: string
           description: 응답 메세지
+    member-v1-members-nickname-139893332:
+      required:
+      - message
+      type: object
+      properties:
+        body:
+          required:
+          - nickname
+          type: object
+          properties:
+            nickname:
+              type: string
+              description: 변경한 닉네임
+        message:
+          type: string
+          description: 응답 메시지
     schedule-v1-schedules1157950338:
       required:
       - message
@@ -3219,7 +3217,7 @@ components:
         color:
           type: string
           description: 변경할 그룹 색상
-    review-v1-reviews-reviewId-1576008846:
+    review-v1-reviews-1576008846:
       required:
       - contents
       - schedule_id

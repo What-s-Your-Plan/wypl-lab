@@ -42,14 +42,14 @@ public class Repetition extends BaseEntity {
 	@Column(name = "repetition_end_date")
 	private LocalDate repetitionEndDate;
 
-	private int week;
+	private Integer week;
 
 	@Column(name = "day_of_week")
 	private int dayOfWeek;
 
 	@Builder
 	public Repetition(int repetitionId, RepetitionCycle repetitionCycle, LocalDate repetitionStartDate,
-		LocalDate repetitionEndDate, int week, int dayOfWeek) {
+		LocalDate repetitionEndDate, Integer week, int dayOfWeek) {
 		dayOfWeekValidation(dayOfWeek);
 		durationValidation(repetitionStartDate, repetitionEndDate);
 
