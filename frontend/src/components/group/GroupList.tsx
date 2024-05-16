@@ -1,84 +1,186 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Disclosure } from '@headlessui/react';
 
-import getMemberGroupList from '@/services/group/getMemberGroupList';
-
+import Tooltip from '../tooltip/Tooltip';
 import { Container } from '../common/Container';
 import { Divider } from '../common/Divider';
 import Button from '../common/Button';
-import InvitedGroupInfo from './InvitedGroupInfo';
-import GroupInfo from './GroupInfo';
-import { Disclosure } from '@headlessui/react';
+import GroupCreateModal from './create/GroupCreateModal';
+import InvitedGroupInfo from './invited/InvitedGroupInfo';
+import GroupDetailList from './list/GroupDetailList';
+
+import getMemberGroupList, {
+  FindMemberGroupsResponse as MemberGroups,
+  FindGroupResponse as MemberGroup,
+} from '@/services/group/getMemberGroupList';
 
 import Envelope from '@/assets/icons/envelope.svg';
 import Users from '@/assets/icons/users.svg';
 import Plus from '@/assets/icons/plus.svg';
 import ChevronDown from '@/assets/icons/chevronDown.svg';
-import GroupCreateModal from './GroupCreateModal';
+import { BROWSER_PATH } from '@/constants/Path';
+import { BgColors } from '@/assets/styles/colorThemes';
 
 function GroupList() {
-  const [groupList, setGroupList] = useState<Group[]>([]);
-  const [invitedGroupList, setInvitedGroupList] = useState<Group[]>([]);
+  const navigate = useNavigate();
+  const [memberGroups, setMemberGroups] = useState<MemberGroups>({
+    group_count: 0,
+    groups: [],
+    invited_group_count: 0,
+    invited_groups: [],
+  });
+
+  const fetchMemberGroups = async () => {
+    const newMemberGroups: MemberGroups = await getMemberGroupList();
+    await setMemberGroups(newMemberGroups);
+    if (newMemberGroups.group_count > 0) {
+      navigate(BROWSER_PATH.GROUP.BASE + '/' + newMemberGroups.groups[0].id);
+    }
+  };
+
+  const handleCreateGroup = (newGroup: MemberGroup) => {
+    setMemberGroups((prev: MemberGroups) => {
+      const updatedGroups: MemberGroup[] = [newGroup, ...prev.groups];
+      return {
+        ...prev,
+        groups: updatedGroups,
+        group_count: updatedGroups.length,
+      };
+    });
+  };
+
+  const handleMoveAcceptedGroupById = (acceptedGroupId: number) => {
+    setMemberGroups((prev: MemberGroups) => {
+      const acceptedGroup: MemberGroup | undefined = prev.invited_groups.find(
+        (group: MemberGroup) => group.id === acceptedGroupId,
+      );
+      if (acceptedGroup === undefined) {
+        return prev;
+      }
+
+      const updatedInvitedGroups = prev.invited_groups.filter(
+        (group: MemberGroup) => group.id !== acceptedGroupId,
+      );
+
+      const updatedGroups: MemberGroup[] = [...prev.groups, acceptedGroup];
+
+      return {
+        groups: updatedGroups,
+        group_count: updatedGroups.length,
+        invited_groups: updatedInvitedGroups,
+        invited_group_count: updatedInvitedGroups.length,
+      };
+    });
+  };
+
+  const handleRefuseGroupById = (refuseGroupId: number) => {
+    setMemberGroups((prev: MemberGroups) => {
+      const updatedInvitedGroups = prev.invited_groups.filter(
+        (group: MemberGroup) => group.id !== refuseGroupId,
+      );
+
+      return {
+        ...prev,
+        invited_groups: updatedInvitedGroups,
+        invited_group_count: updatedInvitedGroups.length,
+      };
+    });
+  };
+
+  /**
+   * 그룹에서 삭제 및 탈퇴할때 그룹의 리스트에서 제거하는 핸들러
+   *
+   * @param deleteGroupId 삭제 및 탈퇴하는 그룹의 식별자
+   */
+  const handleDeleteGroupById = (deleteGroupId: number) => {
+    setMemberGroups((prev: MemberGroups) => {
+      const updateGroups = prev.groups.filter(
+        (group: MemberGroup) => group.id !== deleteGroupId,
+      );
+
+      return {
+        ...prev,
+        group_count: updateGroups.length,
+        groups: updateGroups,
+      };
+    });
+  };
+
+  const handleUpdateGroupById = (updateGroup: GroupUpdateInfo) => {
+    setMemberGroups((prev: MemberGroups) => {
+      const updateGroups = prev.groups.map((group: MemberGroup) => {
+        if (group.id === updateGroup.id) {
+          const newMemberGroup: MemberGroup = {
+            ...group,
+            name: updateGroup.name,
+            color: updateGroup.color as BgColors,
+          };
+          return newMemberGroup;
+        }
+        return group;
+      });
+      return {
+        ...prev,
+        groups: updateGroups,
+      };
+    });
+  };
+
   const [groupCreateInit] = useState<GroupInfo>({
     name: '',
     color: 'labelBrown',
     member_id_list: [],
   });
+
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
-  const handleGroupCreate = () => {
-    console.log('새로운 그룹 생성');
-  };
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
   const openModal = () => {
     setIsModalOpen(true);
   };
+  useEffect(() => {}, [isModalOpen]);
 
   const renderInvitedGroupList = () => {
-    if (!invitedGroupList || invitedGroupList?.length === 0) {
+    if (memberGroups.invited_group_count === 0) {
       return <div>새로운 초대가 없어요</div>;
     }
-    return invitedGroupList?.map((group) => {
+    return memberGroups.invited_groups.map((group: MemberGroup) => {
       return (
         <InvitedGroupInfo
           key={group.id}
           group={group}
-          fetchList={fetchGroupList}
+          acceptedEvent={handleMoveAcceptedGroupById}
+          refusedEvent={handleRefuseGroupById}
         />
       );
     });
   };
 
   const renderGroupList = () => {
-    if (groupList?.length === 0) {
+    if (memberGroups.group_count === 0) {
       return <div>속해있는 그룹이 없어요</div>;
     }
-    return groupList?.map((group) => {
-      return <GroupInfo key={group.id} group={group} />;
+    return memberGroups.groups.map((group: MemberGroup) => {
+      return (
+        <GroupDetailList
+          key={group.id}
+          group={group}
+          groupDeleteEvent={handleDeleteGroupById}
+          groupUpdateEvent={handleUpdateGroupById}
+        />
+      );
     });
   };
 
-  const fetchGroupList = async () => {
-    const response = await getMemberGroupList();
-    console.log(response);
-    setGroupList(response.groups);
-    setInvitedGroupList(response.invited_groups);
-  };
-
   useEffect(() => {
-    fetchGroupList();
+    fetchMemberGroups();
   }, []);
-
-  useEffect(() => {
-    fetchGroupList();
-  }, [isModalOpen]);
 
   return (
     <>
-      <Container $width="left" className="flex flex-col gap-4">
+      <Container $width="left" className="scrollBar flex flex-col gap-4">
         <Disclosure>
           {({ open }) => (
             <>
@@ -86,8 +188,8 @@ function GroupList() {
                 <div className="flex gap-2 cursor-pointer">
                   <img src={Envelope} alt="초대" className="w-4" />
                   <span>초대받은 그룹</span>
-                  {invitedGroupList && (
-                    <span>(+{invitedGroupList.length})</span>
+                  {memberGroups.invited_group_count !== 0 && (
+                    <span>(+{memberGroups.invited_group_count})</span>
                   )}
                 </div>
                 <Button className="!bg-transparent" $size="none">
@@ -103,19 +205,28 @@ function GroupList() {
           )}
         </Disclosure>
         <Divider />
-        <div className="scrollBar flex flex-col gap-2 h-[70%]">
+        <div className="flex flex-col gap-4">
           <div className="flex justify-between">
             <div className="flex gap-2">
               <img src={Users} alt="그룹" className="w-4" />
               <div>나의 그룹</div>
             </div>
-            <Button
-              className="!bg-transparent"
-              $size="none"
-              onClick={openModal}
-            >
-              <img src={Plus} alt="그룹 생성" className="w-5 cursor-pointer" />
-            </Button>
+            <Tooltip
+              children={
+                <Button
+                  className="!bg-transparent"
+                  $size="none"
+                  onClick={openModal}
+                >
+                  <img
+                    src={Plus}
+                    alt="그룹 생성"
+                    className="w-5 cursor-pointer"
+                  />
+                </Button>
+              }
+              text={'그룹 생성'}
+            />
           </div>
           {renderGroupList()}
         </div>
@@ -124,7 +235,7 @@ function GroupList() {
         isOpen={isModalOpen}
         init={groupCreateInit}
         handleClose={closeModal}
-        handleConfirm={handleGroupCreate}
+        handleConfirm={handleCreateGroup}
       />
     </>
   );

@@ -41,11 +41,11 @@ function R4F({ index, content }: R4FProps) {
     <WhiteContainer $width="900" className="flex flex-row gap-5">
       <div className="flex flex-col w-500 gap-2">
         <div>
-          <label htmlFor="facts">사실(Facts)</label>
+          <label htmlFor={`facts${index}`}>사실(Facts)</label>
           <InputTextArea
             className="scrollBar"
             $width="100%"
-            id="facts"
+            id={`facts${index}`}
             rows={6}
             value={content.facts}
             onChange={(e) => handleFactsInput(e.target.value)}
@@ -54,11 +54,11 @@ function R4F({ index, content }: R4FProps) {
         </div>
         <Divider />
         <div>
-          <label htmlFor="feeling">느낌(Feeling)</label>
+          <label htmlFor={`finding${index}`}>느낌(Feeling)</label>
           <InputTextArea
             className="scrollBar"
             $width="100%"
-            id="feeling"
+            id={`feeling${index}`}
             rows={6}
             value={content.feeling}
             onChange={(e) => handleFeelingInput(e.target.value)}
@@ -69,11 +69,11 @@ function R4F({ index, content }: R4FProps) {
       <DividerY />
       <div className="flex flex-col w-500 gap-2">
         <div>
-          <label htmlFor="finding">교훈(Finding)</label>
+          <label htmlFor={`finding${index}`}>교훈(Finding)</label>
           <InputTextArea
             className="scrollBar "
             $width="100%"
-            id="finding"
+            id={`finding${index}`}
             rows={6}
             value={content.finding}
             onChange={(e) => handleFindingInput(e.target.value)}
@@ -82,11 +82,11 @@ function R4F({ index, content }: R4FProps) {
         </div>
         <Divider />
         <div>
-          <label htmlFor="future">향후 행동(Future action)</label>
+          <label htmlFor={`future${index}`}>향후 행동(Future action)</label>
           <InputTextArea
             className="scrollBar"
             $width="100%"
-            id="future"
+            id={`future${index}`}
             rows={6}
             value={content.future}
             onChange={(e) => handleFutureInput(e.target.value)}

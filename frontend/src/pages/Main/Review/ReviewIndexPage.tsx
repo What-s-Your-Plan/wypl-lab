@@ -7,6 +7,7 @@ import getReviewList from '@/services/review/getReviewList';
 import { Container, WhiteContainer } from '@/components/common/Container';
 import ReviewThumbnail from '@/components/review/thumbnail/ReviewThumbnail';
 import { Divider } from '@/components/common/Divider';
+import NoContentAnimation from '@/components/animation/NoContent';
 
 function ReviewIndexPage() {
   const navigator = useNavigate();
@@ -19,7 +20,7 @@ function ReviewIndexPage() {
     if (reviews.length === 0) {
       return (
         <div className="flex justify-center items-center text-center w-full h-full">
-          <div>작성된 회고록이 없습니다</div>
+          <NoContentAnimation />
         </div>
       );
     }

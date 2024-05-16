@@ -17,7 +17,8 @@ function ScheduleModal({
   handleConfirm,
 }: ScheduleModalProps) {
   const { form, setForm, handleChange, handleSubmit } = useForm<
-    Schedule & Repeat
+    Schedule & Repeat,
+    void
   >(init, postSchedule);
 
   const handleConfirmClick = async () => {

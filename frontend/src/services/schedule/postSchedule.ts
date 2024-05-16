@@ -66,11 +66,11 @@ async function postSchedule(schedule: Schedule & Repeat) {
         break;
       case '매 달':
         body.repetition.repetition_cycle = 'MONTH';
-        body.repetition.day_of_week = 0
+        body.repetition.day_of_week = 0;
         break;
       case '매 년':
         body.repetition.repetition_cycle = 'YEAR';
-        body.repetition.day_of_week = 0
+        body.repetition.day_of_week = 0;
         break;
       default:
         break;
