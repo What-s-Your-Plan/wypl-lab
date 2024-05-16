@@ -5,24 +5,17 @@ function labelFilter(schedules: CalendarSchedule[], labels: FilterResponse[]) {
 
   return schedules.filter((schedule) => {
     if (schedule.label) {
-      const label: FilterResponse = {
-        category: schedule.category,
-        id: schedule.label.label_id,
-        color: schedule.label.color,
-        title: schedule.label.title,
+      for (let i = 0; i < labels.length; i++) {
+        if (labels[i].id === schedule.label.label_id) {
+          return true;
+        }
       }
-
-      return labels.includes(label);
     } else if (schedule.group) {
-      const label: FilterResponse = {
-        category: schedule.category,
-        id: schedule.group.group_id,
-        color: schedule.group.color,
-        title: schedule.group.title,
+      for (let i = 0; i < labels.length; i++) {
+        if (labels[i].id === schedule.group.group_id) {
+          return true;
+        }
       }
-
-      return labels.includes(label);
-
     }
 
     return false;

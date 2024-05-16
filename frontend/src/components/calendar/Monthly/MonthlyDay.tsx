@@ -11,6 +11,7 @@ type MDayProps = {
   schedules: DateSchedule;
   isCurrentMonth: boolean;
   handleSkedClick: (id: number) => void;
+  goDay: () => void;
 };
 
 function MonthlyDay({
@@ -19,8 +20,9 @@ function MonthlyDay({
   schedules,
   isCurrentMonth,
   handleSkedClick,
+  goDay
 }: MDayProps) {
-  const { selectedDate } = useDateStore();
+  const { selectedDate, setSelectedDate } = useDateStore();
   const { mainColor } = useMemberStore();
 
   const renderSchedule = () => {
@@ -72,12 +74,16 @@ function MonthlyDay({
           );
         } else if (schedule.length > 0) {
           return (
-            <div
+            <button
               key={idx}
               className="flex items-center h-4 absolute top-8 pl-1 hover:bg-default-coolgray w-full transition-all"
+              onClick={() => {
+                goDay()
+                setSelectedDate(date)
+              }}
             >
-              <span className="truncate w-full">+ {schedule.length}</span>
-            </div>
+              <span className="truncate">+ {schedule.length}</span>
+            </button>
           );
         }
       }
