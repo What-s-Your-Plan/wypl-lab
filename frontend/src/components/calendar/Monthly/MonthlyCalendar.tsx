@@ -23,6 +23,7 @@ type MonthlyProps = {
   needUpdate: boolean;
   setUpdateFalse: () => void;
   handleSkedClick: (id: number) => void;
+  goDay: () => void;
 };
 
 function MonthlyCalender({
@@ -31,6 +32,7 @@ function MonthlyCalender({
   needUpdate,
   setUpdateFalse,
   handleSkedClick,
+  goDay
 }: MonthlyProps) {
   const createInit = (): Array<DateSchedule> => {
     const init = [];
@@ -172,6 +174,7 @@ function MonthlyCalender({
             firstDay={firstDay}
             schedules={monthSchedules[i]}
             isCurrentMonth={isCurrentMonth(date, selectedDate.getMonth())}
+            goDay={goDay}
           />,
         );
       }

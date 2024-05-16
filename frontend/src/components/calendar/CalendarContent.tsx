@@ -70,6 +70,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
             handleSkedClick={openDetail}
             needUpdate={needUpdate}
             setUpdateFalse={setUpdateFalse}
+            goDay={() => {setCalendarType('DAY')}}
           />
         );
       case 'WEEK':
