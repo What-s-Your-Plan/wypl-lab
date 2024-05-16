@@ -14,8 +14,13 @@ import * as S from '@/components/common/Container';
 import Cancel from '@/assets/icons/x.svg';
 import Save from '@/assets/icons/save.svg';
 import { useEffect } from 'react';
+import patchReview from '@/services/review/patchReview';
 
-function WriteBlockList() {
+type WriteBlockListProps = {
+  reviewId?: number;
+};
+
+function WriteBlockList({ reviewId }: WriteBlockListProps) {
   const { addToast } = useToastStore();
   const reviewStore = useReviewStore();
   const navigator = useNavigate();
@@ -81,11 +86,20 @@ function WriteBlockList() {
         }
       }
     }
-    const reviewId = await postReview(body);
-    console.log(reviewId);
+
     if (reviewId) {
-      reviewStore.resetReview();
-      navigator(`/review/${reviewId}`);
+      const response = await patchReview(reviewId, body);
+      if (response) {
+        reviewStore.resetReview();
+        navigator(`/review/${response}`);
+      }
+    } else {
+      const response = await postReview(body);
+      console.log(response);
+      if (response) {
+        reviewStore.resetReview();
+        navigator(`/review/${response}`);
+      }
     }
   };
 
