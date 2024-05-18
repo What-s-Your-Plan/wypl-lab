@@ -33,7 +33,7 @@ function GroupList() {
 
   const fetchMemberGroups = async () => {
     const newMemberGroups: MemberGroups = await getMemberGroupList();
-    await setMemberGroups(newMemberGroups);
+    setMemberGroups(newMemberGroups);
     if (newMemberGroups.group_count > 0) {
       navigate(BROWSER_PATH.GROUP.BASE + '/' + newMemberGroups.groups[0].id);
     } else {
