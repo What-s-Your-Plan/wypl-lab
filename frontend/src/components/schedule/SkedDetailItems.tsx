@@ -1,17 +1,24 @@
-import * as S from './Schedule.styled';
-import LabelButton from '@/components/common/LabelButton';
-import { isAllday, padding0, stringToDate } from '@/utils/DateUtils';
-import { LabelColorsType } from '@/assets/styles/colorThemes';
-import Button from '@/components/common/Button';
+import { useNavigate } from 'react-router-dom';
 
+import * as S from './Schedule.styled';
+import Button from '@/components/common/Button';
+import LabelButton from '@/components/common/LabelButton';
+import ReviewThumbnail from '@/components/review/thumbnail/ReviewThumbnail';
+import { isAllday, padding0, stringToDate } from '@/utils/DateUtils';
+import { Review } from '@/@types/ReviewResponse';
+
+import { LabelColorsType } from '@/assets/styles/colorThemes';
 import CalendarIcon from '@/assets/icons/calendar.svg';
 import DescriptionIcon from '@/assets/icons/textAlignLeft.svg';
 import ClockIcon from '@/assets/icons/clock.svg';
 import ArrowRightIcon from '@/assets/icons/arrowRight.svg';
 import LabelIcon from '@/assets/icons/tag.svg';
 import UsersIcon from '@/assets/icons/users.svg';
+import UserIcon from '@/assets/icons/user.svg';
 import RepeatIcon from '@/assets/icons/repeat.svg';
 import PenIcon from '@/assets/icons/pen.svg';
+import ReviewIcon from '@/assets/icons/notePad.svg';
+import { WhiteContainer } from '../common/Container';
 
 function Title({ title }: { title: string }) {
   return (
@@ -105,8 +112,13 @@ function Member({ member }: { member: Array<Member> }) {
   const renderMembers = () => {
     return member.map((m) => {
       return (
-        <div key={m.member_id}>
-          {/* <>이미지 넣을 공간</> */}
+        <div key={m.member_id} className="flex gap-1">
+          <img
+            className="inline-block h-6 w-6 border-2 rounded-full"
+            key={m.member_id}
+            src={m.profile_image ? m.profile_image : UserIcon}
+            alt={m.nickname}
+          />
           <span>{m.nickname}</span>
         </div>
       );
@@ -114,8 +126,8 @@ function Member({ member }: { member: Array<Member> }) {
   };
   return (
     <S.ItemDiv>
-      <img src={UsersIcon} alt="group" />
-      <div className="flex flex-wrap grow">{renderMembers()}</div>
+      <img src={UsersIcon} alt="group" className="mr-2" />
+      <div className="flex flex-wrap grow gap-2">{renderMembers()}</div>
     </S.ItemDiv>
   );
 }
@@ -157,22 +169,63 @@ function Repeat({ repeat }: { repeat: RepetitionResponse }) {
           {cycle! === '주 마다' && `(${dayOfWeek.join(', ')})`}
         </span>
         <span>
-          {repeat.repetition_end_date && ` ~ ${endDate(repeat.repetition_end_date)}`}
+          {repeat.repetition_end_date &&
+            ` ~ ${endDate(repeat.repetition_end_date)}`}
         </span>
       </div>
     </S.ItemDiv>
   );
 }
 
-function WriteReview({handleClick}:{handleClick: () => void}) {
+function ReviewList({ reviewList }: { reviewList: Review[] }) {
+  const navigator = useNavigate();
+  const renderReviewList = () => {
+    return reviewList.map((review) => {
+      return (
+        <WhiteContainer
+          $width="400"
+          className="w-40 inline-block mr-4"
+          onClick={() => {
+            navigator(`/review/${review.review_id}`);
+          }}
+        >
+          <ReviewThumbnail
+            blockType={review.thumbnail_content.blockType}
+            thumbnailContent={review.thumbnail_content}
+          />
+          <span>{review.title}</span>
+        </WhiteContainer>
+      );
+    });
+  };
   return (
-    <div className='flex justify-center'>
-    <Button $width='80%' $size='lg' $border='black' onClick={handleClick}>
-      <img src={PenIcon} alt="write-review" />
-      <span>회고 작성하기</span>
-    </Button>
-    </div>
-  )
+    <S.ItemDiv className="flex">
+      <img src={ReviewIcon} alt="review" className="mr-2" />
+      <div className="horizontalScrollBar overflow-y-hidden text-nowrap w-full">
+        {renderReviewList()}
+      </div>
+    </S.ItemDiv>
+  );
 }
 
-export { Title, Time, Description, Label, Member, Repeat, WriteReview };
+function WriteReview({ handleClick }: { handleClick: () => void }) {
+  return (
+    <div className="flex justify-center">
+      <Button $width="80%" $size="lg" $border="black" onClick={handleClick}>
+        <img src={PenIcon} alt="write-review" />
+        <span>회고 작성하기</span>
+      </Button>
+    </div>
+  );
+}
+
+export {
+  Title,
+  Time,
+  Description,
+  Label,
+  Member,
+  Repeat,
+  ReviewList,
+  WriteReview,
+};

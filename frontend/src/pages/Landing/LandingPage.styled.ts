@@ -156,14 +156,17 @@ const ThirdItemStyle = styled.div`
 const IntroductionStyle = styled.div`
   ${flex.column}
 
-  align-items: flex-start;
-  gap: 3.75rem;
-
   width: 100%;
 
   align-items: flex-end;
   gap: 1.5rem;
   text-align: right;
+`;
+
+const TitleStyle = styled.section`
+  display: block;
+  overflow: auto;
+  height: fit-content;
 `;
 
 const BlackTextStyle = styled.span`
@@ -208,6 +211,7 @@ export {
   FirstItemStyle,
   IntroductionStyle,
   SecondItemStyle,
+  TitleStyle,
   ThirdItemStyle,
   WhiteTextStyle,
 };

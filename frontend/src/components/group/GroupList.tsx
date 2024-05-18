@@ -182,7 +182,10 @@ function GroupList() {
 
   return (
     <>
-      <Container $width="left" className="scrollBar flex flex-col gap-4">
+      <Container
+        $width="left"
+        className="scrollBar flex flex-col gap-4 overflow-x-hidden"
+      >
         <Disclosure>
           {({ open }) => (
             <>

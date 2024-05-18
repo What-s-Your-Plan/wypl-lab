@@ -14,9 +14,6 @@ const PopOverWrapper = styled.div`
   ${tw`
     h-6
     w-6
-
-    fixed
-    mt-2
   `}
 `;
 
