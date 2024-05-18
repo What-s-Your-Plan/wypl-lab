@@ -112,7 +112,7 @@ function SkedDetailPanel({
   const fetchReviewList = async () => {
     if (schedule?.schedule_id) {
       const reviews = await getRelatedReview(schedule?.schedule_id);
-      setReviewList([reviews]);
+      setReviewList(reviews);
     }
   };
 
