@@ -113,7 +113,7 @@ function GroupDetailList({
     return (
       <S.GroupContainer>
         <S.GroupWrapper onClick={() => gotoGroupPage(isOpen)}>
-          <S.Box className="pl-6">{group.name}</S.Box>
+          <S.Box className={`pl-6 ${groupId === String(group.id) ? 'text-label-brown font-bold' : ''}`}>{group.name}</S.Box>
           <S.Box className="gap-4">
             {group.is_owner && (
               <Tooltip
@@ -156,7 +156,6 @@ function GroupDetailList({
           panelPosition="bottom-8"
           button={
             <ColorCircle
-              as="button"
               $bgColor={color as BgColors}
               $cursor="pointer"
               className="!rounded-md"
