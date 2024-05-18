@@ -12,6 +12,7 @@ import {
   FirstItemStyle,
   IntroductionStyle,
   SecondItemStyle,
+  TitleStyle,
   ThirdItemStyle,
   WhiteTextStyle,
 } from './LandingPage.styled';
@@ -25,7 +26,7 @@ function LandingPage() {
 
   return (
     <Container>
-      <ContentStyle>
+      <ContentStyle className="scrollBar">
         <Responsive type="laptop">
           <CalendarStyle>
             <DateItemStyle>{getThisDate()}</DateItemStyle>
@@ -35,18 +36,16 @@ function LandingPage() {
           </CalendarStyle>
         </Responsive>
         <IntroductionStyle>
-          <section>
-            <BlackTextStyle>What </BlackTextStyle>
-            <WhiteTextStyle>is</WhiteTextStyle>
+          <TitleStyle>
+            <BlackTextStyle>What is</BlackTextStyle>
             <br />
-            <BlackTextStyle>Your </BlackTextStyle>
-            <WhiteTextStyle>Plan!</WhiteTextStyle>
+            <BlackTextStyle>Your Plan!</BlackTextStyle>
             <br />
             <WhiteTextStyle>계획할때</WhiteTextStyle>
             <br />
             <BlackTextStyle>와플</BlackTextStyle>
             <br />
-          </section>
+          </TitleStyle>
           <DetailTextStyle>
             캘린더 플랫폼 WYPL은 달력과 라벨을 이용하여 <br />
             누구나 자신의 일정을 공유 및 회고할 수 있습니다.

@@ -11,11 +11,7 @@ type SchedulePanelProps = {
   setStates: Dispatch<SetStateAction<Schedule & Repeat>>;
 };
 
-function SkedModify({
-  states,
-  handleChange,
-  setStates,
-}: SchedulePanelProps) {
+function SkedModify({ states, handleChange, setStates }: SchedulePanelProps) {
   return (
     <form
       className="w-[580px] flex flex-col justify-center"
@@ -33,9 +29,9 @@ function SkedModify({
       {states.category === 'MEMBER' && (
         <Items.Label states={states} setStates={setStates} />
       )}
-      {states.category === 'GROUP' && (
+      {/* {states.category === 'GROUP' && (
         <Items.Users states={states} setStates={setStates} />
-      )}
+      )} */}
       <Items.Repeat
         states={states}
         setStates={setStates}
@@ -45,4 +41,4 @@ function SkedModify({
   );
 }
 
-export default SkedModify
+export default SkedModify;

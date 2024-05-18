@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import SkedModify from './SkedModify';
 import Modal from '../common/Modal';
 import useMemberStore from '@/stores/MemberStore';
+import { Review } from '@/@types/ReviewResponse';
+import getRelatedReview from '@/services/schedule/getRelatedReview';
 
 type DetailProps = {
   isModify: boolean;
@@ -36,6 +38,7 @@ function SkedDetailPanel({
   const [canModify, setCanModify] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [modificationType, setModificationType] = useState<string>('NOW');
+  const [reviewList, setReviewList] = useState<Review[]>([]);
   const { memberId } = useMemberStore();
   // const getSchedule = async () => {
   //   const response = await getScheduleDetail(scheduleId);
@@ -106,6 +109,13 @@ function SkedDetailPanel({
   //   }, []);
   // >>>>>>> 1ba8ed3f0062647ae078116d39ed9b5bdb6cf4ba
 
+  const fetchReviewList = async () => {
+    if (schedule?.schedule_id) {
+      const reviews = await getRelatedReview(schedule?.schedule_id);
+      setReviewList([reviews]);
+    }
+  };
+
   useEffect(() => {
     //스케줄에 포함된 멤버인지 확인
     schedule?.members.map((member) => {
@@ -114,10 +124,11 @@ function SkedDetailPanel({
         return;
       }
     });
+    fetchReviewList();
   }, [schedule]);
 
   return (
-    <div className="w-[580px] flex flex-col justify-center">
+    <div className=" w-[580px] flex flex-col justify-center ">
       {schedule &&
         (isModify ? (
           <SkedModify
@@ -201,6 +212,7 @@ function SkedDetailPanel({
             {schedule.repetition && (
               <Items.Repeat repeat={schedule.repetition} />
             )}
+            <Items.ReviewList reviewList={reviewList} />
             <Items.WriteReview
               handleClick={() => {
                 navigator(`/review/write/${schedule.schedule_id}`);
