@@ -6,12 +6,14 @@ import useMemberStore from '@/stores/MemberStore';
 type LSchedulesProps = {
   lSchedules: Array<LongSchedule>;
   row: number;
+  gColor: string | null;
   handleSkedClick: (id: number) => void;
 };
 
 function WeeklyLSchedules({
   lSchedules,
   row,
+  gColor,
   handleSkedClick,
 }: LSchedulesProps) {
   const gridRow = Math.max(2, row);
@@ -20,6 +22,7 @@ function WeeklyLSchedules({
   const renderSchedules = () => {
     return lSchedules.map((schedule, index) => {
       const bgColor =
+        gColor ||
         schedule.schedule.label?.color ||
         schedule.schedule.group?.color ||
         mainColor;

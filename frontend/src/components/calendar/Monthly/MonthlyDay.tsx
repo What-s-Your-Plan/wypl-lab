@@ -7,7 +7,7 @@ import useMemberStore from '@/stores/MemberStore';
 
 type MDayProps = {
   date: Date;
-  Gcolor: string | null;
+  gColor: string | null;
   firstDay: Date;
   schedules: DateSchedule;
   isCurrentMonth: boolean;
@@ -17,7 +17,7 @@ type MDayProps = {
 
 function MonthlyDay({
   date,
-  Gcolor,
+  gColor,
   firstDay,
   schedules,
   isCurrentMonth,
@@ -44,7 +44,7 @@ function MonthlyDay({
               getDateDiff(date, end) + 1,
             );
             const color =
-              Gcolor || schedule[0].label?.color || schedule[0].group?.color || mainColor;
+              gColor || schedule[0].label?.color || schedule[0].group?.color || mainColor;
 
             return (
               <S.ScheduleButton

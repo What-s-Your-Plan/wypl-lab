@@ -7,7 +7,7 @@ function Text({ content }: TextProps) {
     <div className="w-full">
       {content.split('\n').map((line, index) => {
         return (
-          <span key={index} className="break-all w-full">
+          <span key={index} className="break-all w-full whitespace-normal">
             {line}
             <br />
           </span>

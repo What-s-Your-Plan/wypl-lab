@@ -93,24 +93,25 @@ function MonthlyCalender({
         setOriginSked(response.schedules);
       }
     } else if (category === 'GROUP') {
-      console.log('group')
+      console.log('group');
       if (groupId) {
         const response = await getGroupCalendars(
           'MONTH',
           Number(groupId),
           dateToString(selectedDate),
-          ).finally(() => {
-            endLoading();
-          });
-          
-          if (response) {
-            setOriginSked(response.schedules);
-            setColor(response.group.color)
+        ).finally(() => {
+          endLoading();
+        });
+
+        if (response) {
+          setOriginSked(response.schedules);
+          setColor(response.group.color);
         }
       } else {
         setOriginSked([]);
       }
     }
+    setUpdateFalse();
   }, [selectedDate, groupId]);
 
   useEffect(() => {
@@ -161,7 +162,6 @@ function MonthlyCalender({
       setFirstDay(newFirst);
 
       updateInfo();
-      setUpdateFalse();
     }
   }, [updateInfo]);
 
@@ -190,7 +190,7 @@ function MonthlyCalender({
           <MonthlyDay
             key={i}
             handleSkedClick={handleSkedClick}
-            Gcolor={color}
+            gColor={color}
             date={date}
             firstDay={firstDay}
             schedules={monthSchedules[i]}
