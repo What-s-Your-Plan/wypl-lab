@@ -3,9 +3,9 @@ package com.butter.wypl.global.exception;
 import org.springframework.http.HttpStatus;
 
 public record CustomErrorCode(
-	HttpStatus httpStatus,
-	String errorCode,
-	String message
+		HttpStatus httpStatus,
+		String errorCode,
+		String message
 
 ) implements ErrorCode {
 	@Override

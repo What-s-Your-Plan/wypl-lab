@@ -17,8 +17,8 @@ public class WebInfoController {
 	@GetMapping("/profile")
 	public String getProfile() {
 		return Arrays.stream(env.getActiveProfiles())
-			.findFirst()
-			.orElse("nothing");
+				.findFirst()
+				.orElse("nothing");
 
 	}
 }

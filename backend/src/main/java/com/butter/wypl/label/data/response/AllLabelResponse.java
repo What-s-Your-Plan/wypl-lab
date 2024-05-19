@@ -8,30 +8,30 @@ import com.butter.wypl.label.domain.Label;
 
 public record AllLabelResponse(
 
-	int id,
+		int id,
 
-	Category category,
+		Category category,
 
-	String title,
+		String title,
 
-	Color color
+		Color color
 ) {
 
 	public static AllLabelResponse from(Label label) {
 		return new AllLabelResponse(
-			label.getLabelId(),
-			Category.MEMBER,
-			label.getTitle(),
-			label.getColor()
+				label.getLabelId(),
+				Category.MEMBER,
+				label.getTitle(),
+				label.getColor()
 		);
 	}
 
 	public static AllLabelResponse of(MemberGroup memberGroup, Group group) {
 		return new AllLabelResponse(
-			group.getId(),
-			Category.GROUP,
-			group.getName(),
-			memberGroup.getColor()
+				group.getId(),
+				Category.GROUP,
+				group.getName(),
+				memberGroup.getColor()
 		);
 	}
 }

@@ -9,12 +9,12 @@ import lombok.Builder;
 
 @Builder
 public record ReviewUpdateRequest(
-	
-	String title,
 
-	@JsonProperty("schedule_id")
-	int scheduleId,
+		String title,
 
-	List<Map<String, Object>> contents
+		@JsonProperty("schedule_id")
+		int scheduleId,
+
+		List<Map<String, Object>> contents
 ) {
 }

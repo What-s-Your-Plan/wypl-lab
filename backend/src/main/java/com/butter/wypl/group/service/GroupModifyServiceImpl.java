@@ -64,7 +64,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		validateAllMembersExist(members, memberIds);
 
 		Group savedGroup = groupRepository.save(
-			Group.of(createRequest.name(), createRequest.color(), getMember(ownerId)));
+				Group.of(createRequest.name(), createRequest.color(), getMember(ownerId)));
 		saveAllMemberGroup(members, savedGroup);
 
 		members.forEach(member -> {
@@ -72,7 +72,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 			if (member.getId() == ownerId)
 				return;
 			groupNotificationService.createGroupNotification(
-				member.getId(), member.getNickname(), savedGroup.getName(), savedGroup.getId()
+					member.getId(), member.getNickname(), savedGroup.getName(), savedGroup.getId()
 			);
 		});
 
@@ -119,7 +119,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		members.forEach(member -> {
 			/* 그룹 초대 알림 전송 */
 			groupNotificationService.createGroupNotification(
-				member.getId(), owner.getNickname(), group.getName(), group.getId()
+					member.getId(), owner.getNickname(), group.getName(), group.getId()
 			);
 		});
 
@@ -154,7 +154,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 		MemberGroup memberGroup = findAndValidMemberGroup(memberId, groupId);
 
 		if (isGroupOwner(memberId, memberGroup.getGroup().getOwner())
-			&& hasMultipleGroupMembers(groupId)) {
+				&& hasMultipleGroupMembers(groupId)) {
 			throw new GroupException(NOT_ACCEPTED_LEAVE_GROUP);
 		}
 		memberGroupRepository.delete(memberGroup);
@@ -162,7 +162,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	@Override
 	public GroupMemberColorUpdateResponse updateGroupColor(int memberId, int groupId,
-		GroupMemberColorUpdateRequest request) {
+			GroupMemberColorUpdateRequest request) {
 		Color color = request.color();
 		MemberGroup foundMemberGroup = getMemberGroup(memberId, groupId);
 		foundMemberGroup.updateColor(color);
@@ -177,7 +177,7 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	private MemberGroup findAndValidMemberGroup(int memberId, int groupId) {
 		return memberGroupRepository.findAcceptedWithGroupAndOwner(memberId, groupId)
-			.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
+				.orElseThrow(() -> new GroupException(NOT_EXIST_MEMBER_GROUP));
 	}
 
 	private boolean hasMultipleGroupMembers(int groupId) {
@@ -195,15 +195,15 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 	private void saveAllMemberGroup(List<Member> members, Group group) {
 		List<MemberGroup> memberGroups = new ArrayList<>();
 		members.forEach(member -> {
-				if (member.getMemberGroups().size() >= 50) {
-					throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
-						member.getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
+					if (member.getMemberGroups().size() >= 50) {
+						throw new CustomException(new CustomErrorCode(HttpStatus.BAD_REQUEST, "GROUP_CUSTOM",
+								member.getEmail() + "해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다."));
+					}
+					MemberGroup memberGroup = MemberGroup.of(member, group, group.getColor());
+					if (GroupServiceUtils.isGroupOwner(member, group))
+						memberGroup.setGroupInviteStateAccepted();
+					memberGroups.add(memberGroup);
 				}
-				MemberGroup memberGroup = MemberGroup.of(member, group, group.getColor());
-				if (GroupServiceUtils.isGroupOwner(member, group))
-					memberGroup.setGroupInviteStateAccepted();
-				memberGroups.add(memberGroup);
-			}
 		);
 		memberGroupRepository.saveAll(memberGroups);
 	}
@@ -222,8 +222,8 @@ public class GroupModifyServiceImpl implements GroupModifyService {
 
 	private MemberGroup getPendingMemberGroup(Member foundMember, Group foundGroup) {
 		return memberGroupRepository.findPendingMemberGroup(foundMember.getId(),
-				foundGroup.getId())
-			.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
+						foundGroup.getId())
+				.orElseThrow(() -> new GroupException(NOT_EXIST_PENDING_MEMBER_GROUP));
 	}
 
 	private Member getMember(int ownerId) {

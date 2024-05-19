@@ -13,23 +13,23 @@ import lombok.Builder;
 
 @Builder
 public record ReviewDetailResponse(
-	@JsonProperty("review_id")
-	int reviewId,
+		@JsonProperty("review_id")
+		int reviewId,
 
-	String title,
+		String title,
 
-	ScheduleResponse schedule,
+		ScheduleResponse schedule,
 
-	List<Map<String, Object>> contents
+		List<Map<String, Object>> contents
 ) {
 
 	public static ReviewDetailResponse of(Review review, Schedule schedule, List<Member> members,
-		List<Map<String, Object>> reviewContents) {
+			List<Map<String, Object>> reviewContents) {
 		return ReviewDetailResponse.builder()
-			.reviewId(review.getReviewId())
-			.title(review.getTitle())
-			.schedule(ScheduleResponse.of(schedule, members))
-			.contents(reviewContents)
-			.build();
+				.reviewId(review.getReviewId())
+				.title(review.getTitle())
+				.schedule(ScheduleResponse.of(schedule, members))
+				.contents(reviewContents)
+				.build();
 	}
 }

@@ -25,16 +25,16 @@ public class EmitterRepository {
 		String memId = memberId + "_";
 
 		return emitters.entrySet().stream()
-			.filter(entry -> entry.getKey().startsWith(memId))
-			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+				.filter(entry -> entry.getKey().startsWith(memId))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	public Map<String, Object> findAllEventCacheStartWithByMemberId(String memberId) {
 		String memId = memberId + "_";
 
 		return eventCache.entrySet().stream()
-			.filter(entry -> entry.getKey().startsWith(memId))
-			.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+				.filter(entry -> entry.getKey().startsWith(memId))
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 
 	public void deleteByEmitterId(final String emitterId) {

@@ -29,13 +29,13 @@ public class MemberScheduleRepositoryCustomImpl implements MemberScheduleReposit
 	@Override
 	public List<MemberSchedule> findMemberSchedulesEndingTodayWithoutReview(int memberId, LocalDate today) {
 		return query.selectFrom(memberSchedule)
-			.innerJoin(memberSchedule.member).fetchJoin()
-			.innerJoin(memberSchedule.schedule).fetchJoin()
-			.leftJoin(memberSchedule.reviews).fetchJoin()
-			.where(getEqualMemberId(memberId)
-				.and(isEndedToday(today))
-				.and(isEmptyReview()))
-			.fetch();
+				.innerJoin(memberSchedule.member).fetchJoin()
+				.innerJoin(memberSchedule.schedule).fetchJoin()
+				.leftJoin(memberSchedule.reviews).fetchJoin()
+				.where(getEqualMemberId(memberId)
+						.and(isEndedToday(today))
+						.and(isEmptyReview()))
+				.fetch();
 	}
 
 	private static Predicate isEmptyReview() {

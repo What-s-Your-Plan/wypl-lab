@@ -3,6 +3,7 @@ package com.butter.wypl.global.common.interceptor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import jakarta.annotation.Nonnull;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.log4j.Log4j2;
@@ -16,10 +17,10 @@ public class LoggingInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(
 			final HttpServletRequest request,
-			final HttpServletResponse response,
-			final Object handler
+			@Nonnull final HttpServletResponse response,
+			@Nonnull final Object handler
 	) throws Exception {
-		log.info("\n요청 URI => [{}] \n 요청 METHOD => [{}]" , request.getRequestURI(), request.getMethod());
+		log.info("\n요청 URI => [{}] \n 요청 METHOD => [{}]", request.getRequestURI(), request.getMethod());
 		startTime.set(System.currentTimeMillis());
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}
@@ -28,7 +29,7 @@ public class LoggingInterceptor implements HandlerInterceptor {
 	public void afterCompletion(
 			final HttpServletRequest request,
 			final HttpServletResponse response,
-			final Object handler,
+			@Nonnull final Object handler,
 			final Exception ex
 	) throws Exception {
 		long duration = System.currentTimeMillis() - startTime.get();

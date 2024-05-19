@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.butter.wypl.auth.annotation.Authenticated;
 import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.Message;
-import com.butter.wypl.todo.data.request.TodoSaveResquest;
+import com.butter.wypl.todo.data.request.TodoSaveRequest;
 import com.butter.wypl.todo.data.request.TodoUpdateRequest;
 import com.butter.wypl.todo.data.response.TodoResponse;
 import com.butter.wypl.todo.exception.TodoErrorCode;
@@ -31,6 +31,7 @@ public class TodoController {
 
 	private final TodoModifyService todoModifyService;
 	private final TodoLoadService todoLoadService;
+
 	/*
 	 * 1. 할일등록
 	 * 2. 할일조회
@@ -40,8 +41,8 @@ public class TodoController {
 	 * */
 	@PostMapping
 	public ResponseEntity<Message<Void>> createTodo(
-		@Authenticated AuthMember authMember,
-		@RequestBody TodoSaveResquest request) {
+			@Authenticated AuthMember authMember,
+			@RequestBody TodoSaveRequest request) {
 
 		if (!StringUtils.hasText(request.content())) {
 			throw new TodoException(TodoErrorCode.CLIENT_DATA_NOT_VALID);
@@ -57,41 +58,41 @@ public class TodoController {
 	@GetMapping
 	public ResponseEntity<Message<TodoResponse>> getTodos(@Authenticated AuthMember authMember) {
 		return ResponseEntity.ok(
-			Message.withBody("Todo 목록 조회 성공", todoLoadService.getTodos(authMember.getId()))
+				Message.withBody("Todo 목록 조회 성공", todoLoadService.getTodos(authMember.getId()))
 		);
 	}
 
 	@PatchMapping("/{todoId}")
 	public ResponseEntity<Message<Void>> updateTodo(
-		@Authenticated AuthMember authMember,
-		@RequestBody TodoUpdateRequest request,
-		@PathVariable("todoId") int todoId
+			@Authenticated AuthMember authMember,
+			@RequestBody TodoUpdateRequest request,
+			@PathVariable("todoId") int todoId
 	) {
 		todoModifyService.updateTodo(request, todoId, authMember.getId());
 		return ResponseEntity.ok(
-			Message.onlyMessage("Todo 수정 성공")
+				Message.onlyMessage("Todo 수정 성공")
 		);
 	}
 
 	@DeleteMapping("/{todoId}")
 	public ResponseEntity<Message<Void>> deleteTodo(
-		@Authenticated AuthMember authMember,
-		@PathVariable("todoId") int todoId
+			@Authenticated AuthMember authMember,
+			@PathVariable("todoId") int todoId
 	) {
 		todoModifyService.deleteTodo(todoId, authMember.getId());
 		return ResponseEntity.ok(
-			Message.onlyMessage("Todo 삭제 성공")
+				Message.onlyMessage("Todo 삭제 성공")
 		);
 	}
 
 	@PatchMapping("/check/{todoId}")
 	public ResponseEntity<Message<Void>> checkTodo(
-		@Authenticated AuthMember authMember,
-		@PathVariable("todoId") int todoId
+			@Authenticated AuthMember authMember,
+			@PathVariable("todoId") int todoId
 	) {
 		todoModifyService.toggleTodo(todoId, authMember.getId());
 		return ResponseEntity.ok(
-			Message.onlyMessage("Todo 체크 성공")
+				Message.onlyMessage("Todo 체크 성공")
 		);
 	}
 }

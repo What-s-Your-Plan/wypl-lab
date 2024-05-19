@@ -85,6 +85,8 @@ dependencies {
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     testImplementation 'io.findify:s3mock_2.12:0.2.4'
     implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
 }
 
 test {

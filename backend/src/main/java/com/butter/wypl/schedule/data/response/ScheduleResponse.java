@@ -11,44 +11,44 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ScheduleResponse(
 
-	@JsonProperty("schedule_id")
-	int scheduleId,
-	String title,
-	String description,
+		@JsonProperty("schedule_id")
+		int scheduleId,
+		String title,
+		String description,
 
-	@JsonProperty("start_date")
-	LocalDateTime startDate,
+		@JsonProperty("start_date")
+		LocalDateTime startDate,
 
-	@JsonProperty("end_date")
-	LocalDateTime endDate,
-	Category category,
+		@JsonProperty("end_date")
+		LocalDateTime endDate,
+		Category category,
 
-	@JsonProperty("group_id")
-	Integer groupId,
+		@JsonProperty("group_id")
+		Integer groupId,
 
-	@JsonProperty("label")
-	LabelResponse label,
+		@JsonProperty("label")
+		LabelResponse label,
 
-	@JsonProperty("member_count")
-	int member_count,
-	List<MemberResponse> members
+		@JsonProperty("member_count")
+		int member_count,
+		List<MemberResponse> members
 ) {
 
 	public static ScheduleResponse of(
-		Schedule schedule,
-		List<Member> members
+			Schedule schedule,
+			List<Member> members
 	) {
 		return new ScheduleResponse(
-			schedule.getScheduleId(),
-			schedule.getTitle(),
-			schedule.getDescription(),
-			schedule.getStartDate(),
-			schedule.getEndDate(),
-			schedule.getCategory(),
-			schedule.getGroupId(),
-			(schedule.getLabel() == null) ? null : LabelResponse.from(schedule.getLabel()),
-			members.size(),
-			MemberResponse.from(members)
+				schedule.getScheduleId(),
+				schedule.getTitle(),
+				schedule.getDescription(),
+				schedule.getStartDate(),
+				schedule.getEndDate(),
+				schedule.getCategory(),
+				schedule.getGroupId(),
+				(schedule.getLabel() == null) ? null : LabelResponse.from(schedule.getLabel()),
+				members.size(),
+				MemberResponse.from(members)
 		);
 	}
 }

@@ -58,7 +58,7 @@ class GroupModifyServiceJpaTest {
 			/* Given */
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
 			Group group = groupRepository.save(
-				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
+					Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
 			memberGroupRepository.save(MemberGroup.of(member, group, labelYellow, GroupInviteState.ACCEPTED));
 
 			em.flush();
@@ -68,7 +68,7 @@ class GroupModifyServiceJpaTest {
 			Color modifyGroupColor = labelPink;
 
 			GroupUpdateRequest updateRequest = new GroupUpdateRequest(modifyGroupName,
-				modifyGroupColor);
+					modifyGroupColor);
 
 			/* When */
 			groupModifyService.updateGroup(member.getId(), group.getId(), updateRequest);
@@ -88,7 +88,7 @@ class GroupModifyServiceJpaTest {
 			Member member = memberRepository.save(HAN_JI_WON.toMember());
 			Member otherMember = memberRepository.save(KIM_JEONG_UK.toMember());
 			Group group = groupRepository.save(
-				Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
+					Group.of(GROUP_STUDY.getName(), GROUP_STUDY.getColor(), member));
 
 			em.flush();
 			em.clear();
@@ -98,9 +98,9 @@ class GroupModifyServiceJpaTest {
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.updateGroup(otherMember.getId(), group.getId(), updateRequest);
-				}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(GroupErrorCode.IS_NOT_GROUP_MEMBER.getMessage());
+						groupModifyService.updateGroup(otherMember.getId(), group.getId(), updateRequest);
+					}).isInstanceOf(GroupException.class)
+					.hasMessageContaining(GroupErrorCode.IS_NOT_GROUP_MEMBER.getMessage());
 		}
 	}
 

@@ -27,14 +27,15 @@ public class Notification extends MongoBaseEntity {
 	private int targetId; // NotificationTypeCode 에 따른 target Id => Group, Review
 
 	/*
-	* lombok 으로 getter 생성시 필드명에 is가 있으면 is를 포함시켜서 메소드를 생성
-	* getter 메소드명 => isRead
-	* Jackson 직렬화할때 key:value 형태로 만들기때문에 get or is를 뺀 read 로 생성
-	* 이를 막기 위해 getter 메소드 직접 구현
-	* */
+	 * lombok 으로 getter 생성시 필드명에 is가 있으면 is를 포함시켜서 메소드를 생성
+	 * getter 메소드명 => isRead
+	 * Jackson 직렬화할때 key:value 형태로 만들기때문에 get or is를 뺀 read 로 생성
+	 * 이를 막기 위해 getter 메소드 직접 구현
+	 * */
 	public boolean getIsRead() {
 		return isRead;
 	}
+
 	public boolean getIsActed() {
 		return isActed;
 	}

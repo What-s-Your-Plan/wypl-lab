@@ -16,7 +16,7 @@ public interface MemberGroupRepositoryCustom {
 	List<MemberGroup> findAll(int groupId);
 
 	List<MemberGroup> findAllAccepted(int groupId);
-	
+
 	List<MemberGroup> findAllWithMemberAndGroupByMemberId(int memberId);
 
 	int getSizeOfGroupMembers(int groupId);

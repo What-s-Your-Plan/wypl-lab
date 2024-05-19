@@ -54,16 +54,16 @@ public class GroupLoadServiceImpl implements GroupLoadService {
 	 */
 	@Override
 	public FindGroupMembersResponse getDetailById(
-		final int memberId,
-		final int groupId
+			final int memberId,
+			final int groupId
 	) {
 		MemberGroup findMemberGroup = memberGroupRepository.findAcceptMemberGroup(memberId, groupId)
-			.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_MEMBER_GROUP));
+				.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_MEMBER_GROUP));
 
 		List<MemberGroup> findMemberGroups = memberGroupRepository.findAll(groupId);
 		List<FindGroupMembersResponse.FindGroupMember> list = findMemberGroups.stream()
-			.map(FindGroupMembersResponse.FindGroupMember::from)
-			.toList();
+				.map(FindGroupMembersResponse.FindGroupMember::from)
+				.toList();
 
 		return FindGroupMembersResponse.of(list, findMemberGroup.getColor());
 	}

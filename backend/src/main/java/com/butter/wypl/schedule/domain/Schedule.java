@@ -66,7 +66,7 @@ public class Schedule extends BaseEntity {
 
 	@Builder
 	public Schedule(int scheduleId, String title, String description, Category category, Integer groupId,
-		LocalDateTime startDate, LocalDateTime endDate, Label label, Repetition repetition) {
+			LocalDateTime startDate, LocalDateTime endDate, Label label, Repetition repetition) {
 		titleValidation(title);
 		durationValidation(startDate, endDate);
 		repetitionValidation(startDate, endDate, repetition);
@@ -104,15 +104,15 @@ public class Schedule extends BaseEntity {
 
 	public Schedule toRepetitionSchedule(LocalDateTime startDate, LocalDateTime endDate) {
 		return Schedule.builder()
-			.title(title)
-			.description(description)
-			.startDate(startDate)
-			.endDate(endDate)
-			.category(category)
-			.groupId(groupId)
-			.label(label)
-			.repetition(repetition)
-			.build();
+				.title(title)
+				.description(description)
+				.startDate(startDate)
+				.endDate(endDate)
+				.category(category)
+				.groupId(groupId)
+				.label(label)
+				.repetition(repetition)
+				.build();
 	}
 
 	private void titleValidation(String title) {

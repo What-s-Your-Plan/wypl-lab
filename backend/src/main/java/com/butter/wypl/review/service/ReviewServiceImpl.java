@@ -54,10 +54,11 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 				ScheduleServiceUtils.findById(scheduleRepository, reviewCreateRequest.scheduleId()));
 		memberSchedule.writeReview();
 
-		Review savedReview = reviewRepository.save(Review.of(reviewCreateRequest, memberSchedule));
+		ReviewContents savedReviewContents = reviewContentsRepository.save(
+				ReviewContents.from(reviewCreateRequest.contents()));
 
-		reviewContentsRepository.save(
-				ReviewContents.of(savedReview.getReviewId(), reviewCreateRequest.contents()));
+		Review savedReview = reviewRepository.save(
+				Review.of(savedReviewContents.getId(), reviewCreateRequest.title(), memberSchedule));
 
 		return ReviewIdResponse.from(savedReview.getReviewId());
 	}
@@ -73,8 +74,8 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 
 		review.updateTitle(reviewUpdateRequest.title());
 
-		ReviewContents reviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-				review.getReviewId());
+		ReviewContents reviewContents =
+				reviewContentsRepository.findByIdAndDeletedAtNull(review.getReviewContentsId());
 		reviewContents.updateContents(reviewUpdateRequest.contents());
 
 		reviewContentsRepository.save(reviewContents);
@@ -90,8 +91,8 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		//유효성 검사
 		review.validationOwnerByMemberId(memberId);
 
-		ReviewContents reviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-				review.getReviewId());
+		ReviewContents reviewContents = reviewContentsRepository.findByIdAndDeletedAtNull(
+				review.getReviewContentsId());
 		reviewContents.delete();
 
 		reviewContentsRepository.save(reviewContents);
@@ -108,8 +109,8 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 		//유효성 검사
 		review.validationOwnerByMemberId(memberId);
 
-		ReviewContents reviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-				review.getReviewId());
+		ReviewContents reviewContents = reviewContentsRepository.findByIdAndDeletedAtNull(
+				review.getReviewContentsId());
 
 		Schedule schedule = review.getMemberSchedule().getSchedule();
 
@@ -165,7 +166,7 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 						.createdAt(review.getCreatedAt())
 						.reviewId(review.getReviewId())
 						.thumbnailContent(getThumbnailContent(
-								reviewContentsRepository.findByReviewIdAndDeletedAtNull(review.getReviewId())
+								reviewContentsRepository.findByIdAndDeletedAtNull(review.getReviewContentsId())
 										.getContents()))
 						.build()
 		).toList());
@@ -194,8 +195,8 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 							.createdAt(review.getCreatedAt())
 							.thumbnailContent(
 									getThumbnailContent(
-											reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-													review.getReviewId()).getContents())
+											reviewContentsRepository.findByIdAndDeletedAtNull(
+													review.getReviewContentsId()).getContents())
 							)
 							.build()
 			);

@@ -6,11 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.butter.wypl.global.config.JpaAuditingConfiguration;
 import com.butter.wypl.global.config.MongoAuditingConfiguration;
 
 @Target(ElementType.TYPE)

@@ -3,8 +3,13 @@
     <Properties>
         <Property name="LOG_PATH">logs</Property>
         <Property name="ERROR_LOG_PATH">logs/errors</Property>
-        <Property name="DEFAULT_PATTERN">[%d{yyyy-MM-dd HH:mm:ss.SSS}] %5p ${sys:PID} --- [%15.15t] %-40.40c{1.} :%m%n%xwEx</Property>
-        <Property name="COLOR_PATTERN">[%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint}] %clr{%5p} %clr{${sys:PID}}{magenta}%clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c}{cyan} %clr{:}{faint} %m%n%xwEx</Property>
+        <Property name="DEFAULT_PATTERN">[%d{yyyy-MM-dd HH:mm:ss.SSS}] %5p ${sys:PID} --- [%15.15t] %-40.40c{1.}
+            :%m%n%xwEx
+        </Property>
+        <Property name="COLOR_PATTERN">[%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint}] %clr{%5p}
+            %clr{${sys:PID}}{magenta}%clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c}{cyan} %clr{:}{faint}
+            %m%n%xwEx
+        </Property>
         <Property name="TEST_PATTERN">%d %5p [%c] %m%n</Property>
         <Property name="ROLL_OVER">%d{yyyyMMdd}.%i</Property>
     </Properties>
@@ -31,7 +36,7 @@
             </DefaultRolloverStrategy>
         </RollingFile>
 
-        <RollingFile name ="RollingFileErrorAppender">
+        <RollingFile name="RollingFileErrorAppender">
             <FileName>${ERROR_LOG_PATH}/log4j2_error.log</FileName>
             <FilePattern>${ERROR_LOG_PATH}/log4j2_error.%d{yyyy-MM-dd-hh-mm}.%i.log</FilePattern>
             <PatternLayout>
@@ -54,7 +59,7 @@
         <Root level="INFO" additivity="false">
             <AppenderRef ref="ConsoleAppender"/>
             <AppenderRef ref="RollingFileAppender"/>
-            <AppenderRef ref="RollingFileErrorAppender" level="ERROR" />
+            <AppenderRef ref="RollingFileErrorAppender" level="ERROR"/>
         </Root>
 
         <!-- springframework logger -->

@@ -14,8 +14,8 @@ public interface MemberRepository extends JpaRepository<Member, Integer>,
 	Optional<Member> findByEmail(String email);
 
 	@Query("SELECT m FROM Member m "
-		+ "JOIN FETCH m.memberGroups mg "
-		+ "JOIN FETCH mg.group g "
-		+ "WHERE m.id IN :idList")
+			+ "JOIN FETCH m.memberGroups mg "
+			+ "JOIN FETCH mg.group g "
+			+ "WHERE m.id IN :idList")
 	List<Member> findAllById(List<Integer> idList);
 }

@@ -30,7 +30,7 @@ public class ReviewContentsRepositoryTest {
 
 		// Then
 		assertThat(savedReviewContents).isNotNull();
-		assertThat(savedReviewContents.getReviewId()).isEqualTo(reviewContents.getReviewId());
+		assertThat(savedReviewContents.getId()).isEqualTo(reviewContents.getId());
 		assertThat(savedReviewContents.getContents()).isEqualTo(reviewContents.getContents());
 	}
 
@@ -39,15 +39,15 @@ public class ReviewContentsRepositoryTest {
 	void getReviewContents() {
 		// Given
 		ReviewContents reviewContents = reviewContentsRepository.save(
-			ReviewContentsFixture.REVIEW_CONTENTS2.toReviewContents());
+				ReviewContentsFixture.REVIEW_CONTENTS2.toReviewContents());
 
 		// When
-		ReviewContents findReviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-			reviewContents.getReviewId());
+		ReviewContents findReviewContents = reviewContentsRepository.findByIdAndDeletedAtNull(
+				reviewContents.getId());
 
 		// Then
 		assertThat(findReviewContents.getContents()).isEqualTo(reviewContents.getContents());
-		assertThat(findReviewContents.getReviewId()).isEqualTo(reviewContents.getReviewId());
+		assertThat(findReviewContents.getId()).isEqualTo(reviewContents.getId());
 
 	}
 }

@@ -50,16 +50,16 @@ public class MemberScheduleServiceTest {
 		Member member2 = MemberFixture.KIM_JEONG_UK.toMember();
 
 		given(memberScheduleRepository.findAllBySchedule(schedule))
-			.willReturn(List.of(
-				MemberSchedule.builder()
-					.schedule(schedule)
-					.member(member1)
-					.build(),
-				MemberSchedule.builder()
-					.schedule(schedule)
-					.member(member2)
-					.build()
-			));
+				.willReturn(List.of(
+						MemberSchedule.builder()
+								.schedule(schedule)
+								.member(member1)
+								.build(),
+						MemberSchedule.builder()
+								.schedule(schedule)
+								.member(member2)
+								.build()
+				));
 
 		// When
 		List<Member> members = memberScheduleService.getMembersBySchedule(schedule);
@@ -84,25 +84,25 @@ public class MemberScheduleServiceTest {
 			memberIdResponses.add(new MemberIdResponse(2));
 
 			given(memberRepository.findById(1))
-				.willReturn(Optional.of(member1));
+					.willReturn(Optional.of(member1));
 			given(memberRepository.findById(2))
-				.willReturn(Optional.of(member2));
+					.willReturn(Optional.of(member2));
 
 			given(memberScheduleRepository.saveAll(Mockito.anyList()))
-				.willReturn(List.of(
-					MemberSchedule.builder()
-						.member(member1)
-						.schedule(schedule)
-						.build(),
-					MemberSchedule.builder()
-						.member(member2)
-						.schedule(schedule)
-						.build()
-				));
+					.willReturn(List.of(
+							MemberSchedule.builder()
+									.member(member1)
+									.schedule(schedule)
+									.build(),
+							MemberSchedule.builder()
+									.member(member2)
+									.schedule(schedule)
+									.build()
+					));
 
 			//when
 			List<Member> members =
-				memberScheduleService.createMemberSchedule(schedule, memberIdResponses);
+					memberScheduleService.createMemberSchedule(schedule, memberIdResponses);
 
 			//then
 			assertThat(members.size()).isEqualTo(2);
@@ -120,14 +120,14 @@ public class MemberScheduleServiceTest {
 			// Given
 			Member member = MemberFixture.JWA_SO_YEON.toMember();
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(member));
+					.willReturn(Optional.of(member));
 
 			given(memberScheduleRepository.findByScheduleAndMember(any(), any()))
-				.willReturn(
-					Optional.ofNullable(MemberSchedule.builder()
-						.member(member)
-						.schedule(schedule)
-						.build()));
+					.willReturn(
+							Optional.ofNullable(MemberSchedule.builder()
+									.member(member)
+									.schedule(schedule)
+									.build()));
 
 			// When
 			// Then
@@ -143,14 +143,14 @@ public class MemberScheduleServiceTest {
 			// Given
 			Member member = MemberFixture.JWA_SO_YEON.toMember();
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(member));
+					.willReturn(Optional.of(member));
 
 			// When
 			// Then
 			assertThatThrownBy(() -> {
 				memberScheduleService.validateMemberSchedule(schedule, member.getId());
 			}).isInstanceOf(ScheduleException.class)
-				.hasMessageContaining(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL.getMessage());
+					.hasMessageContaining(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL.getMessage());
 		}
 	}
 
@@ -169,36 +169,36 @@ public class MemberScheduleServiceTest {
 			memberIdResponses.add(new MemberIdResponse(1));
 
 			given(memberRepository.findById(1))
-				.willReturn(Optional.of(member1));
+					.willReturn(Optional.of(member1));
 			given(memberRepository.findById(2))
-				.willReturn(Optional.of(member2));
+					.willReturn(Optional.of(member2));
 
 			given(memberScheduleRepository.saveAll(any()))
-				.willReturn(List.of(
-					MemberSchedule.builder()
-						.member(member1)
-						.schedule(schedule)
-						.build()
-				));
+					.willReturn(List.of(
+							MemberSchedule.builder()
+									.member(member1)
+									.schedule(schedule)
+									.build()
+					));
 
 			given(memberScheduleRepository.findAllBySchedule(schedule))
-				.willReturn(List.of(
-					MemberSchedule.builder()
-						.member(member1)
-						.schedule(schedule)
-						.build()
-				));
+					.willReturn(List.of(
+							MemberSchedule.builder()
+									.member(member1)
+									.schedule(schedule)
+									.build()
+					));
 
 			memberScheduleService.createMemberSchedule(schedule, memberIdResponses);
 
 			given(memberScheduleRepository.save(any()))
-				.willReturn(MemberSchedule.builder()
-					.member(member2)
-					.schedule(schedule)
-					.build());
+					.willReturn(MemberSchedule.builder()
+							.member(member2)
+							.schedule(schedule)
+							.build());
 			//when
 			List<Member> updatedMembers = memberScheduleService.updateMemberSchedule(schedule,
-				List.of(new MemberIdResponse(2)));
+					List.of(new MemberIdResponse(2)));
 
 			//then
 			assertThat(updatedMembers.size()).isEqualTo(1);

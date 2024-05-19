@@ -26,7 +26,7 @@ import com.butter.wypl.auth.domain.AuthMember;
 import com.butter.wypl.global.common.ControllerTest;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.fixture.MemberFixture;
-import com.butter.wypl.todo.data.request.TodoSaveResquest;
+import com.butter.wypl.todo.data.request.TodoSaveRequest;
 import com.butter.wypl.todo.data.request.TodoUpdateRequest;
 import com.butter.wypl.todo.data.response.TodoItem;
 import com.butter.wypl.todo.data.response.TodoResponse;
@@ -67,46 +67,46 @@ class TodoControllerTest extends ControllerTest {
 	void createTodo() throws Exception {
 		//given
 		String content = "운동가기";
-		String json = convertToJson(new TodoSaveResquest(content));
+		String json = convertToJson(new TodoSaveRequest(content));
 
 		willDoNothing().
-			given(todoModifyService).createTodo(any(TodoSaveResquest.class), anyInt());
+				given(todoModifyService).createTodo(any(TodoSaveRequest.class), anyInt());
 
 		//when
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.post(URI_PATH)
-				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(json)
+				RestDocumentationRequestBuilders.post(URI_PATH)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(json)
 		);
 
 		//then
 		actions.andDo(print())
-			.andDo(document("todo/createTodo",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()),
-				requestFields(
-					fieldWithPath("content").type(JsonFieldType.STRING).description("Todo 내용")
-				),
-				responseFields(
-					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지")
-				)))
-			.andExpect(status().isOk());
+				.andDo(document("todo/createTodo",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						requestFields(
+								fieldWithPath("content").type(JsonFieldType.STRING).description("Todo 내용")
+						),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지")
+						)))
+				.andExpect(status().isOk());
 	}
 
 	@Test
 	@DisplayName("할일등록시 데이터가 올바르지 않은경우")
-	void todoExceptionDataNotValid () {
-	    //given
+	void todoExceptionDataNotValid() {
+		//given
 		String content = "";
-		TodoSaveResquest request = mock(TodoSaveResquest.class);
+		TodoSaveRequest request = mock(TodoSaveRequest.class);
 		//when
 		when(request.content()).thenReturn(content);
 
-	    //then
+		//then
 		assertThatThrownBy(() -> todoController.createTodo(authMember, request))
-			.isInstanceOf(TodoException.class)
-			.hasMessage(TodoErrorCode.CLIENT_DATA_NOT_VALID.getMessage());
+				.isInstanceOf(TodoException.class)
+				.hasMessage(TodoErrorCode.CLIENT_DATA_NOT_VALID.getMessage());
 	}
 
 	@Test
@@ -115,14 +115,14 @@ class TodoControllerTest extends ControllerTest {
 		//given
 		String content = "*";
 
-		TodoSaveResquest request = mock(TodoSaveResquest.class);
+		TodoSaveRequest request = mock(TodoSaveRequest.class);
 		//when
 		when(request.content()).thenReturn(content.repeat(766));
 
 		//then
 		assertThatThrownBy(() -> todoController.createTodo(authMember, request))
-			.isInstanceOf(TodoException.class)
-			.hasMessage(TodoErrorCode.DATA_LENGTH_OUT_OF_RANGE.getMessage());
+				.isInstanceOf(TodoException.class)
+				.hasMessage(TodoErrorCode.DATA_LENGTH_OUT_OF_RANGE.getMessage());
 	}
 
 	@Test
@@ -130,33 +130,34 @@ class TodoControllerTest extends ControllerTest {
 	void getTodos() throws Exception {
 		//given
 		List<TodoItem> todoItems = List.of(new TodoItem(1, "운동", true),
-			new TodoItem(2, "공부", false));
+				new TodoItem(2, "공부", false));
 		TodoResponse todoResponse = new TodoResponse(todoItems.size(), member.getId(), member.getNickname(), todoItems);
 
 		given(todoLoadService.getTodos(anyInt())).willReturn(todoResponse);
 
 		//when
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.get(URI_PATH)
-				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-				.contentType(MediaType.APPLICATION_JSON)
+				RestDocumentationRequestBuilders.get(URI_PATH)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
 		);
 
 		//then
 		actions.andDo(print())
-			.andDo(document("todo/getTodos",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()),
-				responseFields(
-					fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
-					fieldWithPath("body.todo_count").type(JsonFieldType.NUMBER).description("Todo 개수"),
-					fieldWithPath("body.member_id").type(JsonFieldType.NUMBER).description("작성자 ID"),
-					fieldWithPath("body.nick_name").type(JsonFieldType.STRING).description("작성자 닉네임"),
-					fieldWithPath("body.todos[].todo_id").type(JsonFieldType.NUMBER).description("Todo ID"),
-					fieldWithPath("body.todos[].content").type(JsonFieldType.STRING).description("Todo 내용"),
-					fieldWithPath("body.todos[].is_completed").type(JsonFieldType.BOOLEAN).description("Todo 완료여부")
-				)))
-			.andExpect(status().isOk());
+				.andDo(document("todo/getTodos",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						responseFields(
+								fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
+								fieldWithPath("body.todo_count").type(JsonFieldType.NUMBER).description("Todo 개수"),
+								fieldWithPath("body.member_id").type(JsonFieldType.NUMBER).description("작성자 ID"),
+								fieldWithPath("body.nick_name").type(JsonFieldType.STRING).description("작성자 닉네임"),
+								fieldWithPath("body.todos[].todo_id").type(JsonFieldType.NUMBER).description("Todo ID"),
+								fieldWithPath("body.todos[].content").type(JsonFieldType.STRING).description("Todo 내용"),
+								fieldWithPath("body.todos[].is_completed").type(JsonFieldType.BOOLEAN)
+										.description("Todo 완료여부")
+						)))
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -167,29 +168,29 @@ class TodoControllerTest extends ControllerTest {
 		String json = convertToJson(request);
 
 		willDoNothing()
-			.given(todoModifyService).updateTodo(any(TodoUpdateRequest.class), anyInt(), anyInt());
+				.given(todoModifyService).updateTodo(any(TodoUpdateRequest.class), anyInt(), anyInt());
 
 		//when
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.patch(URI_PATH + "/{todoId}", 1)
-				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(json)
+				RestDocumentationRequestBuilders.patch(URI_PATH + "/{todoId}", 1)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+						.contentType(MediaType.APPLICATION_JSON)
+						.content(json)
 		);
 
 		//then
 		actions.andDo(print())
-			.andDo(document("todo/updateTodo",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()),
-				pathParameters(
-					parameterWithName("todoId").description("Todo Id")
-				),
-				requestFields(
-					fieldWithPath("content").type(JsonFieldType.STRING).description("Todo 내용")
-				))
-			)
-			.andExpect(status().isOk());
+				.andDo(document("todo/updateTodo",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						pathParameters(
+								parameterWithName("todoId").description("Todo Id")
+						),
+						requestFields(
+								fieldWithPath("content").type(JsonFieldType.STRING).description("Todo 내용")
+						))
+				)
+				.andExpect(status().isOk());
 	}
 
 	@Test
@@ -197,49 +198,49 @@ class TodoControllerTest extends ControllerTest {
 	void deleteTodo() throws Exception {
 		//given
 		willDoNothing()
-			.given(todoModifyService).deleteTodo(anyInt(), anyInt());
+				.given(todoModifyService).deleteTodo(anyInt(), anyInt());
 
 		//when
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.delete(URI_PATH + "/{todoId}", 1)
-				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				RestDocumentationRequestBuilders.delete(URI_PATH + "/{todoId}", 1)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 		);
 
 		//then
 		actions.andDo(print())
-			.andDo(document("todo/deleteTodo",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()),
-				pathParameters(
-					parameterWithName("todoId").description("Todo Id")
-				))
-			)
-			.andExpect(status().isOk());
+				.andDo(document("todo/deleteTodo",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						pathParameters(
+								parameterWithName("todoId").description("Todo Id")
+						))
+				)
+				.andExpect(status().isOk());
 	}
 
 	@Test
 	@DisplayName("할일 체크")
-	void checkTodo () throws Exception {
-	    //given
+	void checkTodo() throws Exception {
+		//given
 		willDoNothing()
-			.given(todoModifyService).toggleTodo(anyInt(), anyInt());
+				.given(todoModifyService).toggleTodo(anyInt(), anyInt());
 
-	    //when
+		//when
 		ResultActions actions = mockMvc.perform(
-			RestDocumentationRequestBuilders.patch(URI_PATH + "/check/{todoId}", 1)
-				.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
+				RestDocumentationRequestBuilders.patch(URI_PATH + "/check/{todoId}", 1)
+						.header(HttpHeaders.AUTHORIZATION, AUTHORIZATION_HEADER_VALUE)
 		);
 
 		//then
 		actions.andDo(print())
-			.andDo(document("todo/checkTodo",
-				preprocessRequest(prettyPrint()),
-				preprocessResponse(prettyPrint()),
-				pathParameters(
-					parameterWithName("todoId").description("Todo Id")
-				))
-			)
-			.andExpect(status().isOk());
+				.andDo(document("todo/checkTodo",
+						preprocessRequest(prettyPrint()),
+						preprocessResponse(prettyPrint()),
+						pathParameters(
+								parameterWithName("todoId").description("Todo Id")
+						))
+				)
+				.andExpect(status().isOk());
 	}
 
 }

@@ -53,13 +53,13 @@ class NotificationRepositoryTest {
 		String message = "";
 
 		Notification notification = Notification.builder()
-			.memberId(1)
-			.message(message)
-			.isRead(false)
-			.isActed(false)
-			.typeCode(NotificationTypeCode.GROUP)
-			.targetId(1)
-			.build();
+				.memberId(1)
+				.message(message)
+				.isRead(false)
+				.isActed(false)
+				.typeCode(NotificationTypeCode.GROUP)
+				.targetId(1)
+				.build();
 
 		// when
 		Notification savedNotification = notificationRepository.save(notification);
@@ -109,13 +109,13 @@ class NotificationRepositoryTest {
 
 		//when
 		Page<Notification> pageOfNotifications = notificationRepository.findByMemberIdWithPage(memberId,
-			PageRequest.of(0, 50));
+				PageRequest.of(0, 50));
 		List<Notification> content = pageOfNotifications.getContent();
 		assertThat(content.size()).isEqualTo(5);
 
 		notificationRepository.deleteByMemberId(memberId);
 		Page<Notification> deletedResult = notificationRepository.findByMemberIdWithPage(memberId,
-			PageRequest.of(0, 50));
+				PageRequest.of(0, 50));
 		List<Notification> content1 = deletedResult.getContent();
 		//then
 		assertThat(content1.size()).isEqualTo(0);
@@ -124,16 +124,16 @@ class NotificationRepositoryTest {
 	// List<Notification> makeNotificationList() {
 	void saveDummyNotification(final int memberId) {
 		Stream.iterate(0, i -> i < 5, i -> i + 1)
-			.forEach(i -> notificationRepository.save(
-				Notification.builder()
-					.memberId(memberId)
-					.message("삭제 테스트용" + i)
-					.isRead(false)
-					.isActed(false)
-					.typeCode(NotificationTypeCode.GROUP)
-					.targetId(i)
-					.build()
-			));
+				.forEach(i -> notificationRepository.save(
+						Notification.builder()
+								.memberId(memberId)
+								.message("삭제 테스트용" + i)
+								.isRead(false)
+								.isActed(false)
+								.typeCode(NotificationTypeCode.GROUP)
+								.targetId(i)
+								.build()
+				));
 	}
 
 	@Test

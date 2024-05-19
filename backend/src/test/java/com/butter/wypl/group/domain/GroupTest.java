@@ -38,7 +38,7 @@ class GroupTest {
 			assertThatCode(() -> {
 				Group.validateName("123456789012345678901");
 			}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME.getMessage());
+					.hasMessageContaining(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME.getMessage());
 
 		}
 
@@ -53,7 +53,7 @@ class GroupTest {
 			assertThatCode(() -> {
 				Group.validateName(name);
 			}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME.getMessage());
+					.hasMessageContaining(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME.getMessage());
 		}
 
 		@Test
@@ -67,7 +67,7 @@ class GroupTest {
 			assertThatCode(() -> {
 				Group.validateName(name);
 			}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME.getMessage());
+					.hasMessageContaining(NOT_APPROPRIATE_TYPE_OF_GROUP_NAME.getMessage());
 		}
 	}
 }

@@ -55,18 +55,18 @@ public class Member extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "timezone", length = 10, nullable = false)
 	private CalendarTimeZone timeZone;
-	
+
 	@OneToMany(mappedBy = "member")
 	private List<MemberGroup> memberGroups;
 
 	public WeatherRegion getWeatherRegion() {
 		return Arrays.stream(CalendarTimeZone.values())
-			.flatMap(calendarTimeZone -> Arrays.stream(WeatherRegion.values())
-				.filter(weatherRegion -> calendarTimeZone.getTimeZone()
-					.getDisplayName()
-					.equals(weatherRegion.getTimeZone()))
-			).findFirst()
-			.orElse(WeatherRegion.KOREA);
+				.flatMap(calendarTimeZone -> Arrays.stream(WeatherRegion.values())
+						.filter(weatherRegion -> calendarTimeZone.getTimeZone()
+								.getDisplayName()
+								.equals(weatherRegion.getTimeZone()))
+				).findFirst()
+				.orElse(WeatherRegion.KOREA);
 	}
 
 	public void changeBirthday(final LocalDate newBirthday) {

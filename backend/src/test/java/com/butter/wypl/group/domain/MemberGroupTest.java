@@ -56,7 +56,7 @@ class MemberGroupTest {
 			assertThat(memberGroups).hasSize(1);
 
 			Optional<MemberGroup> foundMemberGroup = memberGroupRepository
-				.findPendingMemberGroup(member.getId(), group.getId());
+					.findPendingMemberGroup(member.getId(), group.getId());
 			assertThat(foundMemberGroup).isEmpty();
 		}).doesNotThrowAnyException();
 
