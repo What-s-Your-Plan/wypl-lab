@@ -31,6 +31,7 @@ function DailyCalendar({
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
   const { mainColor } = useMemberStore();
+  const [color, setColor] = useState<string | null>(null);
 
   const updateInfo = useCallback(async () => {
     if (canStartLoading()) {
@@ -56,6 +57,7 @@ function DailyCalendar({
       });
       if (response) {
         setOriginSked(response.schedules);
+        setColor(response.group.color);
       }
     }
   }, [selectedDate, groupId]);
@@ -79,6 +81,13 @@ function DailyCalendar({
 
   const renderSchedule = () => {
     return schedules.map((schedule, idx) => {
+      let bgColor: string
+      
+      if (schedule.category === 'MEMBER') {
+        bgColor = schedule.members ? schedule.members[0].color : (schedule.label?.color || mainColor!)
+      } else if (schedule.category === 'GROUP') {
+        bgColor = color || schedule.group?.color || 'labelBrown'
+      }
       return (
         <Fragment key={idx}>
           {idx !== 0 && (
@@ -97,6 +106,7 @@ function DailyCalendar({
             <S.LabelDiv
               $bgColor={
                 (schedule.label?.color ||
+                  color ||
                   schedule.group?.color ||
                   mainColor) as LabelColorsType
               }
