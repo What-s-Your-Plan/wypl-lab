@@ -97,12 +97,12 @@ public class ReviewServiceTest {
 		Review review = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 		ReviewContents reviewContents = ReviewContentsFixture.REVIEW_CONTENTS.toReviewContents();
 
-		given(reviewContentsRepository.save(any(ReviewContents.class)))
-				.willReturn(reviewContents);
-		given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
-				.willReturn(reviewContents);
 		given(reviewRepository.getByReviewId(anyInt()))
 				.willReturn(review);
+		given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
+				.willReturn(reviewContents);
+		given(reviewContentsRepository.save(any(ReviewContents.class)))
+				.willReturn(reviewContents);
 
 		// When
 		ReviewIdResponse response = reviewService.updateReview(1, 1,
@@ -130,7 +130,7 @@ public class ReviewServiceTest {
 
 		given(reviewRepository.getByReviewId(anyInt()))
 				.willReturn(review);
-		given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
+		given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
 				.willReturn(reviewContents);
 
 		// When
@@ -152,7 +152,7 @@ public class ReviewServiceTest {
 
 		given(reviewRepository.getByReviewId(anyInt()))
 				.willReturn(review);
-		given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
+		given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
 				.willReturn(reviewContents);
 
 		// When
@@ -179,7 +179,7 @@ public class ReviewServiceTest {
 			review2 = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 			reviewContents = ReviewContentsFixture.REVIEW_CONTENTS.toReviewContents();
 
-			given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
+			given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
 					.willReturn(reviewContents);
 		}
 
@@ -323,7 +323,7 @@ public class ReviewServiceTest {
 					.willReturn(memberSchedule);
 			given(scheduleRepository.findById(anyInt()))
 					.willReturn(Optional.of(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule()));
-			given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
+			given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
 					.willReturn(reviewContents);
 		}
 

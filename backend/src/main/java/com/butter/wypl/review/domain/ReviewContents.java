@@ -7,6 +7,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.butter.wypl.global.common.MongoBaseEntityWithDelete;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,15 +18,15 @@ import lombok.Getter;
 @Builder
 @Getter
 public class ReviewContents extends MongoBaseEntityWithDelete {
-	// FIXME: 몽고 DB는 key를 String으로 넣어야한다.
 	@Id
-	private String reviewId;
+	@Column(name = "review_contents_id")
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private String id;
 
 	private List<Map<String, Object>> contents;
 
-	public static ReviewContents of(int reviewId, List<Map<String, Object>> contents) {
+	public static ReviewContents from(List<Map<String, Object>> contents) {
 		return ReviewContents.builder()
-				.reviewId(String.valueOf(reviewId))
 				.contents(contents)
 				.build();
 	}

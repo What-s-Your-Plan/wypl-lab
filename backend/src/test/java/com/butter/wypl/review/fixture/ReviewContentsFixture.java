@@ -6,7 +6,7 @@ import java.util.Map;
 import com.butter.wypl.review.domain.ReviewContents;
 
 public enum ReviewContentsFixture {
-	REVIEW_CONTENTS(1,
+	REVIEW_CONTENTS("1",
 			List.of(
 					Map.of(
 							"blockType", "emotion",
@@ -26,7 +26,7 @@ public enum ReviewContentsFixture {
 							"future", "향후 헹동"
 					)
 			)),
-	REVIEW_CONTENTS2(2,
+	REVIEW_CONTENTS2("2",
 			List.of(
 					Map.of(
 							"blockType", "emotion",
@@ -40,18 +40,18 @@ public enum ReviewContentsFixture {
 					)
 			)),
 	;
-	private final int reviewId;
+	private final String reviewId;
 
 	private final List<Map<String, Object>> contents;
 
-	ReviewContentsFixture(int reviewId, List<Map<String, Object>> contents) {
+	ReviewContentsFixture(String reviewId, List<Map<String, Object>> contents) {
 		this.reviewId = reviewId;
 		this.contents = contents;
 	}
 
 	public ReviewContents toReviewContents() {
 		return ReviewContents.builder()
-				.reviewId(reviewId)
+				.id(reviewId)
 				.contents(contents)
 				.build();
 	}
