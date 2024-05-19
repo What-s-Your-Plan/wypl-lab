@@ -40,6 +40,13 @@ function WWeather() {
     }
   };
 
+  const getImageSize = (desc: string) => {
+    if (!desc) return 'w-16'; // 기본 이미지 사이즈
+    const length = desc.length;
+    if (length < 4) return 'w-16';
+    return 'w-12'; // 긴 텍스트에 대한 작은 이미지 사이즈
+  };
+
   const getFontSize = (desc: string) => {
     if (!desc) return 'text-base'; // 기본 폰트 사이즈
     const length = desc.length;
@@ -66,11 +73,11 @@ function WWeather() {
             <div className="text-xs">{weather?.update_time}</div>
           </div>
           <div className="flex">
-            <div className="flex flex-col text-center">
+            <div className="flex flex-col text-center items-center">
               <img
                 src={renderWeatherIcon(weather?.weather_id)}
                 alt="날씨"
-                className="-mt-2"
+                className={`-mt-2 ${getImageSize(weather?.desc)}`}
               />
               <span className={`-mt-2 ${getFontSize(weather?.desc)}`}>
                 {weather?.desc}
