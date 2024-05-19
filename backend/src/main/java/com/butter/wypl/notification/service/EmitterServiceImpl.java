@@ -16,11 +16,10 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class EmitterServiceImpl implements EmitterModifyService{
+public class EmitterServiceImpl implements EmitterModifyService {
 
 	private final static Long EMITTER_TIMEOUT = 10L * 1000 * 60;
 	private final EmitterRepository emitterRepository;
-
 
 	@Override
 	public SseEmitter subscribeNotification(final int memberId, final String lastEventId) {
@@ -43,7 +42,7 @@ public class EmitterServiceImpl implements EmitterModifyService{
 		// 클라이언트가 미수신한 Event 목록이 존재할 경우 전송 -> Event 유실 예방
 		if (hasLostData(lastEventId)) {
 			log.info("미수신한 SSE 존재, 마지막으로 수신한 Emitter ID={}", lastEventId);
-			sendLostData(lastEventId,memberId,emitterId,emitter);
+			sendLostData(lastEventId, memberId, emitterId, emitter);
 		}
 
 		return emitter;
@@ -54,26 +53,26 @@ public class EmitterServiceImpl implements EmitterModifyService{
 	 */
 	@Override
 	public void sendEmitter(
-		final SseEmitter emitter,
-		final String eventId,
-		final String emitterId,
-		final Object object) {
+			final SseEmitter emitter,
+			final String eventId,
+			final String emitterId,
+			final Object object) {
 
 		try {
 			if (object instanceof Notification notification) {
 				emitter.send(SseEmitter.event()
-					.id(eventId)
-					.name("notification")
-					.data(NotificationResponse.from(notification))
+						.id(eventId)
+						.name("notification")
+						.data(NotificationResponse.from(notification))
 				);
-				log.info("보낸 알림 Emitter ID={}",eventId);
+				log.info("보낸 알림 Emitter ID={}", eventId);
 			} else {
 				emitter.send(SseEmitter.event()
-					.id(eventId)
-					.name("sse")
-					.data(object)
+						.id(eventId)
+						.name("sse")
+						.data(object)
 				);
-				log.info("최초 연결 Emitter ID={}",eventId);
+				log.info("최초 연결 Emitter ID={}", eventId);
 			}
 
 		} catch (IOException e) {
@@ -85,12 +84,14 @@ public class EmitterServiceImpl implements EmitterModifyService{
 		return !lastEventId.isEmpty();
 	}
 
-	private void sendLostData(final String lastEventId, final int memberId, final String emitterId, final SseEmitter emitter) {
-		Map<String, Object> eventCaches = emitterRepository.findAllEventCacheStartWithByMemberId(String.valueOf(memberId));
+	private void sendLostData(final String lastEventId, final int memberId, final String emitterId,
+			final SseEmitter emitter) {
+		Map<String, Object> eventCaches = emitterRepository.findAllEventCacheStartWithByMemberId(
+				String.valueOf(memberId));
 
 		eventCaches.entrySet().stream()
-			.filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
-			.forEach(entry -> sendEmitter(emitter, entry.getKey(), emitterId, entry.getValue()));
+				.filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
+				.forEach(entry -> sendEmitter(emitter, entry.getKey(), emitterId, entry.getValue()));
 	}
 
 	private String makeSseEmitterId(final int memberId) {

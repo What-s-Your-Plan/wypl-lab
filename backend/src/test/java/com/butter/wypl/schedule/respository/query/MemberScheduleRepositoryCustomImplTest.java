@@ -44,27 +44,27 @@ class MemberScheduleRepositoryCustomImplTest {
 			/* Given */
 			Member member = memberRepository.save(MemberFixture.HAN_JI_WON.toMember());
 			Schedule schedule = Schedule.builder()
-				.title("테니스 스케쥴")
-				.description(" 테니스 강습받기")
-				.category(Category.MEMBER)
-				.startDate(LocalDateTime.of(2024, 5, 15, 10, 0))
-				.endDate(LocalDateTime.of(2024, 5, 15, 14, 30))
-				.build();
+					.title("테니스 스케쥴")
+					.description(" 테니스 강습받기")
+					.category(Category.MEMBER)
+					.startDate(LocalDateTime.of(2024, 5, 15, 10, 0))
+					.endDate(LocalDateTime.of(2024, 5, 15, 14, 30))
+					.build();
 
 			Schedule schedule2 = Schedule.builder()
-				.title("페스티벌 가기")
-				.description("2024 서울 페스티벌")
-				.category(Category.MEMBER)
-				.startDate(LocalDateTime.of(2024, 5, 14, 23, 0))
-				.endDate(LocalDateTime.of(2024, 5, 15, 0, 0))
-				.build();
+					.title("페스티벌 가기")
+					.description("2024 서울 페스티벌")
+					.category(Category.MEMBER)
+					.startDate(LocalDateTime.of(2024, 5, 14, 23, 0))
+					.endDate(LocalDateTime.of(2024, 5, 15, 0, 0))
+					.build();
 
 			MemberSchedule memberSchedule = MemberSchedule.of(member, schedule);
 			MemberSchedule memberSchedule2 = MemberSchedule.of(member, schedule2);
 			Review review = Review.builder()
-				.title(" This is 테니스 스케쥴 리뷰...신난다. ")
-				.memberSchedule(memberSchedule)
-				.build();
+					.title(" This is 테니스 스케쥴 리뷰...신난다. ")
+					.memberSchedule(memberSchedule)
+					.build();
 
 			em.persist(member);
 			em.persist(schedule);
@@ -79,7 +79,7 @@ class MemberScheduleRepositoryCustomImplTest {
 
 			/* When */
 			List<MemberSchedule> memberSchedules = memberScheduleRepository.findMemberSchedulesEndingTodayWithoutReview(
-				memberId, today);
+					memberId, today);
 
 			/* Then */
 			Assertions.assertThat(memberSchedules).hasSize(1);
@@ -93,31 +93,31 @@ class MemberScheduleRepositoryCustomImplTest {
 			/* Given */
 			Member member = memberRepository.save(MemberFixture.HAN_JI_WON.toMember());
 			Schedule schedule = Schedule.builder()
-				.title("테니스 스케쥴")
-				.description(" 테니스 강습받기")
-				.category(Category.MEMBER)
-				.startDate(LocalDateTime.of(2024, 5, 15, 10, 0))
-				.endDate(LocalDateTime.of(2024, 5, 15, 14, 30))
-				.build();
+					.title("테니스 스케쥴")
+					.description(" 테니스 강습받기")
+					.category(Category.MEMBER)
+					.startDate(LocalDateTime.of(2024, 5, 15, 10, 0))
+					.endDate(LocalDateTime.of(2024, 5, 15, 14, 30))
+					.build();
 
 			Schedule schedule2 = Schedule.builder()
-				.title("페스티벌 가기")
-				.description("2024 서울 페스티벌")
-				.category(Category.MEMBER)
-				.startDate(LocalDateTime.of(2024, 5, 14, 23, 0))
-				.endDate(LocalDateTime.of(2024, 5, 15, 0, 0))
-				.build();
+					.title("페스티벌 가기")
+					.description("2024 서울 페스티벌")
+					.category(Category.MEMBER)
+					.startDate(LocalDateTime.of(2024, 5, 14, 23, 0))
+					.endDate(LocalDateTime.of(2024, 5, 15, 0, 0))
+					.build();
 
 			MemberSchedule memberSchedule = MemberSchedule.of(member, schedule);
 			MemberSchedule memberSchedule2 = MemberSchedule.of(member, schedule2);
 			Review review = Review.builder()
-				.title(" This is 테니스 스케쥴 리뷰...신난다. ")
-				.memberSchedule(memberSchedule)
-				.build();
+					.title(" This is 테니스 스케쥴 리뷰...신난다. ")
+					.memberSchedule(memberSchedule)
+					.build();
 			Review review2 = Review.builder()
-				.title(" This is 서울 페스티벌 스케쥴 리뷰.... ")
-				.memberSchedule(memberSchedule2)
-				.build();
+					.title(" This is 서울 페스티벌 스케쥴 리뷰.... ")
+					.memberSchedule(memberSchedule2)
+					.build();
 
 			em.persist(member);
 			em.persist(schedule);
@@ -133,7 +133,7 @@ class MemberScheduleRepositoryCustomImplTest {
 
 			/* When */
 			List<MemberSchedule> memberSchedules = memberScheduleRepository.findMemberSchedulesEndingTodayWithoutReview(
-				memberId, today);
+					memberId, today);
 
 			/* Then */
 			Assertions.assertThat(memberSchedules).isNotNull();

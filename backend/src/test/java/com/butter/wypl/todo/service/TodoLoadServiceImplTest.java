@@ -40,15 +40,15 @@ class TodoLoadServiceImplTest {
 
 	@Test
 	@DisplayName("할일 목록 조회")
-	void getTodos () {
-	    //given
+	void getTodos() {
+		//given
 		List<Todo> list = dummyData();
 		given(memberRepository.findById(anyInt()))
-			.willReturn(Optional.of(member));
+				.willReturn(Optional.of(member));
 		given(todoRepository.findByMemberAndDeletedAtIsNull(any(Member.class)))
-			.willReturn(list);
+				.willReturn(list);
 
-	    //when
+		//when
 		TodoResponse result = todoService.getTodos(member.getId());
 
 		//then
@@ -59,11 +59,11 @@ class TodoLoadServiceImplTest {
 
 	List<Todo> dummyData() {
 		return Stream.iterate(0, i -> i < 5, i -> i + 1)
-			.map(i -> Todo.builder()
-				.id(i)
-				.member(member)
-				.content("운동가기" + i)
-				.build())
-			.toList();
+				.map(i -> Todo.builder()
+						.id(i)
+						.member(member)
+						.content("운동가기" + i)
+						.build())
+				.toList();
 	}
 }

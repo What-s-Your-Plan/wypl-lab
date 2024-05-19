@@ -34,24 +34,24 @@ public enum MemberFixture {
 
 	public Member toMember() {
 		return Member.builder()
-			.email(email)
-			.nickname(nickname)
-			.profileImage(image)
-			.color(color)
-			.timeZone(CalendarTimeZone.KOREA)
-			.memberGroups(new ArrayList<>())
-			.build();
+				.email(email)
+				.nickname(nickname)
+				.profileImage(image)
+				.color(color)
+				.timeZone(CalendarTimeZone.KOREA)
+				.memberGroups(new ArrayList<>())
+				.build();
 	}
 
 	public Member toMemberWithId(int id) {
 		return Member.builder()
-			.id(id)
-			.email(email)
-			.nickname(nickname)
-			.profileImage(image)
-			.color(color)
-			.memberGroups(new ArrayList<>())
-			.timeZone(CalendarTimeZone.KOREA)
-			.build();
+				.id(id)
+				.email(email)
+				.nickname(nickname)
+				.profileImage(image)
+				.color(color)
+				.memberGroups(new ArrayList<>())
+				.timeZone(CalendarTimeZone.KOREA)
+				.build();
 	}
 }

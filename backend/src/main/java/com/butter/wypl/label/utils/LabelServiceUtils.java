@@ -8,10 +8,10 @@ import com.butter.wypl.label.repository.LabelRepository;
 public class LabelServiceUtils {
 
 	public static Label getLabelByLabelId(
-		final LabelRepository labelRepository,
-		final int labelId
+			final LabelRepository labelRepository,
+			final int labelId
 	) {
 		return labelRepository.findByLabelId(labelId)
-			.orElseThrow(() -> new LabelException(LabelErrorCode.NOT_FOUND));
+				.orElseThrow(() -> new LabelException(LabelErrorCode.NOT_FOUND));
 	}
 }

@@ -21,25 +21,25 @@ public class MemberGroupServiceUtils {
 	}
 
 	public static MemberGroup getAcceptMemberGroup(
-		MemberGroupRepository memberGroupRepository,
-		int memberId,
-		int groupId
+			MemberGroupRepository memberGroupRepository,
+			int memberId,
+			int groupId
 	) {
 		return memberGroupRepository.findAcceptMemberGroup(memberId, groupId)
-			.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_MEMBER_GROUP));
+				.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_MEMBER_GROUP));
 	}
 
 	public static List<MemberGroup> getAcceptedMemberGroupsOfGroup(MemberGroupRepository memberGroupRepository,
-		int groupId) {
+			int groupId) {
 		return memberGroupRepository.findAllAccepted(groupId);
 	}
 
 	public static List<Member> getAcceptedMembersOfGroup(MemberGroupRepository memberGroupRepository,
-		int groupId) {
+			int groupId) {
 		return getAcceptedMemberGroupsOfGroup(memberGroupRepository, groupId)
-			.stream()
-			.map(MemberGroup::getMember)
-			.toList();
+				.stream()
+				.map(MemberGroup::getMember)
+				.toList();
 	}
 
 }

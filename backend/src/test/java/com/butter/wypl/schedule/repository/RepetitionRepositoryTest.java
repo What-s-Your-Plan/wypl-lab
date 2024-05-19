@@ -52,7 +52,7 @@ public class RepetitionRepositoryTest {
 			assertThat(findRepetition.get().getRepetitionId()).isEqualTo(savedRepetition.getRepetitionId());
 			assertThat(findRepetition.get().getRepetitionCycle()).isEqualTo(savedRepetition.getRepetitionCycle());
 			assertThat(findRepetition.get().getRepetitionStartDate()).isEqualTo(
-				savedRepetition.getRepetitionStartDate());
+					savedRepetition.getRepetitionStartDate());
 		}
 	}
 }

@@ -39,11 +39,11 @@ public class ReviewContentsRepositoryTest {
 	void getReviewContents() {
 		// Given
 		ReviewContents reviewContents = reviewContentsRepository.save(
-			ReviewContentsFixture.REVIEW_CONTENTS2.toReviewContents());
+				ReviewContentsFixture.REVIEW_CONTENTS2.toReviewContents());
 
 		// When
 		ReviewContents findReviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-			reviewContents.getReviewId());
+				reviewContents.getReviewId());
 
 		// Then
 		assertThat(findReviewContents.getContents()).isEqualTo(reviewContents.getContents());

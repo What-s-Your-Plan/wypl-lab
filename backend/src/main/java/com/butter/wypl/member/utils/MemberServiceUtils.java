@@ -17,24 +17,24 @@ public class MemberServiceUtils {
 	}
 
 	public static Member findById(
-		final MemberRepository memberRepository,
-		final int id
+			final MemberRepository memberRepository,
+			final int id
 	) {
 		return memberRepository.findById(id)
-			.orElseThrow(() -> new MemberException(MemberErrorCode.NOT_EXIST_MEMBER));
+				.orElseThrow(() -> new MemberException(MemberErrorCode.NOT_EXIST_MEMBER));
 	}
 
 	public static Member findByEmail(
-		final MemberRepository memberRepository,
-		final String email
+			final MemberRepository memberRepository,
+			final String email
 	) {
 		return memberRepository.findByEmail(email)
-			.orElseThrow(() -> new MemberException(MemberErrorCode.NOT_EXIST_MEMBER));
+				.orElseThrow(() -> new MemberException(MemberErrorCode.NOT_EXIST_MEMBER));
 	}
 
 	public static void validateOwnership(
-		final Member member,
-		final int checkMemberId
+			final Member member,
+			final int checkMemberId
 	) {
 		if (member.getId() != checkMemberId) {
 			throw new MemberException(MemberErrorCode.PERMISSION_DENIED);
@@ -42,7 +42,7 @@ public class MemberServiceUtils {
 	}
 
 	public static List<Member> findAllActiveMembers(
-		final MemberRepository memberRepository
+			final MemberRepository memberRepository
 	) {
 		return memberRepository.findAllActiveMembers();
 	}

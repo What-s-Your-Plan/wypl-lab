@@ -15,6 +15,6 @@ public class TodoServiceUtils {
 
 	public static Todo findById(final TodoRepository repository, final int id) {
 		return repository.findById(id)
-			.orElseThrow(() -> new TodoException(TodoErrorCode.NOT_EXIST_TODO));
+				.orElseThrow(() -> new TodoException(TodoErrorCode.NOT_EXIST_TODO));
 	}
 }

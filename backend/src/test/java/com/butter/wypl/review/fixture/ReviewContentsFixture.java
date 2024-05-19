@@ -7,38 +7,38 @@ import com.butter.wypl.review.domain.ReviewContents;
 
 public enum ReviewContentsFixture {
 	REVIEW_CONTENTS(1,
-		List.of(
-			Map.of(
-				"blockType", "emotion",
-				"emoji", "/src/assets/icons/emoji/tired.svg",
-				"description", "피곤해요"
-			),
-			Map.of(
-				"blockType", "4f",
-				"weather", "/src/assets/icons/weather/sun.svg",
-				"description", "날씨 너무 좋음"
-			),
-			Map.of(
-				"blockType", "4f",
-				"facts", "팩트",
-				"feelings", "느낌",
-				"finding", "교훈",
-				"future", "향후 헹동"
-			)
-		)),
+			List.of(
+					Map.of(
+							"blockType", "emotion",
+							"emoji", "/src/assets/icons/emoji/tired.svg",
+							"description", "피곤해요"
+					),
+					Map.of(
+							"blockType", "4f",
+							"weather", "/src/assets/icons/weather/sun.svg",
+							"description", "날씨 너무 좋음"
+					),
+					Map.of(
+							"blockType", "4f",
+							"facts", "팩트",
+							"feelings", "느낌",
+							"finding", "교훈",
+							"future", "향후 헹동"
+					)
+			)),
 	REVIEW_CONTENTS2(2,
-		List.of(
-			Map.of(
-				"blockType", "emotion",
-				"emoji", "/src/assets/icons/emoji/tired.svg",
-				"description", "피곤해요"
-			),
-			Map.of(
-				"blockType", "4f",
-				"weather", "/src/assets/icons/weather/sun.svg",
-				"description", "날씨 너무 좋음"
-			)
-		)),
+			List.of(
+					Map.of(
+							"blockType", "emotion",
+							"emoji", "/src/assets/icons/emoji/tired.svg",
+							"description", "피곤해요"
+					),
+					Map.of(
+							"blockType", "4f",
+							"weather", "/src/assets/icons/weather/sun.svg",
+							"description", "날씨 너무 좋음"
+					)
+			)),
 	;
 	private final int reviewId;
 
@@ -51,8 +51,8 @@ public enum ReviewContentsFixture {
 
 	public ReviewContents toReviewContents() {
 		return ReviewContents.builder()
-			.reviewId(reviewId)
-			.contents(contents)
-			.build();
+				.reviewId(reviewId)
+				.contents(contents)
+				.build();
 	}
 }

@@ -7,39 +7,39 @@ import com.butter.wypl.schedule.domain.RepetitionCycle;
 
 public enum RepetitionFixture {
 	MONDAY_REPETITION(
-		RepetitionCycle.WEEK,
-		LocalDate.of(2024, 4, 25),
-		LocalDate.of(2025, 4, 25),
-		1,
-		2
+			RepetitionCycle.WEEK,
+			LocalDate.of(2024, 4, 25),
+			LocalDate.of(2025, 4, 25),
+			1,
+			2
 	),
 	TUESDAY_THRUSDAY_REPETITION(
-		RepetitionCycle.WEEK,
-		LocalDate.of(2024, 4, 25),
-		LocalDate.of(2025, 4, 25),
-		2,
-		36
+			RepetitionCycle.WEEK,
+			LocalDate.of(2024, 4, 25),
+			LocalDate.of(2025, 4, 25),
+			2,
+			36
 	),
 	MONTHLY_REPETITION(
-		RepetitionCycle.MONTH,
-		LocalDate.of(2024, 4, 25),
-		LocalDate.of(2024, 7, 25),
-		null,
-		0
+			RepetitionCycle.MONTH,
+			LocalDate.of(2024, 4, 25),
+			LocalDate.of(2024, 7, 25),
+			null,
+			0
 	),
 	LAST_DAY_REPETITION(
-		RepetitionCycle.MONTH,
-		LocalDate.of(2024, 4, 25),
-		LocalDate.of(2025, 4, 25),
-		null,
-		0
+			RepetitionCycle.MONTH,
+			LocalDate.of(2024, 4, 25),
+			LocalDate.of(2025, 4, 25),
+			null,
+			0
 	),
 	YEARLY_REPETITION(
-		RepetitionCycle.YEAR,
-		LocalDate.of(2024, 4, 25),
-		null,
-		null,
-		0
+			RepetitionCycle.YEAR,
+			LocalDate.of(2024, 4, 25),
+			null,
+			null,
+			0
 	),
 	;
 
@@ -54,7 +54,7 @@ public enum RepetitionFixture {
 	private final int dayOfWeek;
 
 	RepetitionFixture(RepetitionCycle repetitionCycle, LocalDate repetitionStartDate,
-		LocalDate repetitionEndDate, Integer week, int dayOfWeek) {
+			LocalDate repetitionEndDate, Integer week, int dayOfWeek) {
 		this.repetitionCycle = repetitionCycle;
 		this.repetitionStartDate = repetitionStartDate;
 		this.repetitionEndDate = repetitionEndDate;
@@ -64,12 +64,12 @@ public enum RepetitionFixture {
 
 	public Repetition toRepetition() {
 		return Repetition.builder()
-			.repetitionCycle(repetitionCycle)
-			.repetitionStartDate(repetitionStartDate)
-			.repetitionEndDate(repetitionEndDate)
-			.week(week)
-			.dayOfWeek(dayOfWeek)
-			.build();
+				.repetitionCycle(repetitionCycle)
+				.repetitionStartDate(repetitionStartDate)
+				.repetitionEndDate(repetitionEndDate)
+				.week(week)
+				.dayOfWeek(dayOfWeek)
+				.build();
 	}
 
 }

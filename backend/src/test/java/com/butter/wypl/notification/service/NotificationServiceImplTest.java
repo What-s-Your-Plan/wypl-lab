@@ -55,7 +55,7 @@ class NotificationServiceImplTest {
 		//given
 		NotificationCreateRequest request = notificationFixture.toNotificationCreateRequest();
 		given(notificationRepository.save(any(Notification.class)))
-			.willReturn(notificationFixture.toNotification());
+				.willReturn(notificationFixture.toNotification());
 		//when
 		//then
 		assertThatCode(() -> notificationService.createNotification(request)).doesNotThrowAnyException();
@@ -68,7 +68,7 @@ class NotificationServiceImplTest {
 		int memberId = 1;
 		//when
 		willDoNothing().given(notificationRepository)
-			.deleteByMemberId(anyInt());
+				.deleteByMemberId(anyInt());
 
 		//then
 		assertThatCode(() -> notificationService.deleteNotification(memberId)).doesNotThrowAnyException();
@@ -82,7 +82,7 @@ class NotificationServiceImplTest {
 		List<Notification> notifications = makeDummyNotification(memberId);
 
 		given(notificationRepository.findAllByMemberId(anyInt()))
-			.willReturn(notifications);
+				.willReturn(notifications);
 
 		//when
 		//then
@@ -91,13 +91,13 @@ class NotificationServiceImplTest {
 
 	List<Notification> makeDummyNotification(final int memberId) {
 		return Stream.iterate(0, i -> i < 5, i -> i + 1)
-			.map(i -> Notification.builder()
-				.id(String.valueOf(i))
-				.memberId(memberId)
-				.message("테스트메시지" + i)
-				.isRead(false)
-				.build())
-			.toList();
+				.map(i -> Notification.builder()
+						.id(String.valueOf(i))
+						.memberId(memberId)
+						.message("테스트메시지" + i)
+						.isRead(false)
+						.build())
+				.toList();
 	}
 
 	@Test
@@ -105,15 +105,15 @@ class NotificationServiceImplTest {
 		//given
 		final String notificationId = "abcdefg";
 		Notification notification = Notification.builder()
-			.id(notificationId)
-			.memberId(1)
-			.isActed(false)
-			.typeCode(NotificationTypeCode.GROUP)
-			.message("테스트")
-			.build();
+				.id(notificationId)
+				.memberId(1)
+				.isActed(false)
+				.typeCode(NotificationTypeCode.GROUP)
+				.message("테스트")
+				.build();
 
 		given(notificationRepository.findById(notificationId))
-			.willReturn(Optional.of(notification));
+				.willReturn(Optional.of(notification));
 
 		//when
 		notificationService.updateIsActedToTrue(notification.getMemberId(), notificationId);
@@ -131,12 +131,12 @@ class NotificationServiceImplTest {
 
 		//when
 		given(notificationRepository.findById(invalidId))
-			.willReturn(Optional.empty());
+				.willReturn(Optional.empty());
 
 		//then
 		assertThatThrownBy(() -> notificationService.updateIsActedToTrue(1, invalidId))
-			.isInstanceOf(NotificationException.class)
-			.hasMessage(NotificationErrorCode.NOTIFICATION_NOT_EXIST.getMessage());
+				.isInstanceOf(NotificationException.class)
+				.hasMessage(NotificationErrorCode.NOTIFICATION_NOT_EXIST.getMessage());
 	}
 
 	@Test
@@ -145,20 +145,20 @@ class NotificationServiceImplTest {
 		final int memberId = 1;
 		String notificationId = "test";
 		Notification notification = Notification.builder()
-			.id(notificationId)
-			.memberId(2)
-			.isActed(false)
-			.typeCode(NotificationTypeCode.GROUP)
-			.message("테스트")
-			.build();
+				.id(notificationId)
+				.memberId(2)
+				.isActed(false)
+				.typeCode(NotificationTypeCode.GROUP)
+				.message("테스트")
+				.build();
 
 		//when
 		given(notificationRepository.findById(anyString()))
-			.willReturn(Optional.of(notification));
+				.willReturn(Optional.of(notification));
 
 		//then
 		assertThatThrownBy(() -> notificationService.updateIsActedToTrue(memberId, notificationId))
-			.isInstanceOf(NotificationException.class)
-			.hasMessage(NotificationErrorCode.NOT_YOUR_NOTIFICATION.getMessage());
+				.isInstanceOf(NotificationException.class)
+				.hasMessage(NotificationErrorCode.NOT_YOUR_NOTIFICATION.getMessage());
 	}
 }

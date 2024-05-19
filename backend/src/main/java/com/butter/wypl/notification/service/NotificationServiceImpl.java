@@ -46,16 +46,16 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 
 		String eventId = memberId + "_" + System.currentTimeMillis();
 		Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByMemberId(
-			String.valueOf(memberId));
+				String.valueOf(memberId));
 
 		if (notificationCreateRequest.typeCodeEquals(NotificationTypeCode.GROUP)) {
 			log.info("GROUP 생성");
 			Notification groupNotification = createGroupNotification(notificationCreateRequest);
 			emitters.forEach(
-				(key, emitter) -> {
-					emitterRepository.saveEventCache(eventId, groupNotification);
-					emitterModifyService.sendEmitter(emitter, eventId, key, groupNotification);
-				}
+					(key, emitter) -> {
+						emitterRepository.saveEventCache(eventId, groupNotification);
+						emitterModifyService.sendEmitter(emitter, eventId, key, groupNotification);
+					}
 			);
 			return;
 
@@ -63,10 +63,10 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 			log.info("REVIEW 생성");
 			Notification reviewNotification = createReviewNotification(notificationCreateRequest);
 			emitters.forEach(
-				(key, emitter) -> {
-					emitterRepository.saveEventCache(eventId, reviewNotification);
-					emitterModifyService.sendEmitter(emitter, eventId, key, reviewNotification);
-				}
+					(key, emitter) -> {
+						emitterRepository.saveEventCache(eventId, reviewNotification);
+						emitterModifyService.sendEmitter(emitter, eventId, key, reviewNotification);
+					}
 			);
 			return;
 		}
@@ -89,7 +89,7 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 	@Transactional
 	public void updateIsActedToTrue(final int memberId, final String id) {
 		Notification notification = notificationRepository.findById(id)
-			.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_EXIST));
+				.orElseThrow(() -> new NotificationException(NotificationErrorCode.NOTIFICATION_NOT_EXIST));
 
 		if (memberId != notification.getMemberId()) {
 			throw new NotificationException(NotificationErrorCode.NOT_YOUR_NOTIFICATION);
@@ -101,26 +101,27 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 
 	private Notification createGroupNotification(final NotificationCreateRequest request) {
 		Notification notification = Notification.builder()
-			.memberId(request.memberId())
-			.message(makeMessage(request.typeCode(), request.groupName(), request.nickName(), null))
-			.isRead(false)
-			.isActed(false)
-			.typeCode(request.typeCode())
-			.targetId(request.targetId())
-			.build();
+				.memberId(request.memberId())
+				.message(makeMessage(request.typeCode(), request.groupName(), request.nickName(), null))
+				.isRead(false)
+				.isActed(false)
+				.typeCode(request.typeCode())
+				.targetId(request.targetId())
+				.build();
 
 		return notificationRepository.save(notification);
 	}
 
 	private Notification createReviewNotification(final NotificationCreateRequest request) {
 		Notification notification = Notification.builder()
-			.memberId(request.memberId())
-			.message(makeMessage(request.typeCode(), request.groupName(), request.nickName(), request.scheduleTitle()))
-			.isRead(false)
-			.isActed(false)
-			.typeCode(request.typeCode())
-			.targetId(request.targetId())
-			.build();
+				.memberId(request.memberId())
+				.message(makeMessage(request.typeCode(), request.groupName(), request.nickName(),
+						request.scheduleTitle()))
+				.isRead(false)
+				.isActed(false)
+				.typeCode(request.typeCode())
+				.targetId(request.targetId())
+				.build();
 
 		return notificationRepository.save(notification);
 	}
@@ -134,10 +135,10 @@ public class NotificationServiceImpl implements NotificationModifyService, Notif
 	 * @return 생성된 알림 메시지
 	 */
 	private String makeMessage(
-		final NotificationTypeCode typeCode,
-		final String teamName,
-		final String nickname,
-		final String scheduleTitle
+			final NotificationTypeCode typeCode,
+			final String teamName,
+			final String nickname,
+			final String scheduleTitle
 	) {
 		/*
 		 * message template

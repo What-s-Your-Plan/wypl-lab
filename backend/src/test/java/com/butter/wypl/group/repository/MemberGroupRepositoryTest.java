@@ -66,7 +66,7 @@ class MemberGroupRepositoryTest {
 
 			assertThatCode(() -> {
 				MemberGroup findMemberGroup = memberGroupRepository.findPendingMemberGroup(owner.getId(),
-					group.getId()).orElseThrow();
+						group.getId()).orElseThrow();
 				assertThat(findMemberGroup.getGroup().getName()).isNotNull().isEqualTo(group.getName());
 				assertThat(findMemberGroup.getMember().getEmail()).isNotNull().isEqualTo(owner.getEmail());
 			}).doesNotThrowAnyException();
@@ -93,7 +93,7 @@ class MemberGroupRepositoryTest {
 		/* Then */
 		assertThatCode(() -> {
 			assertThat(foundMemberGroups)
-				.isNotNull();
+					.isNotNull();
 		}).doesNotThrowAnyException();
 
 	}

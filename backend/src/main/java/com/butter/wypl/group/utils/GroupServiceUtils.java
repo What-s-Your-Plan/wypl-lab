@@ -19,7 +19,7 @@ public class GroupServiceUtils {
 
 	public static Group findById(final GroupRepository groupRepository, final int groupId) {
 		return groupRepository.findById(groupId)
-			.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_GROUP));
+				.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_GROUP));
 	}
 
 	public static void isGroupMember(final int userId, final List<Member> groupMembers) {

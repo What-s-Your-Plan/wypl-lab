@@ -59,9 +59,9 @@ public class ScheduleServiceImpl implements ScheduleModifyService, ScheduleReadS
 
 		if (schedule.getGroupId() != null) {
 			memberIdResponses.addAll(
-				MemberGroupServiceUtils.getAcceptedMembersOfGroup(memberGroupRepository, schedule.getGroupId())
-					.stream()
-					.map(member -> new MemberIdResponse(member.getId())).toList());
+					MemberGroupServiceUtils.getAcceptedMembersOfGroup(memberGroupRepository, schedule.getGroupId())
+							.stream()
+							.map(member -> new MemberIdResponse(member.getId())).toList());
 		} else {
 			memberIdResponses.add(new MemberIdResponse(memberId));
 		}

@@ -39,9 +39,9 @@ class TodoRepositoryTest {
 	void createTodo() throws Exception {
 		//given
 		Todo entity = Todo.builder()
-			.member(member)
-			.content("알고리즘 풀기")
-			.build();
+				.member(member)
+				.content("알고리즘 풀기")
+				.build();
 
 		//when
 		Todo savedTodo = todoRepository.save(entity);
@@ -101,16 +101,16 @@ class TodoRepositoryTest {
 	 */
 	void saveTodos() {
 		Stream.iterate(0, i -> i < 5, i -> i + 1)
-			.forEach(idx ->
-				{
-					todoRepository.save(
-						Todo.builder()
-							.member(member)
-							.content("알고리즘풀기" + idx)
-							.build()
-					);
-				}
-			);
+				.forEach(idx ->
+						{
+							todoRepository.save(
+									Todo.builder()
+											.member(member)
+											.content("알고리즘풀기" + idx)
+											.build()
+							);
+						}
+				);
 	}
 
 	@Test

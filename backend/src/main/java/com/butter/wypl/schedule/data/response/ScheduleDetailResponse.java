@@ -11,47 +11,47 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ScheduleDetailResponse(
 
-	@JsonProperty("schedule_id")
-	int scheduleId,
-	String title,
-	String description,
+		@JsonProperty("schedule_id")
+		int scheduleId,
+		String title,
+		String description,
 
-	@JsonProperty("start_date")
-	LocalDateTime startDate,
+		@JsonProperty("start_date")
+		LocalDateTime startDate,
 
-	@JsonProperty("end_date")
-	LocalDateTime endDate,
-	Category category,
+		@JsonProperty("end_date")
+		LocalDateTime endDate,
+		Category category,
 
-	@JsonProperty("group_id")
-	Integer groupId,
+		@JsonProperty("group_id")
+		Integer groupId,
 
-	RepetitionResponse repetition,
+		RepetitionResponse repetition,
 
-	@JsonProperty("label")
-	LabelResponse labelId,
+		@JsonProperty("label")
+		LabelResponse labelId,
 
-	@JsonProperty("member_count")
-	int member_count,
-	List<MemberResponse> members
+		@JsonProperty("member_count")
+		int member_count,
+		List<MemberResponse> members
 ) {
 
 	public static ScheduleDetailResponse of(
-		Schedule schedule,
-		List<Member> members
+			Schedule schedule,
+			List<Member> members
 	) {
 		return new ScheduleDetailResponse(
-			schedule.getScheduleId(),
-			schedule.getTitle(),
-			schedule.getDescription(),
-			schedule.getStartDate(),
-			schedule.getEndDate(),
-			schedule.getCategory(),
-			schedule.getGroupId(),
-			(schedule.getRepetition() == null) ? null : RepetitionResponse.from(schedule.getRepetition()),
-			(schedule.getLabel() == null) ? null : LabelResponse.from(schedule.getLabel()),
-			members.size(),
-			MemberResponse.from(members)
+				schedule.getScheduleId(),
+				schedule.getTitle(),
+				schedule.getDescription(),
+				schedule.getStartDate(),
+				schedule.getEndDate(),
+				schedule.getCategory(),
+				schedule.getGroupId(),
+				(schedule.getRepetition() == null) ? null : RepetitionResponse.from(schedule.getRepetition()),
+				(schedule.getLabel() == null) ? null : LabelResponse.from(schedule.getLabel()),
+				members.size(),
+				MemberResponse.from(members)
 		);
 	}
 }

@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ReviewListResponse(
 
-	@JsonProperty("review_count")
-	int reviewCount,
+		@JsonProperty("review_count")
+		int reviewCount,
 
-	List<ReviewResponse> reviews
+		List<ReviewResponse> reviews
 ) {
 
 	public static ReviewListResponse from(List<ReviewResponse> reviews) {

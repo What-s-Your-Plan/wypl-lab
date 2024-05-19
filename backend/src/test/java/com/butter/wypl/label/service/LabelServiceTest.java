@@ -40,8 +40,8 @@ public class LabelServiceTest {
 
 			//when
 			LabelResponse savedLabel = labelService.createLabel(
-				label.getMemberId(),
-				new LabelRequest(label.getTitle(), label.getColor())
+					label.getMemberId(),
+					new LabelRequest(label.getTitle(), label.getColor())
 			);
 
 			//then
@@ -62,11 +62,11 @@ public class LabelServiceTest {
 			//then
 			assertThatThrownBy(() -> {
 				labelService.createLabel(
-					label.getMemberId(),
-					new LabelRequest(null, label.getColor())
+						label.getMemberId(),
+						new LabelRequest(null, label.getColor())
 				);
 			}).isInstanceOf(LabelException.class)
-				.hasMessageContaining(LabelErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
+					.hasMessageContaining(LabelErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
 		}
 
 	}
@@ -81,8 +81,8 @@ public class LabelServiceTest {
 		void init() {
 			label = LabelFixture.STUDY_LABEL.toLabel();
 			savedLabel = labelService.createLabel(
-				label.getMemberId(),
-				new LabelRequest(label.getTitle(), label.getColor())
+					label.getMemberId(),
+					new LabelRequest(label.getTitle(), label.getColor())
 			);
 		}
 
@@ -92,9 +92,9 @@ public class LabelServiceTest {
 			//given
 			//when
 			LabelResponse updatedLabel = labelService.updateLabel(
-				label.getMemberId(),
-				savedLabel.labelId(),
-				new LabelRequest("바뀐 제목", Color.labelBlue));
+					label.getMemberId(),
+					savedLabel.labelId(),
+					new LabelRequest("바뀐 제목", Color.labelBlue));
 
 			//then
 			assertThat(updatedLabel.labelId()).isEqualTo(savedLabel.labelId());
@@ -111,9 +111,9 @@ public class LabelServiceTest {
 			//then
 			assertThatThrownBy(() -> {
 				labelService.updateLabel(label.getMemberId(), savedLabel.labelId(),
-					new LabelRequest(null, Color.labelBlue));
+						new LabelRequest(null, Color.labelBlue));
 			}).isInstanceOf(LabelException.class)
-				.hasMessageContaining(LabelErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
+					.hasMessageContaining(LabelErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
 		}
 
 		@Test
@@ -124,12 +124,12 @@ public class LabelServiceTest {
 			//then
 			assertThatThrownBy(() -> {
 				labelService.updateLabel(
-					2,
-					savedLabel.labelId(),
-					new LabelRequest("운동가기", Color.labelBlue)
+						2,
+						savedLabel.labelId(),
+						new LabelRequest("운동가기", Color.labelBlue)
 				);
 			}).isInstanceOf(LabelException.class)
-				.hasMessageContaining(LabelErrorCode.NO_PERMISSION_UPDATE.getMessage());
+					.hasMessageContaining(LabelErrorCode.NO_PERMISSION_UPDATE.getMessage());
 		}
 	}
 
@@ -142,8 +142,8 @@ public class LabelServiceTest {
 			//given
 			Label label = LabelFixture.STUDY_LABEL.toLabel();
 			LabelResponse savedLabel = labelService.createLabel(
-				label.getMemberId(),
-				new LabelRequest(label.getTitle(), label.getColor())
+					label.getMemberId(),
+					new LabelRequest(label.getTitle(), label.getColor())
 			);
 
 			//then
@@ -163,8 +163,8 @@ public class LabelServiceTest {
 			//given
 			Label label = LabelFixture.STUDY_LABEL.toLabel();
 			LabelResponse savedLabel = labelService.createLabel(
-				label.getMemberId(),
-				new LabelRequest(label.getTitle(), label.getColor())
+					label.getMemberId(),
+					new LabelRequest(label.getTitle(), label.getColor())
 			);
 
 			//then
@@ -183,7 +183,7 @@ public class LabelServiceTest {
 			assertThatThrownBy(() -> {
 				labelService.getLabelByLabelId(0);
 			}).isInstanceOf(LabelException.class)
-				.hasMessageContaining(LabelErrorCode.NOT_FOUND.getMessage());
+					.hasMessageContaining(LabelErrorCode.NOT_FOUND.getMessage());
 		}
 	}
 
@@ -197,11 +197,11 @@ public class LabelServiceTest {
 			//given
 			Label label1 = LabelFixture.STUDY_LABEL.toLabel();
 			labelService.createLabel(label1.getMemberId(),
-				new LabelRequest(label1.getTitle(), label1.getColor()));
+					new LabelRequest(label1.getTitle(), label1.getColor()));
 
 			Label label2 = LabelFixture.STUDY_LABEL.toLabel();
 			labelService.createLabel(label2.getMemberId(),
-				new LabelRequest(label2.getTitle(), label2.getColor()));
+					new LabelRequest(label2.getTitle(), label2.getColor()));
 
 			//when
 			LabelListResponse result = labelService.getLabelsByMemberId(label1.getMemberId());

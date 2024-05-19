@@ -40,13 +40,13 @@ public class MemberNotificationSchedulerService {
 		LocalDate today = LocalDate.now();
 		allActiveMembers.forEach(member -> {
 			List<MemberSchedule> memberSchedules = ScheduleServiceUtils.findMemberSchedulesEndingTodayWithoutReview(
-				memberScheduleRepository, member.getId(), today);
+					memberScheduleRepository, member.getId(), today);
 
 			memberSchedules.forEach(memberSchedule -> {
 				/* 회고 알림 생성 */
 				reviewNotificationService.createReviewNotification(
-					member.getId(), member.getNickname(), memberSchedule.getSchedule().getTitle(),
-					memberSchedule.getSchedule().getScheduleId()
+						member.getId(), member.getNickname(), memberSchedule.getSchedule().getTitle(),
+						memberSchedule.getSchedule().getScheduleId()
 				);
 			});
 		});
