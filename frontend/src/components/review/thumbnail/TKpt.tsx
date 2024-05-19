@@ -12,6 +12,7 @@ function TKpt({ thumbnailContent }: TKptProps) {
       : thumbnailContent.keepStr;
   return (
     <div>
+      <div className="font-semibold">Keep</div>
       <Text content={keep} />
     </div>
   );

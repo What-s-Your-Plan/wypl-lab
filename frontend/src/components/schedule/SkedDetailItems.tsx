@@ -4,6 +4,8 @@ import * as S from './Schedule.styled';
 import Button from '@/components/common/Button';
 import LabelButton from '@/components/common/LabelButton';
 import ReviewThumbnail from '@/components/review/thumbnail/ReviewThumbnail';
+import { WhiteContainer } from '@/components/common/Container';
+import { Divider } from '@/components/common/Divider';
 import { isAllday, padding0, stringToDate } from '@/utils/DateUtils';
 import { Review } from '@/@types/ReviewResponse';
 
@@ -18,7 +20,6 @@ import UserIcon from '@/assets/icons/user.svg';
 import RepeatIcon from '@/assets/icons/repeat.svg';
 import PenIcon from '@/assets/icons/pen.svg';
 import ReviewIcon from '@/assets/icons/notePad.svg';
-import { WhiteContainer } from '../common/Container';
 
 function Title({ title }: { title: string }) {
   return (
@@ -184,7 +185,8 @@ function ReviewList({ reviewList }: { reviewList: Review[] }) {
       return (
         <WhiteContainer
           $width="400"
-          className="w-40 inline-block mr-4"
+          key={'review' + review.review_id}
+          className="!w-40 h-32 inline-block mr-4"
           onClick={() => {
             navigator(`/review/${review.review_id}`);
           }}
@@ -193,6 +195,7 @@ function ReviewList({ reviewList }: { reviewList: Review[] }) {
             blockType={review.thumbnail_content.blockType}
             thumbnailContent={review.thumbnail_content}
           />
+          <Divider />
           <span>{review.title}</span>
         </WhiteContainer>
       );
