@@ -29,25 +29,25 @@ public class MemberScheduleService {
 	@Transactional
 	public List<Member> createMemberSchedule(Schedule schedule, List<MemberIdResponse> memberIdResponses) {
 		List<MemberSchedule> memberSchedules = memberIdResponses.stream()
-			.map(memberIdResponse ->
-				MemberSchedule.builder()
-					.member(MemberServiceUtils.findById(memberRepository, memberIdResponse.memberId()))
-					.schedule(schedule)
-					.build())
-			.toList();
+				.map(memberIdResponse ->
+						MemberSchedule.builder()
+								.member(MemberServiceUtils.findById(memberRepository, memberIdResponse.memberId()))
+								.schedule(schedule)
+								.build())
+				.toList();
 
 		List<MemberSchedule> savedMemberSchedules = memberScheduleRepository.saveAll(memberSchedules);
 
 		return savedMemberSchedules.stream()
-			.map(MemberSchedule::getMember)
-			.toList();
+				.map(MemberSchedule::getMember)
+				.toList();
 	}
 
 	public void validateMemberSchedule(Schedule schedule, int memberId) {
 		Member member = MemberServiceUtils.findById(memberRepository, memberId);
 
 		memberScheduleRepository.findByScheduleAndMember(schedule, member)
-			.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL));
+				.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL));
 	}
 
 	@Transactional
@@ -74,15 +74,15 @@ public class MemberScheduleService {
 		// 새로운 MemberSchedule 추가
 		for (Member newMember : newMembers) {
 			if (existingMemberSchedules.stream()
-				.noneMatch(memberSchedule -> memberSchedule.getMember().getId() == newMember.getId())) {
+					.noneMatch(memberSchedule -> memberSchedule.getMember().getId() == newMember.getId())) {
 				savedMembers.add(
-					memberScheduleRepository.save(
-						MemberSchedule
-							.builder()
-							.schedule(schedule)
-							.member(newMember)
-							.build()
-					).getMember()
+						memberScheduleRepository.save(
+								MemberSchedule
+										.builder()
+										.schedule(schedule)
+										.member(newMember)
+										.build()
+						).getMember()
 				);
 			}
 		}
@@ -105,7 +105,7 @@ public class MemberScheduleService {
 		Member member = MemberServiceUtils.findById(memberRepository, memberId);
 
 		return memberScheduleRepository.findByScheduleAndMember(schedule, member)
-			.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL));
+				.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NOT_PERMISSION_TO_SCHEDUEL));
 	}
-	
+
 }

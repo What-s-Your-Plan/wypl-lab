@@ -35,64 +35,62 @@ public class ScheduleController {
 
 	@GetMapping("/details/{scheduleId}")
 	public ResponseEntity<Message<ScheduleDetailResponse>> getDetailScheduleByScheduleId(
-		@Authenticated AuthMember authMember,
-		@PathVariable int scheduleId
+			@Authenticated AuthMember authMember,
+			@PathVariable int scheduleId
 	) {
 		return ResponseEntity
-			.ok().body(
-				Message.withBody("상세 일정 조회 성공",
-					scheduleReadService.getDetailScheduleByScheduleId(authMember.getId(), scheduleId))
-			);
+				.ok().body(
+						Message.withBody("상세 일정 조회 성공",
+								scheduleReadService.getDetailScheduleByScheduleId(authMember.getId(), scheduleId))
+				);
 	}
 
 	@GetMapping("/{scheduleId}")
 	public ResponseEntity<Message<ScheduleResponse>> getScheduleByScheduleId(
-		@Authenticated AuthMember authMember,
-		@PathVariable int scheduleId
+			@Authenticated AuthMember authMember,
+			@PathVariable int scheduleId
 	) {
 		return ResponseEntity
-			.ok().body(
-				Message.withBody("간략 일정 조회 성공",
-					scheduleReadService.getScheduleByScheduleId(authMember.getId(), scheduleId))
-			);
+				.ok().body(
+						Message.withBody("간략 일정 조회 성공",
+								scheduleReadService.getScheduleByScheduleId(authMember.getId(), scheduleId))
+				);
 	}
 
 	@PostMapping
 	public ResponseEntity<Message<ScheduleDetailResponse>> createSchedule(
-		@Authenticated AuthMember authMember,
-		@RequestBody ScheduleCreateRequest scheduleCreateRequest
+			@Authenticated AuthMember authMember,
+			@RequestBody ScheduleCreateRequest scheduleCreateRequest
 	) {
 		return ResponseEntity
-			.status(HttpStatus.CREATED).body(
-				Message.withBody("일정 생성 성공",
-					scheduleModifyService.createSchedule(authMember.getId(), scheduleCreateRequest))
-			);
+				.status(HttpStatus.CREATED).body(
+						Message.withBody("일정 생성 성공",
+								scheduleModifyService.createSchedule(authMember.getId(), scheduleCreateRequest))
+				);
 	}
 
 	@PutMapping("/{scheduleId}")
 	public ResponseEntity<Message<ScheduleDetailResponse>> updateSchedule(
-		@Authenticated AuthMember authMember,
-		@PathVariable int scheduleId,
-		@RequestBody ScheduleUpdateRequest scheduleUpdateRequest
+			@Authenticated AuthMember authMember,
+			@PathVariable int scheduleId,
+			@RequestBody ScheduleUpdateRequest scheduleUpdateRequest
 	) {
-		return ResponseEntity
-			.ok().body(
-				Message.withBody("일정 수정 성공",
-					scheduleModifyService.updateSchedule(authMember.getId(), scheduleId, scheduleUpdateRequest))
-			);
+		ScheduleDetailResponse response =
+				scheduleModifyService.updateSchedule(authMember.getId(), scheduleId, scheduleUpdateRequest);
+		return ResponseEntity.ok()
+				.body(Message.withBody("일정 수정 성공", response));
 	}
 
 	@DeleteMapping("/{scheduleId}/{modificationType}")
 	public ResponseEntity<Message<ScheduleIdListResponse>> deleteSchedules(
-		@Authenticated AuthMember authMember,
-		@PathVariable("scheduleId") int scheduleId,
-		@PathVariable("modificationType") ModificationType modificationType
+			@Authenticated AuthMember authMember,
+			@PathVariable("scheduleId") int scheduleId,
+			@PathVariable("modificationType") ModificationType modificationType
 	) {
 		return ResponseEntity
-			.ok().body(
-				Message.withBody("일정 삭제 성공",
-					scheduleModifyService.deleteSchedule(authMember.getId(), scheduleId, modificationType))
-			);
+				.ok().body(
+						Message.withBody("일정 삭제 성공",
+								scheduleModifyService.deleteSchedule(authMember.getId(), scheduleId, modificationType))
+				);
 	}
-
 }

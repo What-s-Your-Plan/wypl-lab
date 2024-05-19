@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.butter.wypl.calendar.data.CalendarType;
+import com.butter.wypl.calendar.data.cond.FindGroupCalendarCond;
 import com.butter.wypl.calendar.data.response.BlockListResponse;
 import com.butter.wypl.calendar.data.response.BlockResponse;
 import com.butter.wypl.calendar.data.response.CalendarListResponse;
@@ -121,14 +122,19 @@ public class CalendarService {
 			}
 		}
 
-		List<Schedule> schedules = scheduleRepository.findAllByGroupIdAndStartDateBetween(groupId,
-				LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-				LocalDateTime.of(endDate, LocalTime.of(23, 59)));
+		List<Schedule> schedules = scheduleRepository.findAllByGroupCalendarCond(
+				new FindGroupCalendarCond(
+						groupId,
+						memberId,
+						LocalDateTime.of(startDate, LocalTime.of(0, 0)),
+						LocalDateTime.of(endDate, LocalTime.of(23, 59))
+				));
 
 		return GroupCalendarListResponse.of(
 				schedules.stream()
 						.map(schedule -> GroupCalendarResponse.of(schedule,
-								memberScheduleRepository.getMemberWithSchedule(schedule.getScheduleId())))
+								memberScheduleRepository.getMemberWithSchedule(
+										schedule.getScheduleId())))
 						.toList(),
 				memberGroup
 		);
