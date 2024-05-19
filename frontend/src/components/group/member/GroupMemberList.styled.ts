@@ -8,6 +8,7 @@ const Container = styled.div`
     flex-col
     gap-2
     my-2
+    px-2
     `}
 `;
 
@@ -31,8 +32,8 @@ const Box = styled.div`
 
 const ProfileImg = styled.img`
   ${tw`
-  w-8
-  h-8
+  w-7
+  h-7
   rounded-full
   border
   `}

@@ -56,18 +56,21 @@ function createInit(schedule: ScheduleResponse) {
   if (schedule.repetition) {
     newInit.week = schedule.repetition.week;
     newInit.startDate = schedule.repetition.repetition_start_date;
-    newInit.endRDate = schedule.repetition.repetition_end_date ? schedule.repetition.repetition_end_date : '';
+    newInit.endRDate = schedule.repetition.repetition_end_date
+      ? schedule.repetition.repetition_end_date
+      : '';
     newInit.dayOfWeek = schedule.repetition.day_of_week;
     // newInit.repetitionCycle = schedule.repetition.repetition_cycle;
     switch (schedule.repetition.repetition_cycle) {
       case 'WEEK':
-        newInit.repetitionCycle = schedule.repetition.day_of_week === 127 ? '매일' : '매 주'
+        newInit.repetitionCycle =
+          schedule.repetition.day_of_week === 127 ? '매일' : '매 주';
         break;
       case 'MONTH':
-        newInit.repetitionCycle= '매 달'
+        newInit.repetitionCycle = '매 달';
         break;
       case 'YEAR':
-        newInit.repetitionCycle= '매 년'
+        newInit.repetitionCycle = '매 년';
         break;
       default:
         break;

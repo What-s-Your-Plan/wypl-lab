@@ -33,7 +33,7 @@ function GroupList() {
 
   const fetchMemberGroups = async () => {
     const newMemberGroups: MemberGroups = await getMemberGroupList();
-    await setMemberGroups(newMemberGroups);
+    setMemberGroups(newMemberGroups);
     if (newMemberGroups.group_count > 0) {
       navigate(BROWSER_PATH.GROUP.BASE + '/' + newMemberGroups.groups[0].id);
     } else {
@@ -182,7 +182,10 @@ function GroupList() {
 
   return (
     <>
-      <Container $width="left" className="scrollBar flex flex-col gap-4">
+      <Container
+        $width="left"
+        className="scrollBar flex flex-col gap-4 overflow-x-hidden"
+      >
         <Disclosure>
           {({ open }) => (
             <>
