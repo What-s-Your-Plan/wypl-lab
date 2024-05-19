@@ -53,8 +53,10 @@ public class CalendarService {
 
 	private final GroupRepository groupRepository;
 
-	public CalendarListResponse getCalendarSchedules(int memberId, CalendarType calendarType, Integer labelId,
-			LocalDate startDate) {
+	private static CalendarSearchDate getSearchDate(
+			final CalendarType calendarType,
+			LocalDate startDate
+	) {
 		if (startDate == null) {
 			startDate = LocalDate.now();
 		}
@@ -72,18 +74,28 @@ public class CalendarService {
 				endDate = endDate.with(TemporalAdjusters.lastDayOfMonth());
 			}
 		}
+		return new CalendarSearchDate(startDate, endDate);
+	}
+
+	public CalendarListResponse getCalendarSchedules(
+			final int memberId,
+			final CalendarType calendarType,
+			final Integer labelId,
+			final LocalDate startDate
+	) {
+		CalendarSearchDate searchDate = getSearchDate(calendarType, startDate);
 
 		List<Schedule> schedules;
 		if (labelId == null) {
 			schedules = memberScheduleRepository.getCalendarSchedules(memberId,
-					LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-					LocalDateTime.of(endDate, LocalTime.of(23, 59)));
+					LocalDateTime.of(searchDate.startDate(), LocalTime.of(0, 0)),
+					LocalDateTime.of(searchDate.endDate(), LocalTime.of(23, 59)));
 		} else {
 			Label label = LabelServiceUtils.getLabelByLabelId(labelRepository, labelId);
 
 			schedules = memberScheduleRepository.getCalendarSchedulesWithLabel(memberId,
-					LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-					LocalDateTime.of(endDate, LocalTime.of(23, 59)),
+					LocalDateTime.of(searchDate.startDate(), LocalTime.of(0, 0)),
+					LocalDateTime.of(searchDate.endDate(), LocalTime.of(23, 59)),
 					label.getLabelId());
 		}
 
@@ -97,37 +109,25 @@ public class CalendarService {
 		);
 	}
 
-	public GroupCalendarListResponse getGroupCalendarSchedule(int memberId, CalendarType calendarType,
-			LocalDate startDate, int groupId) {
+	public GroupCalendarListResponse getGroupCalendarSchedule(
+			final int memberId,
+			final CalendarType calendarType,
+			final LocalDate startDate,
+			final int groupId
+	) {
 		//그룹에 속한 멤버인지 확인
 		//그룹의 존재 여부 확인
 		MemberGroup memberGroup = MemberGroupServiceUtils.getAcceptMemberGroup(memberGroupRepository, memberId,
 				GroupServiceUtils.findById(groupRepository, groupId).getId());
 
-		if (startDate == null) {
-			startDate = LocalDate.now();
-		}
-
-		LocalDate endDate = startDate;
-		switch (calendarType) {
-			case DAY -> {
-			}
-			case WEEK -> {
-				startDate = startDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 1);
-				endDate = endDate.with(WeekFields.of(Locale.KOREA).dayOfWeek(), 7);
-			}
-			case MONTH -> {
-				startDate = startDate.withDayOfMonth(1);
-				endDate = endDate.with(TemporalAdjusters.lastDayOfMonth());
-			}
-		}
+		CalendarSearchDate result = getSearchDate(calendarType, startDate);
 
 		List<Schedule> schedules = scheduleRepository.findAllByGroupCalendarCond(
 				new FindGroupCalendarCond(
 						groupId,
 						memberId,
-						LocalDateTime.of(startDate, LocalTime.of(0, 0)),
-						LocalDateTime.of(endDate, LocalTime.of(23, 59))
+						LocalDateTime.of(result.startDate, LocalTime.of(0, 0)),
+						LocalDateTime.of(result.endDate, LocalTime.of(23, 59))
 				));
 
 		return GroupCalendarListResponse.of(
@@ -176,9 +176,7 @@ public class CalendarService {
 				}
 
 				if (yearBlocks.containsKey(date)) {
-					Long totalTime = yearBlocks.get(date);
-
-					yearBlocks.put(date, totalTime + diffTime);
+					yearBlocks.put(date, yearBlocks.get(date) + diffTime);
 				} else {
 					yearBlocks.put(date, diffTime);
 				}
@@ -197,5 +195,8 @@ public class CalendarService {
 		}
 
 		return BlockListResponse.from(blockResponses);
+	}
+
+	private record CalendarSearchDate(LocalDate startDate, LocalDate endDate) {
 	}
 }
