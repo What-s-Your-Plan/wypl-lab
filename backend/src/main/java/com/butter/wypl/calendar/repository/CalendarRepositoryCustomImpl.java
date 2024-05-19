@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.butter.wypl.calendar.data.cond.FindCalendarCond;
 import com.butter.wypl.calendar.data.cond.FindGroupCalendarCond;
+import com.butter.wypl.group.domain.GroupInviteState;
 import com.butter.wypl.schedule.domain.Schedule;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -48,6 +49,7 @@ public class CalendarRepositoryCustomImpl implements CalendarRepositoryCustom {
 				.where(memberSchedule.member.id.eq(cond.memberId())
 						.and(eqByScheduleLabelId(cond.labelId()))
 						.and(member.memberGroups.isNotEmpty())
+						.and(memberGroup.groupInviteState.eq(GroupInviteState.ACCEPTED))
 				)
 				.where(schedule.startDate.between(cond.startDate(), cond.lastDate())
 						.or(schedule.endDate.between(cond.startDate(), cond.lastDate()))
