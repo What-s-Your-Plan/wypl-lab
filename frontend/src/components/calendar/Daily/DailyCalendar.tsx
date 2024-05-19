@@ -105,10 +105,7 @@ function DailyCalendar({
           >
             <S.LabelDiv
               $bgColor={
-                (schedule.label?.color ||
-                  color ||
-                  schedule.group?.color ||
-                  mainColor) as LabelColorsType
+                bgColor! as LabelColorsType
               }
             />
             <S.ScheduleContents>
