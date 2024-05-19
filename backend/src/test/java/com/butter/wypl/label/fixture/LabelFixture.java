@@ -22,9 +22,9 @@ public enum LabelFixture {
 
 	public Label toLabel() {
 		return Label.builder()
-			.title(title)
-			.color(color)
-			.memberId(memberId)
-			.build();
+				.title(title)
+				.color(color)
+				.memberId(memberId)
+				.build();
 	}
 }

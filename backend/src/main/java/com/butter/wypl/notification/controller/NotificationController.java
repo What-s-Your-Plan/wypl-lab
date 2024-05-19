@@ -44,8 +44,8 @@ public class NotificationController {
 	 */
 	@GetMapping(value = "/subscribe", produces = "text/event-stream")
 	public ResponseEntity<SseEmitter> subscribe(
-		@Authenticated AuthMember authMember,
-		@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId
+			@Authenticated AuthMember authMember,
+			@RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId
 	) {
 		/*
 		 * 1. SseEmitter 생성, 회원 ID
@@ -59,17 +59,18 @@ public class NotificationController {
 		SseEmitter emitter = emitterModifyService.subscribeNotification(authMember.getId(), lastEventId);
 
 		return ResponseEntity.ok()
-			.headers(headers)
-			.body(emitter);
+				.headers(headers)
+				.body(emitter);
 	}
 
 	@GetMapping
 	public ResponseEntity<Message<NotificationPageResponse>> getNotificationsPage(
-		@Authenticated AuthMember authMember,
-		@RequestParam(name = "lastId", required = false) String lastId
+			@Authenticated AuthMember authMember,
+			@RequestParam(name = "lastId", required = false) String lastId
 	) {
 		return ResponseEntity.ok()
-			.body(Message.withBody("알림 조회 성공", notificationLoadService.getNotifications(authMember.getId(), lastId)));
+				.body(Message.withBody("알림 조회 성공",
+						notificationLoadService.getNotifications(authMember.getId(), lastId)));
 	}
 
 	@DeleteMapping
@@ -80,8 +81,8 @@ public class NotificationController {
 
 	@PatchMapping("/action/{notificationId}")
 	public ResponseEntity<Message<Void>> updateIsActedToTrue(
-		@Authenticated AuthMember authMember,
-		@PathVariable("notificationId") String notificationId
+			@Authenticated AuthMember authMember,
+			@PathVariable("notificationId") String notificationId
 	) {
 		notificationModifyService.updateIsActedToTrue(authMember.getId(), notificationId);
 		return ResponseEntity.ok(Message.onlyMessage("알림 isActed True 처리 성공"));

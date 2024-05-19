@@ -58,28 +58,28 @@ public class ReviewServiceTest {
 	void createReview() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-			.member(MemberFixture.JWA_SO_YEON.toMember())
-			.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
-			.build();
+				.member(MemberFixture.JWA_SO_YEON.toMember())
+				.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
+				.build();
 		Review review = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 		ReviewContents reviewContents = ReviewContentsFixture.REVIEW_CONTENTS.toReviewContents();
 
 		given(memberScheduleService.getMemberScheduleByMemberAndSchedule(anyInt(), any(Schedule.class)))
-			.willReturn(memberSchedule);
+				.willReturn(memberSchedule);
 		given(reviewRepository.save(any(Review.class)))
-			.willReturn(ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
+				.willReturn(ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule));
 		given(reviewContentsRepository.save(any(ReviewContents.class)))
-			.willReturn(reviewContents);
+				.willReturn(reviewContents);
 		given(scheduleRepository.findById(anyInt()))
-			.willReturn(Optional.of(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule()));
+				.willReturn(Optional.of(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule()));
 
 		// When
 		ReviewIdResponse response = reviewService.createReview(1,
-			ReviewCreateRequest.builder()
-				.title(review.getTitle())
-				.scheduleId(1)
-				.contents(reviewContents.getContents())
-				.build()
+				ReviewCreateRequest.builder()
+						.title(review.getTitle())
+						.scheduleId(1)
+						.contents(reviewContents.getContents())
+						.build()
 		);
 
 		// Then
@@ -91,26 +91,26 @@ public class ReviewServiceTest {
 	void updateReview() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-			.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
-			.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
-			.build();
+				.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
+				.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
+				.build();
 		Review review = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 		ReviewContents reviewContents = ReviewContentsFixture.REVIEW_CONTENTS.toReviewContents();
 
-		given(reviewContentsRepository.save(any(ReviewContents.class)))
-			.willReturn(reviewContents);
-		given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
-			.willReturn(reviewContents);
 		given(reviewRepository.getByReviewId(anyInt()))
-			.willReturn(review);
+				.willReturn(review);
+		given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
+				.willReturn(reviewContents);
+		given(reviewContentsRepository.save(any(ReviewContents.class)))
+				.willReturn(reviewContents);
 
 		// When
 		ReviewIdResponse response = reviewService.updateReview(1, 1,
-			ReviewUpdateRequest.builder()
-				.title("바뀐제목")
-				.scheduleId(1)
-				.contents(reviewContents.getContents())
-				.build()
+				ReviewUpdateRequest.builder()
+						.title("바뀐제목")
+						.scheduleId(1)
+						.contents(reviewContents.getContents())
+						.build()
 		);
 
 		//Then
@@ -122,16 +122,16 @@ public class ReviewServiceTest {
 	void deleteReview() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-			.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
-			.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
-			.build();
+				.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
+				.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
+				.build();
 		Review review = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 		ReviewContents reviewContents = ReviewContentsFixture.REVIEW_CONTENTS.toReviewContents();
 
 		given(reviewRepository.getByReviewId(anyInt()))
-			.willReturn(review);
-		given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
-			.willReturn(reviewContents);
+				.willReturn(review);
+		given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
+				.willReturn(reviewContents);
 
 		// When
 		ReviewIdResponse response = reviewService.deleteReview(1, 1);
@@ -144,16 +144,16 @@ public class ReviewServiceTest {
 	void getDetailReview() {
 		// Given
 		MemberSchedule memberSchedule = MemberSchedule.builder()
-			.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
-			.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
-			.build();
+				.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
+				.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
+				.build();
 		Review review = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 		ReviewContents reviewContents = ReviewContentsFixture.REVIEW_CONTENTS.toReviewContents();
 
 		given(reviewRepository.getByReviewId(anyInt()))
-			.willReturn(review);
-		given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
-			.willReturn(reviewContents);
+				.willReturn(review);
+		given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
+				.willReturn(reviewContents);
 
 		// When
 		ReviewDetailResponse response = reviewService.getDetailReview(1, 1);
@@ -172,15 +172,15 @@ public class ReviewServiceTest {
 		@BeforeEach
 		void init() {
 			memberSchedule = MemberSchedule.builder()
-				.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
-				.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
-				.build();
+					.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
+					.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
+					.build();
 			review1 = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 			review2 = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 			reviewContents = ReviewContentsFixture.REVIEW_CONTENTS.toReviewContents();
 
-			given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
-				.willReturn(reviewContents);
+			given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
+					.willReturn(reviewContents);
 		}
 
 		@Test
@@ -188,7 +188,7 @@ public class ReviewServiceTest {
 		void getReviews1() {
 			// Given
 			given(reviewRepository.getReviewsOldestAll(anyInt(), anyInt()))
-				.willReturn(List.of(review1, review2));
+					.willReturn(List.of(review1, review2));
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviews(1, null, ReviewType.OLDEST, null, null);
 			// Then
@@ -200,7 +200,7 @@ public class ReviewServiceTest {
 		void getReviews2() {
 			// Given
 			given(reviewRepository.getReviewsOldestAll(anyInt(), anyInt()))
-				.willReturn(List.of(review1, review2));
+					.willReturn(List.of(review1, review2));
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviews(1, 1, ReviewType.OLDEST, null, null);
 			// Then
@@ -213,7 +213,7 @@ public class ReviewServiceTest {
 		void getReviews3() {
 			// Given
 			given(reviewRepository.getReviewsNewestAll(anyInt()))
-				.willReturn(List.of(review1, review2));
+					.willReturn(List.of(review1, review2));
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviews(1, null, ReviewType.NEWEST, null, null);
 			// Then
@@ -226,7 +226,7 @@ public class ReviewServiceTest {
 		void getReviews4() {
 			//Given
 			given(reviewRepository.getReviewsNewestAllAfter(anyInt(), anyInt()))
-				.willReturn(List.of(review1, review2));
+					.willReturn(List.of(review1, review2));
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviews(1, 1, ReviewType.NEWEST, null, null);
 			// Then
@@ -238,12 +238,12 @@ public class ReviewServiceTest {
 		void getReviews5() {
 			// Given
 			given(reviewRepository.getReviewsOldest(anyInt(), anyInt(), any(LocalDateTime.class),
-				any(LocalDateTime.class)))
-				.willReturn(List.of(review1, review2));
+					any(LocalDateTime.class)))
+					.willReturn(List.of(review1, review2));
 
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviews(1, null, ReviewType.OLDEST,
-				LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10));
+					LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10));
 
 			// Then
 			assertThat(reviewListResponse.reviewCount()).isEqualTo(2);
@@ -255,12 +255,12 @@ public class ReviewServiceTest {
 		void getReviews6() {
 			// Given
 			given(reviewRepository.getReviewsOldest(anyInt(), anyInt(), any(LocalDateTime.class),
-				any(LocalDateTime.class)))
-				.willReturn(List.of(review1, review2));
+					any(LocalDateTime.class)))
+					.willReturn(List.of(review1, review2));
 
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviews(1, 1, ReviewType.OLDEST,
-				LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10));
+					LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10));
 
 			// Then
 			assertThat(reviewListResponse.reviewCount()).isEqualTo(2);
@@ -272,12 +272,12 @@ public class ReviewServiceTest {
 		void getReviews7() {
 			// Given
 			given(reviewRepository.getReviewsNewest(anyInt(), any(LocalDateTime.class),
-				any(LocalDateTime.class)))
-				.willReturn(List.of(review1, review2));
+					any(LocalDateTime.class)))
+					.willReturn(List.of(review1, review2));
 
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviews(1, null, ReviewType.NEWEST,
-				LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10));
+					LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10));
 
 			// Then
 			assertThat(reviewListResponse.reviewCount()).isEqualTo(2);
@@ -289,12 +289,12 @@ public class ReviewServiceTest {
 		void getReviews8() {
 			// Given
 			given(reviewRepository.getReviewsNewestAfter(anyInt(), anyInt(), any(LocalDateTime.class),
-				any(LocalDateTime.class)))
-				.willReturn(List.of(review1, review2));
+					any(LocalDateTime.class)))
+					.willReturn(List.of(review1, review2));
 
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviews(1, 1, ReviewType.NEWEST,
-				LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10));
+					LocalDate.of(2024, 5, 9), LocalDate.of(2024, 5, 10));
 
 			// Then
 			assertThat(reviewListResponse.reviewCount()).isEqualTo(2);
@@ -312,19 +312,19 @@ public class ReviewServiceTest {
 		@BeforeEach
 		void init() {
 			memberSchedule = MemberSchedule.builder()
-				.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
-				.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
-				.build();
+					.member(MemberFixture.JWA_SO_YEON.toMemberWithId(1))
+					.schedule(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule())
+					.build();
 			review1 = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 			review2 = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
 			reviewContents = ReviewContentsFixture.REVIEW_CONTENTS.toReviewContents();
 
 			given(memberScheduleService.getMemberScheduleByMemberAndSchedule(anyInt(), any(Schedule.class)))
-				.willReturn(memberSchedule);
+					.willReturn(memberSchedule);
 			given(scheduleRepository.findById(anyInt()))
-				.willReturn(Optional.of(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule()));
-			given(reviewContentsRepository.findByReviewIdAndDeletedAtNull(anyInt()))
-				.willReturn(reviewContents);
+					.willReturn(Optional.of(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule()));
+			given(reviewContentsRepository.findByIdAndDeletedAtNull(anyString()))
+					.willReturn(reviewContents);
 		}
 
 		@Test
@@ -332,7 +332,7 @@ public class ReviewServiceTest {
 		void newest() {
 			// Given
 			given(reviewRepository.getReviewsByMemberScheduleOrderByCreatedAtDesc(any(MemberSchedule.class)))
-				.willReturn(List.of(review1, review2));
+					.willReturn(List.of(review1, review2));
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviewsByScheduleId(1, 1, ReviewType.NEWEST);
 			// Then
@@ -344,7 +344,7 @@ public class ReviewServiceTest {
 		void oldest() {
 			// Given
 			given(reviewRepository.getReviewsByMemberScheduleOrderByCreatedAt(any(MemberSchedule.class)))
-				.willReturn(List.of(review1, review2));
+					.willReturn(List.of(review1, review2));
 			// When
 			ReviewListResponse reviewListResponse = reviewService.getReviewsByScheduleId(1, 1, ReviewType.OLDEST);
 			// Then

@@ -56,29 +56,29 @@ public class MemberGroup extends BaseEntity {
 
 	public static MemberGroup of(Member member, Group group) {
 		return MemberGroup.builder()
-			.member(member)
-			.group(group)
-			.color(labelYellow)
-			.groupInviteState(GroupInviteState.PENDING)
-			.build();
+				.member(member)
+				.group(group)
+				.color(labelYellow)
+				.groupInviteState(GroupInviteState.PENDING)
+				.build();
 	}
 
 	public static MemberGroup of(Member member, Group group, Color color) {
 		return MemberGroup.builder()
-			.member(member)
-			.group(group)
-			.color(color)
-			.groupInviteState(GroupInviteState.PENDING)
-			.build();
+				.member(member)
+				.group(group)
+				.color(color)
+				.groupInviteState(GroupInviteState.PENDING)
+				.build();
 	}
 
 	public static MemberGroup of(Member member, Group group, Color color, GroupInviteState groupInviteState) {
 		return MemberGroup.builder()
-			.member(member)
-			.group(group)
-			.color(color)
-			.groupInviteState(groupInviteState)
-			.build();
+				.member(member)
+				.group(group)
+				.color(color)
+				.groupInviteState(groupInviteState)
+				.build();
 	}
 
 	public void setGroupInviteStateAccepted() {

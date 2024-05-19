@@ -22,16 +22,16 @@ public class RepetitionTest {
 		// When
 		// Then
 		assertThatThrownBy(() -> {
-				Repetition.builder()
-					.repetitionStartDate(repetition.getRepetitionStartDate())
-					.repetitionEndDate(repetition.getRepetitionEndDate())
-					.repetitionCycle(repetition.getRepetitionCycle())
-					.week(repetition.getWeek())
-					.dayOfWeek(128)
-					.build();
-			}
+					Repetition.builder()
+							.repetitionStartDate(repetition.getRepetitionStartDate())
+							.repetitionEndDate(repetition.getRepetitionEndDate())
+							.repetitionCycle(repetition.getRepetitionCycle())
+							.week(repetition.getWeek())
+							.dayOfWeek(128)
+							.build();
+				}
 		).isInstanceOf(ScheduleException.class)
-			.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_DAY_OF_WEEK.getMessage());
+				.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_DAY_OF_WEEK.getMessage());
 	}
 
 	@Test
@@ -43,16 +43,16 @@ public class RepetitionTest {
 		// When
 		// Then
 		assertThatThrownBy(() -> {
-				Repetition.builder()
-					.repetitionStartDate(LocalDate.of(2024, 5, 7))
-					.repetitionEndDate(LocalDate.of(2024, 5, 4))
-					.repetitionCycle(repetition.getRepetitionCycle())
-					.week(repetition.getWeek())
-					.dayOfWeek((repetition.getDayOfWeek()))
-					.build();
-			}
+					Repetition.builder()
+							.repetitionStartDate(LocalDate.of(2024, 5, 7))
+							.repetitionEndDate(LocalDate.of(2024, 5, 4))
+							.repetitionCycle(repetition.getRepetitionCycle())
+							.week(repetition.getWeek())
+							.dayOfWeek((repetition.getDayOfWeek()))
+							.build();
+				}
 		).isInstanceOf(ScheduleException.class)
-			.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_REPETITION_DURATION.getMessage());
+				.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_REPETITION_DURATION.getMessage());
 
 	}
 

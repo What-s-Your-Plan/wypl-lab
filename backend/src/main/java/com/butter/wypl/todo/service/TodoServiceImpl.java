@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.repository.MemberRepository;
 import com.butter.wypl.member.utils.MemberServiceUtils;
-import com.butter.wypl.todo.data.request.TodoSaveResquest;
+import com.butter.wypl.todo.data.request.TodoSaveRequest;
 import com.butter.wypl.todo.data.request.TodoUpdateRequest;
 import com.butter.wypl.todo.data.response.TodoResponse;
 import com.butter.wypl.todo.domain.Todo;
@@ -34,11 +34,11 @@ public class TodoServiceImpl implements TodoModifyService, TodoLoadService {
 	 * */
 	@Override
 	@Transactional
-	public void createTodo(final TodoSaveResquest request, final int memberId) {
+	public void createTodo(final TodoSaveRequest request, final int memberId) {
 		Todo todo = Todo.builder()
-			.member(getMember(memberId))
-			.content(request.content())
-			.build();
+				.member(getMember(memberId))
+				.content(request.content())
+				.build();
 		todoRepository.save(todo);
 	}
 
@@ -46,21 +46,21 @@ public class TodoServiceImpl implements TodoModifyService, TodoLoadService {
 	@Transactional
 	public void updateTodo(final TodoUpdateRequest request, final int todoId, final int memberId) {
 		validationTodo(todoId, memberId)
-			.updateContent(request.content());
+				.updateContent(request.content());
 	}
 
 	@Override
 	@Transactional
 	public void deleteTodo(final int todoId, final int memberId) {
 		validationTodo(todoId, memberId)
-			.delete();
+				.delete();
 	}
 
 	@Override
 	@Transactional
 	public void toggleTodo(final int todoId, final int memberId) {
 		validationTodo(todoId, memberId)
-			.toggleTodo();
+				.toggleTodo();
 	}
 
 	@Override

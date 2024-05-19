@@ -8,22 +8,22 @@ import com.butter.wypl.schedule.data.response.MemberIdResponse;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record ScheduleUpdateRequest(
-	String title,
-	String description,
+		String title,
+		String description,
 
-	@JsonProperty("start_date")
-	LocalDateTime startDate,
+		@JsonProperty("start_date")
+		LocalDateTime startDate,
 
-	@JsonProperty("end_date")
-	LocalDateTime endDate,
-	@JsonProperty("modification_type")
-	ModificationType modificationType,
-	RepetitionRequest repetition,
+		@JsonProperty("end_date")
+		LocalDateTime endDate,
+		@JsonProperty("modification_type")
+		ModificationType modificationType,
+		RepetitionRequest repetition,
 
-	@JsonProperty("label_id")
-	Integer labelId,
+		@JsonProperty("label_id")
+		Integer labelId,
 
-	List<MemberIdResponse> members
+		List<MemberIdResponse> members
 ) {
 
 }

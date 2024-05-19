@@ -49,7 +49,7 @@ public class Repetition extends BaseEntity {
 
 	@Builder
 	public Repetition(int repetitionId, RepetitionCycle repetitionCycle, LocalDate repetitionStartDate,
-		LocalDate repetitionEndDate, Integer week, int dayOfWeek) {
+			LocalDate repetitionEndDate, Integer week, int dayOfWeek) {
 		dayOfWeekValidation(dayOfWeek);
 		durationValidation(repetitionStartDate, repetitionEndDate);
 

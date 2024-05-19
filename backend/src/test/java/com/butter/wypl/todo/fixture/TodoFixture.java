@@ -13,7 +13,6 @@ public enum TodoFixture {
 	FIND_JOB(3, MemberFixture.CHOI_MIN_JUN.toMemberWithId(3), "가자", false),
 	;
 
-
 	private final int id;
 	private final Member member;
 	private final String content;
@@ -21,18 +20,18 @@ public enum TodoFixture {
 
 	TodoFixture(int id, Member member, String content, boolean isCompleted) {
 		this.id = id;
-    	this.member = member;
-    	this.content = content;
-    	this.isCompleted = isCompleted;
+		this.member = member;
+		this.content = content;
+		this.isCompleted = isCompleted;
 	}
 
 	public Todo toTodo() {
 		return Todo.builder()
-			.id(id)
-			.member(member)
-			.content(content)
-			.isCompleted(isCompleted)
-			.build();
+				.id(id)
+				.member(member)
+				.content(content)
+				.isCompleted(isCompleted)
+				.build();
 	}
 
 }

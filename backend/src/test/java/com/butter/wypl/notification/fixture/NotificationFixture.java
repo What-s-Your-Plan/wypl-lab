@@ -10,11 +10,11 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum NotificationFixture {
-	REVIEW_NOTI("abcdefg1",1, "모코코님 운동 일정은 어떠셨나요?", false,
-		NotificationTypeCode.REVIEW),
-	REVIEW_READ_NOTI("abcdefg2",1, "모코코님 운동 일정은 어떠셨나요?", true,
-		NotificationTypeCode.REVIEW),
-	GROUP_NOTI("abcdefg3",1, "A602 팀 초대가 왔어요", true, NotificationTypeCode.GROUP);
+	REVIEW_NOTI("abcdefg1", 1, "모코코님 운동 일정은 어떠셨나요?", false,
+			NotificationTypeCode.REVIEW),
+	REVIEW_READ_NOTI("abcdefg2", 1, "모코코님 운동 일정은 어떠셨나요?", true,
+			NotificationTypeCode.REVIEW),
+	GROUP_NOTI("abcdefg3", 1, "A602 팀 초대가 왔어요", true, NotificationTypeCode.GROUP);
 
 	private final String id;
 	private final int memberId;
@@ -24,12 +24,12 @@ public enum NotificationFixture {
 
 	public Notification toNotification() {
 		return Notification.builder()
-			.id(id)
-			.memberId(memberId)
-			.message(message)
-			.isRead(isRead)
-			.typeCode(typeCode)
-			.build();
+				.id(id)
+				.memberId(memberId)
+				.message(message)
+				.isRead(isRead)
+				.typeCode(typeCode)
+				.build();
 	}
 
 	public NotificationCreateRequest toNotificationCreateRequest() {

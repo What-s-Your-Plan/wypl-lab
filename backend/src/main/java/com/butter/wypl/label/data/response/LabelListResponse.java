@@ -7,9 +7,9 @@ import com.butter.wypl.label.domain.Label;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record LabelListResponse(
-	@JsonProperty("label_count")
-	int labelCount,
-	List<LabelResponse> labels
+		@JsonProperty("label_count")
+		int labelCount,
+		List<LabelResponse> labels
 ) {
 
 	public static LabelListResponse from(List<Label> labels) {

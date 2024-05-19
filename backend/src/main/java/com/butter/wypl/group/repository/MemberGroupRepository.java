@@ -7,6 +7,6 @@ import com.butter.wypl.group.domain.MemberGroupId;
 import com.butter.wypl.group.repository.query.MemberGroupRepositoryCustom;
 
 public interface MemberGroupRepository extends JpaRepository<MemberGroup, MemberGroupId>,
-	MemberGroupRepositoryCustom {
+		MemberGroupRepositoryCustom {
 
 }

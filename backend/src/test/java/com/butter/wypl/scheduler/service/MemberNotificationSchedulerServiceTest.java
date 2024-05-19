@@ -55,15 +55,15 @@ class MemberNotificationSchedulerServiceTest {
 			given(memberRepository.findAllActiveMembers()).willReturn(allActiveMembers);
 
 			List<MemberSchedule> memberSchedules = List.of(
-				MemberSchedule.of(member1, schedule1),
-				MemberSchedule.of(member2, schedule2)
+					MemberSchedule.of(member1, schedule1),
+					MemberSchedule.of(member2, schedule2)
 			);
 			given(memberScheduleRepository.findMemberSchedulesEndingTodayWithoutReview(anyInt(), any(LocalDate.class)))
-				.willReturn(memberSchedules);
+					.willReturn(memberSchedules);
 
 			/* When, Then */
 			Assertions.assertThatCode(() -> memberNotificationSchedulerService.runDailyReviewScheduler())
-				.doesNotThrowAnyException();
+					.doesNotThrowAnyException();
 
 		}
 	}

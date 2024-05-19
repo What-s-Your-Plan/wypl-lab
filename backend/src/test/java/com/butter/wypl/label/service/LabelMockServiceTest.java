@@ -44,10 +44,10 @@ public class LabelMockServiceTest {
 		MemberGroup memberGroup = MemberGroup.of(member, group);
 
 		given(labelRepository.findByMemberId(anyInt()))
-			.willReturn(List.of(label));
+				.willReturn(List.of(label));
 
 		given(memberGroupRepository.findAllWithMemberAndGroupByMemberId(anyInt()))
-			.willReturn(List.of(memberGroup));
+				.willReturn(List.of(memberGroup));
 
 		// When
 		AllLabelListResponse result = labelService.getAllLabelsByMemberId(1);

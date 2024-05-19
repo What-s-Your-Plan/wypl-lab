@@ -6,8 +6,8 @@ public interface EmitterModifyService {
 	SseEmitter subscribeNotification(final int memberId, final String lastEventId);
 
 	void sendEmitter(
-		final SseEmitter emitter,
-		final String eventId,
-		final String emitterId,
-		final Object object);
+			final SseEmitter emitter,
+			final String eventId,
+			final String emitterId,
+			final Object object);
 }

@@ -30,14 +30,14 @@ class MemberGroupServiceUtilsTest {
 	void getMembersByGroupId() {
 		/* Given */
 		List<MemberGroup> memberGroups = Arrays.asList(
-			MemberGroup.of(HAN_JI_WON.toMember(), GROUP_STUDY.toGroup(HAN_JI_WON.toMember()), labelGreen),
-			MemberGroup.of(KIM_JEONG_UK.toMember(), GROUP_STUDY.toGroup(HAN_JI_WON.toMember()), labelGreen),
-			MemberGroup.of(LEE_JI_WON.toMember(), GROUP_STUDY.toGroup(HAN_JI_WON.toMember()), labelGreen)
+				MemberGroup.of(HAN_JI_WON.toMember(), GROUP_STUDY.toGroup(HAN_JI_WON.toMember()), labelGreen),
+				MemberGroup.of(KIM_JEONG_UK.toMember(), GROUP_STUDY.toGroup(HAN_JI_WON.toMember()), labelGreen),
+				MemberGroup.of(LEE_JI_WON.toMember(), GROUP_STUDY.toGroup(HAN_JI_WON.toMember()), labelGreen)
 		);
 		List<String> memberNicknames = Arrays.asList(HAN_JI_WON.getNickname(), KIM_JEONG_UK.getNickname(),
-			LEE_JI_WON.getNickname());
+				LEE_JI_WON.getNickname());
 		given(memberGroupRepository.findAllAccepted(any(Integer.class)))
-			.willReturn(memberGroups);
+				.willReturn(memberGroups);
 		int groupId = 1;
 
 		/* When */
@@ -45,9 +45,9 @@ class MemberGroupServiceUtilsTest {
 
 		/* Then */
 		members.forEach(
-			member -> {
-				assertThat(memberNicknames.contains(member.getNickname())).isTrue();
-			}
+				member -> {
+					assertThat(memberNicknames.contains(member.getNickname())).isTrue();
+				}
 		);
 	}
 }

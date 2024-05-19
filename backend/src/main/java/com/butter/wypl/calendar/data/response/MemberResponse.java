@@ -6,19 +6,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record MemberResponse(
 
-	@JsonProperty("member_id")
-	int memberId,
+		@JsonProperty("member_id")
+		int memberId,
 
-	String nickname,
+		String nickname,
 
-	Color color
+		Color color
 ) {
 
 	public static MemberResponse from(Member member) {
 		return new MemberResponse(
-			member.getId(),
-			member.getNickname(),
-			member.getColor()
+				member.getId(),
+				member.getNickname(),
+				member.getColor()
 		);
 	}
 }

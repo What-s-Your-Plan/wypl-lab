@@ -51,7 +51,7 @@ public class ReviewRepositoryTest {
 		Schedule schedule = scheduleRepository.save(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule());
 
 		MemberSchedule memberSchedule = memberScheduleRepository.save(
-			MemberSchedule.of(1, member, schedule)
+				MemberSchedule.of(1, member, schedule)
 		);
 
 		Review review = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
@@ -72,7 +72,7 @@ public class ReviewRepositoryTest {
 		Schedule schedule = scheduleRepository.save(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule());
 
 		MemberSchedule memberSchedule = memberScheduleRepository.save(
-			MemberSchedule.of(1, member, schedule)
+				MemberSchedule.of(1, member, schedule)
 		);
 
 		Review review = ReviewFixture.STUDY_REVIEW.toReviewWithMemberSchedule(memberSchedule);
@@ -98,7 +98,7 @@ public class ReviewRepositoryTest {
 			Schedule schedule = scheduleRepository.save(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule());
 
 			MemberSchedule memberSchedule = memberScheduleRepository.save(
-				MemberSchedule.of(1, member, schedule)
+					MemberSchedule.of(1, member, schedule)
 			);
 
 			reviewRepository.save(
@@ -122,7 +122,7 @@ public class ReviewRepositoryTest {
 			Schedule schedule = scheduleRepository.save(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule());
 
 			MemberSchedule memberSchedule = memberScheduleRepository.save(
-				MemberSchedule.of(1, member, schedule)
+					MemberSchedule.of(1, member, schedule)
 			);
 
 			reviewRepository.save(
@@ -157,7 +157,7 @@ public class ReviewRepositoryTest {
 			schedule = scheduleRepository.save(ScheduleFixture.PERSONAL_SCHEDULE.toSchedule());
 
 			memberSchedule = memberScheduleRepository.save(
-				MemberSchedule.of(1, member, schedule)
+					MemberSchedule.of(1, member, schedule)
 			);
 
 			review1 = reviewRepository.save(

@@ -3,7 +3,6 @@ package com.butter.wypl.review.domain;
 import org.hibernate.annotations.SQLRestriction;
 
 import com.butter.wypl.global.common.BaseEntity;
-import com.butter.wypl.review.data.request.ReviewCreateRequest;
 import com.butter.wypl.review.exception.ReviewErrorCode;
 import com.butter.wypl.review.exception.ReviewException;
 import com.butter.wypl.schedule.domain.MemberSchedule;
@@ -39,20 +38,24 @@ public class Review extends BaseEntity {
 	@JoinColumn(name = "member_schedule_id")
 	private MemberSchedule memberSchedule;
 
-	@Builder
-	public Review(int reviewId, String title, MemberSchedule memberSchedule) {
-		validateTitle(title);
+	@Column(name = "review_contents_id", length = 100)
+	private String reviewContentsId;
 
+	@Builder
+	public Review(int reviewId, String title, MemberSchedule memberSchedule, String reviewContentsId) {
+		validateTitle(title);
 		this.reviewId = reviewId;
 		this.title = title;
 		this.memberSchedule = memberSchedule;
+		this.reviewContentsId = reviewContentsId;
 	}
 
-	public static Review of(ReviewCreateRequest reviewCreateRequest, MemberSchedule memberSchedule) {
+	public static Review of(String reviewContentsId, String title, MemberSchedule memberSchedule) {
 		return Review.builder()
-			.title(reviewCreateRequest.title())
-			.memberSchedule(memberSchedule)
-			.build();
+				.title(title)
+				.reviewContentsId(reviewContentsId)
+				.memberSchedule(memberSchedule)
+				.build();
 	}
 
 	public void updateTitle(String title) {

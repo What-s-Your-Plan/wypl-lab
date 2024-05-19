@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record AllLabelListResponse(
 
-	@JsonProperty("label_count")
-	int labelCount,
+		@JsonProperty("label_count")
+		int labelCount,
 
-	List<AllLabelResponse> labels
+		List<AllLabelResponse> labels
 ) {
 
 	public static AllLabelListResponse from(List<AllLabelResponse> allLabelResponses) {

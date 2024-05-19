@@ -69,17 +69,17 @@ class GroupModifyServiceTest {
 			/* Given */
 			Group newGroup = GROUP_STUDY.toGroup(owner);
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest(newGroup.getName(),
-				newGroup.getColor(), Set.of(member1.getId(), member2.getId()));
+					newGroup.getColor(), Set.of(member1.getId(), member2.getId()));
 			List<Member> members = List.of(owner, member1, member2);
 
 			given(memberRepository.findAllById(anySet()))
-				.willReturn(members);
+					.willReturn(members);
 
 			given(groupRepository.save(any(Group.class)))
-				.willReturn(newGroup);
+					.willReturn(newGroup);
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
+					.willReturn(Optional.of(owner));
 
 			/* When, Then */
 			assertThatCode(() -> {
@@ -96,16 +96,16 @@ class GroupModifyServiceTest {
 				memberIdList.add(i);
 			}
 			GroupCreateRequest givenGroupCreateRequest =
-				new GroupCreateRequest("name", Color.labelBrown, memberIdList);
+					new GroupCreateRequest("name", Color.labelBrown, memberIdList);
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
+					.willReturn(Optional.of(owner));
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
-				}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(GroupErrorCode.EXCEED_MAX_MEMBER_COUNT.getMessage());
+						groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
+					}).isInstanceOf(GroupException.class)
+					.hasMessageContaining(GroupErrorCode.EXCEED_MAX_MEMBER_COUNT.getMessage());
 		}
 
 		@Test
@@ -114,16 +114,16 @@ class GroupModifyServiceTest {
 			/* Given */
 			int givenMemberId = 1;
 			GroupCreateRequest givenGroupCreateRequest = new GroupCreateRequest("name", Color.labelBrown,
-				new HashSet<>(Arrays.asList(2, 3)));
+					new HashSet<>(Arrays.asList(2, 3)));
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
+					.willReturn(Optional.of(owner));
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
-				}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(EXISTS_INVALID_MEMBER.getMessage());
+						groupModifyService.createGroup(givenMemberId, givenGroupCreateRequest);
+					}).isInstanceOf(GroupException.class)
+					.hasMessageContaining(EXISTS_INVALID_MEMBER.getMessage());
 		}
 
 		@Test
@@ -138,22 +138,22 @@ class GroupModifyServiceTest {
 
 			Set<Integer> memberIdList = Set.of(member1.getId(), member2.getId(), member3.getId());
 			GroupCreateRequest givenGroupCreateRequest =
-				new GroupCreateRequest("name", Color.labelBrown, memberIdList);
+					new GroupCreateRequest("name", Color.labelBrown, memberIdList);
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
+					.willReturn(Optional.of(owner));
 
 			given(memberRepository.findAllById(anySet()))
-				.willReturn(members);
+					.willReturn(members);
 
 			Group savedGroup = GROUP_STUDY.toGroup(owner);
 			given(groupRepository.save(any(Group.class))).willReturn(savedGroup);
 
 			/* When, Then */
 			Assertions.assertThatThrownBy(() -> {
-					groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
-				}).isInstanceOf(CustomException.class)
-				.hasMessageContaining("해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다.");
+						groupModifyService.createGroup(owner.getId(), givenGroupCreateRequest);
+					}).isInstanceOf(CustomException.class)
+					.hasMessageContaining("해당 맴버는 인당 최대 50개의 그룹 생성을 초과했습니다.");
 		}
 	}
 
@@ -171,23 +171,23 @@ class GroupModifyServiceTest {
 			Member member = HAN_JI_WON.toMemberWithId(memberId);
 			Group group = GROUP_STUDY.toGroup(HAN_JI_WON.toMemberWithId(memberId));
 			given(groupRepository.findById(anyInt()))
-				.willReturn(Optional.of(group));
+					.willReturn(Optional.of(group));
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(member));
+					.willReturn(Optional.of(member));
 
 			MemberGroup memberGroup = MemberGroup.of(member, group, Color.labelBrown);
 			List<MemberGroup> memberGroups = List.of(memberGroup);
 			given(memberGroupRepository.findAllAccepted(groupId))
-				.willReturn(memberGroups);
+					.willReturn(memberGroups);
 
 			/* When */
 			groupModifyService.deleteGroup(memberId, groupId);
 
 			/* Then */
 			assertAll(
-				() -> assertThat(group.isDeleted()).isTrue(),
-				() -> memberGroups.forEach(mg -> assertThat(mg.isDeleted()).isTrue())
+					() -> assertThat(group.isDeleted()).isTrue(),
+					() -> memberGroups.forEach(mg -> assertThat(mg.isDeleted()).isTrue())
 			);
 		}
 	}
@@ -208,13 +208,13 @@ class GroupModifyServiceTest {
 
 			/* Given */
 			GroupMemberInviteRequest inviteRequest = new GroupMemberInviteRequest(
-				Set.of(member1.getId(), member2.getId()));
+					Set.of(member1.getId(), member2.getId()));
 
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(owner));
+					.willReturn(Optional.of(owner));
 
 			given(groupRepository.findById(anyInt()))
-				.willReturn(Optional.of(group));
+					.willReturn(Optional.of(group));
 
 			List<Member> memberIdList = List.of(member1, member2);
 			given(memberRepository.findAllById(anySet())).willReturn(memberIdList);
@@ -233,19 +233,19 @@ class GroupModifyServiceTest {
 		void whenFailOfHasNotInvitePermission() {
 			/* Given */
 			GroupMemberInviteRequest inviteRequest = new GroupMemberInviteRequest(
-				Set.of(member2.getId()));
+					Set.of(member2.getId()));
 
 			given(memberRepository.findById(member1.getId()))
-				.willReturn(Optional.of(member1));
+					.willReturn(Optional.of(member1));
 
 			given(groupRepository.findById(anyInt()))
-				.willReturn(Optional.of(group));
+					.willReturn(Optional.of(group));
 
 			/* When, Then */
 			assertThatThrownBy(() -> {
 				groupModifyService.inviteGroupMember(member1.getId(), group.getId(), inviteRequest);
 			}).isInstanceOf(GroupException.class)
-				.hasMessageContaining(HAS_NOT_INVITE_PERMISSION.getMessage());
+					.hasMessageContaining(HAS_NOT_INVITE_PERMISSION.getMessage());
 		}
 	}
 
@@ -267,7 +267,7 @@ class GroupModifyServiceTest {
 			memberGroup.setGroupInviteStateAccepted();
 
 			given(memberGroupRepository.findAcceptedWithGroupAndOwner(anyInt(), anyInt()))
-				.willReturn(Optional.of(memberGroup));
+					.willReturn(Optional.of(memberGroup));
 
 			/* When, Then */
 			assertThatCode(() -> {
@@ -291,14 +291,14 @@ class GroupModifyServiceTest {
 		void whenSuccess() {
 			/* Given */
 			given(memberRepository.findById(anyInt()))
-				.willReturn(Optional.of(member1));
+					.willReturn(Optional.of(member1));
 
 			given(groupRepository.findById(anyInt()))
-				.willReturn(Optional.of(group));
+					.willReturn(Optional.of(group));
 
 			MemberGroup memberGroup = MemberGroup.of(member1, group);
 			given(memberGroupRepository.findPendingMemberGroup(anyInt(), anyInt()))
-				.willReturn(Optional.of(memberGroup));
+					.willReturn(Optional.of(memberGroup));
 
 			/* When, Then */
 			assertThatCode(() -> {

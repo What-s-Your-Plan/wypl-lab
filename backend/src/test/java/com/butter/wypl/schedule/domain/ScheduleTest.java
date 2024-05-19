@@ -24,18 +24,18 @@ public class ScheduleTest {
 			// When
 			// Then
 			assertThatThrownBy(() -> {
-					Schedule.builder()
-						.title("")
-						.startDate(schedule.getStartDate())
-						.endDate(schedule.getEndDate())
-						.description(schedule.getDescription())
-						.repetition(schedule.getRepetition())
-						.category(schedule.getCategory())
-						.groupId(schedule.getGroupId())
-						.build();
-				}
+						Schedule.builder()
+								.title("")
+								.startDate(schedule.getStartDate())
+								.endDate(schedule.getEndDate())
+								.description(schedule.getDescription())
+								.repetition(schedule.getRepetition())
+								.category(schedule.getCategory())
+								.groupId(schedule.getGroupId())
+								.build();
+					}
 			).isInstanceOf(ScheduleException.class)
-				.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
+					.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
 		}
 
 		@Test
@@ -46,18 +46,18 @@ public class ScheduleTest {
 			// When
 			// Then
 			assertThatThrownBy(() -> {
-					Schedule.builder()
-						.title(null)
-						.startDate(schedule.getStartDate())
-						.endDate(schedule.getEndDate())
-						.description(schedule.getDescription())
-						.repetition(schedule.getRepetition())
-						.category(schedule.getCategory())
-						.groupId(schedule.getGroupId())
-						.build();
-				}
+						Schedule.builder()
+								.title(null)
+								.startDate(schedule.getStartDate())
+								.endDate(schedule.getEndDate())
+								.description(schedule.getDescription())
+								.repetition(schedule.getRepetition())
+								.category(schedule.getCategory())
+								.groupId(schedule.getGroupId())
+								.build();
+					}
 			).isInstanceOf(ScheduleException.class)
-				.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
+					.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
 		}
 
 		@Test
@@ -68,42 +68,42 @@ public class ScheduleTest {
 			// When
 			// Then
 			assertThatThrownBy(() -> {
-					Schedule.builder()
-						.title(
-							"dkdkdkdkdkdasdaffffffffffffffffffffffddddddddddddddddddddddddddddddddddssssssssssssssssssssssssssssssssssssssss")
-						.startDate(schedule.getStartDate())
-						.endDate(schedule.getEndDate())
-						.description(schedule.getDescription())
-						.repetition(schedule.getRepetition())
-						.category(schedule.getCategory())
-						.groupId(schedule.getGroupId())
-						.build();
-				}
+						Schedule.builder()
+								.title(
+										"dkdkdkdkdkdasdaffffffffffffffffffffffddddddddddddddddddddddddddddddddddssssssssssssssssssssssssssssssssssssssss")
+								.startDate(schedule.getStartDate())
+								.endDate(schedule.getEndDate())
+								.description(schedule.getDescription())
+								.repetition(schedule.getRepetition())
+								.category(schedule.getCategory())
+								.groupId(schedule.getGroupId())
+								.build();
+					}
 			).isInstanceOf(ScheduleException.class)
-				.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
+					.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_TITLE.getMessage());
 		}
 	}
 
 	@Test
-	@DisplayName("startDate, endDate validation")
+	@DisplayName("startDate, lastDate validation")
 	void durationValidation() {
 		// Given
 		Schedule schedule = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 		// When
 		// Then
 		assertThatThrownBy(() -> {
-				Schedule.builder()
-					.title(schedule.getTitle())
-					.startDate(LocalDateTime.of(2024, 5, 7, 0, 0))
-					.endDate(LocalDateTime.of(2024, 5, 6, 0, 0))
-					.description(schedule.getDescription())
-					.repetition(schedule.getRepetition())
-					.category(schedule.getCategory())
-					.groupId(schedule.getGroupId())
-					.build();
-			}
+					Schedule.builder()
+							.title(schedule.getTitle())
+							.startDate(LocalDateTime.of(2024, 5, 7, 0, 0))
+							.endDate(LocalDateTime.of(2024, 5, 6, 0, 0))
+							.description(schedule.getDescription())
+							.repetition(schedule.getRepetition())
+							.category(schedule.getCategory())
+							.groupId(schedule.getGroupId())
+							.build();
+				}
 		).isInstanceOf(ScheduleException.class)
-			.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_DURATION.getMessage());
+				.hasMessageContaining(ScheduleErrorCode.NOT_APPROPRIATE_DURATION.getMessage());
 
 	}
 }

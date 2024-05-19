@@ -1,14 +1,14 @@
 package com.butter.wypl.group.domain;
 
-import lombok.EqualsAndHashCode;
-
 import java.io.Serializable;
+
+import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 public class MemberGroupId implements Serializable {
 
-    private int member;
+	private int member;
 
-    private int group;
+	private int group;
 
 }

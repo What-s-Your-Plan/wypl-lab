@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 public enum NotificationTypeCode {
 	GROUP("Group", "그룹 알림"),
-	REVIEW("Review", "회고 알림")
-	;
+	REVIEW("Review", "회고 알림");
 
 	private final String code;
 	private final String description;
