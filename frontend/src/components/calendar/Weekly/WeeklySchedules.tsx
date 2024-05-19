@@ -35,6 +35,14 @@ function WeeklySchedules({
       const startAmPm = startDate.getHours() / 12 < 1 ? 'AM' : 'PM';
       const endAmPm = endDate.getHours() / 12 < 1 ? 'AM' : 'PM';
 
+      let bgColor: string
+      
+      if (schedule.category === 'MEMBER') {
+        bgColor = schedule.members ? schedule.members[0].color : (schedule.label?.color || mainColor!)
+      } else if (schedule.category === 'GROUP') {
+        bgColor = gColor || schedule.group?.color || 'labelBrown'
+      }
+
       return (
         <S.ScheduleList
           key={index}
@@ -44,10 +52,7 @@ function WeeklySchedules({
         >
           <S.ScheduleButton
             $bgColor={
-              (gColor ||
-                schedule.label?.color ||
-                schedule.group?.color ||
-                mainColor) as LabelColorsType
+              bgColor! as LabelColorsType
             }
             onClick={() => {
               handleSkedClick(schedule.schedule_id);

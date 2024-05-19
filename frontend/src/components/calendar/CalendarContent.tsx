@@ -113,7 +113,7 @@ function CalendarContent({ category, groupId }: CalendarProps) {
               <Containers.WhiteContainer $width="1300" $height="one">
                 <DatePicker />
               </Containers.WhiteContainer>
-              <Todo />
+              {category === 'MEMBER' && <Todo />}
               <Button
                 className="py-2"
                 $size="lg"

@@ -3,7 +3,7 @@
 </div>
 <div align="center">
 
-### 내 손 안에 사진관 딸깍사진관
+### What's Your Plan
 
 </div>
 📢 본 프로젝트는 2024 Samsung Software Academy For Youth 10기 특화 프로젝트 일환으로 진행되었습니다.
@@ -92,7 +92,7 @@
 
 <div>
 <img src="https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
-<img src="https://img.shields.io/badge/zustand-#F69220?style=for-the-badge">
+<img src="https://img.shields.io/badge/PNPM-F69220?style=for-the-badge">
 <img src ="https://img.shields.io/badge/node.js-5FA04E.svg?&style=for-the-badge&logo=nodedotjs&logoColor=white"/>
 <img src ="https://img.shields.io/badge/react-61DAFB.svg?&style=for-the-badge&logo=react&logoColor=black"/>
 <img src ="https://img.shields.io/badge/vite-646CFF.svg?&style=for-the-badge&logo=vite&logoColor=white"/>
@@ -121,7 +121,7 @@
 <img src="https://img.shields.io/badge/H2-512BD4?style=for-the-badge">
 <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>
 <img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"/>
-<img src="https://img.shields.io/badge/MongoDB-DC382D?style=for-the-badge&logo=mongodb&logoColor=white"/>
+<img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white"/>
 <img src="https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white"/>
 </div>
 
@@ -158,7 +158,7 @@
 ### 로그인
 - 소셜 로그인을 통해 간단하게 가입, 로그인
 - 소셜 로그인은 구글 로그인 가능
-![Landing](./Images/Landing.png)
+![Landing](./Images/landing.png)
 
 ---
 ### 알림
@@ -207,17 +207,17 @@
 
 ## 아키텍처 다이어그램
 
-<img src="./images/wypl-service-architecture.png" alt="아키텍처" width="600px"/>
+<img src="./Images/wypl-service-architecture.png" alt="아키텍처" width="600px"/>
 
 ## ERD
 
-<img src="./images/erd.png" alt="ERD" width="600px" />
+<img src="./Images/erd.png" alt="ERD" width="600px" />
 
 ## CI CD pipeline
-<img src="./images/ci_cd pipeline.drawio.png" alt="아키텍처" width="600px"/>
+<img src="./Images/ci_cd pipeline.drawio.png" alt="아키텍처" width="600px"/>
 
 ## Look Aside
-<img src="./images/look aside.png" alt="아키텍처" width="600px"/>
+<img src="./Images/look aside.png" alt="아키텍처" width="600px"/>
 
 
 ## 디렉토리 구조
