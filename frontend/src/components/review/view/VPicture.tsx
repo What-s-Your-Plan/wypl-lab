@@ -8,7 +8,7 @@ type VPictureProps = {
 function VPicture({ content }: VPictureProps) {
   return (
     <WhiteContainer $width="900" className="flex justify-center">
-      <img src={content.path} alt="사진" />
+      <img src={content.path} alt="사진" className='w-80' />
     </WhiteContainer>
   );
 }
