@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.butter.wypl.calendar.data.CalendarType;
+import com.butter.wypl.calendar.data.cond.FindCalendarCond;
 import com.butter.wypl.calendar.data.cond.FindGroupCalendarCond;
 import com.butter.wypl.calendar.data.response.BlockListResponse;
 import com.butter.wypl.calendar.data.response.BlockResponse;
@@ -29,9 +30,7 @@ import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.group.utils.GroupServiceUtils;
 import com.butter.wypl.group.utils.MemberGroupServiceUtils;
-import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.repository.LabelRepository;
-import com.butter.wypl.label.utils.LabelServiceUtils;
 import com.butter.wypl.schedule.domain.Schedule;
 import com.butter.wypl.schedule.respository.MemberScheduleRepository;
 import com.butter.wypl.schedule.respository.ScheduleRepository;
@@ -85,26 +84,24 @@ public class CalendarService {
 	) {
 		CalendarSearchDate searchDate = getSearchDate(calendarType, startDate);
 
-		List<Schedule> schedules;
-		if (labelId == null) {
-			schedules = memberScheduleRepository.getCalendarSchedules(memberId,
-					LocalDateTime.of(searchDate.startDate(), LocalTime.of(0, 0)),
-					LocalDateTime.of(searchDate.endDate(), LocalTime.of(23, 59)));
-		} else {
-			Label label = LabelServiceUtils.getLabelByLabelId(labelRepository, labelId);
-
-			schedules = memberScheduleRepository.getCalendarSchedulesWithLabel(memberId,
-					LocalDateTime.of(searchDate.startDate(), LocalTime.of(0, 0)),
-					LocalDateTime.of(searchDate.endDate(), LocalTime.of(23, 59)),
-					label.getLabelId());
-		}
+		List<Schedule> schedules = scheduleRepository.findAllByCalendarCond(new FindCalendarCond(
+				memberId,
+				labelId,
+				LocalDateTime.of(searchDate.startDate, LocalTime.of(0, 0)),
+				LocalDateTime.of(searchDate.endDate, LocalTime.of(23, 59))
+		));
 
 		return CalendarListResponse.from(
 				schedules.stream().map(
 						schedule -> CalendarResponse.of(schedule,
-								(schedule.getGroupId() == null) ? null :
-										MemberGroupServiceUtils.getAcceptMemberGroup(memberGroupRepository, memberId,
-												schedule.getGroupId()))
+								(schedule.getGroupId() == null)
+										? null
+										: MemberGroupServiceUtils.findAcceptMemberGroupOrDefault(
+										memberGroupRepository,
+										memberId,
+										schedule.getGroupId(),
+										null)
+						)
 				).toList()
 		);
 	}

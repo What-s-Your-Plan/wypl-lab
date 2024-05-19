@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import com.butter.wypl.calendar.data.CalendarType;
+import com.butter.wypl.calendar.data.cond.FindCalendarCond;
 import com.butter.wypl.calendar.data.cond.FindGroupCalendarCond;
 import com.butter.wypl.calendar.data.response.CalendarListResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarListResponse;
@@ -28,7 +29,6 @@ import com.butter.wypl.group.repository.GroupRepository;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.label.domain.Label;
 import com.butter.wypl.label.fixture.LabelFixture;
-import com.butter.wypl.label.repository.LabelRepository;
 import com.butter.wypl.member.domain.Member;
 import com.butter.wypl.member.fixture.MemberFixture;
 import com.butter.wypl.schedule.domain.Schedule;
@@ -47,9 +47,6 @@ public class CalendarServiceTest {
 
 	@Mock
 	private ScheduleRepository scheduleRepository;
-
-	@Mock
-	private LabelRepository labelRepository;
 
 	@Mock
 	private GroupRepository groupRepository;
@@ -96,8 +93,7 @@ public class CalendarServiceTest {
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 
-			given(memberScheduleRepository.getCalendarSchedules(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class)))
+			given(scheduleRepository.findAllByCalendarCond(any(FindCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);
@@ -117,8 +113,7 @@ public class CalendarServiceTest {
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 
-			given(memberScheduleRepository.getCalendarSchedules(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class)))
+			given(scheduleRepository.findAllByCalendarCond(any(FindCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);
@@ -141,10 +136,14 @@ public class CalendarServiceTest {
 
 			Label label = LabelFixture.STUDY_LABEL.toLabel();
 
-			given(labelRepository.findByLabelId(anyInt())).willReturn(Optional.of(label));
+			// given(labelRepository.findByLabelId(anyInt())).willReturn(Optional.of(label));
 
-			given(memberScheduleRepository.getCalendarSchedulesWithLabel(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class), anyInt()))
+			// given(memberScheduleRepository.getCalendarSchedulesWithLabel(anyInt(), any(LocalDateTime.class),
+			// 		any(LocalDateTime.class), anyInt()))
+			// 		.willReturn(
+			// 				List.of(schedule1, schedule2)
+			// 		);
+			given(scheduleRepository.findAllByCalendarCond(any(FindCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);
@@ -166,11 +165,7 @@ public class CalendarServiceTest {
 			Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 
 			Label label = LabelFixture.STUDY_LABEL.toLabel();
-
-			given(labelRepository.findByLabelId(anyInt())).willReturn(Optional.of(label));
-
-			given(memberScheduleRepository.getCalendarSchedulesWithLabel(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class), anyInt()))
+			given(scheduleRepository.findAllByCalendarCond(any(FindCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);
@@ -190,8 +185,7 @@ public class CalendarServiceTest {
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 
-			given(memberScheduleRepository.getCalendarSchedules(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class)))
+			given(scheduleRepository.findAllByCalendarCond(any(FindCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);
@@ -212,8 +206,7 @@ public class CalendarServiceTest {
 			Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
 			Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
 
-			given(memberScheduleRepository.getCalendarSchedules(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class)))
+			given(scheduleRepository.findAllByCalendarCond(any(FindCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);

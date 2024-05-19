@@ -29,6 +29,16 @@ public class MemberGroupServiceUtils {
 				.orElseThrow(() -> new GroupException(GroupErrorCode.NOT_EXIST_MEMBER_GROUP));
 	}
 
+	public static MemberGroup findAcceptMemberGroupOrDefault(
+			MemberGroupRepository memberGroupRepository,
+			int memberId,
+			int groupId,
+			MemberGroup other
+	) {
+		return memberGroupRepository.findAcceptMemberGroup(memberId, groupId)
+				.orElse(other);
+	}
+
 	public static List<MemberGroup> getAcceptedMemberGroupsOfGroup(MemberGroupRepository memberGroupRepository,
 			int groupId) {
 		return memberGroupRepository.findAllAccepted(groupId);
