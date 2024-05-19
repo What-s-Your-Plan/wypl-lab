@@ -52,6 +52,7 @@ function WeeklyCalendar({
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [longSchedules, setLongSchedules] = useState<Array<LongSchedule>>([]);
   const [schedules, setSchedules] = useState<Array<CalendarSchedule>>([]);
+  const [color, setColor] = useState<string | null>(null);
 
   const handleNextWeek = () => {
     const nextWeek = new Date(
@@ -98,6 +99,7 @@ function WeeklyCalendar({
       });
       if (response) {
         setOriginSked(response.schedules);
+        setColor(response.group.color);
       }
     }
   }, [selectedDate, groupId]);
@@ -238,6 +240,7 @@ function WeeklyCalendar({
                 lSchedules={longSchedules}
                 row={height + 1}
                 handleSkedClick={handleSkedClick}
+                gColor={color}
               />
             </LScheduleContainer>
           </div>
@@ -252,6 +255,7 @@ function WeeklyCalendar({
 
               {/* Schedules */}
               <WeeklySchedules
+                gColor={color}
                 schedules={schedules}
                 handleSkedClick={handleSkedClick}
               />

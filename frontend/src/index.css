@@ -131,6 +131,38 @@
   width: 10px;
 }
 
+/* 임의의 영역 생성 */
+.horizontalScrollBar {
+  overflow-x: scroll; /* 수평 스크롤바 활성화 */
+}
+
+/* 아래의 모든 코드는 영역::코드로 사용 */
+.horizontalScrollBar::-webkit-scrollbar {
+  height: 10px; /* 스크롤바의 높이 */
+}
+
+.horizontalScrollBar::-webkit-scrollbar-thumb {
+  width: 10%; /* 스크롤바의 길이 */
+  background: rgba(202, 150, 92, 0.4); /* 스크롤바의 색상 */
+  border-radius: 10px; /* 스크롤바 썸 모서리 둥글게 */
+}
+
+.horizontalScrollBar::-webkit-scrollbar-track {
+  background: rgba(250, 250, 249, 0.1); /* 스크롤바 뒷 배경 색상 */
+  border-radius: 10px; /* 스크롤바 배경 모서리 둥글게 */
+}
+
+.horizontalScrollBar::-webkit-scrollbar-button:horizontal:start:decrement,
+.horizontalScrollBar::-webkit-scrollbar-button:horizontal:end:increment {
+  display: block;
+  width: 15px; /* 스크롤바 버튼의 너비 */
+}
+
+.horizontalScrollBar::-webkit-scrollbar-button:horizontal:end:decrement {
+  display: block;
+  height: 10px; /* 스크롤바 버튼의 높이 */
+}
+
 .whiteImg {
   filter: invert(87%) sepia(40%) saturate(0%) hue-rotate(154deg)
     brightness(111%) contrast(96%);

@@ -6,9 +6,14 @@ import useMemberStore from '@/stores/MemberStore';
 type WSchedulesProps = {
   schedules: Array<CalendarSchedule>;
   handleSkedClick: (id: number) => void;
+  gColor: string | null;
 };
 
-function WeeklySchedules({ schedules, handleSkedClick }: WSchedulesProps) {
+function WeeklySchedules({
+  schedules,
+  gColor,
+  handleSkedClick,
+}: WSchedulesProps) {
   const { mainColor } = useMemberStore();
   const renderSchedules = () => {
     return schedules.map((schedule, index) => {
@@ -30,6 +35,14 @@ function WeeklySchedules({ schedules, handleSkedClick }: WSchedulesProps) {
       const startAmPm = startDate.getHours() / 12 < 1 ? 'AM' : 'PM';
       const endAmPm = endDate.getHours() / 12 < 1 ? 'AM' : 'PM';
 
+      let bgColor: string
+      
+      if (schedule.category === 'MEMBER') {
+        bgColor = schedule.members ? schedule.members[0].color : (schedule.label?.color || mainColor!)
+      } else if (schedule.category === 'GROUP') {
+        bgColor = gColor || schedule.group?.color || 'labelBrown'
+      }
+
       return (
         <S.ScheduleList
           key={index}
@@ -39,11 +52,11 @@ function WeeklySchedules({ schedules, handleSkedClick }: WSchedulesProps) {
         >
           <S.ScheduleButton
             $bgColor={
-              (schedule.label?.color ||
-                schedule.group?.color ||
-                mainColor) as LabelColorsType
+              bgColor! as LabelColorsType
             }
-            onClick={() => {handleSkedClick(schedule.schedule_id)}}
+            onClick={() => {
+              handleSkedClick(schedule.schedule_id);
+            }}
           >
             <p className="order-1 font-semibold text-default-white text-left">
               {schedule.title}

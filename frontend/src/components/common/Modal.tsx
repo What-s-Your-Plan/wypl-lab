@@ -29,7 +29,7 @@ function Modal({
       <Transition appear show={isOpen} as={Fragment}>
         <Dialog
           as="div"
-          className="relative z-10"
+          className="relative z-10 "
           onClose={() => {
             handleClose();
           }}
@@ -62,7 +62,7 @@ function Modal({
                     {/* 타이틀 */}
                     {title}
                   </Dialog.Title>
-                  <div className="mt-2 max-h-[70vh] overflow-auto">
+                  <div className="mt-2 max-h-[70vh] scrollBar overflow-x-hidden">
                     {/* 컨텐츠 */}
                     {contents}
                   </div>

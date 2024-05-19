@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import SkedModify from './SkedModify';
 import Modal from '../common/Modal';
 import useMemberStore from '@/stores/MemberStore';
+import { Review } from '@/@types/ReviewResponse';
+import getRelatedReview from '@/services/schedule/getRelatedReview';
 
 type DetailProps = {
   isModify: boolean;
@@ -36,6 +38,7 @@ function SkedDetailPanel({
   const [canModify, setCanModify] = useState<boolean>(false);
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
   const [modificationType, setModificationType] = useState<string>('NOW');
+  const [reviewList, setReviewList] = useState<Review[]>([]);
   const { memberId } = useMemberStore();
   // const getSchedule = async () => {
   //   const response = await getScheduleDetail(scheduleId);
@@ -60,51 +63,12 @@ function SkedDetailPanel({
     }
   };
 
-  // useEffect(() => {
-  //   getSchedule();
-  // }, []);
-  // =======
-  // import useMemberStore from '@/stores/MemberStore';
-  // import Modal from '../common/Modal';
-
-  // type DetailProps = {
-  //   scheduleId: number;
-  //   handleClose: (() => void) | (() => Promise<void>);
-  // };
-
-  // function SkedDetailPanel({ scheduleId, handleClose}: DetailProps) {
-  //   const navigator = useNavigate();
-  //   // const [schedule, setSchedule] = useState<ScheduleResponse | null>(null);
-  //   const [canModify, setCanModify] = useState<boolean>(false);
-  //   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
-  //   const [modificationType, setModificationType] = useState<string>("NOW");
-  //   const {memberId} = useMemberStore();
-  //   // const getSchedule = async () => {
-  //   //   const response = await getScheduleDetail(scheduleId);
-  //   //   if (response) {
-  //   //     setSchedule(response);
-  //   //   }
-  //   // };
-
-  //   const clickDeleteBtn = async () => {
-  //     if(schedule?.repetition !== null){
-  //       setDeleteOpen(true);
-  //     }
-  //     else{
-  //       deleteAllSchedule();
-  //     }
-  //   }
-
-  //   const deleteAllSchedule = async() => {
-  //     await deleteSchedule(scheduleId, modificationType);
-  //     setDeleteOpen(false);
-  //     handleClose();
-  //   }
-
-  //   useEffect(() => {
-  //     getSchedule();
-  //   }, []);
-  // >>>>>>> 1ba8ed3f0062647ae078116d39ed9b5bdb6cf4ba
+  const fetchReviewList = async () => {
+    if (schedule?.schedule_id) {
+      const reviews = await getRelatedReview(schedule?.schedule_id);
+      setReviewList(reviews);
+    }
+  };
 
   useEffect(() => {
     //스케줄에 포함된 멤버인지 확인
@@ -114,10 +78,11 @@ function SkedDetailPanel({
         return;
       }
     });
+    fetchReviewList();
   }, [schedule]);
 
   return (
-    <div className="w-[580px] flex flex-col justify-center">
+    <div className=" w-[580px] flex flex-col justify-center ">
       {schedule &&
         (isModify ? (
           <SkedModify
@@ -201,6 +166,9 @@ function SkedDetailPanel({
             {schedule.repetition && (
               <Items.Repeat repeat={schedule.repetition} />
             )}
+            {reviewList.length > 0 && (
+              <Items.ReviewList reviewList={reviewList} />
+            )}
             <Items.WriteReview
               handleClick={() => {
                 navigator(`/review/write/${schedule.schedule_id}`);
@@ -213,51 +181,3 @@ function SkedDetailPanel({
 }
 
 export default SkedDetailPanel;
-
-{
-  /* <<<<<<< HEAD
-      {schedule &&
-        (isModify ? (
-          <SkedModify states={states} handleChange={handleChange} setStates={setStates} />
-        ) : (
-          <>
-            <div className="flex flex-row-reverse gap-2">
-              <button>
-                <img src={TrashIcon} alt="trash" />
-              </button>
-              <button
-                onClick={() => {
-                  setModifyTrue();
-                }}
-              >
-                <img
-                  src={EditIcon}
-                  alt="edit"
-                />
-              </button>
-            </div>
-            <Items.Title title={schedule.title} />
-            <Items.Time
-              startDate={schedule.start_date}
-              endDate={schedule.end_date}
-            />
-            {schedule.description && (
-              <Items.Description content={schedule.description} />
-            )}
-            {schedule.category === 'MEMBER' ? (
-              <Items.Label label={schedule.label} />
-            ) : (
-              <Items.Member member={schedule.members} />
-            )}
-            {schedule.repetition && (
-              <Items.Repeat repeat={schedule.repetition} />
-            )}
-            <Items.WriteReview
-              handleClick={() => {
-                navigator(`/review/write/${schedule.schedule_id}`);
-              }}
-            />
-          </>
-        ))}
-======= */
-}

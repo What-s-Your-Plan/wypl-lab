@@ -11,7 +11,7 @@ function TText({ thumbnailContent }: TTextProps) {
       ? thumbnailContent.text.slice(0, 100) + '...'
       : thumbnailContent.text;
   return (
-    <div>
+    <div className="w-full h-full">
       <Text content={text} />
     </div>
   );

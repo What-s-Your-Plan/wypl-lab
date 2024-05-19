@@ -47,7 +47,9 @@ const ReviewThumbnail = ({
         return <div></div>;
     }
   };
-  return <div className="h-[80%]">{renderThumbnail()}</div>;
+  return (
+    <div className="w-full h-[80%] overflow-hidden">{renderThumbnail()}</div>
+  );
 };
 
 export default ReviewThumbnail;

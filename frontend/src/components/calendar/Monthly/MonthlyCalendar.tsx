@@ -43,7 +43,7 @@ function MonthlyCalender({
     }
     return init;
   };
-  const { canStartLoading, endLoading } = useLoading();
+  const { endLoading } = useLoading();
   const { selectedDate, setSelectedDate, selectedLabels } = useDateStore();
   const [originSked, setOriginSked] = useState<Array<CalendarSchedule>>([]);
   const [monthSchedules, setMonthSchedules] =
@@ -78,10 +78,9 @@ function MonthlyCalender({
   };
 
   const updateInfo = useCallback(async () => {
-    console.log('sadfasdf')
-    if (canStartLoading()) {
-      return;
-    }
+    // if (canStartLoading()) {
+    //   return;
+    // }
     if (category === 'MEMBER') {
       const response = await getCalendars(
         'MONTH',
@@ -93,20 +92,26 @@ function MonthlyCalender({
       if (response) {
         setOriginSked(response.schedules);
       }
-    } else if (category === 'GROUP' && groupId) {
-      const response = await getGroupCalendars(
-        'MONTH',
-        Number(groupId),
-        dateToString(selectedDate),
+    } else if (category === 'GROUP') {
+      console.log('group');
+      if (groupId) {
+        const response = await getGroupCalendars(
+          'MONTH',
+          Number(groupId),
+          dateToString(selectedDate),
         ).finally(() => {
           endLoading();
         });
-        
+
         if (response) {
           setOriginSked(response.schedules);
-          setColor(response.group.color)
+          setColor(response.group.color);
+        }
+      } else {
+        setOriginSked([]);
       }
     }
+    setUpdateFalse();
   }, [selectedDate, groupId]);
 
   useEffect(() => {
@@ -157,7 +162,6 @@ function MonthlyCalender({
       setFirstDay(newFirst);
 
       updateInfo();
-      setUpdateFalse();
     }
   }, [updateInfo]);
 
@@ -186,7 +190,7 @@ function MonthlyCalender({
           <MonthlyDay
             key={i}
             handleSkedClick={handleSkedClick}
-            Gcolor={color}
+            gColor={color}
             date={date}
             firstDay={firstDay}
             schedules={monthSchedules[i]}
