@@ -48,6 +48,7 @@ function GroupDetailList({
       color,
     );
     setColor(updateColor);
+    window.location.reload();
   };
 
   const gotoGroupPage = (open: boolean) => {

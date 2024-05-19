@@ -6,9 +6,14 @@ import useMemberStore from '@/stores/MemberStore';
 type WSchedulesProps = {
   schedules: Array<CalendarSchedule>;
   handleSkedClick: (id: number) => void;
+  gColor: string | null;
 };
 
-function WeeklySchedules({ schedules, handleSkedClick }: WSchedulesProps) {
+function WeeklySchedules({
+  schedules,
+  gColor,
+  handleSkedClick,
+}: WSchedulesProps) {
   const { mainColor } = useMemberStore();
   const renderSchedules = () => {
     return schedules.map((schedule, index) => {
@@ -39,11 +44,14 @@ function WeeklySchedules({ schedules, handleSkedClick }: WSchedulesProps) {
         >
           <S.ScheduleButton
             $bgColor={
-              (schedule.label?.color ||
+              (gColor ||
+                schedule.label?.color ||
                 schedule.group?.color ||
                 mainColor) as LabelColorsType
             }
-            onClick={() => {handleSkedClick(schedule.schedule_id)}}
+            onClick={() => {
+              handleSkedClick(schedule.schedule_id);
+            }}
           >
             <p className="order-1 font-semibold text-default-white text-left">
               {schedule.title}
