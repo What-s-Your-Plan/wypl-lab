@@ -73,8 +73,8 @@ public class ReviewServiceImpl implements ReviewReadService, ReviewModifyService
 
 		review.updateTitle(reviewUpdateRequest.title());
 
-		ReviewContents reviewContents = reviewContentsRepository.findByReviewIdAndDeletedAtNull(
-				review.getReviewId());
+		ReviewContents reviewContents =
+				reviewContentsRepository.findByReviewIdAndDeletedAtNull(review.getReviewId());
 		reviewContents.updateContents(reviewUpdateRequest.contents());
 
 		reviewContentsRepository.save(reviewContents);

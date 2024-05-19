@@ -15,14 +15,15 @@ import lombok.Getter;
 @Builder
 @Getter
 public class ReviewContents extends MongoBaseEntityWithDelete {
+	// FIXME: 몽고 DB는 key를 String으로 넣어야한다.
 	@Id
-	private int reviewId;
+	private String reviewId;
 
 	private List<Map<String, Object>> contents;
 
 	public static ReviewContents of(int reviewId, List<Map<String, Object>> contents) {
 		return ReviewContents.builder()
-				.reviewId(reviewId)
+				.reviewId(String.valueOf(reviewId))
 				.contents(contents)
 				.build();
 	}
