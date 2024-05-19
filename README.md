@@ -158,7 +158,7 @@
 ### 로그인
 - 소셜 로그인을 통해 간단하게 가입, 로그인
 - 소셜 로그인은 구글 로그인 가능
-![Landing](./Images/Landing.png)
+![Landing](./Images/landing.png)
 
 ---
 ### 알림
