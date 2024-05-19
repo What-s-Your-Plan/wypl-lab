@@ -43,13 +43,19 @@ function MonthlyDay({
               7 - date.getDay(),
               getDateDiff(date, end) + 1,
             );
-            const color =
-              gColor || schedule[0].label?.color || schedule[0].group?.color || mainColor;
+            let bgColor: string
+      
+            if (schedule[0].category === 'MEMBER') {
+              bgColor = schedule[0].members ? schedule[0].members[0].color : (schedule[0].label?.color || mainColor!)
+            } else if (schedule[0].category === 'GROUP') {
+              bgColor = gColor || schedule[0].group?.color || 'labelBrown'
+              console.log(schedule[0].group)
+            }
 
             return (
               <S.ScheduleButton
                 key={idx}
-                $color={color as LabelColorsType}
+                $color={bgColor! as LabelColorsType}
                 $top={idx}
                 $width={width}
                 onClick={() => {

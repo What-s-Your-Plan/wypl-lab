@@ -27,6 +27,12 @@ type Member = {
   profile_image: string;
 };
 
+type GMember = {
+  member_id: number;
+  nickname: string;
+  color: string;
+}
+
 type GroupResponse = {
   group_id: number; // 그룹의 인덱스
   color: string; // 헥사 코드(개인화된 그룹 색상)
@@ -62,6 +68,7 @@ type CalendarSchedule = {
   end_date: string; //ex) "2024-04-16T10:57:00"
   label: LabelResponse | null;
   group: GroupResponse | null;
+  members?: GMember[];
 };
 
 type CalendarsResponse = {

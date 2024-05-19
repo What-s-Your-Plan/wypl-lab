@@ -36,8 +36,8 @@ function Time({ startDate, endDate }: { startDate: string; endDate: string }) {
   const start = stringToDate(startDate);
   const end = stringToDate(endDate);
   const allday = isAllday(start, end);
-  const startAmPm = start.getHours() > 12 ? 'PM' : 'AM';
-  const endAmPm = end.getHours() > 12 ? 'PM' : 'AM';
+  const startAmPm = start.getHours() >= 12 ? 'PM' : 'AM';
+  const endAmPm = end.getHours() >= 12 ? 'PM' : 'AM';
   const startHour = padding0(
     startAmPm === 'AM' ? start.getHours() : start.getHours() - 12,
   );
