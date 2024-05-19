@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import com.butter.wypl.calendar.data.CalendarType;
+import com.butter.wypl.calendar.data.cond.FindGroupCalendarCond;
 import com.butter.wypl.calendar.data.response.CalendarListResponse;
 import com.butter.wypl.calendar.data.response.GroupCalendarListResponse;
 import com.butter.wypl.global.annotation.MockServiceTest;
@@ -55,6 +56,25 @@ public class CalendarServiceTest {
 
 	@Mock
 	private MemberGroupRepository memberGroupRepository;
+
+	@Test
+	@DisplayName("시각화(년 캘린더) 조회")
+	void getYearCalendar() {
+		// Given
+		Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
+		Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
+
+		given(memberScheduleRepository.getCalendarSchedules(anyInt(), any(LocalDateTime.class),
+				any(LocalDateTime.class)))
+				.willReturn(
+						List.of(schedule1, schedule2)
+				);
+
+		//when
+		//then
+		assertThatCode(() -> calendarService.getVisualization(1, LocalDate.now()))
+				.doesNotThrowAnyException();
+	}
 
 	@Nested
 	@DisplayName("개인 페이지 캘린더 조회")
@@ -223,8 +243,7 @@ public class CalendarServiceTest {
 			Member member = MemberFixture.KIM_JEONG_UK.toMember();
 			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
 
-			given(scheduleRepository.findAllByGroupIdAndStartDateBetween(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class)))
+			given(scheduleRepository.findAllByGroupCalendarCond(any(FindGroupCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);
@@ -256,8 +275,7 @@ public class CalendarServiceTest {
 			Member member = MemberFixture.KIM_JEONG_UK.toMember();
 			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
 
-			given(scheduleRepository.findAllByGroupIdAndStartDateBetween(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class)))
+			given(scheduleRepository.findAllByGroupCalendarCond(any(FindGroupCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);
@@ -289,8 +307,7 @@ public class CalendarServiceTest {
 			Member member = MemberFixture.KIM_JEONG_UK.toMember();
 			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
 
-			given(scheduleRepository.findAllByGroupIdAndStartDateBetween(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class)))
+			given(scheduleRepository.findAllByGroupCalendarCond(any(FindGroupCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);
@@ -322,8 +339,7 @@ public class CalendarServiceTest {
 			Member member = MemberFixture.KIM_JEONG_UK.toMember();
 			Group group = GroupFixture.GROUP_STUDY.toGroup(member);
 
-			given(scheduleRepository.findAllByGroupIdAndStartDateBetween(anyInt(), any(LocalDateTime.class),
-					any(LocalDateTime.class)))
+			given(scheduleRepository.findAllByGroupCalendarCond(any(FindGroupCalendarCond.class)))
 					.willReturn(
 							List.of(schedule1, schedule2)
 					);
@@ -344,25 +360,5 @@ public class CalendarServiceTest {
 			assertThat(groupCalendarListResponse.scheduleCount()).isEqualTo(2);
 
 		}
-	}
-
-	@Test
-	@DisplayName("시각화(년 캘린더) 조회")
-	void getYearCalendar() {
-		// Given
-		Schedule schedule1 = ScheduleFixture.PERSONAL_SCHEDULE.toSchedule();
-		Schedule schedule2 = ScheduleFixture.LABEL_PERSONAL_SCHEDULE.toSchedule();
-
-		given(memberScheduleRepository.getCalendarSchedules(anyInt(), any(LocalDateTime.class),
-				any(LocalDateTime.class)))
-				.willReturn(
-						List.of(schedule1, schedule2)
-				);
-
-		//when
-		//then
-		assertThatCode(() -> {
-			calendarService.getVisualization(1, LocalDate.now());
-		}).doesNotThrowAnyException();
 	}
 }
