@@ -161,7 +161,7 @@ public class CalendarService {
 			for (LocalDate date = scheduleStartDate;
 				 date.isBefore(scheduleEndDate) || date.isEqual(scheduleEndDate); date = date.plusDays(1)) {
 
-				long diffTime = 0L;
+				long diffTime;
 
 				if (date.isEqual(scheduleStartDate) && date.isEqual(scheduleEndDate)) {
 					diffTime = Duration.between(schedule.getStartDate(), schedule.getEndDate()).toMinutes();
