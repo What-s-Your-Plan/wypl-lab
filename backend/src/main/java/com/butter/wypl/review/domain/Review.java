@@ -50,9 +50,9 @@ public class Review extends BaseEntity {
 
 	public static Review of(ReviewCreateRequest reviewCreateRequest, MemberSchedule memberSchedule) {
 		return Review.builder()
-			.title(reviewCreateRequest.title())
-			.memberSchedule(memberSchedule)
-			.build();
+				.title(reviewCreateRequest.title())
+				.memberSchedule(memberSchedule)
+				.build();
 	}
 
 	public void updateTitle(String title) {

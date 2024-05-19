@@ -11,24 +11,24 @@ import lombok.Builder;
 @Builder
 public record ReviewResponse(
 
-	@JsonProperty("review_id")
-	int reviewId,
+		@JsonProperty("review_id")
+		int reviewId,
 
-	@JsonProperty("created_at")
-	LocalDateTime createdAt,
+		@JsonProperty("created_at")
+		LocalDateTime createdAt,
 
-	String title,
+		String title,
 
-	@JsonProperty("thumbnail_content")
-	Map<String, Object> thumbnailContent
+		@JsonProperty("thumbnail_content")
+		Map<String, Object> thumbnailContent
 ) {
 
 	public static ReviewResponse from(Review review, Map<String, Object> thumbnailContent) {
 		return ReviewResponse.builder()
-			.createdAt(LocalDateTime.now())
-			.reviewId(review.getReviewId())
-			.title(review.getTitle())
-			.thumbnailContent(thumbnailContent)
-			.build();
+				.createdAt(LocalDateTime.now())
+				.reviewId(review.getReviewId())
+				.title(review.getTitle())
+				.thumbnailContent(thumbnailContent)
+				.build();
 	}
 }

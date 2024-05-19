@@ -22,9 +22,9 @@ public class ReviewContents extends MongoBaseEntityWithDelete {
 
 	public static ReviewContents of(int reviewId, List<Map<String, Object>> contents) {
 		return ReviewContents.builder()
-			.reviewId(reviewId)
-			.contents(contents)
-			.build();
+				.reviewId(reviewId)
+				.contents(contents)
+				.build();
 	}
 
 	public void updateContents(List<Map<String, Object>> contents) {

@@ -600,7 +600,7 @@ public class CalendarControllerTest extends ControllerTest {
 											.description("그룹의 그룹 이름"),
 									fieldWithPath("body.group.color").type(JsonFieldType.STRING)
 											.description("그룹의 그룹 색상")
-									)
+							)
 					))
 					.andExpect(status().isOk());
 

@@ -53,7 +53,7 @@ class GroupRepositoryTest {
 
 			/* When */
 			Group foundGroup = groupRepository.findDetailById(savedGroup.getId())
-				.orElseThrow(() -> new IllegalArgumentException("그룹이 존재하지 않습니다."));
+					.orElseThrow(() -> new IllegalArgumentException("그룹이 존재하지 않습니다."));
 
 			/* Then */
 			assertDoesNotThrow(() -> {
@@ -127,10 +127,10 @@ class GroupRepositoryTest {
 			int nonExistentGroupId = 123;
 			/* When, Then */
 			assertThatExceptionOfType(GroupException.class)
-				.isThrownBy(() -> {
-					groupRepository.findDetailById(nonExistentGroupId)
-						.orElseThrow(() -> new GroupException(NOT_EXIST_GROUP));
-				}).withMessageContaining(NOT_EXIST_GROUP.getMessage());
+					.isThrownBy(() -> {
+						groupRepository.findDetailById(nonExistentGroupId)
+								.orElseThrow(() -> new GroupException(NOT_EXIST_GROUP));
+					}).withMessageContaining(NOT_EXIST_GROUP.getMessage());
 
 		}
 	}

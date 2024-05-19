@@ -5,7 +5,7 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GroupMemberInviteRequest(
-	@JsonProperty("member_id_list")
-	Set<Integer> memberIdList
+		@JsonProperty("member_id_list")
+		Set<Integer> memberIdList
 ) {
 }

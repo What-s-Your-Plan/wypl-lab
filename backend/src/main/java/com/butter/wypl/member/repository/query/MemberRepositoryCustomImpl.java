@@ -27,7 +27,7 @@ public class MemberRepositoryCustomImpl implements MemberRepositoryCustom {
 	@Override
 	public List<Member> findAllActiveMembers() {
 		return query.selectFrom(member)
-			.where(member.deletedAt.isNull())
-			.fetch();
+				.where(member.deletedAt.isNull())
+				.fetch();
 	}
 }

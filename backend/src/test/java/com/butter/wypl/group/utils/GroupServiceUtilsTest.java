@@ -46,11 +46,11 @@ class GroupServiceUtilsTest {
 			Group savedGroup = groupRepository.save(GROUP_STUDY.toGroup(savedMember));
 			memberGroupRepository.save(MemberGroup.of(savedMember, savedGroup, labelYellow, GroupInviteState.ACCEPTED));
 			List<Member> memberList = MemberGroupServiceUtils.getAcceptedMembersOfGroup(memberGroupRepository,
-				savedGroup.getId());
+					savedGroup.getId());
 
 			/* When, Then */
 			assertThatCode(() -> GroupServiceUtils.isGroupMember(savedMember.getId(), memberList))
-				.doesNotThrowAnyException();
+					.doesNotThrowAnyException();
 
 		}
 
@@ -69,8 +69,8 @@ class GroupServiceUtilsTest {
 
 			/* When, Then */
 			assertThatCode(
-				() -> GroupServiceUtils.isGroupOwner(member, group))
-				.doesNotThrowAnyException();
+					() -> GroupServiceUtils.isGroupOwner(member, group))
+					.doesNotThrowAnyException();
 		}
 
 		@Test

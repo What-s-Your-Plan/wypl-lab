@@ -24,8 +24,8 @@ class GroupValidationTest {
 		void setUp() {
 			MemberFixture[] fixtures = MemberFixture.values();
 			groupMembers = IntStream.rangeClosed(1, fixtures.length)
-				.mapToObj(i -> fixtures[i - 1].toMemberWithId(i))
-				.toList();
+					.mapToObj(i -> fixtures[i - 1].toMemberWithId(i))
+					.toList();
 
 		}
 

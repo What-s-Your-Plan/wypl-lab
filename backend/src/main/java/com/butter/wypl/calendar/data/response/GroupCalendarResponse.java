@@ -10,35 +10,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record GroupCalendarResponse(
 
-	@JsonProperty("schedule_id")
-	int scheduleId,
+		@JsonProperty("schedule_id")
+		int scheduleId,
 
-	String title,
+		String title,
 
-	Category category,
+		Category category,
 
-	@JsonProperty("start_date")
-	LocalDateTime startDate,
+		@JsonProperty("start_date")
+		LocalDateTime startDate,
 
-	@JsonProperty("end_date")
-	LocalDateTime endDate,
+		@JsonProperty("end_date")
+		LocalDateTime endDate,
 
-	@JsonProperty("member_count")
-	int memberCount,
+		@JsonProperty("member_count")
+		int memberCount,
 
-	List<MemberResponse> members
+		List<MemberResponse> members
 
 ) {
 
 	public static GroupCalendarResponse of(Schedule schedule, List<Member> members) {
 		return new GroupCalendarResponse(
-			schedule.getScheduleId(),
-			schedule.getTitle(),
-			schedule.getCategory(),
-			schedule.getStartDate(),
-			schedule.getEndDate(),
-			members.size(),
-			members.stream().map(MemberResponse::from).toList()
+				schedule.getScheduleId(),
+				schedule.getTitle(),
+				schedule.getCategory(),
+				schedule.getStartDate(),
+				schedule.getEndDate(),
+				members.size(),
+				members.stream().map(MemberResponse::from).toList()
 		);
 	}
 }

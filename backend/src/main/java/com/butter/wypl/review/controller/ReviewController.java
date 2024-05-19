@@ -39,71 +39,71 @@ public class ReviewController {
 
 	@PostMapping
 	public ResponseEntity<Message<ReviewIdResponse>> createReview(
-		@Authenticated AuthMember authMember,
-		@RequestBody ReviewCreateRequest reviewCreateRequest
+			@Authenticated AuthMember authMember,
+			@RequestBody ReviewCreateRequest reviewCreateRequest
 	) {
 		return ResponseEntity.status(HttpStatus.SC_CREATED)
-			.body(
-				Message.withBody("리뷰 등록에 성공했습니다.",
-					reviewModifyService.createReview(authMember.getId(), reviewCreateRequest))
-			);
+				.body(
+						Message.withBody("리뷰 등록에 성공했습니다.",
+								reviewModifyService.createReview(authMember.getId(), reviewCreateRequest))
+				);
 	}
 
 	@PatchMapping("/{reviewId}")
 	public ResponseEntity<Message<ReviewIdResponse>> updateReview(
-		@Authenticated AuthMember authMember,
-		@PathVariable int reviewId,
-		@RequestBody ReviewUpdateRequest reviewUpdateRequest
+			@Authenticated AuthMember authMember,
+			@PathVariable int reviewId,
+			@RequestBody ReviewUpdateRequest reviewUpdateRequest
 	) {
 		return ResponseEntity.ok(
-			Message.withBody("리뷰 수정에 성공했습니다.",
-				reviewModifyService.updateReview(authMember.getId(), reviewId, reviewUpdateRequest))
+				Message.withBody("리뷰 수정에 성공했습니다.",
+						reviewModifyService.updateReview(authMember.getId(), reviewId, reviewUpdateRequest))
 		);
 	}
 
 	@DeleteMapping("/{reviewId}")
 	public ResponseEntity<Message<ReviewIdResponse>> deleteReview(
-		@Authenticated AuthMember authMember,
-		@PathVariable("reviewId") int reviewId
+			@Authenticated AuthMember authMember,
+			@PathVariable("reviewId") int reviewId
 	) {
 		return ResponseEntity.ok(
-			Message.withBody("리뷰 삭제에 성공 했습니다.", reviewModifyService.deleteReview(authMember.getId(), reviewId))
+				Message.withBody("리뷰 삭제에 성공 했습니다.", reviewModifyService.deleteReview(authMember.getId(), reviewId))
 		);
 	}
 
 	@GetMapping("/detail/{reviewId}")
 	public ResponseEntity<Message<ReviewDetailResponse>> getDetailReview(
-		@Authenticated AuthMember authMember,
-		@PathVariable int reviewId
+			@Authenticated AuthMember authMember,
+			@PathVariable int reviewId
 	) {
 		return ResponseEntity.ok(
-			Message.withBody("리뷰 상세 조회에 성공했습니다.", reviewReadService.getDetailReview(authMember.getId(), reviewId))
+				Message.withBody("리뷰 상세 조회에 성공했습니다.", reviewReadService.getDetailReview(authMember.getId(), reviewId))
 		);
 	}
 
 	@GetMapping("/{type}")
 	public ResponseEntity<Message<ReviewListResponse>> getReviewsByMemberId(
-		@Authenticated AuthMember authMember,
-		@PathVariable("type") ReviewType reviewType,
-		@RequestParam(value = "lastReviewId", required = false) Integer lastReviewId,
-		@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
-		@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
+			@Authenticated AuthMember authMember,
+			@PathVariable("type") ReviewType reviewType,
+			@RequestParam(value = "lastReviewId", required = false) Integer lastReviewId,
+			@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
+			@RequestParam(value = "startDate", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate
 	) {
 		return ResponseEntity.ok(
-			Message.withBody("리뷰 목록 조회에 성공했습니다.",
-				reviewReadService.getReviews(authMember.getId(), lastReviewId, reviewType, startDate, endDate))
+				Message.withBody("리뷰 목록 조회에 성공했습니다.",
+						reviewReadService.getReviews(authMember.getId(), lastReviewId, reviewType, startDate, endDate))
 		);
 	}
 
 	@GetMapping("/{type}/{scheduleId}")
 	public ResponseEntity<Message<ReviewListResponse>> getReviewsBySchedule(
-		@Authenticated AuthMember authMember,
-		@PathVariable("type") ReviewType reviewType,
-		@PathVariable("scheduleId") int scheduleId
+			@Authenticated AuthMember authMember,
+			@PathVariable("type") ReviewType reviewType,
+			@PathVariable("scheduleId") int scheduleId
 	) {
 		return ResponseEntity.ok(
-			Message.withBody("일정 별 리뷰 조회에 성공했습니다.",
-				reviewReadService.getReviewsByScheduleId(authMember.getId(), scheduleId, reviewType))
+				Message.withBody("일정 별 리뷰 조회에 성공했습니다.",
+						reviewReadService.getReviewsByScheduleId(authMember.getId(), scheduleId, reviewType))
 		);
 	}
 }

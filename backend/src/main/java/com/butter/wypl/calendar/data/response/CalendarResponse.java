@@ -9,36 +9,36 @@ import com.butter.wypl.schedule.domain.Schedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public record CalendarResponse(
-	@JsonProperty("schedule_id")
-	int scheduleId,
+		@JsonProperty("schedule_id")
+		int scheduleId,
 
-	String title,
+		String title,
 
-	String description,
+		String description,
 
-	Category category,
+		Category category,
 
-	@JsonProperty("start_date")
-	LocalDateTime startDate,
+		@JsonProperty("start_date")
+		LocalDateTime startDate,
 
-	@JsonProperty("end_date")
-	LocalDateTime endDate,
+		@JsonProperty("end_date")
+		LocalDateTime endDate,
 
-	LabelResponse label,
+		LabelResponse label,
 
-	GroupResponse group
+		GroupResponse group
 ) {
 
 	public static CalendarResponse of(Schedule schedule, MemberGroup memberGroup) {
 		return new CalendarResponse(
-			schedule.getScheduleId(),
-			schedule.getTitle(),
-			schedule.getDescription(),
-			schedule.getCategory(),
-			schedule.getStartDate(),
-			schedule.getEndDate(),
-			LabelResponse.from(schedule.getLabel()),
-			memberGroup == null ? null : GroupResponse.from(memberGroup)
+				schedule.getScheduleId(),
+				schedule.getTitle(),
+				schedule.getDescription(),
+				schedule.getCategory(),
+				schedule.getStartDate(),
+				schedule.getEndDate(),
+				LabelResponse.from(schedule.getLabel()),
+				memberGroup == null ? null : GroupResponse.from(memberGroup)
 		);
 	}
 }

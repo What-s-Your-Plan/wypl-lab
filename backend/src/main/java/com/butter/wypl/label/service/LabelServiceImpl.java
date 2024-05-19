@@ -34,11 +34,11 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 	@Override
 	public LabelResponse createLabel(int memberId, LabelRequest labelRequest) {
 		Label label = Label.builder()
-			.title(labelRequest.title())
-			.color(labelRequest.color())
-			.memberId(memberId)
-			.schedules(new ArrayList<>())
-			.build();
+				.title(labelRequest.title())
+				.color(labelRequest.color())
+				.memberId(memberId)
+				.schedules(new ArrayList<>())
+				.build();
 
 		labelRepository.save(label);
 

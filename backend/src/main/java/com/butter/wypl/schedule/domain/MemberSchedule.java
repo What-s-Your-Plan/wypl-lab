@@ -54,21 +54,21 @@ public class MemberSchedule extends BaseEntity {
 
 	public static MemberSchedule of(int memberScheduleId, Member memberWithId, Schedule schedule) {
 		return MemberSchedule.builder()
-			.memberScheduleId(memberScheduleId)
-			.member(memberWithId)
-			.schedule(schedule)
-			.reviews(new ArrayList<>())
-			.writeReview(false)
-			.build();
+				.memberScheduleId(memberScheduleId)
+				.member(memberWithId)
+				.schedule(schedule)
+				.reviews(new ArrayList<>())
+				.writeReview(false)
+				.build();
 	}
 
 	public static MemberSchedule of(Member member, Schedule schedule) {
 		return MemberSchedule.builder()
-			.member(member)
-			.schedule(schedule)
-			.reviews(new ArrayList<>())
-			.writeReview(false)
-			.build();
+				.member(member)
+				.schedule(schedule)
+				.reviews(new ArrayList<>())
+				.writeReview(false)
+				.build();
 	}
 
 	public void writeReview() {

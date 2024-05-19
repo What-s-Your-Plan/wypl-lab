@@ -13,17 +13,17 @@ import com.butter.wypl.schedule.respository.ScheduleRepository;
 public class ScheduleServiceUtils {
 
 	public static Schedule findById(
-		final ScheduleRepository scheduleRepository,
-		final int id
+			final ScheduleRepository scheduleRepository,
+			final int id
 	) {
 		return scheduleRepository.findById(id)
-			.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NO_SCHEDULE));
+				.orElseThrow(() -> new ScheduleException(ScheduleErrorCode.NO_SCHEDULE));
 	}
 
 	public static List<MemberSchedule> findMemberSchedulesEndingTodayWithoutReview(
-		final MemberScheduleRepository memberScheduleRepository,
-		final int memberId,
-		final LocalDate today
+			final MemberScheduleRepository memberScheduleRepository,
+			final int memberId,
+			final LocalDate today
 	) {
 		return memberScheduleRepository.findMemberSchedulesEndingTodayWithoutReview(memberId, today);
 	}
