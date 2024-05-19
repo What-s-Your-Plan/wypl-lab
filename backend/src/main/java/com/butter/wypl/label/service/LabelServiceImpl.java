@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.butter.wypl.group.domain.GroupInviteState;
 import com.butter.wypl.group.domain.MemberGroup;
 import com.butter.wypl.group.repository.MemberGroupRepository;
 import com.butter.wypl.label.data.request.LabelRequest;
@@ -87,9 +88,10 @@ public class LabelServiceImpl implements LabelReadService, LabelModifyService {
 			allLabelResponseList.add(AllLabelResponse.from(label));
 		}
 
-		for (MemberGroup memberGroup : memberGroups) {
-			allLabelResponseList.add(AllLabelResponse.of(memberGroup, memberGroup.getGroup()));
-		}
+		memberGroups.stream()
+				.filter(memberGroup -> memberGroup.getGroupInviteState().equals(GroupInviteState.ACCEPTED))
+				.map(memberGroup -> AllLabelResponse.of(memberGroup, memberGroup.getGroup()))
+				.forEach(allLabelResponseList::add);
 
 		return AllLabelListResponse.from(allLabelResponseList);
 	}
